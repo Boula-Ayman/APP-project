@@ -10,9 +10,7 @@ const Navbar: React.FC = () => {
       <TouchableOpacity
         onPress={() => router.push("/Home/Homescreen")}
         style={styles.navItem}
-      >
-        <Text style={styles.navText}>Home</Text>
-      </TouchableOpacity>
+      ></TouchableOpacity>
       <TouchableOpacity
         onPress={() => router.push("/Home/SettingsScreen")}
         style={styles.navItem}
