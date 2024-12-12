@@ -1,4 +1,3 @@
-import MainNavigator from "@/navigation/MainNavigator";
 import { Stack } from "expo-router";
 import { StyleSheet, View, Text } from "react-native";
 
