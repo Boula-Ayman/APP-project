@@ -1,24 +1,18 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import HomeScreen from "./Home/Homescreen";
+import SettingsScreen from "./Home/SettingsScreen";
 
 const Tab = createBottomTabNavigator();
 
-const HomeScreen: React.FC = () => (
-  <View style={styles.container}>
-    <Text style={styles.title}>propcut</Text>
-  </View>
-);
-
-const SettingsScreen: React.FC = () => (
-  <View style={styles.container}>
-    <Text>Settings</Text>
-  </View>
-);
-
 const App: React.FC = () => {
-  return <Text style={styles.text}>Hello</Text>;
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Settings" component={SettingsScreen} />
+    </Tab.Navigator>
+  );
 };
 
 const styles = StyleSheet.create({
