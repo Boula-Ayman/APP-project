@@ -4,7 +4,6 @@ import {
   Text,
   ScrollView,
   TextInput,
-  Button,
   TouchableOpacity,
 } from "react-native";
 import PropcutLogo from "../../assets/icons/propcut.svg";
@@ -12,6 +11,7 @@ import styles from "./HomeScreenStyle";
 import Notification from "../../assets/icons/Notification 1.svg";
 import NoNotification from "../../assets/icons/Vector.svg";
 import SearchBarIcon from "../../assets/icons/Tuning 2.svg";
+import CardList from "./CardList";
 const HomeScreen: React.FC = () => {
   const notifications = 1;
 
@@ -53,6 +53,7 @@ const HomeScreen: React.FC = () => {
           <Text style={styles.filterText}>sold Out</Text>
         </TouchableOpacity>
       </View>
+      <CardList />
     </ScrollView>
   );
 };
