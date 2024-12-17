@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./Home/Homescreen";
-import SettingsScreen from "./settings/SettingsScreen";
+import SettingScreen from "./settings/SettingScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -10,7 +10,7 @@ const App: React.FC = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen name="Settings" component={SettingScreen} />
     </Tab.Navigator>
   );
 };

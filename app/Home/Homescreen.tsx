@@ -8,6 +8,7 @@ import Notification from "../../assets/icons/Notification2.svg";
 import NoNotification from "../../assets/icons/Notification1.svg";
 import SearchBarIcon from "../../assets/icons/Tuning2.svg";
 import SearchBarIcon2 from "../../assets/icons/magnifying-glass.svg";
+
 const HomeScreen: React.FC = () => {
   const notifications = 0;
 
@@ -52,13 +53,13 @@ const HomeScreen: React.FC = () => {
       </View>
       <View style={styles.filters}>
         <TouchableOpacity style={styles.filterButtonActive}>
-          <Text style={styles.filterTextActive}>{i18n.t("home.all")}</Text>{" "}
+          <Text style={styles.filterTextActive}>{i18n.t("home.all")}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.filterButton}>
-          <Text style={styles.filterText}>{i18n.t("home.available")}</Text>{" "}
+          <Text style={styles.filterText}>{i18n.t("home.available")}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.filterButton}>
-          <Text style={styles.filterText}>{i18n.t("home.soldOut")}</Text>{" "}
+          <Text style={styles.filterText}>{i18n.t("home.soldOut")}</Text>
         </TouchableOpacity>
       </View>
     </View>
