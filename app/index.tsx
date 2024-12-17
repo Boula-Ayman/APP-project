@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./Home/Homescreen";
-import SettingsScreen from "./Home/SettingsScreen";
+import SettingsScreen from "./settings/SettingsScreen";
 
 const Tab = createBottomTabNavigator();
 

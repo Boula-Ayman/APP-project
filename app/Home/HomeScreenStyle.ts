@@ -4,6 +4,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
   },
+  gradient: {
+    height: 150,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -31,17 +38,32 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+  searchBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    position: "relative",
+  },
+
   searchInput: {
     width: 269,
-    height: 51,
-    left: 8,
+    height: 55,
     backgroundColor: "#fff",
     borderRadius: 39,
     paddingHorizontal: 12,
     paddingVertical: 8,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#929292",
+    borderColor: "#92929233",
+    paddingLeft: 45,
+  },
+
+  searchIcon: {
+    position: "absolute",
+    left: 16,
+    top: "45%",
+    transform: [{ translateY: -14 }],
+    width: 24,
+    height: 24,
   },
   barIcon: {
     flexDirection: "row",
@@ -65,7 +87,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 16,
     justifyContent: "center",
-    gap: 8,
   },
   filterButton: {
     width: 106,

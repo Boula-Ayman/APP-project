@@ -1,16 +1,10 @@
 import { router, Stack } from "expo-router";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
-import Navbar from "./Navbar/Navbar";
-
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <Stack>
-      <View style={styles.navbar}>
-        <Stack>
-          <Navbar />
-        </Stack>
-      </View>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
     </Stack>
   );
 }

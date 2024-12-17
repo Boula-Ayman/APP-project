@@ -1,0 +1,8 @@
+{
+  "home": {
+    "all": "All",
+    "available": "Available",
+    "soldOut": "Sold Out",
+    "searchPlaceholder": "Search apart, property, etc..."
+  }
+}
