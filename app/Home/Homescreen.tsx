@@ -1,5 +1,8 @@
 import React from "react";
 
+import { View, Text, StyleSheet } from "react-native";
+import i18n from "../../src/i18n/i18n";
+
 import {
   View,
   Text,
@@ -57,5 +60,21 @@ const HomeScreen: React.FC = () => {
     </ScrollView>
   );
 };
+
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+});
+
 
 export default HomeScreen;
