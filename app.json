@@ -4,12 +4,12 @@
     "slug": "propcut-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icons/icon.png",
+    "icon": "",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/splash-icon.png",
+      "image": "",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,7 +18,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "",
         "backgroundColor": "#ffffff"
       },
       "package": "com.anonymous.propcutapp"
@@ -26,7 +26,7 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": ""
     },
     "plugins": ["expo-router", "expo-localization"],
     "experiments": {

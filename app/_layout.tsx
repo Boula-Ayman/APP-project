@@ -1,5 +1,5 @@
-import { router, Stack } from "expo-router";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { Stack } from "expo-router";
+import { StyleSheet, View, Text } from "react-native";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -10,14 +10,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 }
 
 const styles = StyleSheet.create({
-  navbar: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10,
-    backgroundColor: "#f8f8f8",
-  },
-  navItem: {
-    fontSize: 16,
-    color: "#007AFF",
+  container: {
+    flex: 1,
   },
 });

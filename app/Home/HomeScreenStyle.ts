@@ -4,13 +4,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
   },
-  gradient: {
-    height: 150,
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -22,7 +15,13 @@ const styles = StyleSheet.create({
     height: 95,
     left: -35,
   },
-
+  gradient: {
+    height: 150,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+  },
   icon: {
     flexDirection: "row",
     width: 51,
@@ -87,6 +86,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 16,
     justifyContent: "center",
+    gap: 8,
   },
   filterButton: {
     width: 106,
@@ -125,11 +125,23 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "Inter",
+    fontSize: 20,
+    fontWeight: "600",
+    lineHeight: 24.2,
+    textDecorationLine: "none",
+    textDecorationStyle: "solid",
+    left: 16,
   },
   viewAll: {
+    fontFamily: "Inter",
+    fontSize: 15,
+    fontWeight: "400",
+    lineHeight: 18.6,
+    textDecorationLine: "none",
+    textDecorationStyle: "solid",
     color: "#818181",
+    right: 16,
   },
 });
 export default styles;
