@@ -1,8 +1,8 @@
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 10,
+    paddingHorizontal: 10,
+    top: -5,
   },
   header: {
     flexDirection: "row",
@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     width: 252,
     height: 95,
     left: -35,
+    top: -5,
   },
   gradient: {
     height: 150,
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
     padding: 14,
     paddingHorizontal: 24,
     borderRadius: 100,
-    backgroundColor: "#a0d465",
+    backgroundColor: "#8BC240",
     marginRight: 8,
   },
   filterText: {
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginVertical: 10,
+    marginVertical: 4,
   },
   sectionTitle: {
     fontFamily: "Inter",

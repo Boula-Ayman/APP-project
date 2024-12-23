@@ -2,16 +2,16 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "rgba(139, 194, 64, 0)",
-    paddingTop: 20,
+    paddingTop: 6,
+    alignItems: "flex-start", // Align items to the start
   },
   flatListContent: {
     paddingHorizontal: 10,
   },
   card: {
     width: 284,
-    height: 385,
+    height: 380,
     marginRight: 10, // Spacing between cards
     borderRadius: 22,
     backgroundColor: "#fff",

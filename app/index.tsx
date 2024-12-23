@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./Home/Homescreen";
 import SettingsScreen from "./Settings/SettingScreen";
-import Favourite from "./Favourite/Favourite";
+import Favorite from "./Favourite/Favourite";
 import HomeIcon from "../assets/icons/home-wifi.svg";
 import FavouriteIcon from "../assets/icons/fav.svg";
 import Building from "../assets/icons/building.svg";
@@ -17,6 +17,7 @@ const App: React.FC = () => {
   return (
     <Tab.Navigator
       screenOptions={{
+        headerShown: false, // hide header for all tabs
         tabBarStyle: {
           width: 335,
           height: 74,
@@ -26,6 +27,7 @@ const App: React.FC = () => {
           elevation: 0,
           alignSelf: "center",
           gap: 10,
+          marginBottom: 6,
         },
         tabBarItemStyle: {
           paddingVertical: 10,
@@ -50,8 +52,8 @@ const App: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name="Favourite"
-        component={Favourite}
+        name="Favorite"
+        component={Favorite}
         options={{
           tabBarLabel: "",
           tabBarIcon: ({ focused }) => (

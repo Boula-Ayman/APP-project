@@ -15,6 +15,7 @@ import NoNotification from "../../assets/icons/Notification1.svg";
 import SearchBarIcon from "../../assets/icons/Tuning2.svg";
 import SearchBarIcon2 from "../../assets/icons/magnifying-glass.svg";
 import CardList from "./CardList";
+import FilterButtons from "./FilterButtons";
 
 const HomeScreen: React.FC = () => {
   const notifications = 0;
@@ -46,7 +47,6 @@ const HomeScreen: React.FC = () => {
             </View>
           )}
         </View>
-
         <View style={styles.searchContainer}>
           <View style={styles.searchBar}>
             <TextInput
@@ -59,24 +59,12 @@ const HomeScreen: React.FC = () => {
             <SearchBarIcon style={styles.barIcon2} />
           </View>
         </View>
-
-        <View style={styles.filters}>
-          <TouchableOpacity style={styles.filterButtonActive}>
-            <Text style={styles.filterTextActive}>{i18n.t("home.all")}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.filterButton}>
-            <Text style={styles.filterText}>{i18n.t("home.available")}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.filterButton}>
-            <Text style={styles.filterText}>{i18n.t("home.soldOut")}</Text>
-          </TouchableOpacity>
-        </View>
-
+        <FilterButtons />
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>{i18n.t("home.bestForYou")}</Text>
           <Text style={styles.viewAll}>{i18n.t("home.viewAll")}</Text>
         </View>
-        <View style={{ height: 385 }}>
+        <View>
           <CardList />
         </View>
       </View>
