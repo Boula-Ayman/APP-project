@@ -3,6 +3,8 @@
     "all": "الكل",
     "available": "متاح",
     "soldOut": "نفذ",
-    "searchPlaceholder": "ابحث عن شقة، عقار، إلخ..."
+    "searchPlaceholder": "ابحث عن شقة، عقار، إلخ...",
+    "bestForYou": "الأفضل بالنسبة لك",
+    "viewAll": "عرض الكل"
   }
 }

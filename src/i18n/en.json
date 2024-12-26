@@ -3,6 +3,8 @@
     "all": "All",
     "available": "Available",
     "soldOut": "Sold Out",
-    "searchPlaceholder": "Search apart, property, etc..."
+    "searchPlaceholder": "Search apart, property, etc...",
+    "bestForYou": "Best for you",
+    "viewAll": "View all"
   }
 }

@@ -1,15 +1,8 @@
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 10,
-  },
-  gradient: {
-    height: 150,
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
+    paddingHorizontal: 10,
+    top: -5,
   },
   header: {
     flexDirection: "row",
@@ -21,8 +14,15 @@ const styles = StyleSheet.create({
     width: 252,
     height: 95,
     left: -35,
+    top: -5,
   },
-
+  gradient: {
+    height: 150,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+  },
   icon: {
     flexDirection: "row",
     width: 51,
@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 16,
     justifyContent: "center",
+    gap: 8,
   },
   filterButton: {
     width: 106,
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
     padding: 14,
     paddingHorizontal: 24,
     borderRadius: 100,
-    backgroundColor: "#a0d465",
+    backgroundColor: "#8BC240",
     marginRight: 8,
   },
   filterText: {
@@ -122,14 +123,26 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginVertical: 10,
+    marginVertical: 4,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "Inter",
+    fontSize: 20,
+    fontWeight: "600",
+    lineHeight: 24.2,
+    textDecorationLine: "none",
+    textDecorationStyle: "solid",
+    left: 16,
   },
   viewAll: {
+    fontFamily: "Inter",
+    fontSize: 15,
+    fontWeight: "400",
+    lineHeight: 18.6,
+    textDecorationLine: "none",
+    textDecorationStyle: "solid",
     color: "#818181",
+    right: 16,
   },
 });
 export default styles;
