@@ -1,38 +1,109 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./Home/Homescreen";
-import SettingScreen from "./settings/SettingScreen";
+import SettingsScreen from "./Settings/SettingScreen";
+import Favorite from "./Favourite/Favourite";
+import HomeIcon from "../assets/icons/home-wifi.svg";
+import FavouriteIcon from "../assets/icons/fav.svg";
+import Building from "../assets/icons/building.svg";
+import ProfileIcon from "../assets/icons/profile.svg";
+import Profile from "./profile/Profile";
+import styles from "./indexStyle";
 
 const Tab = createBottomTabNavigator();
 
 const App: React.FC = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Settings" component={SettingScreen} />
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false, // hide header for all tabs
+        tabBarStyle: {
+          width: 335,
+          height: 74,
+          backgroundColor: "#061C27",
+          borderTopWidth: 0,
+          borderRadius: 40,
+          elevation: 0,
+          alignSelf: "center",
+          gap: 10,
+          marginBottom: 6,
+        },
+        tabBarItemStyle: {
+          paddingVertical: 10,
+        },
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarLabel: "",
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={[
+                styles.iconContainer,
+                focused && styles.iconContainerFocused,
+              ]}
+            >
+              <HomeIcon width={24} height={24} />
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Favorite"
+        component={Favorite}
+        options={{
+          tabBarLabel: "",
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={[
+                styles.iconContainer,
+                focused && styles.iconContainerFocused,
+              ]}
+            >
+              <FavouriteIcon width={24} height={24} />
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          tabBarLabel: "",
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={[
+                styles.iconContainer,
+                focused && styles.iconContainerFocused,
+              ]}
+            >
+              <Building width={24} height={24} />
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarLabel: "",
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={[
+                styles.iconContainer,
+                focused && styles.iconContainerFocused,
+              ]}
+            >
+              <ProfileIcon width={24} height={24} />
+            </View>
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  subtitle: {
-    fontSize: 18,
-    marginVertical: 8,
-  },
-  text: {
-    color: "#fff",
-  },
-});
 
 export default App;

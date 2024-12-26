@@ -1,152 +1,154 @@
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
+import {
+  Animated,
+  FlatList,
+  TouchableOpacity,
+  View,
+  Text,
+  Dimensions,
+} from "react-native";
+import styles from "./CardListStyle";
 import Flag from "../../assets/icons/UAE.svg";
+import LoveIcon from "../../assets/icons/Heart.svg";
+import Frame52 from "../../assets/icons/Frame52.svg";
+import Frame54 from "../../assets/icons/Frame54.svg";
+import Image40 from "../../assets/Images/image40.svg";
+import Image42 from "../../assets/Images/image42.svg";
+import AntDesign from "@expo/vector-icons/AntDesign";
+const { width } = Dimensions.get("window");
+const CARD_WIDTH = 284;
+const SPACING = 25;
+
 const CardList: React.FC = () => {
-  const data = [
+  const cardData = [
     {
       id: "1",
-      price: "75,000",
+      price: "75,000 AED",
+      ownerShip: "1/8 ownership",
       title: "Tranquil Haven in the Woods",
       location: "Dubai Marina, Dubai, UAE",
       bedrooms: 2,
-      iconbedroom: require("../../assets/icons/Frame 52.svg"),
       bathrooms: 2,
-      iconbathroom: require("../../assets/icons/Frame 54.svg"),
-      image: require("../../assets/Images/image 40.png"),
-      icon: require("../../assets/icons/UAE.svg"),
+      type: "Residential",
+    },
+    {
+      id: "2",
+      price: "85,000 AED",
+      ownerShip: "1/6 ownership",
+      title: "Modern Serenity Villa",
+      location: "Palm Jumeirah, Dubai, UAE",
+      bedrooms: 3,
+      bathrooms: 3,
+      type: "Residential",
+      image: Image42,
+    },
+    {
+      id: "3",
+      price: "95,000 AED",
+      ownerShip: "Full ownership",
+      title: "Luxurious Penthouse Suite",
+      location: "Downtown Dubai, UAE",
+      bedrooms: 4,
+      bathrooms: 4,
       type: "Residential",
     },
   ];
+
+  const scrollX = useRef(new Animated.Value(0)).current; // Track scroll position
+
+  const handleLoveIconPress = (id: string) => {
+    console.log(`Love icon pressed for item with id: ${id}`);
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
-        <FlatList
-          data={data}
-          renderItem={({ item }) => (
-            <View style={styles.card}>
+      <Animated.FlatList
+        data={cardData}
+        keyExtractor={(item) => item.id}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        snapToInterval={CARD_WIDTH + SPACING} // Snap cards perfectly
+        decelerationRate="fast"
+        contentContainerStyle={styles.flatListContent}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          { useNativeDriver: true }
+        )}
+        scrollEventThrottle={16}
+        renderItem={({ item, index }) => {
+          // Calculate scaling based on scroll position
+          const inputRange = [
+            (index - 1) * (CARD_WIDTH + SPACING),
+            index * (CARD_WIDTH + SPACING),
+            (index + 1) * (CARD_WIDTH + SPACING),
+          ];
+          const scale = scrollX.interpolate({
+            inputRange,
+            outputRange: [0.9, 1, 0.9], // Focused card is full size, others shrink
+            extrapolate: "clamp",
+          });
+
+          return (
+            <Animated.View
+              style={[
+                styles.card,
+                {
+                  transform: [{ scale }],
+                },
+              ]}
+            >
               <View style={styles.imageWrapper}>
-                <Image source={item.image} style={styles.cardImage} />
+                <Image40 style={styles.cardImage} />
                 <View style={styles.overlay}>
-                  <Image source={item.icon} style={styles.overlayIcon} />
-                  <Text style={styles.overlayText}>{item.type}</Text>
+                  <Flag style={styles.overlayIcon} />
+                  <View style={styles.textContainer}>
+                    <Text style={styles.overlayText}>{item.type}</Text>
+                  </View>
                 </View>
               </View>
-              {/* Details section */}
+
               <View style={styles.details}>
-                <Text style={styles.cardPrice}>{item.price}</Text>
+                <View style={styles.priceSection}>
+                  <Text style={styles.cardPrice}>{item.price}</Text>
+                  <Text style={styles.ownerShip}>{item.ownerShip}</Text>
+                  <TouchableOpacity
+                    style={styles.HeartOverlay}
+                    onPress={() => handleLoveIconPress(item.id)}
+                  >
+                    <LoveIcon style={styles.Heart} />
+                  </TouchableOpacity>
+                </View>
                 <Text style={styles.cardTitle}>{item.title}</Text>
-                <Text style={styles.cardLocation}>{item.location}</Text>
-                {/* Icons for features */}
+                <View style={styles.locationSection}>
+                  <AntDesign
+                    name="enviromento"
+                    size={17}
+                    color="black"
+                    style={styles.location}
+                  />
+                  <Text style={styles.cardLocation}>{item.location}</Text>
+                </View>
                 <View style={styles.features}>
                   <View style={styles.featureItem}>
-                    <Image source={item.iconbedroom} />
+                    <Frame52 />
                     <Text style={styles.featureText}>
                       {item.bedrooms} Bedroom
                     </Text>
                   </View>
                   <View style={styles.featureItem}>
-                    <Image source={item.iconbathroom} />
+                    <Frame54 />
                     <Text style={styles.featureText}>
-                      {item.bathrooms} Bathrooms
+                      {item.bathrooms} Bathroom
                     </Text>
                   </View>
                 </View>
               </View>
-            </View>
-          )}
-          keyExtractor={(item) => item.id}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 100 }}
-        />
-      </View>
+            </Animated.View>
+          );
+        }}
+      />
     </View>
   );
 };
 
 export default CardList;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "space-between",
-    backgroundColor: "#fff",
-    borderRadius: 33,
-    width: 284,
-    height: 385,
-    borderWidth: 0.85,
-    borderColor: "#EBEBEB",
-    left: 20,
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 16,
-  },
-
-  card: {
-    marginBottom: 16,
-    borderRadius: 22,
-    backgroundColor: "#f5f5f5",
-    overflow: "hidden",
-  },
-  cardImage: {
-    width: "100%",
-    height: 150,
-  },
-
-  imageWrapper: {
-    position: "relative",
-  },
-  overlay: {
-    position: "absolute",
-    top: 10,
-    left: 10,
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 8,
-  },
-  overlayIcon: {
-    width: 24,
-    height: 24,
-    marginRight: 6,
-  },
-  overlayText: {
-    color: "#fff",
-    fontSize: 12,
-    fontWeight: "bold",
-  },
-  details: {
-    padding: 16,
-  },
-  cardPrice: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#4caf50",
-    marginBottom: 4,
-  },
-  cardTitle: {
-    fontSize: 14,
-    color: "#333",
-    marginBottom: 4,
-  },
-  cardLocation: {
-    fontSize: 12,
-    color: "#666",
-    marginBottom: 12,
-  },
-  features: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  featureItem: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  featureText: {
-    fontSize: 12,
-    color: "#333",
-    marginLeft: 4,
-  },
-});
