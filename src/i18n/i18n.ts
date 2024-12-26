@@ -5,11 +5,13 @@ import ar from "./ar.json";
 
 const i18n = new I18n({ en, ar });
 i18n.enableFallback = true;
-i18n.locale = "ar";
 
-const deviceLocale = getLocales()[0].languageCode;
-if (deviceLocale === "en") {
-  i18n.locale = "en";
-}
+// Get the device locale
+const locales = getLocales();
+const deviceLocale =
+  locales.length > 0 && locales[0].languageCode
+    ? locales[0].languageCode
+    : "en";
+i18n.locale = deviceLocale as string;
 
 export default i18n;
