@@ -1,0 +1,135 @@
+import { StyleSheet } from "react-native";
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+  },
+  gradient: {
+    height: 150,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  logo: {
+    flexDirection: "row",
+    width: 252,
+    height: 95,
+    left: -35,
+  },
+
+  icon: {
+    flexDirection: "row",
+    width: 51,
+    height: 51,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: "#92929233",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
+  searchContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  searchBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    position: "relative",
+  },
+
+  searchInput: {
+    width: 269,
+    height: 55,
+    backgroundColor: "#fff",
+    borderRadius: 39,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "#92929233",
+    paddingLeft: 45,
+  },
+
+  searchIcon: {
+    position: "absolute",
+    left: 16,
+    top: "45%",
+    transform: [{ translateY: -14 }],
+    width: 24,
+    height: 24,
+  },
+  barIcon: {
+    flexDirection: "row",
+    width: 51,
+    height: 51,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: "#92929233",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
+  barIcon2: {
+    alignItems: "center",
+    width: 24,
+    height: 24,
+  },
+  filters: {
+    width: 350,
+    height: 48,
+    flexDirection: "row",
+    marginBottom: 16,
+    justifyContent: "center",
+  },
+  filterButton: {
+    width: 106,
+    height: 48,
+    padding: 14,
+    paddingHorizontal: 24,
+    borderRadius: 100,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    marginRight: 8,
+  },
+  filterButtonActive: {
+    width: 100,
+    height: 48,
+    padding: 14,
+    paddingHorizontal: 24,
+    borderRadius: 100,
+    backgroundColor: "#a0d465",
+    marginRight: 8,
+  },
+  filterText: {
+    color: "#555",
+    width: 67,
+    height: 20,
+  },
+  filterTextActive: {
+    color: "#fff",
+    textAlign: "center",
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  sectionHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  viewAll: {
+    color: "#818181",
+  },
+});
+export default styles;

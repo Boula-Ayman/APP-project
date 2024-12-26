@@ -1,11 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import i18n from "../../src/i18n/i18n"; // Adjust the import path as necessary
 
 const SettingsScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{i18n.t("settings")}</Text>
+      <Text style={styles.text}>Settings Screen</Text>
     </View>
   );
 };

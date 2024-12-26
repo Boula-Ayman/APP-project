@@ -1,6 +1,8 @@
 {
-  "home": "Home Page",
-  "hello": "Hello",
-  "welcome": "Welcome",
-  "settings": "Settings"
+  "home": {
+    "all": "All",
+    "available": "Available",
+    "soldOut": "Sold Out",
+    "searchPlaceholder": "Search apart, property, etc..."
+  }
 }
