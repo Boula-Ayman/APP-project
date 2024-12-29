@@ -67,6 +67,8 @@ const styles = StyleSheet.create({
   },
   barIcon: {
     flexDirection: "row",
+    left: 290,
+    bottom: 70,
     width: 51,
     height: 51,
     borderRadius: 25,

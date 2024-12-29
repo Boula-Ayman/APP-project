@@ -7,6 +7,7 @@ import FilterButtons from "./FilterButtons";
 import Header from "./HeaderComponents/Header";
 import SearchBar from "./HeaderComponents/SearchBar";
 import SectionHeader from "./HeaderComponents/SectionHeader";
+import FilterButton from "../Home/HeaderComponents/FilterButton";
 
 const HomeScreen: React.FC = () => {
   const notifications = 0;
@@ -26,6 +27,7 @@ const HomeScreen: React.FC = () => {
         />
         <Header notifications={notifications} />
         <SearchBar />
+        <FilterButton />
         <FilterButtons />
         <SectionHeader />
         <View>
