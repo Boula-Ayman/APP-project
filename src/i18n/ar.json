@@ -5,6 +5,12 @@
     "soldOut": "نفذ",
     "searchPlaceholder": "ابحث عن شقة، عقار، إلخ...",
     "bestForYou": "الأفضل بالنسبة لك",
-    "viewAll": "عرض الكل"
+    "viewAll": "عرض الكل",
+    "loading": "جار التحميل...",
+    "bedrooms": "غرف النوم: {{count}}",
+    "Bathroom": "الحمامات: {{count}}",
+    "error": {
+      "loadingOpportunities": "خطأ في تحميل الفرص."
+    }
   }
 }

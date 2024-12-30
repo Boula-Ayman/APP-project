@@ -13,7 +13,6 @@ import styles from "./indexStyle";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import store, { Persistor } from "../src/store/index";
-import OpportunitiesComponent from "./components/OpportunitiesComponent";
 
 const Tab = createBottomTabNavigator();
 
@@ -58,8 +57,8 @@ const App: React.FC = () => {
             }}
           />
           <Tab.Screen
-            name="OpportunitiesComponent"
-            component={OpportunitiesComponent}
+            name="Favorite"
+            component={Favorite}
             options={{
               tabBarLabel: "",
               tabBarIcon: ({ focused }) => (

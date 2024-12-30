@@ -5,6 +5,9 @@
     "soldOut": "Sold Out",
     "searchPlaceholder": "Search apart, property, etc...",
     "bestForYou": "Best for you",
-    "viewAll": "View all"
-  }
+    "viewAll": "View all",
+    "loading": "Loading..."
+  },
+  "bedrooms": "Bedrooms: {{count}}",
+  "bathroom": "Bathrooms: {{count}}"
 }

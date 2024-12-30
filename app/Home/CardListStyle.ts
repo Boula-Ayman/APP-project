@@ -25,9 +25,10 @@ const styles = StyleSheet.create({
     top: 15,
   },
   cardImage: {
-    width: "100%",
+    width: 252,
     height: 210,
     marginBottom: 10,
+    borderRadius: 22,
   },
   overlay: {
     position: "absolute",

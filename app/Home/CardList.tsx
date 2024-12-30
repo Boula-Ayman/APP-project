@@ -1,73 +1,41 @@
-import React, { useRef } from "react";
-import {
-  Animated,
-  FlatList,
-  TouchableOpacity,
-  View,
-  Text,
-  Dimensions,
-} from "react-native";
+// CardList.tsx
+import React, { useRef, useState } from "react";
+import { Animated, FlatList, View, Dimensions } from "react-native";
 import styles from "./CardListStyle";
-import Flag from "../../assets/icons/UAE.svg";
-import LoveIcon from "../../assets/icons/Heart.svg";
-import Frame52 from "../../assets/icons/Frame52.svg";
-import Frame54 from "../../assets/icons/Frame54.svg";
-import Image40 from "../../assets/Images/image40.svg";
-import Image42 from "../../assets/Images/image42.svg";
-import AntDesign from "@expo/vector-icons/AntDesign";
+import Card from "./CardListoportunity/Card";
+import { useGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
+import i18n from "../../src/i18n/i18n";
+import { Opportunity } from "@/src/interfaces/opportunity.interface"; // Import the Opportunity interface
+
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = 284;
 const SPACING = 25;
 
-const CardList: React.FC = () => {
-  const cardData = [
-    {
-      id: "1",
-      price: "75,000 AED",
-      ownerShip: "1/8 ownership",
-      title: "Tranquil Haven in the Woods",
-      location: "Dubai Marina, Dubai, UAE",
-      bedrooms: 2,
-      bathrooms: 2,
-      type: "Residential",
-    },
-    {
-      id: "2",
-      price: "85,000 AED",
-      ownerShip: "1/6 ownership",
-      title: "Modern Serenity Villa",
-      location: "Palm Jumeirah, Dubai, UAE",
-      bedrooms: 3,
-      bathrooms: 3,
-      type: "Residential",
-      image: Image42,
-    },
-    {
-      id: "3",
-      price: "95,000 AED",
-      ownerShip: "Full ownership",
-      title: "Luxurious Penthouse Suite",
-      location: "Downtown Dubai, UAE",
-      bedrooms: 4,
-      bathrooms: 4,
-      type: "Residential",
-    },
-  ];
+const CardList: React.FC<{ opportunities: any[] }> = ({ opportunities }) => {
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const { data } = useGetOpportunitiesQuery({
+    refetchOnMountOrArgChange: true,
+  });
+  console.log(data);
+  const [likedItems, setLikedItems] = useState<number[]>([]);
 
-  const scrollX = useRef(new Animated.Value(0)).current; // Track scroll position
-
-  const handleLoveIconPress = (id: string) => {
-    console.log(`Love icon pressed for item with id: ${id}`);
+  const handleLoveIconPress = (id: number) => {
+    setLikedItems((prev) => {
+      const newLikedItems = prev.includes(id)
+        ? prev.filter((item) => item !== id)
+        : [...prev, id];
+      return newLikedItems;
+    });
   };
 
   return (
     <View style={styles.container}>
       <Animated.FlatList
-        data={cardData}
-        keyExtractor={(item) => item.id}
+        data={opportunities}
+        keyExtractor={(item) => item.id.toString()}
         horizontal
         showsHorizontalScrollIndicator={false}
-        snapToInterval={CARD_WIDTH + SPACING} // Snap cards perfectly
+        snapToInterval={CARD_WIDTH + SPACING}
         decelerationRate="fast"
         contentContainerStyle={styles.flatListContent}
         onScroll={Animated.event(
@@ -76,7 +44,6 @@ const CardList: React.FC = () => {
         )}
         scrollEventThrottle={16}
         renderItem={({ item, index }) => {
-          // Calculate scaling based on scroll position
           const inputRange = [
             (index - 1) * (CARD_WIDTH + SPACING),
             index * (CARD_WIDTH + SPACING),
@@ -84,65 +51,17 @@ const CardList: React.FC = () => {
           ];
           const scale = scrollX.interpolate({
             inputRange,
-            outputRange: [0.9, 1, 0.9], // Focused card is full size, others shrink
+            outputRange: [0.9, 1, 0.9],
             extrapolate: "clamp",
           });
 
           return (
-            <Animated.View
-              style={[
-                styles.card,
-                {
-                  transform: [{ scale }],
-                },
-              ]}
-            >
-              <View style={styles.imageWrapper}>
-                <Image40 style={styles.cardImage} />
-                <View style={styles.overlay}>
-                  <Flag style={styles.overlayIcon} />
-                  <View style={styles.textContainer}>
-                    <Text style={styles.overlayText}>{item.type}</Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.details}>
-                <View style={styles.priceSection}>
-                  <Text style={styles.cardPrice}>{item.price}</Text>
-                  <Text style={styles.ownerShip}>{item.ownerShip}</Text>
-                  <TouchableOpacity
-                    style={styles.HeartOverlay}
-                    onPress={() => handleLoveIconPress(item.id)}
-                  >
-                    <LoveIcon style={styles.Heart} />
-                  </TouchableOpacity>
-                </View>
-                <Text style={styles.cardTitle}>{item.title}</Text>
-                <View style={styles.locationSection}>
-                  <AntDesign
-                    name="enviromento"
-                    size={17}
-                    color="black"
-                    style={styles.location}
-                  />
-                  <Text style={styles.cardLocation}>{item.location}</Text>
-                </View>
-                <View style={styles.features}>
-                  <View style={styles.featureItem}>
-                    <Frame52 />
-                    <Text style={styles.featureText}>
-                      {item.bedrooms} Bedroom
-                    </Text>
-                  </View>
-                  <View style={styles.featureItem}>
-                    <Frame54 />
-                    <Text style={styles.featureText}>
-                      {item.bathrooms} Bathroom
-                    </Text>
-                  </View>
-                </View>
-              </View>
+            <Animated.View style={[{ transform: [{ scale }] }]}>
+              <Card
+                item={item}
+                isLiked={likedItems.includes(item.id)}
+                onLoveIconPress={() => handleLoveIconPress(item.id)}
+              />
             </Animated.View>
           );
         }}
