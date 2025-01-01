@@ -16,6 +16,7 @@ interface CardProps {
   isLiked: boolean;
   onLoveIconPress: () => void;
 }
+
 const Card: React.FC<CardProps> = ({ item, isLiked, onLoveIconPress }) => {
   return (
     <View style={styles.card}>
