@@ -5,7 +5,7 @@ import styles from "./CardListStyle";
 import Card from "./CardListoportunity/Card";
 import { useGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
 import i18n from "../../src/i18n/i18n";
-import { Opportunity } from "@/src/interfaces/opportunity.interface"; // Import the Opportunity interface
+import { Opportunity } from "@/src/interfaces/opportunity.interface"; 
 
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = 284;
@@ -16,7 +16,7 @@ const CardList: React.FC<{ opportunities: any[] }> = ({ opportunities }) => {
   const { data } = useGetOpportunitiesQuery({
     refetchOnMountOrArgChange: true,
   });
-  console.log(data);
+  
   const [likedItems, setLikedItems] = useState<number[]>([]);
 
   const handleLoveIconPress = (id: number) => {
