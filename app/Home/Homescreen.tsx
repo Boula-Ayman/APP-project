@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "./HomeScreenStyle";
@@ -9,8 +9,9 @@ import SearchBar from "./HeaderComponents/SearchBar";
 import SectionHeader from "./HeaderComponents/SectionHeader";
 import FilterButton from "../Home/HeaderComponents/FilterButton";
 import { useGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
-import i18n from "../../src/i18n/i18n"; // Import your i18n instance
-import { Opportunity } from "@/src/interfaces/opportunity.interface"; // Import the Opportunity interface
+import i18n from "../../src/i18n/i18n";
+import { Opportunity } from "@/src/interfaces/opportunity.interface";
+import { debounce } from "@/utils/debounce";
 
 const HomeScreen: React.FC = () => {
   const notifications = 0;
@@ -21,16 +22,44 @@ const HomeScreen: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const opportunities: Opportunity[] = data?.data || [];
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [currentFilter, setCurrentFilter] = useState("all");
 
-  // filter opportunities based on the search term
+  const debouncedSetSearchTerm = useCallback(
+    debounce((term: string) => {
+      setDebouncedSearchTerm(term);
+    }, 300),
+    []
+  );
+
+  useEffect(() => {
+    debouncedSetSearchTerm(searchTerm);
+  }, [searchTerm, debouncedSetSearchTerm]);
+
   const filteredOpportunities = opportunities.filter((item: Opportunity) => {
     const title = i18n.locale === "ar" ? item.title_ar : item.title_en;
     const location = i18n.locale === "ar" ? item.location_ar : item.location_en;
-    return (
-      title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      location.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const searchMatch =
+      title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+      location.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
+
+    console.log("Current Filter:", currentFilter);
+    console.log("Search Match:", searchMatch);
+    console.log("Item Status:", item.status);
+
+    if (currentFilter === "all") {
+      return searchMatch;
+    } else if (currentFilter === "available") {
+      return searchMatch && item.status === "available";
+    } else if (currentFilter === "soldOut") {
+      return searchMatch && item.status === "sold out";
+    }
   });
+  console.log("Filtered Opportunities:", filteredOpportunities);
+
+  const onFilterChange = (filter: string) => {
+    setCurrentFilter(filter);
+  };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -46,9 +75,9 @@ const HomeScreen: React.FC = () => {
           end={{ x: 0, y: 0 }}
         />
         <Header notifications={notifications} />
-        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <SearchBar searchTerm={searchTerm} onChangeText={setSearchTerm} />
         <FilterButton />
-        <FilterButtons />
+        <FilterButtons onFilterChange={onFilterChange} />
         <SectionHeader />
         <View>
           <CardList opportunities={filteredOpportunities} />
