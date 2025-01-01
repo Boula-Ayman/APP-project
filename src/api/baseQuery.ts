@@ -10,7 +10,6 @@ const baseQuery = fetchBaseQuery({
     { getState, endpoint }: { getState: () => RootState; endpoint: string }
   ) => {
     const token = (getState() as RootState).user?.currentUser?.token;
-
     if (!headers.has("Content-Type")) {
       headers.set("Content-Type", "application/json");
     }
