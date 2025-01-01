@@ -28,7 +28,6 @@ const Card: React.FC<CardProps> = ({ item, isLiked, onLoveIconPress }) => {
           </View>
         </View>
       </View>
-
       <View style={styles.details}>
         <View style={styles.priceSection}>
           <Text style={styles.cardPrice}>
