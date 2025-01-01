@@ -9,8 +9,8 @@ import SearchBar from "./HeaderComponents/SearchBar";
 import SectionHeader from "./HeaderComponents/SectionHeader";
 import FilterButton from "../Home/HeaderComponents/FilterButton";
 import { useGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
-import i18n from "../../src/i18n/i18n"; // Import your i18n instance
-import { Opportunity } from "@/src/interfaces/opportunity.interface"; // Import the Opportunity interface
+import i18n from "../../src/i18n/i18n"; 
+import { Opportunity } from "@/src/interfaces/opportunity.interface"; 
 
 const HomeScreen: React.FC = () => {
   const notifications = 0;
@@ -22,7 +22,7 @@ const HomeScreen: React.FC = () => {
 
   const opportunities: Opportunity[] = data?.data || [];
 
-  // filter opportunities based on the search term
+ 
   const filteredOpportunities = opportunities.filter((item: Opportunity) => {
     const title = i18n.locale === "ar" ? item.title_ar : item.title_en;
     const location = i18n.locale === "ar" ? item.location_ar : item.location_en;
