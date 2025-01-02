@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "./HomeScreenStyle";
 import CardList from "./CardList";
@@ -14,8 +14,11 @@ import i18n from "../../src/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 
 import { debounce } from "@/utils/debounce";
+import { useRouter } from "expo-router";
 
-const HomeScreen: React.FC = () => {
+const HomeScreen: React.FC = ({}) => {
+  const router = useRouter(); // Initialize the router
+
   const notifications = 0;
 
   const { data, error, isLoading } = useGetOpportunitiesQuery({
@@ -57,11 +60,10 @@ const HomeScreen: React.FC = () => {
     return false;
   });
   const onFilterChange = (filter: string) => {
-    console.log("Filter changed to:", filter);
     setCurrentFilter(filter);
   };
   useEffect(() => {
-    console.log("Filtered Opportunities:", filteredOpportunities);
+    // console.log("Filtered Opportunities:", filteredOpportunities);
   }, [filteredOpportunities]);
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -78,7 +80,10 @@ const HomeScreen: React.FC = () => {
         />
         <Header notifications={notifications} />
         <SearchBar searchTerm={searchTerm} onChangeText={setSearchTerm} />
-        <FilterButton />
+        <FilterButton
+          onPress={() => router.push("/Home/HeaderComponents/FilterButton")}
+        />
+        {/* Use router.push */}
         <FilterButtons onFilterChange={onFilterChange} />
         <SectionHeader />
         <View>

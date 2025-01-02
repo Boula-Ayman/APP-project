@@ -1,13 +1,15 @@
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import styles from "../HomeScreenStyle";
 import FilterIcon from "../../../assets/icons/Tuning2.svg";
-
-const FilterButton = () => {
+interface FilterButtonProps {
+  onPress: () => void;
+}
+const FilterButton: React.FC<FilterButtonProps> = ({ onPress }) => {
   return (
-    <View style={styles.barIcon}>
+    <TouchableOpacity onPress={onPress} style={styles.barIcon}>
       <FilterIcon style={styles.barIcon2} />
-    </View>
+    </TouchableOpacity>
   );
 };
 
