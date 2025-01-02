@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+
 import { View, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "./HomeScreenStyle";
@@ -11,6 +12,7 @@ import FilterButton from "../Home/HeaderComponents/FilterButton";
 import { useGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
 import i18n from "../../src/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
+
 import { debounce } from "@/utils/debounce";
 
 const HomeScreen: React.FC = () => {
@@ -19,6 +21,8 @@ const HomeScreen: React.FC = () => {
   const { data, error, isLoading } = useGetOpportunitiesQuery({
     refetchOnMountOrArgChange: true,
   });
+  // console.log(data);
+
   const [searchTerm, setSearchTerm] = useState("");
   const opportunities: Opportunity[] = data?.data || [];
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
@@ -38,24 +42,27 @@ const HomeScreen: React.FC = () => {
   const filteredOpportunities = opportunities.filter((item: Opportunity) => {
     const title = i18n.locale === "ar" ? item.title_ar : item.title_en;
     const location = i18n.locale === "ar" ? item.location_ar : item.location_en;
+
+    // Search match condition
     const searchMatch =
       title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
       location.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
 
-    if (currentFilter === "available") {
-      return searchMatch;
-    } else if (currentFilter === "available") {
+    // Filter condition
+    if (currentFilter === "all") return searchMatch;
+    if (currentFilter === "available")
       return searchMatch && item.status === "available";
-    } else if (currentFilter === "soldOut") {
-      return searchMatch && item.status === "soldOut";
-    }
+    if (currentFilter === "soldOut")
+      return searchMatch && item.status === "sold out"; // Ensure this matches the data
+    return false;
   });
-  console.log("Filtered Opportunities:", filteredOpportunities);
-
   const onFilterChange = (filter: string) => {
+    console.log("Filter changed to:", filter);
     setCurrentFilter(filter);
   };
-
+  useEffect(() => {
+    console.log("Filtered Opportunities:", filteredOpportunities);
+  }, [filteredOpportunities]);
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
@@ -75,7 +82,7 @@ const HomeScreen: React.FC = () => {
         <FilterButtons onFilterChange={onFilterChange} />
         <SectionHeader />
         <View>
-          <CardList opportunities={filteredOpportunities} />
+          <CardList key={currentFilter} opportunities={filteredOpportunities} />
         </View>
       </View>
     </ScrollView>

@@ -122,6 +122,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#818181",
   },
+  soldOutLabel: {
+    fontSize: 13.3,
+    color: "#FF0000", // red color
+    backgroundColor: "#FF0000", // red background color
+    opacity: 0.1, // 10% opacity
+    borderRadius: 10,
+    padding: 4,
+    fontFamily: "PoppinsRegular",
+  },
 });
 
 export default styles;

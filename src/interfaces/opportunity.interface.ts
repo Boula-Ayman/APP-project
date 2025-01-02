@@ -9,7 +9,9 @@ export interface Opportunity {
   title_en: string;
   location_ar: string;
   location_en: string;
+  opportunity_type: string;
   number_of_bedrooms: number;
   number_of_bathrooms: number;
   status: string;
+  available_shares: number;
 }
