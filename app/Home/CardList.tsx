@@ -3,20 +3,16 @@ import React, { useRef, useState } from "react";
 import { Animated, FlatList, View, Dimensions } from "react-native";
 import styles from "./CardListStyle";
 import Card from "./CardListoportunity/Card";
-import { useGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
 import i18n from "../../src/i18n/i18n";
-import { Opportunity } from "@/src/interfaces/opportunity.interface"; 
 
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = 284;
 const SPACING = 25;
-
-const CardList: React.FC<{ opportunities: any[] }> = ({ opportunities }) => {
+interface CardListProps {
+  opportunities: any[];
+}
+const CardList: React.FC<CardListProps> = ({ opportunities }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
-  const { data } = useGetOpportunitiesQuery({
-    refetchOnMountOrArgChange: true,
-  });
-  
   const [likedItems, setLikedItems] = useState<number[]>([]);
 
   const handleLoveIconPress = (id: number) => {

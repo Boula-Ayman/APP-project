@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   cardPrice: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#4caf50",
+    color: "#8BC240",
   },
   ownerShip: {
     fontSize: 12,

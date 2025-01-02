@@ -20,11 +20,11 @@ const Card: React.FC<CardProps> = ({ item, isLiked, onLoveIconPress }) => {
   return (
     <View style={styles.card}>
       <View style={styles.imageWrapper}>
-        <Image source={{ uri: item?.media[0]?.url }} style={styles.cardImage} />
+        <Image source={{ uri: item?.media[2]?.url }} style={styles.cardImage} />
         <View style={styles.overlay}>
           <Flag style={styles.overlayIcon} />
           <View style={styles.textContainer}>
-            <Text style={styles.overlayText}>{item.type}Residential</Text>
+            <Text style={styles.overlayText}>{item.opportunity_type}</Text>
           </View>
         </View>
       </View>
@@ -34,13 +34,17 @@ const Card: React.FC<CardProps> = ({ item, isLiked, onLoveIconPress }) => {
             {formatPrice(item.share_price)} {item.currency}
           </Text>
           <Text style={styles.ownerShip}>
-            1/{item.number_of_shares} ownerShip
+            {item.available_shares}/{item.number_of_shares}{" "}
+            {i18n.t("ownerShip")}
           </Text>
           <TouchableOpacity
             style={styles.HeartOverlay}
             onPress={onLoveIconPress}
           >
-            <LoveIcon style={styles.Heart} fill={isLiked ? "red" : "white"} />
+            <LoveIcon
+              style={styles.Heart}
+              fill={isLiked ? "#8BC240" : "white"}
+            />
           </TouchableOpacity>
         </View>
         <Text style={styles.cardTitle}>
