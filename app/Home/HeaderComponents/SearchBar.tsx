@@ -6,9 +6,10 @@ import i18n from "../../../src/i18n/i18n";
 
 interface SearchBarProps {
   searchTerm: string;
-  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+  onChangeText: (text: string) => void;
 }
-const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm }) => {
+
+const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onChangeText }) => {
   return (
     <View style={styles.searchContainer}>
       <View style={styles.searchBar}>
@@ -16,9 +17,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm }) => {
           style={styles.searchInput}
           placeholder={i18n.t("home.searchPlaceholder")}
           value={searchTerm}
-          onChangeText={setSearchTerm}
+          onChangeText={onChangeText}
         />
-
         <MagnifyingGlass style={styles.searchIcon} />
       </View>
     </View>

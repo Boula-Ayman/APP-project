@@ -11,4 +11,5 @@ export interface Opportunity {
   location_en: string;
   number_of_bedrooms: number;
   number_of_bathrooms: number;
+  status: string;
 }
