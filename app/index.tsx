@@ -1,3 +1,4 @@
+// index.tsx
 import React from "react";
 import { View, KeyboardAvoidingView, Platform } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -10,16 +11,14 @@ import Building from "../assets/icons/building.svg";
 import ProfileIcon from "../assets/icons/profile.svg";
 import Profile from "./profile/Profile";
 import styles from "./indexStyle";
-import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
-import store, { Persistor } from "../src/store/index";
+
 
 const Tab = createBottomTabNavigator();
 
 const App: React.FC = () => {
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={Persistor}>
+    
+
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={{ flex: 1 }}
@@ -115,8 +114,8 @@ const App: React.FC = () => {
             />
           </Tab.Navigator>
         </KeyboardAvoidingView>
-      </PersistGate>
-    </Provider>
+  
+
   );
 };
 

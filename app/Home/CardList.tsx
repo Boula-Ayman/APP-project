@@ -2,7 +2,7 @@
 import React, { useRef, useState } from "react";
 import { Animated, FlatList, View, Dimensions } from "react-native";
 import styles from "./CardListStyle";
-import Card from "./CardListoportunity/Card";
+import Card from "../Home/CardListoportunity/Card";
 import i18n from "../../src/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 

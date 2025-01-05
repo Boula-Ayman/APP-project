@@ -14,11 +14,8 @@ import i18n from "../../src/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 
 import { debounce } from "@/utils/debounce";
-import { useRouter } from "expo-router";
 
 const HomeScreen: React.FC = ({}) => {
-  const router = useRouter(); // Initialize the router
-
   const notifications = 0;
 
   const { data, error, isLoading } = useGetOpportunitiesQuery({
@@ -80,10 +77,8 @@ const HomeScreen: React.FC = ({}) => {
         />
         <Header notifications={notifications} />
         <SearchBar searchTerm={searchTerm} onChangeText={setSearchTerm} />
-        <FilterButton
-          onPress={() => router.push("/Home/HeaderComponents/FilterButton")}
-        />
-        {/* Use router.push */}
+        <FilterButton />
+
         <FilterButtons onFilterChange={onFilterChange} />
         <SectionHeader />
         <View>

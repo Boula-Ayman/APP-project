@@ -9,9 +9,9 @@ import Frame52 from "../../../assets/icons/Frame52.svg";
 import Frame54 from "../../../assets/icons/Frame54.svg";
 import { formatPrice } from "@/utils/formatPrice";
 import i18n from "../../../src/i18n/i18n";
-import { Opportunity } from "@/src/interfaces/opportunity.interface"; // Import the Opportunity interface
+import { Opportunity } from "@/src/interfaces/opportunity.interface";
 
-interface CardProps {
+export interface CardProps {
   item: Opportunity;
   isLiked: boolean;
   onLoveIconPress: () => void;
