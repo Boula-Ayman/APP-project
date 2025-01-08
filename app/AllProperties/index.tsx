@@ -19,8 +19,6 @@ const ViewAll: React.FC<FilterScreenProps> = ({
     refetchOnMountOrArgChange: true,
   });
   console.log("Data:", data);
-  console.log("Data type:", typeof data);
-
   const [likedItems, setLikedItems] = useState<number[]>([]);
 
   const handleLoveIconPress = (id: number) => {
@@ -32,21 +30,22 @@ const ViewAll: React.FC<FilterScreenProps> = ({
     });
   };
 
-  if (isLoading) {
-    return <Text>Loading...</Text>;
-  }
+  // if (isLoading) {
+  //   return <Text>Loading...</Text>;
+  // }
 
-  if (!data || !data.data) {
-    return <Text>No data available</Text>;
-  }
+  // if (!data || !data.data) {
+  //   return <Text>No data available</Text>;
+  // }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.mainContainer}>
       <View style={styles.searchContainer}>
         <SearchBar searchTerm={searchTerm} onChangeText={setSearchTerm} />
       </View>
+
       <FilterButton />
-      <View style={[styles.container, { flex: 1 }]}>
+      <View style={styles.container}>
         <FlatList
           data={data.data}
           renderItem={({ item }) => (
@@ -57,7 +56,7 @@ const ViewAll: React.FC<FilterScreenProps> = ({
             />
           )}
           keyExtractor={(item) => item.id.toString()}
-          ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+          ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
           showsVerticalScrollIndicator={false}
         />
       </View>

@@ -14,7 +14,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             name="Home/HeaderComponents/ViewAll"
             options={{
               title: "All Properties",
+              headerShown: false,
             }}
+          />
+          <Stack.Screen
+            name="Home/HeaderComponents/FilterButton"
+            options={{ headerShown: false, title: "FilterScreen " }}
           />
         </Stack>
       </PersistGate>

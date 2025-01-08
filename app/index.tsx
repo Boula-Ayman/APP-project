@@ -12,110 +12,105 @@ import ProfileIcon from "../assets/icons/profile.svg";
 import Profile from "./profile/Profile";
 import styles from "./indexStyle";
 
-
 const Tab = createBottomTabNavigator();
 
 const App: React.FC = () => {
   return (
-    
-
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={{ flex: 1 }}
-          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -50}
-        >
-          <Tab.Navigator
-            screenOptions={{
-              headerShown: false,
-              tabBarStyle: {
-                width: 335,
-                height: 74,
-                backgroundColor: "#061C27",
-                borderTopWidth: 0,
-                borderRadius: 40,
-                elevation: 0,
-                alignSelf: "center",
-                gap: 10,
-                marginBottom: 6,
-              },
-              tabBarItemStyle: {
-                paddingVertical: 10,
-              },
-              tabBarHideOnKeyboard: true,
-            }}
-          >
-            <Tab.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{
-                tabBarLabel: "",
-                tabBarIcon: ({ focused }) => (
-                  <View
-                    style={[
-                      styles.iconContainer,
-                      focused && styles.iconContainerFocused,
-                    ]}
-                  >
-                    <HomeIcon width={24} height={24} />
-                  </View>
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Favorite"
-              component={Favorite}
-              options={{
-                tabBarLabel: "",
-                tabBarIcon: ({ focused }) => (
-                  <View
-                    style={[
-                      styles.iconContainer,
-                      focused && styles.iconContainerFocused,
-                    ]}
-                  >
-                    <FavouriteIcon width={24} height={24} />
-                  </View>
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Settings"
-              component={SettingsScreen}
-              options={{
-                tabBarLabel: "",
-                tabBarIcon: ({ focused }) => (
-                  <View
-                    style={[
-                      styles.iconContainer,
-                      focused && styles.iconContainerFocused,
-                    ]}
-                  >
-                    <Building width={24} height={24} />
-                  </View>
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Profile"
-              component={Profile}
-              options={{
-                tabBarLabel: "",
-                tabBarIcon: ({ focused }) => (
-                  <View
-                    style={[
-                      styles.iconContainer,
-                      focused && styles.iconContainerFocused,
-                    ]}
-                  >
-                    <ProfileIcon width={24} height={24} />
-                  </View>
-                ),
-              }}
-            />
-          </Tab.Navigator>
-        </KeyboardAvoidingView>
-  
-
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -50}
+    >
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: {
+            width: 335,
+            height: 74,
+            backgroundColor: "#061C27",
+            borderTopWidth: 0,
+            borderRadius: 40,
+            elevation: 0,
+            alignSelf: "center",
+            gap: 10,
+            marginBottom: 6,
+          },
+          tabBarItemStyle: {
+            paddingVertical: 10,
+          },
+          tabBarHideOnKeyboard: true,
+        }}
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            tabBarLabel: "",
+            tabBarIcon: ({ focused }) => (
+              <View
+                style={[
+                  styles.iconContainer,
+                  focused && styles.iconContainerFocused,
+                ]}
+              >
+                <HomeIcon width={24} height={24} />
+              </View>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Favorite"
+          component={Favorite}
+          options={{
+            tabBarLabel: "",
+            tabBarIcon: ({ focused }) => (
+              <View
+                style={[
+                  styles.iconContainer,
+                  focused && styles.iconContainerFocused,
+                ]}
+              >
+                <FavouriteIcon width={24} height={24} />
+              </View>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            tabBarLabel: "",
+            tabBarIcon: ({ focused }) => (
+              <View
+                style={[
+                  styles.iconContainer,
+                  focused && styles.iconContainerFocused,
+                ]}
+              >
+                <Building width={24} height={24} />
+              </View>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            tabBarLabel: "",
+            tabBarIcon: ({ focused }) => (
+              <View
+                style={[
+                  styles.iconContainer,
+                  focused && styles.iconContainerFocused,
+                ]}
+              >
+                <ProfileIcon width={24} height={24} />
+              </View>
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </KeyboardAvoidingView>
   );
 };
 

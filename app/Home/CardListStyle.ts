@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "rgba(139, 194, 64, 0)",
     paddingTop: 6,
-    alignItems: "flex-start", // Align items to the start
+    alignItems: "flex-start",
   },
   flatListContent: {
     paddingHorizontal: 10,
@@ -123,13 +123,16 @@ const styles = StyleSheet.create({
     color: "#818181",
   },
   soldOutLabel: {
-    fontSize: 13.3,
-    color: "#FF0000", // red color
-    backgroundColor: "#FF0000", // red background color
-    opacity: 0.1, // 10% opacity
+    position: "relative",
+    width: "50%",
+    fontSize: 18,
+    color: "#FF0000",
+    marginTop: 5,
+    marginLeft: 10,
+    marginBottom: -15,
+    opacity: 1,
     borderRadius: 10,
-    padding: 4,
-    fontFamily: "PoppinsRegular",
+    fontFamily: "Inter",
   },
 });
 
