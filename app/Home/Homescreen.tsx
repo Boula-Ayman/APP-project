@@ -1,5 +1,5 @@
 // HomeScreen.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "./HomeScreenStyle";
@@ -22,20 +22,26 @@ const HomeScreen: React.FC = () => {
   console.log(data);
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [filteredOpportunities, setFilteredOpportunities] = useState<
+    Opportunity[]
+  >([]);
 
-  const opportunities: Opportunity[] = data?.data || [];
+  useEffect(() => {
+    const opportunities: Opportunity[] = data?.data || [];
+    const filteredOpportunities = opportunities.filter((item: Opportunity) => {
+      const title = i18n.locale === "ar" ? item.title_ar : item.title_en;
+      const location =
+        i18n.locale === "ar" ? item.location_ar : item.location_en;
 
-  const filteredOpportunities = opportunities.filter((item: Opportunity) => {
-    const title = i18n.locale === "ar" ? item.title_ar : item.title_en;
-    const location = i18n.locale === "ar" ? item.location_ar : item.location_en;
+      if (!searchTerm) return true;
 
-    if (!searchTerm) return true;
-
-    return (
-      title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      location.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+      return (
+        title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        location.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
+    setFilteredOpportunities(filteredOpportunities);
+  }, [searchTerm, data]);
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>

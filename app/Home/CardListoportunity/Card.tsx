@@ -20,7 +20,10 @@ const Card: React.FC<CardProps> = ({ item, isLiked, onLoveIconPress }) => {
   return (
     <View style={styles.card}>
       <View style={styles.imageWrapper}>
-        <Image source={{ uri: item?.media[2]?.url }} style={styles.cardImage} />
+        <Image
+          source={{ uri: item?.media[item?.media.length - 1]?.url }}
+          style={styles.cardImage}
+        />
         <View style={styles.overlay}>
           <Flag style={styles.overlayIcon} />
           <View style={styles.textContainer}>

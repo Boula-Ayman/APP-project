@@ -4,12 +4,13 @@ import { Animated, FlatList, View, Dimensions } from "react-native";
 import styles from "./CardListStyle";
 import Card from "./CardListoportunity/Card";
 import i18n from "../../src/i18n/i18n";
+import { Opportunity } from "@/src/interfaces/opportunity.interface";
 
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = 284;
 const SPACING = 25;
 interface CardListProps {
-  opportunities: any[];
+  opportunities: Opportunity[];
 }
 const CardList: React.FC<CardListProps> = ({ opportunities }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
