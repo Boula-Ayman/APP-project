@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   dropdownContainer: {
     flexDirection: "column",
     marginBottom: 15,
-    marginTop: 50,
+    marginTop: 35,
   },
   label: {
     fontSize: 14,
