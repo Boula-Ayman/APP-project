@@ -7,182 +7,135 @@ import {
   ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import i18n from "../../src/i18n/i18n";
+import ExcMark from "../../assets/icons/ExcMark16.svg";
+import IMark from "../../assets/icons/iMark.svg";
+import styles from "./FilterScreenStyle";
+import { useGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
+import DropDownPicker from "react-native-dropdown-picker";
 
 const FilterScreen: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const [selectedBedrooms, setSelectedBedrooms] = useState<number | null>(null);
-  const [selectedBathrooms, setSelectedBathrooms] = useState<number | null>(
-    null
-  );
+  const { data } = useGetOpportunitiesQuery({
+    refetchOnMountOrArgChange: true,
+  });
+  const [selectedType, setSelectedType] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [isTypeOpen, setIsTypeOpen] = useState(false);
+  const [isLocationOpen, setIsLocationOpen] = useState(false);
+
+  const optionsType = data?.data.map((opportunity) => ({
+    label: opportunity.opportunity_type,
+    value: opportunity.opportunity_type,
+  }));
+
+  const optionsLocation = data?.data.map((opportunity) => ({
+    label: opportunity.location_en || opportunity.location_ar,
+    value: opportunity.location_en || opportunity.location_ar,
+  }));
+  const handleOpenType = () => {
+    setIsTypeOpen(true);
+    setIsLocationOpen(false);
+  };
+
+  const handleOpenLocation = () => {
+    setIsTypeOpen(false);
+    setIsLocationOpen(true);
+  };
+  const handleIconPress = () => {
+    setIsTypeOpen(false);
+    setIsLocationOpen(false);
+  };
+  console.log(optionsType);
+  console.log(optionsLocation);
 
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>All Properties</Text>
-        <TouchableOpacity onPress={onClose}>
-          <Ionicons name="close" size={24} color="black" />
-        </TouchableOpacity>
+    <>
+      <View style={styles.container}>
+        <View style={styles.topSection}>
+          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <Ionicons name="close" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
       </View>
+      <View style={styles.middleSection}>
+        <View style={styles.contentSection}>
+          <Text style={styles.sectionTitle}>{i18n.t("home.filterBy")}</Text>
+          {/* dropdowns for  type and location */}
+          <View style={styles.dropdownContainer}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text style={[styles.label, { marginRight: 7 }]}>
+                Property Type
+              </Text>
+              <View style={styles.cirlce}>
+                <IMark />
+              </View>
+            </View>
+            {optionsType?.length > 0 && (
+              <DropDownPicker
+                open={isTypeOpen}
+                value={selectedType}
+                items={optionsType}
+                closeOnBackPressed={true}
+                closeAfterSelecting={true}
+                
+                setOpen={setIsTypeOpen}
+                setValue={setSelectedType}
+                placeholder="All"
+                style={{
+                  borderColor: "#ccc",
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  padding: 12,
+                  marginBottom: 20,
+                }}
+                dropDownContainerStyle={{
+                  borderColor: "#ccc",
+                  borderWidth: 1,
+                  borderRadius: 8,
+                }}
+              />
+            )}
+          </View>
 
-      <ScrollView>
-        {/* Filter Section */}
-        <Text style={styles.sectionTitle}>Filter By</Text>
-
-        {/* Dropdowns for Property Type and Location */}
-        <View style={styles.dropdownContainer}>
-          <Text style={styles.label}>Property Type</Text>
-          <TouchableOpacity style={styles.dropdown}>
-            <Text style={styles.dropdownText}>All</Text>
-            <Ionicons name="chevron-down" size={16} color="gray" />
+          <View style={styles.dropdownContainer}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text style={[styles.label, { marginRight: 7 }]}>
+                Property Location
+              </Text>
+              <View style={styles.cirlce}>
+                <IMark />
+              </View>
+            </View>
+            {optionsLocation?.length > 0 && (
+              <DropDownPicker
+                open={isLocationOpen}
+                value={selectedLocation}
+                items={optionsLocation}
+                closeOnBackPressed={true}
+                closeAfterSelecting={true}
+                setOpen={setIsLocationOpen}
+                setValue={setSelectedLocation}
+                placeholder="All"
+                style={{
+                  borderColor: "#ccc",
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  padding: 12,
+                }}
+                dropDownContainerStyle={{
+                  borderColor: "#ccc",
+                  borderWidth: 1,
+                  borderRadius: 8,
+                }}
+              />
+            )}
+          </View>
+          <TouchableOpacity style={styles.filterButtonLarge}>
+            <Text style={styles.filterButtonLargeText}>Filter Results</Text>
           </TouchableOpacity>
         </View>
-
-        <View style={styles.dropdownContainer}>
-          <Text style={styles.label}>Property Location</Text>
-          <TouchableOpacity style={styles.dropdown}>
-            <Text style={styles.dropdownText}>All</Text>
-            <Ionicons name="chevron-down" size={16} color="gray" />
-          </TouchableOpacity>
-        </View>
-
-        {/* Bedrooms and Bathrooms */}
-        <Text style={styles.label}>Bedrooms</Text>
-        <View style={styles.filterRow}>
-          {[1, 2, 3, 4, 5].map((bedroom) => (
-            <TouchableOpacity
-              key={bedroom}
-              style={[
-                styles.filterButton,
-                selectedBedrooms === bedroom && styles.selectedButton,
-              ]}
-              onPress={() => setSelectedBedrooms(bedroom)}
-            >
-              <Text
-                style={[
-                  styles.filterButtonText,
-                  selectedBedrooms === bedroom && styles.selectedButtonText,
-                ]}
-              >
-                {bedroom}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        <Text style={styles.label}>Bathrooms</Text>
-        <View style={styles.filterRow}>
-          {[1, 2, 3, 4, 5].map((bathroom) => (
-            <TouchableOpacity
-              key={bathroom}
-              style={[
-                styles.filterButton,
-                selectedBathrooms === bathroom && styles.selectedButton,
-              ]}
-              onPress={() => setSelectedBathrooms(bathroom)}
-            >
-              <Text
-                style={[
-                  styles.filterButtonText,
-                  selectedBathrooms === bathroom && styles.selectedButtonText,
-                ]}
-              >
-                {bathroom}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        {/* Filter Results Button */}
-        <TouchableOpacity style={styles.filterButtonLarge}>
-          <Text style={styles.filterButtonLargeText}>Filter Results</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
+      </View>
+    </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    padding: 16,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 20,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 16,
-  },
-  dropdownContainer: {
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: "500",
-    marginBottom: 8,
-  },
-  dropdown: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 12,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    backgroundColor: "#f9f9f9",
-  },
-  dropdownText: {
-    fontSize: 14,
-    color: "#555",
-  },
-  filterRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 16,
-  },
-  filterButton: {
-    width: 50,
-    height: 50,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 25,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#f9f9f9",
-  },
-  selectedButton: {
-    backgroundColor: "#8bc240",
-    borderColor: "#8bc240",
-  },
-  filterButtonText: {
-    fontSize: 14,
-    color: "#555",
-  },
-  selectedButtonText: {
-    color: "white",
-    fontWeight: "bold",
-  },
-  filterButtonLarge: {
-    marginTop: 24,
-    backgroundColor: "#8bc240",
-    paddingVertical: 16,
-    alignItems: "center",
-    borderRadius: 8,
-  },
-  filterButtonLargeText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-});
-
 export default FilterScreen;

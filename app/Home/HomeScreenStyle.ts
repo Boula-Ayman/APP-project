@@ -98,6 +98,16 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
+  modalContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    justifyContent: "flex-end",
+  },
+
   filters: {
     width: 350,
     height: 48,

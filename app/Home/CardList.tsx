@@ -1,4 +1,4 @@
-// CardList.tsx
+
 import React, { useRef, useState } from "react";
 import { Animated, FlatList, View, Dimensions } from "react-native";
 import styles from "./CardListStyle";

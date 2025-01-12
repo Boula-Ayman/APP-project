@@ -6,6 +6,7 @@
     "searchPlaceholder": "Search apart, property, etc...",
     "bestForYou": "Best for you",
     "viewAll": "View all",
+    "filterBy": "Filter By",
     "loading": "Loading..."
   },
   "bedrooms": "Bedrooms: {{count}}",

@@ -43,25 +43,23 @@ const HomeScreen: React.FC = ({}) => {
     const title = i18n.locale === "ar" ? item.title_ar : item.title_en;
     const location = i18n.locale === "ar" ? item.location_ar : item.location_en;
 
-    // Search match condition
+    // search match condition
     const searchMatch =
       title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
       location.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
 
-    // Filter condition
+    // filter condition
     if (currentFilter === "all") return searchMatch;
     if (currentFilter === "available")
       return searchMatch && item.status === "available";
     if (currentFilter === "soldOut")
-      return searchMatch && item.status === "sold out"; // Ensure this matches the data
+      return searchMatch && item.status === "sold out";
     return false;
   });
   const onFilterChange = (filter: string) => {
     setCurrentFilter(filter);
   };
-  useEffect(() => {
-    // console.log("Filtered Opportunities:", filteredOpportunities);
-  }, [filteredOpportunities]);
+  useEffect(() => {}, [filteredOpportunities]);
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>

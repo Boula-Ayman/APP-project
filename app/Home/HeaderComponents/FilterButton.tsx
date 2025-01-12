@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Modal, TouchableOpacity, View, StyleSheet } from "react-native";
-import FilterIcon from "../../../assets/icons/Tuning2.svg"; // Ensure this path is correct
-import FilterScreen from "../../FilterButton/index"; // Ensure this path is correct
-import styles from "../HomeScreenStyle"; // Assuming this contains styling for `barIcon` and `barIcon2`
+import FilterIcon from "../../../assets/icons/Tuning2.svg";
+import FilterScreen from "../../FilterButton/index";
+import styles from "../HomeScreenStyle";
 
 const FilterButton: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -18,15 +18,16 @@ const FilterButton: React.FC = () => {
       </TouchableOpacity>
 
       {/* Modal for FilterScreen */}
+
       <Modal
         visible={isModalVisible}
         animationType="slide"
-        transparent={false}
-        onRequestClose={() => setIsModalVisible(false)} // Required for Android's back button
+        transparent={true}
+        onRequestClose={() => setIsModalVisible(false)}
       >
-        <FilterScreen
-          onClose={() => setIsModalVisible(false)} // Pass the close handler to FilterScreen
-        />
+        <View style={styles.modalContainer}>
+          <FilterScreen onClose={() => setIsModalVisible(false)} />
+        </View>
       </Modal>
     </View>
   );
