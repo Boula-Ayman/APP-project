@@ -1,4 +1,3 @@
-
 import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import styles from "../CardListStyle";
@@ -26,7 +25,10 @@ const Card: React.FC<CardProps> = ({ item, isLiked, onLoveIconPress }) => {
         )}
       </View>
       <View style={styles.imageWrapper}>
-        <Image source={{ uri: item?.media[item?.media.length - 1]?.url }} style={styles.cardImage} />
+        <Image
+          source={{ uri: item?.media[item?.media.length - 1]?.url }}
+          style={styles.cardImage}
+        />
         <View style={styles.overlay}>
           <Flag style={styles.overlayIcon} />
           <View style={styles.textContainer}>
