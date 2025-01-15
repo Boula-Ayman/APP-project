@@ -11,6 +11,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Stack>
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen
+            name="Home/Homescreen.tsx"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
             name="Home/HeaderComponents/ViewAll"
             options={{
               title: "All Properties",
@@ -18,8 +22,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             }}
           />
           <Stack.Screen
-            name="Home/HeaderComponents/FilterButton"
-            options={{ headerShown: false, title: "FilterScreen " }}
+            name="carddetailss/[id]"
+            options={{
+              headerShown: false,
+            }}
           />
         </Stack>
       </PersistGate>

@@ -18,7 +18,6 @@ const ViewAll: React.FC<FilterScreenProps> = ({
   const { data, error, isLoading } = useGetOpportunitiesQuery({
     refetchOnMountOrArgChange: true,
   });
-  console.log("Data:", data);
   const [likedItems, setLikedItems] = useState<number[]>([]);
 
   const handleLoveIconPress = (id: number) => {
@@ -29,14 +28,6 @@ const ViewAll: React.FC<FilterScreenProps> = ({
       return newLikedItems;
     });
   };
-
-  // if (isLoading) {
-  //   return <Text>Loading...</Text>;
-  // }
-
-  // if (!data || !data.data) {
-  //   return <Text>No data available</Text>;
-  // }
 
   return (
     <SafeAreaView style={styles.mainContainer}>

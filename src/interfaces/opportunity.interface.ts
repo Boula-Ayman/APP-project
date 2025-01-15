@@ -15,3 +15,7 @@ export interface Opportunity {
   status: string;
   available_shares: number;
 }
+
+export interface CardListProps {
+  opportunities: Opportunity[];
+}

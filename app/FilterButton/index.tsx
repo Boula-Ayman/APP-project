@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
+import { useGetOpportunitiesQuery } from "../../src/api/opportunitiesApiSlice";
 import { Ionicons } from "@expo/vector-icons";
 import i18n from "../../src/i18n/i18n";
 import IMark from "../../assets/icons/iMark.svg";
 import styles from "./FilterScreenStyle";
 import DropDownPicker from "react-native-dropdown-picker";
+
 const staticData = {
   types: [
     { id: 1, label: "Project", value: "Project" },
@@ -29,14 +31,40 @@ const FilterScreen: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [isLocationOpen, setIsLocationOpen] = useState(false);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
 
+  const [filters, setFilters] = useState<{
+    type: string;
+    country: string;
+    status: string | undefined;
+  }>({
+    type: "",
+    country: "",
+    status: "",
+  });
+
+  const { data, error, refetch } = useGetOpportunitiesQuery(filters);
+
   const handleFilterResults = () => {
-    const filterData = {
+    const newFilters = {
       type: selectedType,
-      location: selectedLocation,
-      status: selectedStatus,
+      country: selectedLocation,
+      status: selectedStatus === "ALL" ? undefined : selectedStatus,
     };
-    console.log(filterData);
+
+    // update the filters state
+    setFilters(newFilters);
+
+    console.log("Selected Filters:", newFilters);
+
+    // refetch the  data with the new filters
+    refetch();
+
+    if (error) {
+      console.error("Error fetching opportunities:", error);
+    } else {
+      console.log("Fetched opportunities:", data);
+    }
   };
+
   return (
     <>
       <View style={styles.container}>
@@ -48,8 +76,8 @@ const FilterScreen: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       </View>
       <View style={styles.middleSection}>
         <View style={styles.contentSection}>
-          <Text style={styles.sectionTitle}>Filter By</Text>
-          {/* dropdowns for type, location, and status */}
+          <Text style={styles.sectionTitle}>{i18n.t("filter")}</Text>
+          {/* Dropdown for Type */}
           <View style={styles.dropdownContainer}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text style={[styles.label, { marginRight: 7 }]}>Type</Text>
@@ -81,6 +109,7 @@ const FilterScreen: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             />
           </View>
 
+          {/* Dropdown for Location */}
           <View style={styles.dropdownContainer}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text style={[styles.label, { marginRight: 7 }]}>Location</Text>
@@ -111,6 +140,7 @@ const FilterScreen: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             />
           </View>
 
+          {/* Dropdown for Status */}
           <View style={styles.dropdownContainer}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text style={[styles.label, { marginRight: 7 }]}>Status</Text>
@@ -141,6 +171,7 @@ const FilterScreen: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             />
           </View>
 
+          {/* filter results button */}
           <TouchableOpacity
             style={styles.filterButtonLarge}
             onPress={handleFilterResults}

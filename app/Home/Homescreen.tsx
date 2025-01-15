@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 
-import { View, ScrollView, TouchableOpacity } from "react-native";
+import { View, ScrollView, TouchableOpacity, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "./HomeScreenStyle";
 import CardList from "./CardList";
@@ -21,7 +21,6 @@ const HomeScreen: React.FC = ({}) => {
   const { data, error, isLoading } = useGetOpportunitiesQuery({
     refetchOnMountOrArgChange: true,
   });
-  // console.log(data);
 
   const [searchTerm, setSearchTerm] = useState("");
   const opportunities: Opportunity[] = data?.data || [];
@@ -79,9 +78,7 @@ const HomeScreen: React.FC = ({}) => {
 
         <FilterButtons onFilterChange={onFilterChange} />
         <SectionHeader />
-        <View>
-          <CardList key={currentFilter} opportunities={filteredOpportunities} />
-        </View>
+        <CardList opportunities={filteredOpportunities} />
       </View>
     </ScrollView>
   );
