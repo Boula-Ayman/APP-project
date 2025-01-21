@@ -9,23 +9,35 @@ import Header from "./HeaderComponents/Header";
 import SearchBar from "./HeaderComponents/SearchBar";
 import SectionHeader from "./HeaderComponents/SectionHeader";
 import FilterButton from "../Home/HeaderComponents/FilterButton";
-import { useGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
+import {
+  useGetOpportunitiesQuery,
+  useLazyGetOpportunitiesQuery,
+} from "@/src/api/opportunitiesApiSlice";
 import i18n from "../../src/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 
 import { debounce } from "@/utils/debounce";
+import { object } from "yup";
 
 const HomeScreen: React.FC = ({}) => {
   const notifications = 0;
 
-  const { data, error, isLoading } = useGetOpportunitiesQuery({
-    refetchOnMountOrArgChange: true,
-  });
-
   const [searchTerm, setSearchTerm] = useState("");
-  const opportunities: Opportunity[] = data?.data || [];
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [currentFilter, setCurrentFilter] = useState("all");
+  const [opportunities, setOpportunities] = useState([]);
+
+  const [filters, setFilters] = useState<{
+    type?: string;
+    country?: string;
+    status?: string | undefined;
+  } | null>(null);
+
+  const [getFilteredOpportunities] = useLazyGetOpportunitiesQuery();
+
+  const { data, error, isLoading, refetch } = useGetOpportunitiesQuery({
+    refetchOnMountOrArgChange: true,
+  });
 
   const debouncedSetSearchTerm = useCallback(
     debounce((term: string) => {
@@ -33,32 +45,42 @@ const HomeScreen: React.FC = ({}) => {
     }, 300),
     []
   );
+  useEffect(() => {
+    if (data && !isLoading) {
+      setOpportunities(data.data);
+    }
+  }, [data]);
 
   useEffect(() => {
     debouncedSetSearchTerm(searchTerm);
   }, [searchTerm, debouncedSetSearchTerm]);
 
-  const filteredOpportunities = opportunities.filter((item: Opportunity) => {
-    const title = i18n.locale === "ar" ? item.title_ar : item.title_en;
-    const location = i18n.locale === "ar" ? item.location_ar : item.location_en;
+  useEffect(() => {
+    if (searchTerm) {
+      const filteredOpportunities = data.data.filter((item: Opportunity) => {
+        console.log("Filtering");
+        const title = i18n.locale === "ar" ? item.title_ar : item.title_en;
+        const location =
+          i18n.locale === "ar" ? item.location_ar : item.location_en;
+        return (
+          title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          location.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      });
+      setOpportunities(filteredOpportunities);
+    }
+  }, [searchTerm]);
 
-    // search match condition
-    const searchMatch =
-      title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-      location.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
-
-    // filter condition
-    if (currentFilter === "all") return searchMatch;
-    if (currentFilter === "available")
-      return searchMatch && item.status === "available";
-    if (currentFilter === "soldOut")
-      return searchMatch && item.status === "sold out";
-    return false;
-  });
-  const onFilterChange = (filter: string) => {
-    setCurrentFilter(filter);
+  const handleFilterChange = async (newFilters: {
+    type?: string;
+    country?: string;
+    status?: string | undefined;
+  }) => {
+    setFilters(newFilters);
+    const response = await getFilteredOpportunities(newFilters);
+    setOpportunities(response.data.data);
   };
-  useEffect(() => {}, [filteredOpportunities]);
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
@@ -74,11 +96,15 @@ const HomeScreen: React.FC = ({}) => {
         />
         <Header notifications={notifications} />
         <SearchBar searchTerm={searchTerm} onChangeText={setSearchTerm} />
-        <FilterButton />
+        <FilterButton onFilterChange={handleFilterChange} />
 
-        <FilterButtons onFilterChange={onFilterChange} />
+        <FilterButtons
+          onFilterChange={(newStatus?: string) =>
+            handleFilterChange({ ...filters, status: newStatus })
+          }
+        />
         <SectionHeader />
-        <CardList opportunities={filteredOpportunities} />
+        <CardList opportunities={opportunities} />
       </View>
     </ScrollView>
   );

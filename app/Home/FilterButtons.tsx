@@ -4,14 +4,14 @@ import { View, TouchableOpacity, Text } from "react-native";
 import styles from "./HomeScreenStyle";
 import i18n from "../../src/i18n/i18n";
 interface FilterButtonsProps {
-  onFilterChange: (filter: string) => void;
+  onFilterChange: (filter?: string) => void;
 }
 const FilterButtons: React.FC<FilterButtonsProps> = ({ onFilterChange }) => {
   return (
     <View style={styles.filters}>
       <TouchableOpacity
         style={styles.filterButtonActive}
-        onPress={() => onFilterChange("all")}
+        onPress={() => onFilterChange()}
       >
         <Text style={styles.filterTextActive}>{i18n.t("home.all")}</Text>
       </TouchableOpacity>
@@ -23,7 +23,7 @@ const FilterButtons: React.FC<FilterButtonsProps> = ({ onFilterChange }) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.filterButton}
-        onPress={() => onFilterChange("soldOut")}
+        onPress={() => onFilterChange("sold out")}
       >
         <Text style={styles.filterText}>{i18n.t("home.soldOut")}</Text>
       </TouchableOpacity>
