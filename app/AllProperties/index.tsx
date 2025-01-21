@@ -28,28 +28,33 @@ const ViewAll: React.FC<FilterScreenProps> = ({
       return newLikedItems;
     });
   };
-
   return (
     <SafeAreaView style={styles.mainContainer}>
       <View style={styles.searchContainer}>
         <SearchBar searchTerm={searchTerm} onChangeText={setSearchTerm} />
       </View>
 
-      <FilterButton />
+      <FilterButton onFilterChange={() => {}} />
       <View style={styles.container}>
-        <FlatList
-          data={data.data}
-          renderItem={({ item }) => (
-            <Card
-              item={item}
-              isLiked={likedItems.includes(item.id)}
-              onLoveIconPress={() => handleLoveIconPress(item.id)}
-            />
-          )}
-          keyExtractor={(item) => item.id.toString()}
-          ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
-          showsVerticalScrollIndicator={false}
-        />
+        {isLoading ? (
+          <Text>Loading...</Text>
+        ) : error ? (
+          <Text>Error loading data</Text>
+        ) : (
+          <FlatList
+            data={data.data}
+            renderItem={({ item }) => (
+              <Card
+                item={item}
+                isLiked={likedItems.includes(item.id)}
+                onLoveIconPress={() => handleLoveIconPress(item.id)}
+              />
+            )}
+            keyExtractor={(item) => item.id.toString()}
+            ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
