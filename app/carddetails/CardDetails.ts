@@ -10,9 +10,33 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   propertyImage: {
-    width: 350,
+    width: 360,
     height: 350,
     resizeMode: "cover",
+  },
+
+  paginationContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 10,
+    position: "absolute",
+    top: 270,
+    left: 120,
+  },
+  gradientDot: {
+    width: 20,
+    height: 5,
+    borderRadius: 5,
+    marginHorizontal: 5,
+    backgroundColor: "#8BC240",
+  },
+  inactiveDot: {
+    width: 20,
+    height: 5,
+    borderRadius: 4,
+    backgroundColor: "#ccc",
+    marginHorizontal: 5,
   },
   icons: {
     position: "absolute",

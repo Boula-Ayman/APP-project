@@ -51,7 +51,7 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
             outputRange: [0.9, 1, 0.9],
             extrapolate: "clamp",
           });
-          console.log(item);
+          
           return (
             <Link
               href={`/carddetails/${item.id}?type=${item.opportunity_type}`} // Use query parameters

@@ -7,6 +7,10 @@ import {
   TouchableOpacity,
   FlatList,
   BackHandler,
+  Dimensions,
+  StyleSheet,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from "react-native";
 import { useGetOpportunityQuery } from "@/src/api/opportunitiesApiSlice";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -21,16 +25,26 @@ import Fridge from "@/assets/icons/Fridge.svg";
 import Sophie from "@/assets/icons/sophie.svg";
 import WhatApp from "@/assets/icons/whatsapp.svg";
 import styles from "./CardDetails";
-const Header = ({ media, onBackPress, onLikePress, isLiked }) => (
+const Header = ({
+  media,
+  onBackPress,
+  onLikePress,
+  isLiked,
+  activeSlide,
+  onScroll,
+}) => (
   <View style={styles.header}>
     <FlatList
       data={media.slice(0, 3)}
       horizontal
+      pagingEnabled
       showsHorizontalScrollIndicator={false}
       renderItem={({ item }) => (
         <Image source={{ uri: item.url }} style={styles.propertyImage} />
       )}
       keyExtractor={(item) => item.url}
+      onScroll={onScroll} 
+      scrollEventThrottle={16} 
     />
     <View style={styles.icons}>
       <TouchableOpacity style={styles.icon1} onPress={onBackPress}>
@@ -43,6 +57,19 @@ const Header = ({ media, onBackPress, onLikePress, isLiked }) => (
           color={isLiked ? "#8BC240" : "black"}
         />
       </TouchableOpacity>
+    </View>
+
+    {/*  Three Dots*/}
+    <View style={styles.paginationContainer}>
+      {media
+        .slice(0, 3)
+        .map((_, index) =>
+          index === activeSlide ? (
+            <View key={index} style={styles.gradientDot} />
+          ) : (
+            <View key={index} style={styles.inactiveDot} />
+          )
+        )}
     </View>
   </View>
 );
@@ -128,6 +155,7 @@ const AmenitiesSection = ({ data }) => (
     </View>
   </View>
 );
+
 const ContactSection = () => (
   <View style={styles.contactCard}>
     <Text style={styles.contactTitle}>{i18n.t("getInTouchWithSophie")}</Text>
@@ -141,6 +169,7 @@ const ContactSection = () => (
     </View>
   </View>
 );
+
 const PriceDetailsSection = ({
   share_price,
   currency,
@@ -185,6 +214,7 @@ const PriceDetailsSection = ({
     )}
   </View>
 );
+
 const ROIPerYearSection = ({ data }) => (
   <View style={styles.card}>
     <Text style={styles.sectionTitle}>{i18n.t("ROI-Rental Rev")}</Text>
@@ -207,18 +237,18 @@ const ROIPerYearSection = ({ data }) => (
     </View>
   </View>
 );
+
 const NightsPerYearSection = () => (
   <View style={styles.card1}>
     <Text style={styles.sectionTitle}>{i18n.t("nightsPerYear")}</Text>
     <Text style={styles.largeText}>41</Text>
   </View>
 );
+
 const CardDetails = () => {
   const [opportunityType, setOpportunityType] = useState("property");
-  const handleSwitch = () => {
-    setOpportunityType(opportunityType === "project" ? "property" : "project");
-  };
   const [isLiked, setisLiked] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0); // State for active slide
   const router = useRouter();
   const { id, type } = useLocalSearchParams();
   const { data, isLoading, isError } = useGetOpportunityQuery(
@@ -246,6 +276,13 @@ const CardDetails = () => {
 
   const toggleLike = () => setisLiked((prev) => !prev);
 
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const slideWidth = Dimensions.get("window").width;
+    const offset = event.nativeEvent.contentOffset.x;
+    const index = Math.round(offset / slideWidth);
+    setActiveSlide(index); // Update active slide index
+  };
+
   if (!id || !type) return <Text>{i18n.t("noOpportunityIdOrType")}</Text>;
   if (isLoading) return <Text>{i18n.t("loading")}</Text>;
   if (isError) return <Text>{i18n.t("errorOccurred")}</Text>;
@@ -258,6 +295,8 @@ const CardDetails = () => {
       onLikePress: toggleLike,
       isLiked,
       data: data?.data,
+      activeSlide,
+      onScroll: handleScroll, 
     };
 
     return (
@@ -313,6 +352,7 @@ const CardDetails = () => {
       </ScrollView>
     );
   };
+
   return <View>{renderContent()}</View>;
 };
 
