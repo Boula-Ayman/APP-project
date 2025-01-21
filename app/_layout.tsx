@@ -1,32 +1,37 @@
-import { Stack } from "expo-router";
-import { StyleSheet, View, Text } from "react-native";
+import React, { useEffect } from "react";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
+import { router, Stack } from "expo-router";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import store, { Persistor } from "../src/store/index";
+import * as SplashScreen from "expo-splash-screen";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+SplashScreen.preventAutoHideAsync();
+
+export default function Layout() {
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      await SplashScreen.hideAsync();
+      router.push("/Welcome" as any);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={Persistor}>
+      <PersistGate
+        loading={<ActivityIndicator size="large" color="#0000ff" />}
+        persistor={Persistor}
+      >
         <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="Home/Homescreen.tsx"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Home/HeaderComponents/ViewAll"
+          {/* <Stack.Screen
+            name="verify"
             options={{
               title: "All Properties",
               headerShown: false,
             }}
-          />
-          <Stack.Screen
-            name="carddetailss/[id]"
-            options={{
-              headerShown: false,
-            }}
-          />
+          /> */}
         </Stack>
       </PersistGate>
     </Provider>
@@ -34,5 +39,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  splashScreen: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
+  splashText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
 });
