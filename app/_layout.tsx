@@ -12,7 +12,7 @@ export default function Layout() {
   useEffect(() => {
     const timer = setTimeout(async () => {
       await SplashScreen.hideAsync();
-      router.push("/Welcome" as any);
+      router.push("Home/Homescreen" as any);
     }, 500);
 
     return () => clearTimeout(timer);
