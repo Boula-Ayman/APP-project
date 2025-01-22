@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// HomeScreen.tsx
+import React, { useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "./HomeScreenStyle";
@@ -9,8 +10,8 @@ import SearchBar from "./HeaderComponents/SearchBar";
 import SectionHeader from "./HeaderComponents/SectionHeader";
 import FilterButton from "../Home/HeaderComponents/FilterButton";
 import { useGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
-import i18n from "../../src/i18n/i18n"; 
-import { Opportunity } from "@/src/interfaces/opportunity.interface"; 
+import i18n from "../../src/i18n/i18n";
+import { Opportunity } from "@/src/interfaces/opportunity.interface";
 
 const HomeScreen: React.FC = () => {
   const notifications = 0;
@@ -18,19 +19,33 @@ const HomeScreen: React.FC = () => {
   const { data, error, isLoading } = useGetOpportunitiesQuery({
     refetchOnMountOrArgChange: true,
   });
+
   const [searchTerm, setSearchTerm] = useState("");
+  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
 
-  const opportunities: Opportunity[] = data?.data || [];
+  useEffect(() => {
+    if (data && !isLoading) {
+      setOpportunities(data.data);
+    }
+  }, [data, isLoading]);
 
- 
-  const filteredOpportunities = opportunities.filter((item: Opportunity) => {
-    const title = i18n.locale === "ar" ? item.title_ar : item.title_en;
-    const location = i18n.locale === "ar" ? item.location_ar : item.location_en;
-    return (
-      title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      location.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+  useEffect(() => {
+    if (searchTerm) {
+      const filteredOpportunities = data.data.filter((item: Opportunity) => {
+        const title = i18n.locale === "ar" ? item.title_ar : item.title_en;
+        const location =
+          i18n.locale === "ar" ? item.location_ar : item.location_en;
+
+        if (!searchTerm) return true;
+
+        return (
+          title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          location.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      });
+      setOpportunities(filteredOpportunities);
+    }
+  }, [searchTerm]);
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -46,12 +61,12 @@ const HomeScreen: React.FC = () => {
           end={{ x: 0, y: 0 }}
         />
         <Header notifications={notifications} />
-        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <SearchBar searchTerm={searchTerm} onChangeText={setSearchTerm} />
         <FilterButton />
         <FilterButtons />
         <SectionHeader />
         <View>
-          <CardList opportunities={filteredOpportunities} />
+          <CardList opportunities={opportunities} />
         </View>
       </View>
     </ScrollView>

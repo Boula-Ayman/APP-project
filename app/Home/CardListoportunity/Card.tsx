@@ -1,4 +1,4 @@
-// Card.tsx
+
 import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import styles from "../CardListStyle";
@@ -9,7 +9,7 @@ import Frame52 from "../../../assets/icons/Frame52.svg";
 import Frame54 from "../../../assets/icons/Frame54.svg";
 import { formatPrice } from "@/utils/formatPrice";
 import i18n from "../../../src/i18n/i18n";
-import { Opportunity } from "@/src/interfaces/opportunity.interface"; // Import the Opportunity interface
+import { Opportunity } from "@/src/interfaces/opportunity.interface";
 
 interface CardProps {
   item: Opportunity;
@@ -20,28 +20,34 @@ const Card: React.FC<CardProps> = ({ item, isLiked, onLoveIconPress }) => {
   return (
     <View style={styles.card}>
       <View style={styles.imageWrapper}>
-        <Image source={{ uri: item?.media[0]?.url }} style={styles.cardImage} />
+        <Image
+          source={{ uri: item?.media[item?.media.length - 1]?.url }}
+          style={styles.cardImage}
+        />
         <View style={styles.overlay}>
           <Flag style={styles.overlayIcon} />
           <View style={styles.textContainer}>
-            <Text style={styles.overlayText}>{item.type}Residential</Text>
+            <Text style={styles.overlayText}>{item.opportunity_type}</Text>
           </View>
         </View>
       </View>
-
       <View style={styles.details}>
         <View style={styles.priceSection}>
           <Text style={styles.cardPrice}>
             {formatPrice(item.share_price)} {item.currency}
           </Text>
           <Text style={styles.ownerShip}>
-            1/{item.number_of_shares} ownerShip
+            {item.available_shares}/{item.number_of_shares}{" "}
+            {i18n.t("ownerShip")}
           </Text>
           <TouchableOpacity
             style={styles.HeartOverlay}
             onPress={onLoveIconPress}
           >
-            <LoveIcon style={styles.Heart} fill={isLiked ? "red" : "white"} />
+            <LoveIcon
+              style={styles.Heart}
+              fill={isLiked ? "#8BC240" : "white"}
+            />
           </TouchableOpacity>
         </View>
         <Text style={styles.cardTitle}>

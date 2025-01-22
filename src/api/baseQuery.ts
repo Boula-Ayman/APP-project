@@ -3,7 +3,7 @@ import { RootState } from "../store";
 const ENDPOINTS_WITH_FORM_DATA = ["completeUser "];
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://api.propcut.lightbyte.me/api",
+  baseUrl: "https://api.propcut-staging.lightbyte.me/api",
   credentials: "include",
   prepareHeaders: (
     headers,
