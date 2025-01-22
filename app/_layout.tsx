@@ -24,7 +24,7 @@ export default function Layout() {
         loading={<ActivityIndicator size="large" color="#0000ff" />}
         persistor={Persistor}
       >
-        <Stack>
+        <Stack screenOptions={{ headerShown: false }}>
           {/* <Stack.Screen
             name="verify"
             options={{

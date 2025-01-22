@@ -1,6 +1,6 @@
 // index.tsx
-import React from "react";
-import { View, KeyboardAvoidingView, Platform } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, KeyboardAvoidingView, Platform, Keyboard } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./Home/Homescreen";
 import SettingsScreen from "./Settings/SettingScreen";
@@ -15,10 +15,26 @@ import styles from "./indexStyle";
 const Tab = createBottomTabNavigator();
 
 const App: React.FC = () => {
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardVisible(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+
         tabBarStyle: {
           width: "96%",
           height: 74,
@@ -32,7 +48,9 @@ const App: React.FC = () => {
           position: "absolute",
           bottom: 0,
           transform: [{ translateX: "2%" }],
+          display: isKeyboardVisible ? "none" : "flex",
         },
+
         tabBarItemStyle: {
           paddingVertical: 10,
         },
