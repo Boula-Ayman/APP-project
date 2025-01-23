@@ -49,7 +49,7 @@ const SignUpPage: React.FC = () => {
 
     // password validation
     const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>\/?`~\-])[A-Za-z\d!@#$%^&*()_+[\]{};':"\\|,.<>\/?`~\-]{8,}$/;
     if (!passwordRegex.test(password)) {
       setErrorMessage(t("signup.invalidPassword"));
       return; 
