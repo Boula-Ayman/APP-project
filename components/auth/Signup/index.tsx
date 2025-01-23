@@ -41,25 +41,25 @@ const SignUpPage: React.FC = () => {
     };
 
     // email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setErrorMessage(t("signup.invalidEmail"));
-      return; 
+      return;
     }
 
     // password validation
     const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>\/?`~\-])[A-Za-z\d!@#$%^&*()_+[\]{};':"\\|,.<>\/?`~\-]{8,}$/;
     if (!passwordRegex.test(password)) {
       setErrorMessage(t("signup.invalidPassword"));
-      return; 
+      return;
     }
 
     // birth date validation
     const birthDateRegex = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD format
     if (!birthDateRegex.test(birthDate)) {
       setErrorMessage(t("signup.invalidBirthDate"));
-      return; 
+      return;
     }
 
     try {
