@@ -49,7 +49,7 @@ const SigninPage: React.FC = () => {
       if (token) {
         await AsyncStorage.removeItem("access_token");
         await AsyncStorage.setItem("access_token", token);
-        router.push("/Home/Homescreen" as any);
+        router.push("/Home/homescreen" as any);
       } else {
         console.error("Invalid access token");
       }

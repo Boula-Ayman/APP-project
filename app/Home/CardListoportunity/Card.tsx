@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import styles from "../CardListStyle";
+import styles from "../../../components/cardlistContainer/CardListStyle";
 import Flag from "../../../assets/icons/UAE.svg";
 import LoveIcon from "../../../assets/icons/Heart.svg";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -25,10 +25,7 @@ const Card: React.FC<CardProps> = ({ item, isLiked, onLoveIconPress }) => {
         )}
       </View>
       <View style={styles.imageWrapper}>
-        <Image
-          source={{ uri: item?.media[item?.media.length - 1]?.url }}
-          style={styles.cardImage}
-        />
+        <Image source={{ uri: item?.media[0]?.url }} style={styles.cardImage} />
         <View style={styles.overlay}>
           <Flag style={styles.overlayIcon} />
           <View style={styles.textContainer}>

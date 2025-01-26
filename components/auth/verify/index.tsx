@@ -14,7 +14,6 @@ import { router } from "expo-router";
 import i18n from "../../../src/i18n/i18n";
 
 const VerificationScreen: React.FC = () => {
-
   const [timer, setTimer] = useState<number>(90); // 1 minute and 30 seconds
 
   const { t } = { t: i18n.t.bind(i18n) };
@@ -49,7 +48,7 @@ const VerificationScreen: React.FC = () => {
       setErrorMessage("");
       console.log("Success verify", verify);
       await AsyncStorage.removeItem("access_token");
-      router.push("/Home/Homescreen" as any);
+      router.push("/Home/homescreen" as any);
     } catch (error) {
       if (typeof error === "object" && error !== null && "data" in error) {
         setErrorMessage("The OTP is incorrect. Please try again.");

@@ -57,9 +57,6 @@ const FilterButton: React.FC<FilterButtonProps> = ({ onFilterChange }) => {
       country: selectedLocation,
       status: selectedStatus || undefined,
     };
-
-    console.log("New filters applied:", newFilters);
-
     // update the filters state
     setFilters(newFilters);
 

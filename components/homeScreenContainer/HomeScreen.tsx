@@ -3,21 +3,21 @@ import React, { useCallback, useEffect, useState } from "react";
 import { View, ScrollView, TouchableOpacity, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "./HomeScreenStyle";
-import CardList from "./CardList";
-import FilterButtons from "./FilterButtons";
-import Header from "./HeaderComponents/Header";
-import SearchBar from "./HeaderComponents/SearchBar";
-import SectionHeader from "./HeaderComponents/SectionHeader";
-import FilterButton from "../Home/HeaderComponents/FilterButton";
+import CardList from "../cardlistContainer/CardList";
+import FilterButtons from "../../app/Home/FilterButtons";
+import Header from "../../app/Home/HeaderComponents/Header";
+import SearchBar from "../../app/Home/HeaderComponents/SearchBar";
+import SectionHeader from "../../app/Home/HeaderComponents/SectionHeader";
+import FilterButton from "../../app/Home/HeaderComponents/FilterButton";
 import {
   useGetOpportunitiesQuery,
   useLazyGetOpportunitiesQuery,
 } from "@/src/api/opportunitiesApiSlice";
-import i18n from "../../src/i18n/i18n";
+import i18n from "@/src/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 
 import { debounce } from "@/utils/debounce";
-import { object } from "yup";
+import { StatusBar } from "expo-status-bar";
 
 const HomeScreen: React.FC = ({}) => {
   const notifications = 0;
@@ -38,7 +38,6 @@ const HomeScreen: React.FC = ({}) => {
   const { data, error, isLoading, refetch } = useGetOpportunitiesQuery({
     refetchOnMountOrArgChange: true,
   });
-
   const debouncedSetSearchTerm = useCallback(
     debounce((term: string) => {
       setDebouncedSearchTerm(term);
@@ -58,7 +57,6 @@ const HomeScreen: React.FC = ({}) => {
   useEffect(() => {
     if (searchTerm) {
       const filteredOpportunities = data.data.filter((item: Opportunity) => {
-        console.log("Filtering");
         const title = i18n.locale === "ar" ? item.title_ar : item.title_en;
         const location =
           i18n.locale === "ar" ? item.location_ar : item.location_en;
@@ -67,6 +65,7 @@ const HomeScreen: React.FC = ({}) => {
           location.toLowerCase().includes(searchTerm.toLowerCase())
         );
       });
+
       setOpportunities(filteredOpportunities);
     }
   }, [searchTerm]);
@@ -78,35 +77,42 @@ const HomeScreen: React.FC = ({}) => {
   }) => {
     setFilters(newFilters);
     const response = await getFilteredOpportunities(newFilters);
+
     setOpportunities(response.data.data);
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.container}>
-        <LinearGradient
-          colors={[
-            "rgba(139, 194, 64, 0)",
-            "rgba(139, 194, 64, 0.032)",
-            "rgba(139, 194, 64, 0.16)",
-          ]}
-          style={styles.gradient}
-          start={{ x: 0, y: 1 }}
-          end={{ x: 0, y: 0 }}
-        />
-        <Header notifications={notifications} />
-        <SearchBar searchTerm={searchTerm} onChangeText={setSearchTerm} />
-        <FilterButton onFilterChange={handleFilterChange} />
+    <>
+      <StatusBar style="dark" />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ flex: 1, marginTop: 30 }}
+      >
+        <View style={styles.container}>
+          <LinearGradient
+            colors={[
+              "rgba(139, 194, 64, 0)",
+              "rgba(139, 194, 64, 0.032)",
+              "rgba(139, 194, 64, 0.16)",
+            ]}
+            style={styles.gradient}
+            start={{ x: 0, y: 1 }}
+            end={{ x: 0, y: 0 }}
+          />
+          <Header notifications={notifications} />
+          <SearchBar searchTerm={searchTerm} onChangeText={setSearchTerm} />
+          <FilterButton onFilterChange={handleFilterChange} />
 
-        <FilterButtons
-          onFilterChange={(newStatus?: string) =>
-            handleFilterChange({ ...filters, status: newStatus })
-          }
-        />
-        <SectionHeader />
-        <CardList opportunities={opportunities} />
-      </View>
-    </ScrollView>
+          <FilterButtons
+            onFilterChange={(newStatus?: string) =>
+              handleFilterChange({ ...filters, status: newStatus })
+            }
+          />
+          <SectionHeader />
+          <CardList opportunities={opportunities} />
+        </View>
+      </ScrollView>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
-import SigninPage from "../../../components/auth/verify/index";
+import VerificationScreen from "../../../components/auth/verify/index";
 
 const Signin = () => {
-  return <SigninPage />;
+  return <VerificationScreen />;
 };
 export default Signin;

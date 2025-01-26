@@ -4,7 +4,7 @@ import { View } from "react-native";
 import PropcutLogo from "../../../assets/icons/propcut.svg";
 import Notification from "../../../assets/icons/Notification2.svg";
 import NoNotification from "../../../assets/icons/Notification1.svg";
-import styles from "../HomeScreenStyle";
+import styles from "../../../components/homeScreenContainer/HomeScreenStyle";
 
 const Header: React.FC<{ notifications: number }> = ({ notifications }) => {
   return (

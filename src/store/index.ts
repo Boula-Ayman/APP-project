@@ -17,8 +17,8 @@ import apiSlice from "../api/apiSlice";
 const persistConfig = {
   key: "root",
   version: 1,
-  storage: AsyncStorage, // Use AsyncStorage for storage
-  blacklist: [apiSlice.reducerPath], // Do not persist the API slice
+  storage: AsyncStorage,
+  blacklist: [apiSlice.reducerPath],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -30,12 +30,12 @@ const store: Store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(apiSlice.middleware), // Add API middleware
+    }).concat(apiSlice.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-export const Persistor = persistStore(store); // Create the Persistor
+export const Persistor = persistStore(store);
 
 export default store;

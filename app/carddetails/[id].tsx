@@ -248,7 +248,7 @@ const NightsPerYearSection = () => (
 const CardDetails = () => {
   const [opportunityType, setOpportunityType] = useState("property");
   const [isLiked, setisLiked] = useState(false);
-  const [activeSlide, setActiveSlide] = useState(0); // State for active slide
+  const [activeSlide, setActiveSlide] = useState(0); 
   const router = useRouter();
   const { id, type } = useLocalSearchParams();
   const { data, isLoading, isError } = useGetOpportunityQuery(
@@ -280,7 +280,7 @@ const CardDetails = () => {
     const slideWidth = Dimensions.get("window").width;
     const offset = event.nativeEvent.contentOffset.x;
     const index = Math.round(offset / slideWidth);
-    setActiveSlide(index); // Update active slide index
+    setActiveSlide(index); 
   };
 
   if (!id || !type) return <Text>{i18n.t("noOpportunityIdOrType")}</Text>;

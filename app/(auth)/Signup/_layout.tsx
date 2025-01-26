@@ -8,7 +8,7 @@ const Layout: React.FC = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Signup/index"
+        name="Signup"
         component={Index}
         options={{ headerShown: false }}
       />
