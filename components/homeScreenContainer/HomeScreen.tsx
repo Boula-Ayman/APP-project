@@ -28,16 +28,19 @@ const HomeScreen: React.FC = ({}) => {
   const [opportunities, setOpportunities] = useState([]);
 
   const [filters, setFilters] = useState<{
-    type?: string;
-    country?: string;
-    status?: string | undefined;
+    type: string | null;
+    country: string | null;
+    status: string | null;
   } | null>(null);
 
-  const [getFilteredOpportunities] = useLazyGetOpportunitiesQuery();
+  // const [getFilteredOpportunities] = useLazyGetOpportunitiesQuery();
 
-  const { data, error, isLoading, refetch } = useGetOpportunitiesQuery({
-    refetchOnMountOrArgChange: true,
-  });
+  const { data, error, isLoading, refetch } = useGetOpportunitiesQuery(
+    { ...filters },
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
   const debouncedSetSearchTerm = useCallback(
     debounce((term: string) => {
       setDebouncedSearchTerm(term);
@@ -71,14 +74,18 @@ const HomeScreen: React.FC = ({}) => {
   }, [searchTerm]);
 
   const handleFilterChange = async (newFilters: {
-    type?: string;
-    country?: string;
-    status?: string | undefined;
+    type: string | null;
+    country: string | null;
+    status: string | null;
   }) => {
     setFilters(newFilters);
-    const response = await getFilteredOpportunities(newFilters);
+    try {
+      const response = await refetch();
 
-    setOpportunities(response.data.data);
+      setOpportunities(response.data.data);
+    } catch (error) {
+      // console.log(error);
+    }
   };
 
   return (
@@ -104,8 +111,12 @@ const HomeScreen: React.FC = ({}) => {
           <FilterButton onFilterChange={handleFilterChange} />
 
           <FilterButtons
-            onFilterChange={(newStatus?: string) =>
-              handleFilterChange({ ...filters, status: newStatus })
+            onFilterChange={(newStatus: string | null) =>
+              handleFilterChange({
+                type: filters?.type ?? null,
+                country: filters?.country ?? null,
+                status: newStatus,
+              })
             }
           />
           <SectionHeader />

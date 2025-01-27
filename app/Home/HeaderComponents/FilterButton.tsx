@@ -26,40 +26,38 @@ const staticData = {
 
 type FilterButtonProps = {
   onFilterChange: (filters: {
-    type: string;
-    country: string;
-    status: string | undefined;
+    type: string | null;
+    country: string | null;
+    status: string | null;
   }) => void;
 };
 
 const FilterButton: React.FC<FilterButtonProps> = ({ onFilterChange }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedType, setSelectedType] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedType, setSelectedType] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState(null);
   const [isTypeOpen, setIsTypeOpen] = useState(false);
   const [isLocationOpen, setIsLocationOpen] = useState(false);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
 
   const [filters, setFilters] = useState<{
-    type: string;
-    country: string;
-    status: string | undefined;
+    type: string | null;
+    country: string | null;
+    status: string | null;
   }>({
-    type: "",
-    country: "",
-    status: "",
+    type: null,
+    country: null,
+    status: null,
   });
-
   const handleFilterResults = () => {
     const newFilters = {
       type: selectedType,
       country: selectedLocation,
-      status: selectedStatus || undefined,
+      status: selectedStatus,
     };
-    // update the filters state
+    setIsModalVisible(false);
     setFilters(newFilters);
-
     onFilterChange(newFilters);
   };
 
