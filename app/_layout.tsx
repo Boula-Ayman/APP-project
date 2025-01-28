@@ -32,12 +32,7 @@ export default function Layout() {
             <Stack.Screen 
                 name="AllProperties/index"
                 options={{
-                    headerShown: true,
-                    header: () => <View style={{marginTop: 100, borderWidth: 1, borderColor: "red"}}>
-                            <Pressable onPress={() => router.back()}>
-                                <Text>Back</Text>
-                            </Pressable>
-                    </View>
+                    headerShown: false,
                 }}
             />
         </Stack>

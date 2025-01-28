@@ -5,6 +5,8 @@ import FilterButton from "../Home/HeaderComponents/FilterButton";
 import { useGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
 import Card from "../Home/CardListoportunity/Card";
 import styles from "./indexStyle";
+import PageHeader from "@/components/page/header";
+import { useTranslation } from "react-i18next";
 
 interface FilterScreenProps {
   searchTerm: string;
@@ -20,6 +22,8 @@ const ViewAll: React.FC<FilterScreenProps> = ({
   });
   const [likedItems, setLikedItems] = useState<number[]>([]);
 
+  const { t } = useTranslation();
+
   const handleLoveIconPress = (id: number) => {
     setLikedItems((prev) => {
       const newLikedItems = prev.includes(id)
@@ -30,11 +34,12 @@ const ViewAll: React.FC<FilterScreenProps> = ({
   };
   return (
     <SafeAreaView style={styles.mainContainer}>
+        <PageHeader title={t("allProperties.title")} />
       <View style={styles.searchContainer}>
         <SearchBar searchTerm={searchTerm} onChangeText={setSearchTerm} />
+        <FilterButton onFilterChange={() => {}} />
       </View>
 
-      <FilterButton onFilterChange={() => {}} />
       <View style={styles.container}>
         {isLoading ? (
           <Text>Loading...</Text>
