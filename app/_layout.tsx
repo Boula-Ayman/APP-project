@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { StyleSheet, View, ActivityIndicator } from "react-native";
-import { router, Stack } from "expo-router";
+import { StyleSheet, View, ActivityIndicator, Text, Pressable } from "react-native";
+import { Link, router, Stack } from "expo-router";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import store, { Persistor } from "../src/store/index";
@@ -12,7 +12,6 @@ export default function Layout() {
   useEffect(() => {
     const timer = setTimeout(async () => {
       await SplashScreen.hideAsync();
-      router.push("Home/Homescreen" as any);
     }, 500);
 
     return () => clearTimeout(timer);
@@ -24,14 +23,23 @@ export default function Layout() {
         loading={<ActivityIndicator size="large" color="#0000ff" />}
         persistor={Persistor}
       >
-        <Stack screenOptions={{ headerShown: false }}>
-          {/* <Stack.Screen
-            name="verify"
-            options={{
-              title: "All Properties",
-              headerShown: false,
+        <Stack
+            screenOptions={{
+                headerShown: false,
             }}
-          /> */}
+        >
+            <Stack.Screen name="Home/index" />
+            <Stack.Screen 
+                name="AllProperties/index"
+                options={{
+                    headerShown: true,
+                    header: () => <View style={{marginTop: 100, borderWidth: 1, borderColor: "red"}}>
+                            <Pressable onPress={() => router.back()}>
+                                <Text>Back</Text>
+                            </Pressable>
+                    </View>
+                }}
+            />
         </Stack>
       </PersistGate>
     </Provider>

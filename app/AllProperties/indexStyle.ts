@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     width: 350,
     flex: 1,
-    marginTop: -10,
+    marginTop: 30,
   },
   headContainer: {
     width: 335,
