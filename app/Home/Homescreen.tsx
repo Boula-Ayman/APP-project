@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-
-import { View, ScrollView, TouchableOpacity, Pressable } from "react-native";
+import { View, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "./HomeScreenStyle";
 import CardList from "./CardList";
@@ -15,16 +14,13 @@ import {
 } from "@/src/api/opportunitiesApiSlice";
 import i18n from "../../src/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
-
 import { debounce } from "@/utils/debounce";
-import { object } from "yup";
 
 const HomeScreen: React.FC = ({}) => {
   const notifications = 0;
 
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
-  const [currentFilter, setCurrentFilter] = useState("all");
   const [opportunities, setOpportunities] = useState([]);
 
   const [filters, setFilters] = useState<{
@@ -54,6 +50,12 @@ const HomeScreen: React.FC = ({}) => {
   useEffect(() => {
     debouncedSetSearchTerm(searchTerm);
   }, [searchTerm, debouncedSetSearchTerm]);
+
+  useEffect(() => {
+    if (data && !isLoading) {
+      setOpportunities(data.data);
+    }
+  }, [data, isLoading]);
 
   useEffect(() => {
     if (searchTerm) {
@@ -104,7 +106,9 @@ const HomeScreen: React.FC = ({}) => {
           }
         />
         <SectionHeader />
-        <CardList opportunities={opportunities} />
+        <View>
+          <CardList opportunities={opportunities} />
+        </View>
       </View>
     </ScrollView>
   );
