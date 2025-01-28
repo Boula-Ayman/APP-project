@@ -46,10 +46,10 @@ export default function Layout() {
     return null;
   }
 
-  const logout = async () => {
-    await AsyncStorage.removeItem("access_token");
-    router.push("/Welcome" as any);
-  };
+  // const logout = async () => {
+  //   await AsyncStorage.removeItem("access_token");
+  //   router.push("/Welcome" as any);
+  // };
   // logout();
   return (
     <Provider store={store}>

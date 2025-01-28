@@ -6,12 +6,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   container: {
-    marginTop: 120,
     backgroundColor: "white",
+    flex: 1,
   },
   scrollContent: {
     flexGrow: 1,
-    marginTop: -15,
+
     padding: 17,
   },
   innerContainer: {
@@ -27,8 +27,9 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",
-    top: -67,
+    top: 50,
     left: 18,
+    zIndex: 1,
   },
   title: {
     fontFamily: "Inter",
@@ -101,12 +102,11 @@ const styles = StyleSheet.create({
     marginTop: -15,
   },
   signUpText: {
-    width: 242,
     height: 35,
     textAlign: "center",
     color: "#404040",
-    top: 130,
-    left: 30,
+    top: 150,
+    left: 0,
     fontFamily: "Inter",
     fontSize: 16,
     fontWeight: "400",

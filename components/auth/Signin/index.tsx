@@ -92,13 +92,21 @@ const SigninPage: React.FC = () => {
     <SafeAreaView style={styles.SaveAreaView}>
       <KeyboardAvoidingView
         style={styles.container}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -20}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 0}
+        behavior={Platform.OS === "ios" ? "height" : "height"}
       >
         <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
           <Arrow />
         </TouchableOpacity>
-        <ScrollView style={styles.scrollContent}>
+        <ScrollView
+          style={styles.scrollContent}
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          keyboardShouldPersistTaps="handled"
+        >
           <View style={styles.innerContainer}>
             <Text style={[styles.title, { fontFamily: "Inter_600SemiBold" }]}>
               {t("signIn.title")}
