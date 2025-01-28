@@ -98,15 +98,7 @@ const SigninPage: React.FC = () => {
         <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
           <Arrow />
         </TouchableOpacity>
-        <ScrollView
-          style={styles.scrollContent}
-          contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          keyboardShouldPersistTaps="handled"
-        >
+        <ScrollView style={styles.scrollContent}>
           <View style={styles.innerContainer}>
             <Text style={[styles.title, { fontFamily: "Inter_600SemiBold" }]}>
               {t("signIn.title")}

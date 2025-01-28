@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 50,
     padding: 8,
-    left: 290,
+    left: 260,
   },
   detailsCard: {
     padding: 16,

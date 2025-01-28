@@ -36,7 +36,7 @@ const VerificationScreen: React.FC = () => {
   const handleVerify = async () => {
     console.log("OTP entered:", otp);
     if (!otp || otp.length !== 4) {
-      setErrorMessage("OTP must be exactly 4 digits");
+      setErrorMessage(t("verify.otpIncorrect"));
       return;
     }
 
@@ -115,7 +115,7 @@ const VerificationScreen: React.FC = () => {
           />
         </View>
         {errorMessage ? (
-          <Text style={styles.errorText}>{t(errorMessage)}</Text>
+          <Text style={styles.errorText}>{errorMessage}</Text>
         ) : null}
 
         <TouchableOpacity
@@ -127,7 +127,6 @@ const VerificationScreen: React.FC = () => {
             <Text style={styles.counter}> {formatTime(timer)} </Text>
           </Text>
         </TouchableOpacity>
-
         <TouchableOpacity style={styles.verifyButton} onPress={handleVerify}>
           <Text style={styles.verifyButtonText}>Verify</Text>
         </TouchableOpacity>

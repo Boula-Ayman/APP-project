@@ -19,6 +19,7 @@ import Button from "@/commonComponent/button/Button";
 import Arrow from "../../../assets/icons/Arrow.svg";
 import { Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
+import DropDownPicker from "react-native-dropdown-picker";
 
 const SignUpSchema = Yup.object().shape({
   firstName: Yup.string().required(i18n.t("signup.required")),
@@ -33,13 +34,20 @@ const SignUpSchema = Yup.object().shape({
       i18n.t("signup.invalidPassword")
     )
     .required(i18n.t("signup.required")),
-  birthDate: Yup.string().required(i18n.t("signup.required")),
+  phoneNumber: Yup.string()
+    .required(i18n.t("signup.required"))
+    .matches(/^\d+$/, i18n.t("signup.invalidPhoneNumber")),
+  birthDate: Yup.date()
+    .required(i18n.t("signup.required"))
+    .typeError(i18n.t("signup.invalidDate")),
 });
 
 const SignUpPage: React.FC = () => {
   const { t } = { t: i18n.t.bind(i18n) };
   const [postSignUp] = usePostSignUpMutation();
   const [generalError, setGeneralError] = useState<string | null>(null);
+  const [countryCode, setCountryCode] = useState("+20");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleSignUp = async (
     values: {
@@ -47,29 +55,42 @@ const SignUpPage: React.FC = () => {
       lastName: string;
       email: string;
       password: string;
+      phoneNumber: string;
       birthDate: string;
     },
     actions: FormikHelpers<any>
   ) => {
     try {
-      console.log(values);
+      console.log("Signup values:", values);
       const response = await postSignUp({
         name: `${values.firstName} ${values.lastName}`,
         email: values.email,
         password: values.password,
-        birth_date: values.birthDate,
+        phone_number: values.phoneNumber,
+        birth_date: new Date(values.birthDate).toISOString(),
       }).unwrap();
 
-      await AsyncStorage.setItem("access_token", response?.data?.access_token);
+      console.log("Signup response:", response);
+
+      const accessToken = response?.data?.access_token;
+      if (accessToken) {
+        await AsyncStorage.setItem("access_token", accessToken);
+        console.log("Access token stored:", accessToken);
+      } else {
+        console.error("Access token is undefined");
+      }
+
       router.push("/(auth)/verify");
     } catch (error: any) {
+      console.error("Signup error:", error);
+
       if (error?.status === 409) {
         actions.setErrors({ email: t("signup.emailExists") });
       } else if (
         error?.status === 400 &&
-        error?.message?.includes("birth_date")
+        error?.message?.includes("phone_number")
       ) {
-        actions.setErrors({ birthDate: t("signup.invalidBirthDate") });
+        actions.setErrors({ phoneNumber: t("signup.invalidPhoneNumber") });
       } else {
         setGeneralError(t("signup.signupFailed"));
       }
@@ -90,6 +111,7 @@ const SignUpPage: React.FC = () => {
             lastName: "",
             email: "",
             password: "",
+            phoneNumber: "",
             birthDate: "",
           }}
           validationSchema={SignUpSchema}
@@ -103,6 +125,7 @@ const SignUpPage: React.FC = () => {
             errors,
             touched,
             isSubmitting,
+            setFieldValue,
           }) => (
             <>
               <View style={styles.backContainer}>
@@ -149,7 +172,7 @@ const SignUpPage: React.FC = () => {
                 </View>
               </View>
               <View style={styles.emailContainer}>
-                <Text>{t("signup.email")}</Text>
+                <Text style={styles.Name}>{t("signup.email")}</Text>
                 <TextInput
                   style={styles.input}
                   placeholder={t("signup.emailPlaceholder")}
@@ -162,34 +185,83 @@ const SignUpPage: React.FC = () => {
                   <Text style={styles.errorText}>{errors.email}</Text>
                 )}
               </View>
+              <View>
+                <Text style={styles.Name}>{t("signup.password")}</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder={t("signup.passwordPlaceholder")}
+                  secureTextEntry
+                  onChangeText={handleChange("password")}
+                  onBlur={handleBlur("password")}
+                  value={values.password}
+                />
+                {touched.password && errors.password && (
+                  <Text style={styles.errorText}>{errors.password}</Text>
+                )}
+              </View>
+              <View>
+                <Text style={styles.Name}>{t("signup.phoneNumber")}</Text>
+                <View style={styles.phoneInputContainer}>
+                  <DropDownPicker
+                    open={isDropdownOpen}
+                    value={countryCode}
+                    items={[
+                      { label: "+20", value: "+20" },
+                      { label: "+1", value: "+1" },
+                    ]}
+                    setOpen={setIsDropdownOpen}
+                    setValue={setCountryCode}
+                    style={[styles.dropdown, { width: 80 }]}
+                    dropDownContainerStyle={{
+                      width: 80,
+                      maxHeight: 100,
+                    }}
+                    containerStyle={{ width: 100 }}
+                    listMode="SCROLLVIEW"
+                    arrowIconContainerStyle={{
+                      marginRight: 5,
+                    }}
+                  />
+                  <TextInput
+                    style={styles.phoneNumberInput}
+                    keyboardType="phone-pad"
+                    onChangeText={handleChange("phoneNumber")}
+                    onBlur={handleBlur("phoneNumber")}
+                    value={values.phoneNumber}
+                  />
+                </View>
 
-              <TextInput
-                style={styles.input}
-                placeholder={t("signup.birthDatePlaceholder")}
-                onChangeText={handleChange("birthDate")}
-                onBlur={handleBlur("birthDate")}
-                value={values.birthDate}
-              />
-              {touched.birthDate && errors.birthDate && (
-                <Text style={styles.errorText}>{errors.birthDate}</Text>
-              )}
-
-              <TextInput
-                style={styles.input}
-                placeholder={t("signup.passwordPlaceholder")}
-                secureTextEntry
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-                value={values.password}
-              />
-              {touched.password && errors.password && (
-                <Text style={styles.errorText}>{errors.password}</Text>
-              )}
+                {touched.phoneNumber && errors.phoneNumber && (
+                  <Text style={styles.errorTextPhone}>
+                    {errors.phoneNumber}
+                  </Text>
+                )}
+              </View>
+              <View>
+                <Text style={styles.Name}>Birth Date</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder={t("signup.birthDatePlaceholder")}
+                  onChangeText={handleChange("birthDate")}
+                  onBlur={handleBlur("birthDate")}
+                  value={values.birthDate}
+                />
+                {touched.birthDate && errors.birthDate && (
+                  <Text style={styles.errorText}>{errors.birthDate}</Text>
+                )}
+              </View>
 
               {generalError && (
                 <Text style={styles.errorText}>{generalError}</Text>
               )}
-              <View>
+              <View style={styles.TextContainer}>
+                <Text style={styles.MainText}>
+                  By continuing you are indicating that you agree to the{" "}
+                  <Text style={styles.Text}>Terms</Text> and{" "}
+                  <Text style={styles.Text}> Privacy Policy.</Text>
+                </Text>
+              </View>
+              <View style={styles.signUpButton}>
                 <Button onPress={() => handleSubmit()} disabled={isSubmitting}>
                   <Text>{t("signup.signUpButton")}</Text>
                 </Button>

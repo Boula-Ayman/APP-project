@@ -58,6 +58,7 @@
     "title": "تسجيل",
     "emailPlaceholder": "Sample@gmail.com",
     "birthDatePlaceholder": "تاريخ الميلاد (YYYY-MM-DD)",
+    "phoneNumber": "رقم الهاتف",
     "passwordPlaceholder": "كلمة المرور",
     "termsText": "بمواصلة الاستخدام، فإنك تشير إلى موافقتك على",
     "terms": "الشروط",

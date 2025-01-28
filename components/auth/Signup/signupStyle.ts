@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     padding: 20,
     flexGrow: 1,
-    gap: 15,
+    gap: 5,
   },
   backContainer: {
     flexDirection: "row",
@@ -66,16 +66,13 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_600SemiBold",
   },
   lastName: {
-    top: 10,
-    left: 170,
     fontSize: 14,
     fontWeight: "600",
     fontFamily: "Inter_600SemiBold",
   },
-  emailContainer: {
-    top: -13,
-  },
+  emailContainer: {},
   email: {
+    marginBottom: -10,
     fontSize: 14,
     fontWeight: "600",
     fontFamily: "Inter_600SemiBold",
@@ -85,9 +82,9 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 8,
     padding: 10,
-    marginBottom: 15,
+    marginBottom: 10,
     fontSize: 16,
-    height: 56,
+    height: 50,
   },
   passwordContainer: {
     flexDirection: "row",
@@ -122,7 +119,7 @@ const styles = StyleSheet.create({
     color: "#8BC240",
   },
   signUpButton: {
-    width: "60%",
+    marginTop: 20,
   },
   signUpButtonText: {
     color: "#fff",
@@ -134,6 +131,50 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
     marginTop: -10,
+  },
+
+  phoneInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+  },
+
+  dropdown: {
+    width: 80,
+    borderWidth: 0,
+  },
+  dropdownContainer: {
+    width: 80,
+  },
+  phoneNumberInput: {
+    flex: 1,
+    height: 40,
+    paddingLeft: 10,
+  },
+  TextContainer: {
+    justifyContent: "center",
+    textAlign: "center",
+    width: "100%",
+    marginTop: 10,
+  },
+  MainText: {
+    fontSize: 14,
+    fontWeight: "400",
+    fontFamily: "Inter_400Regular",
+    justifyContent: "center",
+    textAlign: "center",
+  },
+  Text: {
+    color: "#8BC240",
+  },
+  errorTextPhone: {
+    color: "red",
+    fontSize: 14,
+    textAlign: "center",
+    marginTop: 5,
   },
 });
 

@@ -11,14 +11,13 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-
+    marginTop: 100,
     padding: 17,
   },
   innerContainer: {
     flex: 1,
     justifyContent: "center",
   },
-
   backButton: {
     position: "absolute",
     width: 48,
