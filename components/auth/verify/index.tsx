@@ -102,16 +102,18 @@ const VerificationScreen: React.FC = () => {
         <Text style={[styles.subtitle, { fontFamily: "Inter_400Regular" }]}>
           {t("verify.enter_otp_message")}
         </Text>
-        <OtpInput
-          numberOfDigits={4}
-          onTextChange={(text) => setOtp(text)}
-          theme={{
-            focusedPinCodeContainerStyle: styles.activePinCodeContainer,
-            filledPinCodeContainerStyle: styles.filledPinCodeContainer,
-            pinCodeTextStyle: styles.pinCodeText,
-            pinCodeContainerStyle: styles.pinCodeContainer,
-          }}
-        />
+        <View style={styles.otpInputContainer}>
+          <OtpInput
+            numberOfDigits={4}
+            onTextChange={(text) => setOtp(text)}
+            theme={{
+              focusedPinCodeContainerStyle: styles.activePinCodeContainer,
+              filledPinCodeContainerStyle: styles.filledPinCodeContainer,
+              pinCodeTextStyle: styles.pinCodeText,
+              pinCodeContainerStyle: styles.pinCodeContainer,
+            }}
+          />
+        </View>
         {errorMessage ? (
           <Text style={styles.errorText}>{t(errorMessage)}</Text>
         ) : null}
@@ -139,13 +141,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 16,
-
+    marginTop: 20,
     backgroundColor: "white",
   },
   backButton: {
     width: 48,
     height: 48,
-    top: 30,
+    top: 10,
     backgroundColor: "#F6F6F6",
     borderRadius: 100,
     justifyContent: "center",
@@ -202,7 +204,12 @@ const styles = StyleSheet.create({
     height: 55,
   },
 
-  pinCodeText: { color: "#8BC240" },
+  pinCodeText: {
+    color: "#04021DCC",
+    fontSize: 15,
+    fontWeight: "500",
+    lineHeight: 22.5,
+  },
   pinCodeContainer: {
     width: 55,
     height: 55,
@@ -235,6 +242,10 @@ const styles = StyleSheet.create({
     color: "red",
     textAlign: "center",
     marginBottom: 16,
+  },
+  otpInputContainer: {
+    padding: 10,
+    paddingHorizontal: 20,
   },
 });
 
