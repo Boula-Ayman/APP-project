@@ -61,12 +61,13 @@ const SignUpPage: React.FC = () => {
     actions: FormikHelpers<any>
   ) => {
     try {
-      console.log("Signup values:", values);
+      const fullPhoneNumber = `${countryCode}${values.phoneNumber}`;
+
       const response = await postSignUp({
         name: `${values.firstName} ${values.lastName}`,
         email: values.email,
         password: values.password,
-        phone_number: values.phoneNumber,
+        phone_number: fullPhoneNumber,
         birth_date: new Date(values.birthDate).toISOString(),
       }).unwrap();
 
@@ -83,6 +84,14 @@ const SignUpPage: React.FC = () => {
       router.push("/(auth)/verify");
     } catch (error: any) {
       console.error("Signup error:", error);
+
+      if (error.status === "FETCH_ERROR") {
+        console.error(
+          "Network error: Failed to fetch. Please check your connection and try again."
+        );
+      } else {
+        console.error("An unexpected error occurred:", error);
+      }
 
       if (error?.status === 409) {
         actions.setErrors({ email: t("signup.emailExists") });
