@@ -61,9 +61,8 @@
     "signUp": "Sign Up"
   },
   "verify": {
-    "enter_otp_message": "Enter the 4 digits code that you received on your e-mail",
-    "OTP must be exactly 4 digits": "OTP must be exactly 4 digits",
-    "The OTP is incorrect. Please try again.": "The OTP is incorrect. Please try again."
+    "otp_must_be_exactly_4_digits": "OTP must be exactly 4 digits",
+    "otp_incorrect": "The OTP is incorrect. Please try again."
   },
   "signup": {
     "title": "Sign Up",
