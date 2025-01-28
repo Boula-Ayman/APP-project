@@ -52,8 +52,21 @@
   "From": "From",
   "To": "To",
   "ROI-Expected Appreciation": "ROI - Expected Appreciation",
+
+  "signIn": {
+    "title": "Sign In",
+    "email": "Email",
+    "emailPlaceholder": "Email",
+    "password": "Password",
+    "passwordPlaceholder": "Password",
+    "buttonText": "Sign In",
+    "signUpText": "Don't have an account?",
+    "signUp": "Sign Up"
+  },
   "signup": {
     "title": "Sign Up",
+    "firstName": "First Name",
+    "lastName": "Last Name",
     "emailPlaceholder": "Sample@gmail.com",
     "birthDatePlaceholder": "Birth Date (YYYY-MM-DD)",
     "passwordPlaceholder": "Password",
@@ -67,16 +80,6 @@
     "invalidBirthDate": "Birth date must be a date (YYYY-MM-DD).",
     "emailExists": "Email already exists. Please use a different email.",
     "signupFailed": "Sign up failed. Please try again."
-  },
-  "signIn": {
-    "title": "Sign In",
-    "email": "Email",
-    "emailPlaceholder": "Email",
-    "password": "Password",
-    "passwordPlaceholder": "Password",
-    "buttonText": "Sign In",
-    "signUpText": "Don't have an account?",
-    "signUp": "Sign Up"
   },
   "verify": {
     "verify_email_title": "Verify your email address",

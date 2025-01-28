@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import HomeScreen from "@/components/homeScreenContainer/HomeScreen";
 
 const HomeScreenPage: React.FC = ({}) => {

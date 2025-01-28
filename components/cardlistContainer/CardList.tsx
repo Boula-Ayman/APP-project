@@ -8,27 +8,43 @@ import {
   usePostWishListMutation,
   useRemoveWishListMutation,
 } from "@/src/wishList/AdWishList/wishListApiSliceAdd";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  addToWishlist,
+  removeFromWishlist,
+  setWishlist,
+} from "../../src/wishList/wishlistSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { loadLikedItems } from "../../utils/wishlistUtils"; // Import the function
 
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = 284;
 const SPACING = 25;
+
 interface CardListProps {
   opportunities: Opportunity[];
 }
+
 const CardList: React.FC<CardListProps> = ({ opportunities }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
-  const [likedItems, setLikedItems] = useState<number[]>([]);
+  const likedItems = useSelector((state: any) => state.wishlist.likedItems);
+  const dispatch = useDispatch(); // Get dispatch function
   const [postWishList] = usePostWishListMutation();
   const [removeWishList] = useRemoveWishListMutation();
 
-  const handleLoveIconPress = async (id: number) => {
+  useEffect(() => {
+    loadLikedItems(dispatch);
+  }, [dispatch]);
+
+  const handleLoveIconPress = async (id: number, item: Opportunity) => {
     const isLiked = likedItems.includes(id);
-    setLikedItems((prev) => {
-      const newLikedItems = isLiked
-        ? prev.filter((item) => item !== id)
-        : [...prev, id];
-      return newLikedItems;
-    });
+    if (isLiked) {
+      dispatch(removeFromWishlist(id));
+    } else {
+      dispatch(addToWishlist(id));
+    }
+
+    AsyncStorage.setItem("likedItems", JSON.stringify(likedItems));
 
     try {
       if (isLiked) {
@@ -46,6 +62,7 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
       }
     }
   };
+
   return (
     <View style={styles.container}>
         {opportunities.length ? 
@@ -76,7 +93,9 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
 
           return (
             <Link
-              href={`/carddetails/${item.id}?type=${item.opportunity_type}`}
+              href={`/carddetails/${item.id}?type=${
+                item.opportunity_type
+              }&likedItems=${JSON.stringify(likedItems)}`}
               asChild
             >
               <Pressable>
@@ -84,7 +103,7 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
                   <Card
                     item={item}
                     isLiked={likedItems.includes(item.id)}
-                    onLoveIconPress={() => handleLoveIconPress(item.id)}
+                    onLoveIconPress={() => handleLoveIconPress(item.id, item)}
                   />
                 </Animated.View>
               </Pressable>

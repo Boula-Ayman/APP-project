@@ -9,79 +9,101 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { usePostSignUpMutation } from "../../../src/auth/signup/signuupApiSlice";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18n from "../../../i18n/i18n";
+import styles from "./signupStyle";
+import Button from "@/commonComponent/button/Button";
+import Arrow from "../../../assets/icons/Arrow.svg";
+import { Formik, FormikHelpers } from "formik";
+import * as Yup from "yup";
+import DropDownPicker from "react-native-dropdown-picker";
+
+const SignUpSchema = Yup.object().shape({
+  firstName: Yup.string().required(i18n.t("signup.required")),
+  lastName: Yup.string().required(i18n.t("signup.required")),
+  email: Yup.string()
+    .email(i18n.t("signup.invalidEmail"))
+    .required(i18n.t("signup.required")),
+  password: Yup.string()
+    .min(8, i18n.t("signup.passwordTooShort"))
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\[\]{};':"\\|,.<>\/?`~\-]).{8,}$/,
+      i18n.t("signup.invalidPassword")
+    )
+    .required(i18n.t("signup.required")),
+  phoneNumber: Yup.string()
+    .required(i18n.t("signup.required"))
+    .matches(/^\d+$/, i18n.t("signup.invalidPhoneNumber")),
+  birthDate: Yup.date()
+    .required(i18n.t("signup.required"))
+    .typeError(i18n.t("signup.invalidDate")),
+});
 
 const SignUpPage: React.FC = () => {
   const { t } = { t: i18n.t.bind(i18n) };
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  // const [phone_number, setPhone_Number] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [birthDate, setBirthDate] = useState("");
   const [postSignUp] = usePostSignUpMutation();
+  const [generalError, setGeneralError] = useState<string | null>(null);
+  const [countryCode, setCountryCode] = useState("+20");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const handleSignUp = async () => {
-    const formData = {
-      name: `${firstName} ${lastName}`,
-      email,
-      password,
-      birth_date: birthDate,
-      // phone_number,
-    };
-
-    // email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setErrorMessage(t("signup.invalidEmail"));
-      return;
-    }
-
-    // password validation
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>\/?`~\-])[A-Za-z\d!@#$%^&*()_+[\]{};':"\\|,.<>\/?`~\-]{8,}$/;
-    if (!passwordRegex.test(password)) {
-      setErrorMessage(t("signup.invalidPassword"));
-      return;
-    }
-
-    // birth date validation
-    const birthDateRegex = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD format
-    if (!birthDateRegex.test(birthDate)) {
-      setErrorMessage(t("signup.invalidBirthDate"));
-      return;
-    }
-
+  const handleSignUp = async (
+    values: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      password: string;
+      phoneNumber: string;
+      birthDate: string;
+    },
+    actions: FormikHelpers<any>
+  ) => {
     try {
-      const response = await postSignUp(formData).unwrap();
-      setErrorMessage("");
+      const fullPhoneNumber = `${countryCode}${values.phoneNumber}`;
 
-      await AsyncStorage.removeItem("access_token");
-      await AsyncStorage.setItem("access_token", response?.data?.access_token);
-      router.push("/(auth)/verify" as any);
-    } catch (error: any) {
-      console.error("Sign up failed:", error);
+      const response = await postSignUp({
+        name: `${values.firstName} ${values.lastName}`,
+        email: values.email,
+        password: values.password,
+        phone_number: fullPhoneNumber,
+        birth_date: new Date(values.birthDate).toISOString(),
+      }).unwrap();
 
-      if ((error as { status?: number }).status === 409) {
-        setErrorMessage(t("signup.emailExists"));
-      } else if (
-        (error as { status?: number; message?: string }).status === 400 &&
-        error.message.includes("birth_date")
-      ) {
-        setErrorMessage(t("signup.invalidBirthDate"));
+      console.log("Signup response:", response);
+
+      const accessToken = response?.data?.access_token;
+      if (accessToken) {
+        await AsyncStorage.setItem("access_token", accessToken);
+        console.log("Access token stored:", accessToken);
       } else {
-        setErrorMessage(t("signup.signupFailed"));
+        console.error("Access token is undefined");
       }
+
+      router.push("/(auth)/verify");
+    } catch (error: any) {
+      console.error("Signup error:", error);
+
+      if (error.status === "FETCH_ERROR") {
+        console.error(
+          "Network error: Failed to fetch. Please check your connection and try again."
+        );
+      } else {
+        console.error("An unexpected error occurred:", error);
+      }
+
+      if (error?.status === 409) {
+        actions.setErrors({ email: t("signup.emailExists") });
+      } else if (
+        error?.status === 400 &&
+        error?.message?.includes("phone_number")
+      ) {
+        actions.setErrors({ phoneNumber: t("signup.invalidPhoneNumber") });
+      } else {
+        setGeneralError(t("signup.signupFailed"));
+      }
+    } finally {
+      actions.setSubmitting(false);
     }
   };
 
@@ -91,149 +113,173 @@ const SignUpPage: React.FC = () => {
       style={styles.container}
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* <TouchableOpacity style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity> */}
-        <Text style={styles.title}>{t("signup.title")}</Text>
-        <View style={styles.row}>
-          <TextInput
-            style={[styles.input, styles.halfInput]}
-            placeholder="First Name"
-            value={firstName}
-            onChangeText={setFirstName}
-          />
-          <TextInput
-            style={[styles.input, styles.halfInput]}
-            placeholder="Last Name"
-            value={lastName}
-            onChangeText={setLastName}
-          />
-        </View>
-        <TextInput
-          style={styles.input}
-          placeholder={t("signup.emailPlaceholder")}
-          keyboardType="email-address"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder={t("signup.birthDatePlaceholder")}
-          value={birthDate}
-          onChangeText={setBirthDate}
-        />
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={[styles.passwordInput]}
-            placeholder={t("signup.passwordPlaceholder")}
-            secureTextEntry={!showPassword}
-            value={password}
-            onChangeText={setPassword}
-          />
-          <TouchableOpacity onPress={togglePasswordVisibility}>
-            <Ionicons
-              name={showPassword ? "eye" : "eye-off"}
-              size={24}
-              color="gray"
-            />
-          </TouchableOpacity>
-        </View>
-        {/* <TextInput
-          style={styles.input}
-          placeholder="+20"
-          keyboardType="phone-pad"
-          value={phone_number}
-          onChangeText={setPhone_Number}
-        /> */}
-        <Text style={styles.termsText}>
-          {t("signup.termsText")}{" "}
-          <Text style={styles.linkText}>{t("signup.terms")}</Text>{" "}
-          {t("signup.and")}{" "}
-          <Text style={styles.linkText}>{t("signup.privacyPolicy")}</Text>.
-        </Text>
-        {errorMessage ? (
-          <Text style={styles.errorText}>{errorMessage}</Text>
-        ) : null}
-        <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
-          <Text style={styles.signUpButtonText}>
-            {t("signup.signUpButton")}
-          </Text>
-        </TouchableOpacity>
+        <Formik
+          initialValues={{
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            phoneNumber: "",
+            birthDate: "",
+          }}
+          validationSchema={SignUpSchema}
+          onSubmit={handleSignUp}
+        >
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+            isSubmitting,
+            setFieldValue,
+          }) => (
+            <>
+              <View style={styles.backContainer}>
+                <TouchableOpacity
+                  style={styles.backButton}
+                  onPress={() => router.push("/Welcome")}
+                >
+                  <Arrow />
+                </TouchableOpacity>
+                <Text style={styles.backText}>
+                  <Text style={styles.one}>1</Text> / 2
+                </Text>
+              </View>
+              <Text style={styles.title}>{t("signup.title")}</Text>
+
+              <View style={styles.row}>
+                <View style={styles.inputContainer}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.Name}>{t("signup.firstName")}</Text>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="First Name"
+                      onChangeText={handleChange("firstName")}
+                      onBlur={handleBlur("firstName")}
+                      value={values.firstName}
+                    />
+                    {touched.firstName && errors.firstName && (
+                      <Text style={styles.errorText}>{errors.firstName}</Text>
+                    )}
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.Name}>{t("signup.lastName")}</Text>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Last Name"
+                      onChangeText={handleChange("lastName")}
+                      onBlur={handleBlur("lastName")}
+                      value={values.lastName}
+                    />
+                    {touched.lastName && errors.lastName && (
+                      <Text style={styles.errorText}>{errors.lastName}</Text>
+                    )}
+                  </View>
+                </View>
+              </View>
+              <View style={styles.emailContainer}>
+                <Text style={styles.Name}>{t("signup.email")}</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder={t("signup.emailPlaceholder")}
+                  keyboardType="email-address"
+                  onChangeText={handleChange("email")}
+                  onBlur={handleBlur("email")}
+                  value={values.email}
+                />
+                {touched.email && errors.email && (
+                  <Text style={styles.errorText}>{errors.email}</Text>
+                )}
+              </View>
+              <View>
+                <Text style={styles.Name}>{t("signup.password")}</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder={t("signup.passwordPlaceholder")}
+                  secureTextEntry
+                  onChangeText={handleChange("password")}
+                  onBlur={handleBlur("password")}
+                  value={values.password}
+                />
+                {touched.password && errors.password && (
+                  <Text style={styles.errorText}>{errors.password}</Text>
+                )}
+              </View>
+              <View>
+                <Text style={styles.Name}>{t("signup.phoneNumber")}</Text>
+                <View style={styles.phoneInputContainer}>
+                  <DropDownPicker
+                    open={isDropdownOpen}
+                    value={countryCode}
+                    items={[
+                      { label: "+20", value: "+20" },
+                      { label: "+1", value: "+1" },
+                    ]}
+                    setOpen={setIsDropdownOpen}
+                    setValue={setCountryCode}
+                    style={[styles.dropdown, { width: 80 }]}
+                    dropDownContainerStyle={{
+                      width: 80,
+                      maxHeight: 100,
+                    }}
+                    containerStyle={{ width: 100 }}
+                    listMode="SCROLLVIEW"
+                    arrowIconContainerStyle={{
+                      marginRight: 5,
+                    }}
+                  />
+                  <TextInput
+                    style={styles.phoneNumberInput}
+                    keyboardType="phone-pad"
+                    onChangeText={handleChange("phoneNumber")}
+                    onBlur={handleBlur("phoneNumber")}
+                    value={values.phoneNumber}
+                  />
+                </View>
+
+                {touched.phoneNumber && errors.phoneNumber && (
+                  <Text style={styles.errorTextPhone}>
+                    {errors.phoneNumber}
+                  </Text>
+                )}
+              </View>
+              <View>
+                <Text style={styles.Name}>Birth Date</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder={t("signup.birthDatePlaceholder")}
+                  onChangeText={handleChange("birthDate")}
+                  onBlur={handleBlur("birthDate")}
+                  value={values.birthDate}
+                />
+                {touched.birthDate && errors.birthDate && (
+                  <Text style={styles.errorText}>{errors.birthDate}</Text>
+                )}
+              </View>
+
+              {generalError && (
+                <Text style={styles.errorText}>{generalError}</Text>
+              )}
+              <View style={styles.TextContainer}>
+                <Text style={styles.MainText}>
+                  By continuing you are indicating that you agree to the{" "}
+                  <Text style={styles.Text}>Terms</Text> and{" "}
+                  <Text style={styles.Text}> Privacy Policy.</Text>
+                </Text>
+              </View>
+              <View style={styles.signUpButton}>
+                <Button onPress={() => handleSubmit()} disabled={isSubmitting}>
+                  <Text>{t("signup.signUpButton")}</Text>
+                </Button>
+              </View>
+            </>
+          )}
+        </Formik>
       </ScrollView>
     </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  scrollContent: {
-    padding: 20,
-    flexGrow: 1,
-  },
-  backButton: {
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  halfInput: {
-    width: "48%",
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 15,
-    fontSize: 16,
-  },
-  passwordContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    marginBottom: 15,
-  },
-  passwordInput: {
-    flex: 1,
-  },
-  termsText: {
-    fontSize: 14,
-    color: "gray",
-    textAlign: "center",
-    marginVertical: 20,
-  },
-  linkText: {
-    color: "#8BC240",
-  },
-  signUpButton: {
-    backgroundColor: "#8BC240",
-    padding: 15,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  signUpButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  errorText: {
-    color: "red",
-    fontSize: 14,
-    textAlign: "center",
-    marginVertical: 10,
-  },
-});
 
 export default SignUpPage;

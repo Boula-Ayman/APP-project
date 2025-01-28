@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,8 @@ import {
   StyleSheet,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  Linking,
+  Alert,
 } from "react-native";
 import { useGetOpportunityQuery } from "@/src/api/opportunitiesApiSlice";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -25,6 +27,10 @@ import Fridge from "@/assets/icons/Fridge.svg";
 import Sophie from "@/assets/icons/sophie.svg";
 import WhatApp from "@/assets/icons/whatsapp.svg";
 import styles from "./CardDetails";
+import FilledHeart from "@/assets/icons/filledHeart.svg";
+import Slider from "@react-native-community/slider";
+import WhiteCircle from "@/assets/icons/whiteCircle.svg";
+
 const Header = ({
   media,
   onBackPress,
@@ -39,23 +45,32 @@ const Header = ({
       horizontal
       pagingEnabled
       showsHorizontalScrollIndicator={false}
+      style={{
+        flex: 1,
+      }}
       renderItem={({ item }) => (
-        <Image source={{ uri: item.url }} style={styles.propertyImage} />
+        <Image
+          source={{ uri: item.url }}
+          style={[
+            styles.propertyImage,
+            { width: Dimensions.get("window").width },
+          ]}
+        />
       )}
       keyExtractor={(item) => item.url}
-      onScroll={onScroll} 
-      scrollEventThrottle={16} 
+      onScroll={onScroll}
+      scrollEventThrottle={16}
     />
     <View style={styles.icons}>
       <TouchableOpacity style={styles.icon1} onPress={onBackPress}>
-        <Ionicons name="arrow-back" size={24} color="black" />
+        <Ionicons name="chevron-back" size={16} color="black" />
       </TouchableOpacity>
       <TouchableOpacity style={styles.icon2} onPress={onLikePress}>
-        <Ionicons
-          name={isLiked ? "heart" : "heart-outline"}
-          size={24}
-          color={isLiked ? "#8BC240" : "black"}
-        />
+        {isLiked ? (
+          <FilledHeart />
+        ) : (
+          <Ionicons name={"heart-outline"} size={30} color={"black"} />
+        )}
       </TouchableOpacity>
     </View>
 
@@ -85,16 +100,24 @@ const PriceSection = ({
       {formatPrice(share_price)} {currency}
     </Text>
     <Text style={styles.shares}>
-      {available_shares}/{number_of_shares} {i18n.t("ownerShip")}
+      <Text
+        style={{
+          color: "#8BC240",
+        }}
+      >
+        1
+      </Text>
+      /<Text style={{ color: "#808080" }}>{number_of_shares}</Text>{" "}
+      {i18n.t("shares")}
     </Text>
   </View>
 );
 
-const FeaturesSection = ({ number_of_bedrooms, number_of_bathrooms }) => (
+const FeaturesSection = ({ number_of_bedrooms, number_of_bathrooms, area }) => (
   <View style={styles.features}>
     <View style={styles.featureItem}>
       <Furniture />
-      <Text style={styles.featureText}>2,553sqft</Text>
+      <Text style={styles.featureText}>{area} sqft</Text>
     </View>
     <View style={styles.featureItem}>
       <Frame52 />
@@ -157,15 +180,23 @@ const AmenitiesSection = ({ data }) => (
 );
 
 const ContactSection = () => (
-  <View style={styles.contactCard}>
-    <Text style={styles.contactTitle}>{i18n.t("getInTouchWithSophie")}</Text>
-    <WhatApp style={styles.whatsappIcon} />
-    <Text style={styles.contactDescription}>
-      {i18n.t("getInTouchDescription")}
-    </Text>
-    <View style={styles.personContainer}>
-      <Sophie style={styles.person} />
-      <Text style={styles.whatsappButtonText}>Sophie Moore</Text>
+  <View style={{ padding: 20 }}>
+    <View style={styles.contactCard}>
+      <Text style={styles.contactTitle}>{i18n.t("getInTouchWithSophie")}</Text>
+      <TouchableOpacity
+        onPress={() => {
+          Linking.openURL("https://wa.me/201100007003");
+        }}
+      >
+        <WhatApp style={styles.whatsappIcon} />
+      </TouchableOpacity>
+      <Text style={styles.contactDescription}>
+        {i18n.t("getInTouchDescription")}
+      </Text>
+      <View style={styles.personContainer}>
+        <Sophie style={styles.person} />
+        <Text style={styles.whatsappButtonText}>Sophie Moore</Text>
+      </View>
     </View>
   </View>
 );
@@ -173,82 +204,188 @@ const ContactSection = () => (
 const PriceDetailsSection = ({
   share_price,
   currency,
-  available_shares,
   number_of_shares,
   opportunityType,
-}) => (
-  <View style={styles.priceCard}>
-    <View style={styles.pricecontent}>
-      <Text style={styles.priceTitle}>
-        {formatPrice(share_price)} {currency}
-      </Text>
-      <Text style={styles.priceSubtitle}>
-        {available_shares}/{number_of_shares} {i18n.t("ownerShip")}
-      </Text>
-    </View>
-    <Text style={styles.priceDetails}>{i18n.t("buyUpTo50Percent")}</Text>
-    <View style={styles.whiteBar}>
-      <View style={styles.whiteCircle}></View>
-      <View style={styles.whiteCircle}></View>
-      <View style={styles.whiteCircle}></View>
-    </View>
-    <Text style={styles.Cashtitle}>{i18n.t("cashPrice")}</Text>
-    <Text style={styles.priceTitle}>
-      {formatPrice(share_price)} {currency}
-    </Text>
-    {opportunityType === "project" && (
-      <>
-        <View style={styles.priceInfo}>
-          <Text style={styles.priceLabel}>
-            {i18n.t("expected1YearAppreciation")}
+  available_shares,
+  unit_appreciation,
+  unit_appreciation_percentage,
+}) => {
+  const [sliderValue, setSliderValue] = useState(1);
+  const maxAllowedShares = number_of_shares / 2;
+
+  const handleSliderChange = (value) => {
+    const cappedValue = Math.min(value, maxAllowedShares);
+    setSliderValue(cappedValue);
+  };
+
+  const marks = Array.from(
+    { length: Math.floor(maxAllowedShares) },
+    (_, i) => i + 1
+  );
+
+  return (
+    <View style={{ padding: 20 }}>
+      <View style={styles.priceCard}>
+        <View style={styles.pricecontent}>
+          <Text style={styles.priceTitle}>
+            {formatPrice(share_price)} {currency}
           </Text>
-          <Text style={styles.priceValue}>9.2%</Text>
-        </View>
-        <View style={styles.priceInfo}>
-          <Text style={styles.priceLabel}>
-            {i18n.t("expected5YearAppreciation")}
+          <Text style={styles.priceSubtitle}>
+            {sliderValue}/{number_of_shares} {i18n.t("shares")}
           </Text>
-          <Text style={styles.priceValue}>47%</Text>
         </View>
-      </>
-    )}
-  </View>
-);
+        <Text style={styles.priceDetails}>{i18n.t("buyUpTo50Percent")}</Text>
+
+        <View
+          style={{
+            width: "100%",
+            height: 25,
+            backgroundColor: "#D1E7b3",
+            opacity: 0.6,
+            borderRadius: 20,
+            justifyContent: "center",
+            alignItems: "center",
+            position: "relative",
+          }}
+        >
+          <View
+            style={{
+              width: `${((sliderValue / maxAllowedShares) * 100) / 2 + 5}%`,
+              height: 25,
+              backgroundColor: "#8BC240",
+              opacity: 0.6,
+              borderRadius: 20,
+              justifyContent: "center",
+              alignItems: "center",
+              position: "absolute",
+              left: 0,
+              zIndex: 1,
+            }}
+          />
+          <Slider
+            style={{
+              width: "50%",
+              left: -2,
+              justifyContent: "flex-start",
+              alignSelf: "flex-start",
+              height: 14,
+              marginLeft: 40,
+            }}
+            minimumValue={1}
+            maximumValue={maxAllowedShares}
+            step={1}
+            value={sliderValue}
+            onValueChange={handleSliderChange}
+            minimumTrackTintColor="transparent"
+            trackImage={require("@/assets/icons/whiteCircle.svg")}
+            maximumTrackTintColor="transparent"
+            disabled={false}
+            thumbImage={require("@/assets/icons/whiteCircle.svg")}
+          />
+          <View
+            style={{
+              width: 10,
+              height: 10,
+              borderRadius: 5,
+              backgroundColor: "white",
+              position: "absolute",
+              left: 0,
+              zIndex: 2,
+            }}
+          />
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "48%",
+              marginTop: 4,
+              position: "absolute",
+              left: 40,
+              right: 0,
+              bottom: 8,
+              zIndex: 2,
+            }}
+          >
+            {marks.map((mark, index) => (
+              <Text key={index} style={{ fontSize: 12 }}>
+                <TouchableOpacity
+                  onPress={() => handleSliderChange(mark)}
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 5,
+                    backgroundColor: "white",
+                  }}
+                />
+              </Text>
+            ))}
+          </View>
+        </View>
+
+        <Text style={styles.Cashtitle}>{i18n.t("cashPrice")}</Text>
+        <Text style={styles.priceTitle}>
+          {formatPrice(share_price * sliderValue)} {currency}
+        </Text>
+
+        {opportunityType === "project" && (
+          <>
+            <View style={styles.priceInfo}>
+              <Text style={styles.priceLabel}>
+                {i18n.t("expected1YearAppreciation")}
+              </Text>
+              <Text style={styles.priceValue}>
+                {unit_appreciation_percentage}%
+              </Text>
+            </View>
+            <View style={styles.priceInfo}>
+              <Text style={styles.priceLabel}>
+                {i18n.t("expected5YearAppreciation")}
+              </Text>
+              <Text style={styles.priceValue}>{unit_appreciation}%</Text>
+            </View>
+          </>
+        )}
+      </View>
+    </View>
+  );
+};
 
 const ROIPerYearSection = ({ data }) => (
-  <View style={styles.card}>
-    <Text style={styles.sectionTitle}>{i18n.t("ROI-Rental Rev")}</Text>
-    <View>
-      <Text style={styles.sectionTitle}>
-        {i18n.t("From")} {data?.data?.roi_revenue_from}% {i18n.t("To")}{" "}
-        {data?.data?.roi_revenue_to}%{" "}
-      </Text>
-    </View>
-    <Text style={styles.bar}></Text>
-    <View>
-      <Text style={styles.sectionTitle}>
-        {" "}
-        {i18n.t("ROI-Expected Appreciation")}
-      </Text>
-      <Text style={styles.sectionTitle}>
-        {i18n.t("From")} {data?.data?.roi_appreciation_from}% {i18n.t("To")}{" "}
-        {data?.data?.roi_appreciation_to}%{" "}
-      </Text>
+  <View style={{ padding: 20, marginBottom: 50 }}>
+    <View style={styles.card}>
+      <Text style={styles.sectionTitle}>{i18n.t("ROI-Rental Rev")}</Text>
+      <View>
+        <Text style={styles.sectionTitle}>
+          {i18n.t("From")} {data?.data?.roi_revenue_from}% {i18n.t("To")}{" "}
+          {data?.data?.roi_revenue_to}%{" "}
+        </Text>
+      </View>
+      <Text style={styles.bar}></Text>
+      <View>
+        <Text style={styles.sectionTitle}>
+          {" "}
+          {i18n.t("ROI-Expected Appreciation")}
+        </Text>
+        <Text style={styles.sectionTitle}>
+          {i18n.t("From")} {data?.data?.roi_appreciation_from}% {i18n.t("To")}{" "}
+          {data?.data?.roi_appreciation_to}%{" "}
+        </Text>
+      </View>
     </View>
   </View>
 );
 
-const NightsPerYearSection = () => (
+const NightsPerYearSection = ({ data }) => (
   <View style={styles.card1}>
     <Text style={styles.sectionTitle}>{i18n.t("nightsPerYear")}</Text>
-    <Text style={styles.largeText}>41</Text>
+    <Text style={styles.largeText}>{data?.data?.nights_per_year}</Text>
   </View>
 );
 
 const CardDetails = () => {
   const [opportunityType, setOpportunityType] = useState("property");
   const [isLiked, setisLiked] = useState(false);
-  const [activeSlide, setActiveSlide] = useState(0); 
+  const [activeSlide, setActiveSlide] = useState(0);
   const router = useRouter();
   const { id, type } = useLocalSearchParams();
   const { data, isLoading, isError } = useGetOpportunityQuery(
@@ -280,7 +417,7 @@ const CardDetails = () => {
     const slideWidth = Dimensions.get("window").width;
     const offset = event.nativeEvent.contentOffset.x;
     const index = Math.round(offset / slideWidth);
-    setActiveSlide(index); 
+    setActiveSlide(index);
   };
 
   if (!id || !type) return <Text>{i18n.t("noOpportunityIdOrType")}</Text>;
@@ -296,7 +433,7 @@ const CardDetails = () => {
       isLiked,
       data: data?.data,
       activeSlide,
-      onScroll: handleScroll, 
+      onScroll: handleScroll,
     };
 
     return (
@@ -328,6 +465,7 @@ const CardDetails = () => {
           <FeaturesSection
             number_of_bedrooms={data?.data?.number_of_bedrooms}
             number_of_bathrooms={data?.data?.number_of_bathrooms}
+            area={data?.data?.area}
           />
           <BadgeAndDescription
             opportunity_type={data?.data?.opportunity_type}
@@ -343,9 +481,11 @@ const CardDetails = () => {
           available_shares={data?.data?.available_shares}
           number_of_shares={data?.data?.number_of_shares}
           opportunityType={opportunityType}
+          unit_appreciation={data?.data?.unit_appreciation}
+          unit_appreciation_percentage={data?.data?.unit_appreciation}
         />
         {opportunityType === "project" ? (
-          <NightsPerYearSection />
+          <NightsPerYearSection data={data} />
         ) : (
           <ROIPerYearSection data={data} />
         )}

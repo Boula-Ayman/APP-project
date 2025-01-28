@@ -2,22 +2,21 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import apiSlice from "../../api/apiSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
-const verifyApiSlice = apiSlice.injectEndpoints({
+const logoutApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    postVerify: builder.mutation({
-      queryFn: async (formData, queryApi, extraOptions, baseQuery) => {
+    postLogout: builder.mutation({
+      queryFn: async (arg, queryApi, extraOptions, baseQuery) => {
         try {
           const token = await AsyncStorage.getItem("access_token");
           if (!token) {
             throw new Error("No access token found");
           }
           const result = await baseQuery({
-            url: "/users/account/verify",
+            url: "/auth/logout",
             method: "POST",
             headers: {
               Authorization: `Bearer ${token}`,
             },
-            body: formData,
           });
           return result;
         } catch (error) {
@@ -32,6 +31,7 @@ const verifyApiSlice = apiSlice.injectEndpoints({
       },
     }),
   }),
+  overrideExisting: true, // Allow overriding existing endpoints
 });
 
-export const { usePostVerifyMutation } = verifyApiSlice;
+export const { usePostLogoutMutation } = logoutApiSlice;

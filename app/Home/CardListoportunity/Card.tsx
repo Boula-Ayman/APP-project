@@ -21,9 +21,9 @@ const Card: React.FC<CardProps> = ({ item, isLiked, onLoveIconPress }) => {
   return (
     <View style={styles.card}>
       <View>
-        {item.status === "sold out" && (
+        {/* {item.status === "sold out" && (
           <Text style={styles.soldOutLabel}>{i18n.t("soldOut")}</Text>
-        )}
+        )} */}
       </View>
       <View style={styles.imageWrapper}>
         <Image source={{ uri: item?.media[0]?.url }} style={styles.cardImage} />

@@ -4,6 +4,7 @@ import SearchBar from "../Home/HeaderComponents/SearchBar";
 import FilterButton from "../Home/HeaderComponents/FilterButton";
 import { useGetOpportunitiesQuery, useLazyGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
 import Card from "../Home/CardListoportunity/Card";
+
 import styles from "./indexStyle";
 import PageHeader from "@/components/page/header";
 import { useTranslation } from "react-i18next";

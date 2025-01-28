@@ -15,6 +15,13 @@ const opportunitiesApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    opportunityRegisterInterest: builder.mutation({
+      query: ({ id, body, type }) => ({
+        url: `/opportunities/register-interest/${id}?opportunity_type=${type}`,
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -22,4 +29,5 @@ export const {
   useGetOpportunitiesQuery,
   useGetOpportunityQuery,
   useLazyGetOpportunitiesQuery,
+  useOpportunityRegisterInterestMutation,
 } = opportunitiesApiSlice;
