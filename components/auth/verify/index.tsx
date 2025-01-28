@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { usePostVerifyMutation } from "../../../src/auth/veirfy/verify";
-import { number } from "yup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { OtpInput } from "react-native-otp-entry";
 import { router } from "expo-router";
@@ -48,7 +47,7 @@ const VerificationScreen: React.FC = () => {
       setErrorMessage("");
       console.log("Success verify", verify);
       await AsyncStorage.removeItem("access_token");
-      router.push("/Home/homescreen" as any);
+      router.push("/" as any);
     } catch (error) {
       if (typeof error === "object" && error !== null && "data" in error) {
         setErrorMessage("The OTP is incorrect. Please try again.");
@@ -178,7 +177,7 @@ const styles = StyleSheet.create({
   verifyButton: {
     backgroundColor: "#8BC240",
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 20,
     alignItems: "center",
   },
   verifyButtonText: {

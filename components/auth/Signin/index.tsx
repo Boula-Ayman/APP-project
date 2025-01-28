@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,6 +15,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import i18n from "../../../src/i18n/i18n";
 
+import styles from "./signInStyle";
+
 interface SignInFormValues {
   email: string;
   password: string;
@@ -29,6 +31,7 @@ const SigninPage: React.FC = () => {
   const { t } = { t: i18n.t.bind(i18n) };
   const initialValues: SignInFormValues = { email: "", password: "" };
   const [postSignIn] = usePostSignInMutation();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (
     values: SignInFormValues,
@@ -47,14 +50,17 @@ const SigninPage: React.FC = () => {
       console.log("Access Token:", token);
 
       if (token) {
-        await AsyncStorage.removeItem("access_token");
         await AsyncStorage.setItem("access_token", token);
-        router.push("/Home/homescreen" as any);
+        console.log("Token stored successfully");
+        router.push("/" as any);
+        setErrorMessage(null);
       } else {
         console.error("Invalid access token");
+        setErrorMessage("Invalid email or password");
       }
     } catch (error) {
       console.error("Sign in failed:", error);
+      setErrorMessage("Invalid email or password");
       const errorDetails = (error as any)?.data;
       if (errorDetails) {
         console.error("Error details:", errorDetails);
@@ -71,6 +77,7 @@ const SigninPage: React.FC = () => {
     >
       <View style={styles.innerContainer}>
         <Text style={styles.title}>{t("signIn.title")}</Text>
+        {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
         <Formik
           initialValues={initialValues}
           validationSchema={SignInSchema}
@@ -131,94 +138,5 @@ const SigninPage: React.FC = () => {
     </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 16,
-  },
-  innerContainer: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  title: {
-    fontFamily: "Inter",
-    fontSize: 32,
-    fontWeight: "600",
-    lineHeight: 38.73,
-    letterSpacing: 0.5,
-    textAlign: "center",
-    right: 100,
-    top: -70,
-    color: "#000000",
-  },
-  header: {
-    width: 100,
-    height: 16,
-    top: -14,
-    fontFamily: "Inter",
-    fontSize: 14,
-    fontWeight: "600",
-    lineHeight: 16,
-    letterSpacing: 0.5,
-    textAlign: "left",
-  },
-  input: {
-    height: 40,
-    borderWidth: 1,
-    marginBottom: 25,
-    paddingHorizontal: 8,
-    borderColor: "#EFEFEF",
-  },
-  button: {
-    backgroundColor: "#8BC240",
-    padding: 10,
-    alignItems: "center",
-    marginBottom: 12,
-    width: 335,
-    height: 60,
-    borderRadius: 40,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    top: 10,
-  },
-  errorText: {
-    color: "red",
-    marginBottom: 8,
-    fontSize: 14,
-    fontWeight: "bold",
-    textAlign: "center",
-    padding: 5,
-    borderRadius: 5,
-  },
-  signUpText: {
-    width: 242,
-    height: 20,
-    textAlign: "center",
-    color: "black",
-    top: 170,
-    left: 30,
-    fontFamily: "Inter",
-    fontSize: 16,
-    fontWeight: "400",
-    lineHeight: 25.6,
-  },
-  signUp: {
-    color: "#8BC240",
-    textAlign: "center",
-    height: 30,
-    fontFamily: "Inter",
-    fontSize: 16,
-    fontWeight: "400",
-    lineHeight: 25.6,
-  },
-});
 
 export default SigninPage;

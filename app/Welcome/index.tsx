@@ -1,27 +1,37 @@
 import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import i18n from "../../src/i18n/i18n";
+import { useFonts, Inter_500Medium } from "@expo-google-fonts/inter";
 
 import SliderPage from "./SliderPage";
 import { router } from "expo-router";
+import Button from "@/commonComponent/button/Button";
 
 const TabLayout = () => {
   const { t } = { t: i18n.t.bind(i18n) };
+
+  const [fontsLoaded] = useFonts({
+    Inter_500Medium,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const handleSingIn = () => {
     router.push("/(auth)/signIn");
   };
   const handleSignUp = () => {
-    // router.push("/(auth)/Signup" as any);
-    router.push("/" as any);
+    router.push("/(auth)/Signup" as any);
+    // router.push("/" as any);
   };
   return (
     <>
       <SliderPage />
       <View style={styles.tabContainer}>
-        <TouchableOpacity style={styles.buttonGreen} onPress={handleSingIn}>
+        <Button onPress={handleSingIn}>
           <Text style={styles.buttonText}>{t("sliderSignIn")}</Text>
-        </TouchableOpacity>
+        </Button>
         <TouchableOpacity style={styles.buttonDark} onPress={handleSignUp}>
           <Text style={styles.buttonText}>{t("sliderSignUp")}</Text>
         </TouchableOpacity>
@@ -38,40 +48,31 @@ const styles = StyleSheet.create({
     right: 0,
     padding: 2,
     backgroundColor: "#fff",
-    borderTopWidth: 1,
+    height: 132,
     borderTopColor: "#ccc",
-  },
-  buttonGreen: {
-    backgroundColor: "#8BC240",
-    borderRadius: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    marginBottom: 10,
-    width: "100%",
-    alignItems: "center",
-    fontFamily: "Inter",
-    fontSize: 16,
-    fontWeight: "500",
-    lineHeight: 25.6,
-    textAlign: "left",
+    marginBottom: 8,
   },
   buttonDark: {
     backgroundColor: "#1A1A1A",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
     borderRadius: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    width: "100%",
+    marginLeft: 10,
     alignItems: "center",
-    fontFamily: "Inter",
+    width: 335,
+    height: 56,
+    fontFamily: "Inter_500Medium",
     fontSize: 16,
     fontWeight: "500",
     lineHeight: 25.6,
     textAlign: "left",
+    marginTop: 10,
   },
   buttonText: {
     color: "#FFFFFF",
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "Inter_500Medium",
+    lineHeight: 25.6,
   },
 });
 

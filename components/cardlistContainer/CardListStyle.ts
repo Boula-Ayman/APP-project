@@ -10,9 +10,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   card: {
-    width: 284,
+    width: 288,
     height: 380,
-    marginRight: 10, // Spacing between cards
+    marginRight: 15, // Spacing between cards
     borderRadius: 22,
     backgroundColor: "#fff",
     borderWidth: 0.85,

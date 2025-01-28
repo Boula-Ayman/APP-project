@@ -74,9 +74,9 @@ const HomeScreen: React.FC = ({}) => {
   }, [searchTerm]);
 
   const handleFilterChange = async (newFilters: {
-    type: string | null;
-    country: string | null;
-    status: string | null;
+    type?: string;
+    country?: string;
+    status?: string;
   }) => {
     setFilters(newFilters);
     try {
@@ -109,12 +109,10 @@ const HomeScreen: React.FC = ({}) => {
           <Header notifications={notifications} />
           <SearchBar searchTerm={searchTerm} onChangeText={setSearchTerm} />
           <FilterButton onFilterChange={handleFilterChange} />
-
           <FilterButtons
             onFilterChange={(newStatus: string | null) =>
               handleFilterChange({
-                type: filters?.type ?? null,
-                country: filters?.country ?? null,
+                ...filters,
                 status: newStatus,
               })
             }

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, FlatList, SafeAreaView } from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 import SearchBar from "../Home/HeaderComponents/SearchBar";
 import FilterButton from "../Home/HeaderComponents/FilterButton";
 import { useGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
-import Card from "../Home/CardListoportunity/Card";
+import CardList from "../../components/cardlistContainer/CardList";
+
 import styles from "./indexStyle";
 
 interface FilterScreenProps {
@@ -28,6 +29,7 @@ const ViewAll: React.FC<FilterScreenProps> = ({
       return newLikedItems;
     });
   };
+
   return (
     <SafeAreaView style={styles.mainContainer}>
       <View style={styles.searchContainer}>
@@ -41,19 +43,7 @@ const ViewAll: React.FC<FilterScreenProps> = ({
         ) : error ? (
           <Text>Error loading data</Text>
         ) : (
-          <FlatList
-            data={data.data}
-            renderItem={({ item }) => (
-              <Card
-                item={item}
-                isLiked={likedItems.includes(item.id)}
-                onLoveIconPress={() => handleLoveIconPress(item.id)}
-              />
-            )}
-            keyExtractor={(item) => item.id.toString()}
-            ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
-            showsVerticalScrollIndicator={false}
-          />
+          <CardList opportunities={data.data} />
         )}
       </View>
     </SafeAreaView>

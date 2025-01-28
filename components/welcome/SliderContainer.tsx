@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -14,12 +14,31 @@ import { LinearGradient } from "expo-linear-gradient";
 import Bathroom from "../../assets/icons/bathroom.svg";
 import Bedroom from "../../assets/icons/Bedroom.svg";
 import Parking from "../../assets/icons/parking.svg";
+import { useFonts, Inter_500Medium } from "@expo-google-fonts/inter";
+import * as Font from "expo-font";
 
 const Welcome = () => {
   const { width: screenWidth } = Dimensions.get("window");
   const [activeSlide, setActiveSlide] = useState(0);
   const flatListRef = useRef<FlatList>(null);
+  const [fontsLoaded] = useFonts({
+    Inter_500Medium,
+  });
 
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        Inter_400Regular: require("../../assets/fonts/Inter/Inter_24pt-Regular.ttf"),
+        Inter_600SemiBold: require("../../assets/fonts/Inter/Inter_24pt-SemiBold.ttf"),
+      });
+    };
+
+    loadFonts();
+  }, []);
+
+  if (!fontsLoaded) {
+    return null;
+  }
   const slides = [
     {
       id: "1",
@@ -70,15 +89,15 @@ const Welcome = () => {
         {item.id === "2" && (
           <View style={styles.iconsContainer}>
             <View style={styles.iconItem1}>
-              <Bathroom width={40} height={40} />
+              <Bathroom width={28} height={28} />
               <Text style={styles.iconLabel}>3 bathrooms</Text>
             </View>
             <View style={styles.iconItem2}>
-              <Parking width={40} height={40} />
+              <Bedroom width={28} height={28} />
               <Text style={styles.iconLabel}>3 Bedrooms</Text>
             </View>
             <View style={styles.iconItem3}>
-              <Bedroom width={40} height={40} />
+              <Parking width={28} height={28} />
               <Text style={styles.iconLabel}>6 parking zones</Text>
             </View>
           </View>
@@ -186,7 +205,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: 375,
     height: 145,
-    top: 295,
+    top: 315,
   },
   gradient: {
     flex: 1,
@@ -195,21 +214,22 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     top: 20,
     textAlign: "center",
-    fontFamily: "Inter",
+    fontFamily: "Inter_600SemiBold",
     fontSize: 24,
     fontWeight: "600",
     lineHeight: 25.6,
     textDecorationLine: "none",
     color: "#0E0C20",
+    width: 315,
   },
   description: {
-    fontFamily: "Inter",
+    fontFamily: "Inter_400Regular",
     fontSize: 16,
     fontWeight: "400",
-    lineHeight: 19.6,
+    lineHeight: 25,
     textAlign: "center",
     color: "#242B36",
-    top: 15,
+    top: 3,
   },
   gradientDot: {
     width: 20,
@@ -217,7 +237,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginHorizontal: 5,
     right: 10,
-    top: -40,
+    top: -85,
   },
   inactiveDot: {
     width: 20,
@@ -225,7 +245,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: "#ccc",
     marginHorizontal: 5,
-    top: -40,
+    top: -85,
     right: 10,
   },
   paginationContainer: {
@@ -269,20 +289,23 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     textAlign: "center",
-    width: 141,
+    width: 145,
     height: 52,
     backgroundColor: "white",
     borderRadius: 10,
     gap: 5,
-    top: 200,
-    right: 150,
+    top: 255,
+    right: 145,
+    zIndex: 100,
   },
   iconLabel: {
-    fontFamily: "Inter",
+    fontFamily: "Inter_400Regular",
     fontSize: 14,
     fontWeight: "400",
     color: "#242B36",
     alignItems: "center",
+    right: 1,
+    zIndex: 100,
   },
 });
 

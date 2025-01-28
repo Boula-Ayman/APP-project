@@ -43,8 +43,8 @@ const Header = ({
         <Image source={{ uri: item.url }} style={styles.propertyImage} />
       )}
       keyExtractor={(item) => item.url}
-      onScroll={onScroll} 
-      scrollEventThrottle={16} 
+      onScroll={onScroll}
+      scrollEventThrottle={16}
     />
     <View style={styles.icons}>
       <TouchableOpacity style={styles.icon1} onPress={onBackPress}>
@@ -93,17 +93,17 @@ const PriceSection = ({
 const FeaturesSection = ({ number_of_bedrooms, number_of_bathrooms }) => (
   <View style={styles.features}>
     <View style={styles.featureItem}>
-      <Furniture />
+      <Furniture style={styles.featureIcon} />
       <Text style={styles.featureText}>2,553sqft</Text>
     </View>
     <View style={styles.featureItem}>
-      <Frame52 />
+      <Frame52 style={styles.featureIcon} />
       <Text style={styles.featureText}>
         {i18n.t("bedrooms", { count: number_of_bedrooms })}
       </Text>
     </View>
     <View style={styles.featureItem}>
-      <Frame54 />
+      <Frame54 style={styles.featureIcon} />
       <Text style={styles.featureText}>
         {i18n.t("bathroom", { count: number_of_bathrooms })}
       </Text>
@@ -246,11 +246,11 @@ const NightsPerYearSection = () => (
 );
 
 const CardDetails = () => {
-  const [opportunityType, setOpportunityType] = useState("property");
-  const [isLiked, setisLiked] = useState(false);
-  const [activeSlide, setActiveSlide] = useState(0); 
+  const [opportunityType, setOpportunityType] = useState("project");
+  const [isLiked, setIsLiked] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
   const router = useRouter();
-  const { id, type } = useLocalSearchParams();
+  const { id, type, likedItems } = useLocalSearchParams();
   const { data, isLoading, isError } = useGetOpportunityQuery(
     { id, type },
     {
@@ -274,13 +274,19 @@ const CardDetails = () => {
     return () => backHandler.remove();
   }, [router]);
 
-  const toggleLike = () => setisLiked((prev) => !prev);
+  useEffect(() => {
+    if (likedItems && typeof id === "string") {
+      setIsLiked(likedItems.includes(id));
+    }
+  }, [likedItems, id]);
+
+  const toggleLike = () => setIsLiked((prev) => !prev);
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const slideWidth = Dimensions.get("window").width;
     const offset = event.nativeEvent.contentOffset.x;
     const index = Math.round(offset / slideWidth);
-    setActiveSlide(index); 
+    setActiveSlide(index);
   };
 
   if (!id || !type) return <Text>{i18n.t("noOpportunityIdOrType")}</Text>;
@@ -296,7 +302,7 @@ const CardDetails = () => {
       isLiked,
       data: data?.data,
       activeSlide,
-      onScroll: handleScroll, 
+      onScroll: handleScroll,
     };
 
     return (

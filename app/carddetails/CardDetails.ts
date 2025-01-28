@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     justifyContent: "center",
     flexDirection: "row",
-    top: 15,
+    top: 38,
   },
   icon1: {
     backgroundColor: "white",
@@ -63,14 +63,15 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
     marginTop: -35,
-    backgroundColor: "white", // Ensure background color is set
+    backgroundColor: "white",
   },
   priceSection: {
     width: "60%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 8,
+    marginBottom: 12,
+    top: 5,
   },
   price: {
     fontFamily: "Poppins",
@@ -114,6 +115,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginRight: 22,
+  },
+  featureIcon: {
+    width: "80%",
+    height: "80%",
   },
   featureText: {
     marginLeft: 4,

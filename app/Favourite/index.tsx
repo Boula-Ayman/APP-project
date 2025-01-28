@@ -1,29 +1,52 @@
 import React from "react";
-import { usePostWishListMutation } from "../../src/wishList/AdWishList/wishListApiSliceAdd";
-
+import { useSelector } from "react-redux";
+import { View, Text, ScrollView, StyleSheet } from "react-native";
+import { RootState } from "../../src/store";
+import CardList from "@/components/cardlistContainer/CardList";
+import { useGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
 const TestWishListComponent = () => {
-  const [postWishList, { isLoading, isSuccess, isError, data, error }] =
-    usePostWishListMutation();
+  const likedItems = useSelector(
+    (state: RootState) => state.wishlist.likedItems
+  );
+  console.log("Liked Items:", likedItems);
+  const { data, error, isLoading } = useGetOpportunitiesQuery({
+    refetchOnMountOrArgChange: true,
+  });
 
-  const handleAddToWishList = async () => {
-    try {
-      const result = await postWishList({ id: "some-id" }).unwrap();
-      console.log("WishList added successfully:", result);
-    } catch (err) {
-      console.error("Failed to add to WishList:", err);
-    }
-  };
+  // Filter the opportunities to only include liked items
+  const likedOpportunities = data?.data.filter((item) =>
+    likedItems.includes(item.id)
+  );
 
   return (
-    <div>
-      <button onClick={handleAddToWishList} disabled={isLoading}>
-        Add to WishList
-      </button>
-      {isLoading && <p>Loading...</p>}
-      {isSuccess && <p>Added to WishList!</p>}
-      {isError && <p>Error adding to WishList: {error.toString()}</p>}
-    </div>
+    <View style={styles.container}>
+      {likedOpportunities?.length > 0 ? (
+        <ScrollView contentContainerStyle={styles.scrollView}>
+          {likedOpportunities.map((opportunity) => (
+            <View key={opportunity.id} style={styles.cardContainer}>
+              <CardList opportunities={[opportunity]} />
+            </View>
+          ))}
+        </ScrollView>
+      ) : (
+        <Text>No items in the wishlist.</Text>
+      )}
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "column",
+  },
+  scrollView: {
+    flexGrow: 1,
+    flexDirection: "column",
+  },
+  cardContainer: {
+    // Add appropriate styles for the card container
+  },
+});
 
 export default TestWishListComponent;

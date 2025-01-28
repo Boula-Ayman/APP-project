@@ -22,13 +22,13 @@ const TabLayout = () => {
   return (
     <>
       <Tabs screenOptions={{ headerShown: false }}>
-        <Tabs.Screen
+        {/* <Tabs.Screen
           name="carddetails/[id]"
           options={{
             href: "/carddetails/[id]",
             tabBarStyle: { display: "none" },
           }}
-        />
+        /> */}
       </Tabs>
       <View style={styles.tabContainer}>
         <TouchableOpacity
