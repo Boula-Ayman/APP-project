@@ -39,7 +39,7 @@ export default function Layout() {
 
       // Check for token in local storage
       const token = await AsyncStorage.getItem("access_token");
-      console.log("Retrieved token:", token);
+
       if (token) {
         router.push("/" as any);
       } else {
@@ -58,7 +58,7 @@ export default function Layout() {
     await AsyncStorage.removeItem("access_token");
     router.push("/Welcome" as any);
   };
-  // logout();
+  logout();
   return (
     <Provider store={store}>
       <PersistGate

@@ -4,25 +4,28 @@ import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { RootState } from "../../src/store";
 import CardList from "@/components/cardlistContainer/CardList";
 import { useGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
+import { useGetWishListQuery } from "@/src/wishList/AdWishList/wishListApiSliceAdd";
+import { ref } from "yup";
+import { SafeAreaView } from "react-native-safe-area-context";
 const TestWishListComponent = () => {
   const likedItems = useSelector(
     (state: RootState) => state.wishlist.likedItems
   );
   console.log("Liked Items:", likedItems);
-  const { data, error, isLoading } = useGetOpportunitiesQuery({
+  const { data, error, isLoading, refetch } = useGetWishListQuery({
     refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    refetchOnUnmount: true,
   });
-
-  // Filter the opportunities to only include liked items
-  const likedOpportunities = data?.data.filter((item) =>
-    likedItems.includes(item.id)
-  );
-
+  const user = useSelector((state: RootState) => state.user);
+  console.log("user", user);
+  console.log(data, "data");
   return (
-    <View style={styles.container}>
-      {likedOpportunities?.length > 0 ? (
+    <SafeAreaView style={styles.container}>
+      {data?.data.length > 0 ? (
         <ScrollView contentContainerStyle={styles.scrollView}>
-          {likedOpportunities.map((opportunity) => (
+          {data.data.map((opportunity) => (
             <View key={opportunity.id} style={styles.cardContainer}>
               <CardList opportunities={[opportunity]} />
             </View>
@@ -31,7 +34,7 @@ const TestWishListComponent = () => {
       ) : (
         <Text>No items in the wishlist.</Text>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -39,6 +42,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
   scrollView: {
     flexGrow: 1,

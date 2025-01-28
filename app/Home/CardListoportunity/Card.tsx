@@ -9,6 +9,7 @@ import Frame54 from "../../../assets/icons/Frame54.svg";
 import { formatPrice } from "@/utils/formatPrice";
 import i18n from "../../../src/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
+import FilledHeart from "@/assets/icons/filledHeart.svg";
 
 export interface CardProps {
   item: Opportunity;
@@ -46,10 +47,11 @@ const Card: React.FC<CardProps> = ({ item, isLiked, onLoveIconPress }) => {
             style={styles.HeartOverlay}
             onPress={onLoveIconPress}
           >
-            <LoveIcon
-              style={styles.Heart}
-              fill={isLiked ? "#8BC240" : "white"}
-            />
+            {!isLiked ? (
+              <LoveIcon style={styles.Heart} fill={"white"} />
+            ) : (
+              <FilledHeart />
+            )}
           </TouchableOpacity>
         </View>
         <Text style={styles.cardTitle}>
