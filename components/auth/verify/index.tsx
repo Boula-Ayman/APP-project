@@ -11,7 +11,7 @@ import { number } from "yup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { OtpInput } from "react-native-otp-entry";
 import { router } from "expo-router";
-import i18n from "../../../src/i18n/i18n";
+import i18n from "../../../i18n/i18n";
 
 const VerificationScreen: React.FC = () => {
   const [timer, setTimer] = useState<number>(90); // 1 minute and 30 seconds

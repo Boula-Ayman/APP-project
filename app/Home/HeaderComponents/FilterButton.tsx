@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useGetOpportunitiesQuery } from "../../../src/api/opportunitiesApiSlice";
-import i18n from "../../../src/i18n/i18n";
+import i18n from "../../../i18n/i18n";
 import IMark from "../../../assets/icons/iMark.svg";
 import FilterIcon from "../../../assets/icons/Tuning2.svg";
 import DropDownPicker from "react-native-dropdown-picker";

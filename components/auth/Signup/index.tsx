@@ -13,7 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { usePostSignUpMutation } from "../../../src/auth/signup/signuupApiSlice";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import i18n from "../../../src/i18n/i18n";
+import i18n from "../../../i18n/i18n";
 
 const SignUpPage: React.FC = () => {
   const { t } = { t: i18n.t.bind(i18n) };

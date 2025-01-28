@@ -12,7 +12,7 @@ import {
   useGetOpportunitiesQuery,
   useLazyGetOpportunitiesQuery,
 } from "@/src/api/opportunitiesApiSlice";
-import i18n from "@/src/i18n/i18n";
+import i18n from "@/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 import { StatusBar } from "expo-status-bar";
 import { PROPERTIES_STATUS, PropertiesStatusKeys } from "@/constants/Enums";
@@ -48,9 +48,9 @@ const HomeScreen: React.FC = ({}) => {
   const handleSearch = (newSearchTerm: string) => {
     setSearchTerm(newSearchTerm);
     const filteredOpportunities = data.data.filter((item: Opportunity) => {
-        const title = i18n.locale === "ar" ? item.title_ar : item.title_en;
+        const title = i18n.language === "ar" ? item.title_ar : item.title_en;
         const location =
-            i18n.locale === "ar" ? item.location_ar : item.location_en;
+            i18n.language === "ar" ? item.location_ar : item.location_en;
         return (
             title.toLowerCase().includes(newSearchTerm.toLowerCase()) ||
             location.toLowerCase().includes(newSearchTerm.toLowerCase())

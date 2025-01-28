@@ -7,7 +7,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import Frame52 from "../../../assets/icons/Frame52.svg";
 import Frame54 from "../../../assets/icons/Frame54.svg";
 import { formatPrice } from "@/utils/formatPrice";
-import i18n from "../../../src/i18n/i18n";
+import i18n from "../../../i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 
 export interface CardProps {
@@ -53,7 +53,7 @@ const Card: React.FC<CardProps> = ({ item, isLiked, onLoveIconPress }) => {
           </TouchableOpacity>
         </View>
         <Text style={styles.cardTitle}>
-          {i18n.locale === "ar" ? item.title_ar : item.title_en}
+          {i18n.language === "ar" ? item.title_ar : item.title_en}
         </Text>
         <View style={styles.locationSection}>
           <AntDesign
@@ -63,7 +63,7 @@ const Card: React.FC<CardProps> = ({ item, isLiked, onLoveIconPress }) => {
             style={styles.location}
           />
           <Text style={styles.cardLocation}>
-            {i18n.locale === "ar" ? item.location_ar : item.location_en}
+            {i18n.language === "ar" ? item.location_ar : item.location_en}
           </Text>
         </View>
         <View style={styles.features}>

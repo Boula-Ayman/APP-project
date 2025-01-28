@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Pressable } from "react-native";
 import styles from "../../../components/homeScreenContainer/HomeScreenStyle";
-import i18n from "../../../src/i18n/i18n";
+import i18n from "../../../i18n/i18n";
 import { Href, Link } from "expo-router";
 
 const SectionHeader: React.FC = () => {

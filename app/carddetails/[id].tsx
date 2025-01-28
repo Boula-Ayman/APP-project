@@ -15,7 +15,7 @@ import {
 import { useGetOpportunityQuery } from "@/src/api/opportunitiesApiSlice";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import i18n from "@/src/i18n/i18n";
+import i18n from "@/i18n/i18n";
 import { formatPrice } from "@/utils/formatPrice";
 import Frame52 from "@/assets/icons/Frame52.svg";
 import Frame54 from "@/assets/icons/Frame54.svg";
@@ -122,7 +122,7 @@ const BadgeAndDescription = ({
     </View>
     <Text style={styles.descriptionTitle}>{i18n.t("description")}</Text>
     <Text style={styles.description}>
-      {i18n.locale === "en" ? description_en : description_ar}
+      {i18n.language === "en" ? description_en : description_ar}
     </Text>
   </View>
 );
@@ -310,7 +310,7 @@ const CardDetails = () => {
             number_of_shares={data?.data?.number_of_shares}
           />
           <Text style={styles.title}>
-            {i18n.locale === "ar" ? data?.data?.title_ar : data?.data?.title_en}
+            {i18n.language === "ar" ? data?.data?.title_ar : data?.data?.title_en}
           </Text>
           <View style={styles.locationContainer}>
             <AntDesign
@@ -320,7 +320,7 @@ const CardDetails = () => {
               style={styles.locationicon}
             />
             <Text style={styles.location}>
-              {i18n.locale === "ar"
+              {i18n.language === "ar"
                 ? data?.data?.location_ar
                 : data?.data?.location_en}
             </Text>

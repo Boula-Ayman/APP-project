@@ -2,7 +2,7 @@
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import styles from "../../components/homeScreenContainer/HomeScreenStyle";
-import i18n from "../../src/i18n/i18n";
+import i18n from "../../i18n/i18n";
 import {PROPERTIES_STATUS, PropertiesStatusKeys} from '../../constants/Enums';
 
 interface FilterButtonsProps {

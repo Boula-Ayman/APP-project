@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Phone from "../../assets/Images/iPhone.svg";
 import Screen from "../../assets/Images/Screentest.svg";
-import i18n from "@/src/i18n/i18n";
+import i18n from "@/i18n/i18n";
 import { LinearGradient } from "expo-linear-gradient";
 import Bathroom from "../../assets/icons/bathroom.svg";
 import Bedroom from "../../assets/icons/Bedroom.svg";
