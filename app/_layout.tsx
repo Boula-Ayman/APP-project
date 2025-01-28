@@ -12,7 +12,7 @@ export default function Layout() {
   useEffect(() => {
     const timer = setTimeout(async () => {
       await SplashScreen.hideAsync();
-      router.push("/Welcome" as any);
+      router.push("Home/Homescreen" as any);
     }, 500);
 
     return () => clearTimeout(timer);
@@ -24,7 +24,7 @@ export default function Layout() {
         loading={<ActivityIndicator size="large" color="#0000ff" />}
         persistor={Persistor}
       >
-        <Stack>
+        <Stack screenOptions={{ headerShown: false }}>
           {/* <Stack.Screen
             name="verify"
             options={{

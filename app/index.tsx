@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, KeyboardAvoidingView, Platform, Keyboard } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "./Home/homescreen";
+import HomeScreen from "./Home/Homescreen";
 import PortfolioPage from "./PortfolioSreen/index";
 import Favorite from "./Favourite";
 import HomeIcon from "../assets/icons/home-wifi.svg";

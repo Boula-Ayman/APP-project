@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from "react";
 import { Animated, View, Dimensions, Pressable } from "react-native";
 import styles from "./CardListStyle";
 import Card from "../../app/Home/CardListoportunity/Card";
-import i18n from "../../src/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 import { Link } from "expo-router";
 import {
@@ -10,7 +9,6 @@ import {
   useRemoveWishListMutation,
 } from "@/src/wishList/AdWishList/wishListApiSliceAdd";
 
-type CardDetailsHref = `/carddetails/${number}?type=${string}`;
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = 284;
 const SPACING = 25;
