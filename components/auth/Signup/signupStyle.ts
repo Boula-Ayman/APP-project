@@ -8,8 +8,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     padding: 20,
     flexGrow: 1,
-    gap: 25,
-    top: -39,
+    gap: 15,
   },
   backContainer: {
     flexDirection: "row",
@@ -19,7 +18,7 @@ const styles = StyleSheet.create({
   backButton: {
     width: 48,
     height: 48,
-    top: 71,
+    top: 30,
     right: 58,
     backgroundColor: "#F6F6F6",
     borderRadius: 100,
@@ -30,7 +29,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     fontFamily: "Inter_600SemiBold",
-    top: 71,
+    top: 40,
     left: 15,
     color: "gray",
   },
@@ -41,17 +40,27 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: "600",
     fontFamily: "Inter_600SemiBold",
-    top: 60,
+    marginTop: 12,
+  },
+  Name: {
+    fontSize: 14,
+    fontWeight: "600",
+    fontFamily: "Inter_600SemiBold",
+    marginBottom: 10,
   },
   row: {
+    flexDirection: "column",
+  },
+  inputContainer: {
     flexDirection: "row",
+    gap: 15,
+  },
+  errorContainer: {
+    flexDirection: "column",
     justifyContent: "space-between",
   },
-  halfInput: {
-    width: "48%",
-  },
+
   firstName: {
-    top: 55,
     fontSize: 14,
     fontWeight: "600",
     fontFamily: "Inter_600SemiBold",
@@ -70,7 +79,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     fontFamily: "Inter_600SemiBold",
-    top: -15,
   },
   input: {
     borderWidth: 1,
@@ -114,12 +122,7 @@ const styles = StyleSheet.create({
     color: "#8BC240",
   },
   signUpButton: {
-    // backgroundColor: "#8BC240",
-    // padding: 15,
-    // borderRadius: 8,
-    // alignItems: "center",
-    top: -35,
-    right: 19,
+    width: "60%",
   },
   signUpButtonText: {
     color: "#fff",
@@ -130,7 +133,7 @@ const styles = StyleSheet.create({
     color: "red",
     fontSize: 14,
     textAlign: "center",
-    marginVertical: 10,
+    marginTop: -10,
   },
 });
 

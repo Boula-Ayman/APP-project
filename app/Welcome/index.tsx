@@ -22,17 +22,19 @@ const TabLayout = () => {
     router.push("/(auth)/signIn");
   };
   const handleSignUp = () => {
-    // router.push("/(auth)/Signup" as any);
+    router.push("/(auth)/Signup" as any);
     // router.push("/" as any);
-    router.push("/(auth)/verify" as any);
+    // router.push("/(auth)/verify" as any);
   };
   return (
     <>
       <SliderPage />
       <View style={styles.tabContainer}>
-        <Button onPress={handleSingIn}>
-          <Text style={styles.buttonText}>{t("sliderSignIn")}</Text>
-        </Button>
+        <View style={{ paddingHorizontal: 10 }}>
+          <Button onPress={handleSingIn}>
+            <Text style={styles.buttonText}>{t("sliderSignIn")}</Text>
+          </Button>
+        </View>
         <TouchableOpacity style={styles.buttonDark} onPress={handleSignUp}>
           <Text style={styles.buttonText}>{t("sliderSignUp")}</Text>
         </TouchableOpacity>

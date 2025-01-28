@@ -17,88 +17,65 @@ import i18n from "../../../src/i18n/i18n";
 import styles from "./signupStyle";
 import Button from "@/commonComponent/button/Button";
 import Arrow from "../../../assets/icons/Arrow.svg";
+import { Formik, FormikHelpers } from "formik";
+import * as Yup from "yup";
 
-import { useFonts } from "expo-font";
+const SignUpSchema = Yup.object().shape({
+  firstName: Yup.string().required(i18n.t("signup.required")),
+  lastName: Yup.string().required(i18n.t("signup.required")),
+  email: Yup.string()
+    .email(i18n.t("signup.invalidEmail"))
+    .required(i18n.t("signup.required")),
+  password: Yup.string()
+    .min(8, i18n.t("signup.passwordTooShort"))
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\[\]{};':"\\|,.<>\/?`~\-]).{8,}$/,
+      i18n.t("signup.invalidPassword")
+    )
+    .required(i18n.t("signup.required")),
+  birthDate: Yup.string().required(i18n.t("signup.required")),
+});
+
 const SignUpPage: React.FC = () => {
   const { t } = { t: i18n.t.bind(i18n) };
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  // const [phone_number, setPhone_Number] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [birthDate, setBirthDate] = useState("");
   const [postSignUp] = usePostSignUpMutation();
+  const [generalError, setGeneralError] = useState<string | null>(null);
 
-  const [fontsLoaded] = useFonts({
-    Inter_400Regular: require("../../../assets/fonts/Inter/Inter_24pt-Regular.ttf"),
-    Inter_600SemiBold: require("../../../assets/fonts/Inter/Inter_24pt-SemiBold.ttf"),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const handleSignUp = async () => {
-    const formData = {
-      name: `${firstName} ${lastName}`,
-      email,
-      password,
-      birth_date: birthDate,
-      // phone_number,
-    };
-
-    // email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setErrorMessage(t("signup.invalidEmail"));
-      return;
-    }
-
-    // password validation
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>\/?`~\-])[A-Za-z\d!@#$%^&*()_+[\]{};':"\\|,.<>\/?`~\-]{8,}$/;
-    if (!passwordRegex.test(password)) {
-      setErrorMessage(t("signup.invalidPassword"));
-      return;
-    }
-
-    // birth date validation
-    // const birthDateRegex = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD format
-    // if (!birthDateRegex.test(birthDate)) {
-    //   setErrorMessage(t("signup.invalidBirthDate"));
-    //   return;
-    // }
-
+  const handleSignUp = async (
+    values: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      password: string;
+      birthDate: string;
+    },
+    actions: FormikHelpers<any>
+  ) => {
     try {
-      const response = await postSignUp(formData).unwrap();
-      setErrorMessage("");
+      console.log(values);
+      const response = await postSignUp({
+        name: `${values.firstName} ${values.lastName}`,
+        email: values.email,
+        password: values.password,
+        birth_date: values.birthDate,
+      }).unwrap();
 
-      await AsyncStorage.removeItem("access_token");
       await AsyncStorage.setItem("access_token", response?.data?.access_token);
-      console.log(response);
-      router.push("/(auth)/verify" as any);
+      router.push("/(auth)/verify");
     } catch (error: any) {
-      console.error("Sign up failed:", error);
-
-      if ((error as { status?: number }).status === 409) {
-        setErrorMessage(t("signup.emailExists"));
+      if (error?.status === 409) {
+        actions.setErrors({ email: t("signup.emailExists") });
       } else if (
-        (error as { status?: number; message?: string }).status === 400 &&
-        error.message.includes("birth_date")
+        error?.status === 400 &&
+        error?.message?.includes("birth_date")
       ) {
-        setErrorMessage(t("signup.invalidBirthDate"));
+        actions.setErrors({ birthDate: t("signup.invalidBirthDate") });
       } else {
-        setErrorMessage(t("signup.signupFailed"));
+        setGeneralError(t("signup.signupFailed"));
       }
+    } finally {
+      actions.setSubmitting(false);
     }
-  };
-  const handleBackPress = () => {
-    router.push("/Welcome" as any);
   };
 
   return (
@@ -107,96 +84,119 @@ const SignUpPage: React.FC = () => {
       style={styles.container}
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.backContainer}>
-          <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-            <Arrow />
-          </TouchableOpacity>
-          <Text style={styles.backText}>
-            <Text style={styles.one}>1</Text> / 2
-          </Text>
-        </View>
-        <Text style={[styles.title, { fontFamily: "Inter_600SemiBold" }]}>
-          {t("signup.title")}
-        </Text>
-        <Text style={[styles.firstName, { fontFamily: "Inter_600SemiBold" }]}>
-          First Name
-        </Text>
-        <View>
-          <Text style={[styles.lastName, { fontFamily: "Inter_600SemiBold" }]}>
-            Last Name
-          </Text>
-        </View>
-        <View style={styles.row}>
-          <TextInput
-            style={[styles.input, styles.halfInput]}
-            placeholder="First Name"
-            value={firstName}
-            onChangeText={setFirstName}
-          />
+        <Formik
+          initialValues={{
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            birthDate: "",
+          }}
+          validationSchema={SignUpSchema}
+          onSubmit={handleSignUp}
+        >
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+            isSubmitting,
+          }) => (
+            <>
+              <View style={styles.backContainer}>
+                <TouchableOpacity
+                  style={styles.backButton}
+                  onPress={() => router.push("/Welcome")}
+                >
+                  <Arrow />
+                </TouchableOpacity>
+                <Text style={styles.backText}>
+                  <Text style={styles.one}>1</Text> / 2
+                </Text>
+              </View>
+              <Text style={styles.title}>{t("signup.title")}</Text>
 
-          <TextInput
-            style={[styles.input, styles.halfInput]}
-            placeholder="Last Name"
-            value={lastName}
-            onChangeText={setLastName}
-          />
-        </View>
-        <View style={styles.emailContainer}>
-          <Text style={[styles.email, { fontFamily: "Inter_600SemiBold" }]}>
-            Email
-          </Text>
-          <TextInput
-            style={styles.input}
-            placeholder={t("signup.emailPlaceholder")}
-            keyboardType="email-address"
-            value={email}
-            onChangeText={setEmail}
-          />
-        </View>
-        {/* <TextInput
-          style={styles.input}
-          placeholder={t("signup.birthDatePlaceholder")}
-          value={birthDate}
-          onChangeText={setBirthDate}
-        /> */}
-        <View style={styles.passwordContainer}>
-          <Text style={[styles.password, { fontFamily: "Inter_600SemiBold" }]}>
-            Password
-          </Text>
-          <TextInput
-            style={[styles.passwordInput]}
-            placeholder={t("signup.passwordPlaceholder")}
-            secureTextEntry={!showPassword}
-            value={password}
-            onChangeText={setPassword}
-          />
-          <TouchableOpacity onPress={togglePasswordVisibility}>
-            <Ionicons
-              name={showPassword ? "eye" : "eye-off"}
-              size={24}
-              color="gray"
-            />
-          </TouchableOpacity>
-        </View>
-        {/* <TextInput
-          style={styles.input}
-          placeholder="+20"
-          keyboardType="phone-pad"
-          value={phone_number}
-          onChangeText={setPhone_Number}
-        /> */}
-        <Text style={styles.termsText}>
-          {t("signup.termsText")}{" "}
-          <Text style={styles.linkText}>{t("signup.terms")}</Text>{" "}
-          {t("signup.and")}{" "}
-          <Text style={styles.linkText}>{t("signup.privacyPolicy")}</Text>.
-        </Text>
-        {errorMessage ? (
-          <Text style={styles.errorText}>{errorMessage}</Text>
-        ) : null}
-        <View style={styles.signUpButton}>
-          <Button onPress={handleSignUp}>{t("signup.signUpButton")}</Button>
-        </View>
+              <View style={styles.row}>
+                <View style={styles.inputContainer}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.Name}>{t("signup.firstName")}</Text>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="First Name"
+                      onChangeText={handleChange("firstName")}
+                      onBlur={handleBlur("firstName")}
+                      value={values.firstName}
+                    />
+                    {touched.firstName && errors.firstName && (
+                      <Text style={styles.errorText}>{errors.firstName}</Text>
+                    )}
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.Name}>{t("signup.lastName")}</Text>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Last Name"
+                      onChangeText={handleChange("lastName")}
+                      onBlur={handleBlur("lastName")}
+                      value={values.lastName}
+                    />
+                    {touched.lastName && errors.lastName && (
+                      <Text style={styles.errorText}>{errors.lastName}</Text>
+                    )}
+                  </View>
+                </View>
+              </View>
+              <View style={styles.emailContainer}>
+                <Text>{t("signup.email")}</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder={t("signup.emailPlaceholder")}
+                  keyboardType="email-address"
+                  onChangeText={handleChange("email")}
+                  onBlur={handleBlur("email")}
+                  value={values.email}
+                />
+                {touched.email && errors.email && (
+                  <Text style={styles.errorText}>{errors.email}</Text>
+                )}
+              </View>
+
+              <TextInput
+                style={styles.input}
+                placeholder={t("signup.birthDatePlaceholder")}
+                onChangeText={handleChange("birthDate")}
+                onBlur={handleBlur("birthDate")}
+                value={values.birthDate}
+              />
+              {touched.birthDate && errors.birthDate && (
+                <Text style={styles.errorText}>{errors.birthDate}</Text>
+              )}
+
+              <TextInput
+                style={styles.input}
+                placeholder={t("signup.passwordPlaceholder")}
+                secureTextEntry
+                onChangeText={handleChange("password")}
+                onBlur={handleBlur("password")}
+                value={values.password}
+              />
+              {touched.password && errors.password && (
+                <Text style={styles.errorText}>{errors.password}</Text>
+              )}
+
+              {generalError && (
+                <Text style={styles.errorText}>{generalError}</Text>
+              )}
+              <View>
+                <Button onPress={() => handleSubmit()} disabled={isSubmitting}>
+                  <Text>{t("signup.signUpButton")}</Text>
+                </Button>
+              </View>
+            </>
+          )}
+        </Formik>
       </ScrollView>
     </KeyboardAvoidingView>
   );

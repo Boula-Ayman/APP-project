@@ -52,6 +52,9 @@
   "ROI-Expected Appreciation": "ROI - Expected Appreciation",
   "signup": {
     "title": "Sign Up",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
     "emailPlaceholder": "Sample@gmail.com",
     "birthDatePlaceholder": "Birth Date (YYYY-MM-DD)",
     "passwordPlaceholder": "Password",
@@ -64,7 +67,9 @@
     "invalidPassword": "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.",
     "invalidBirthDate": "Birth date must be a date (YYYY-MM-DD).",
     "emailExists": "Email already exists. Please use a different email.",
-    "signupFailed": "Sign up failed. Please try again."
+    "signupFailed": "Sign up failed. Please try again.",
+    "required": "This field is required",
+    "passwordTooShort": "Password is too short"
   },
   "signIn": {
     "title": "Sign In",

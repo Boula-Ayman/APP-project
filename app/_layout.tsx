@@ -6,17 +6,25 @@ import { PersistGate } from "redux-persist/integration/react";
 import store, { Persistor } from "../src/store/index";
 import * as SplashScreen from "expo-splash-screen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFonts, Inter_400Regular } from "@expo-google-fonts/inter";
+import {
+  useFonts,
+  Inter_400Regular,
+  Inter_600SemiBold,
+} from "@expo-google-fonts/inter";
 
 SplashScreen.preventAutoHideAsync();
 // SplashScreen.setOptions({
 //   duration: 200,
 //   fade: true,
 // });
-
+// const [fontsLoaded] = useFonts({
+//   // Inter_400Regular: require("../../../assets/fonts/Inter/Inter_24pt-Regular.ttf"),
+//   // Inter_600SemiBold: require("../../../assets/fonts/Inter/Inter_24pt-SemiBold.ttf"),
+// });
 export default function Layout() {
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
+    Inter_600SemiBold,
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -46,10 +54,10 @@ export default function Layout() {
     return null;
   }
 
-  // const logout = async () => {
-  //   await AsyncStorage.removeItem("access_token");
-  //   router.push("/Welcome" as any);
-  // };
+  const logout = async () => {
+    await AsyncStorage.removeItem("access_token");
+    router.push("/Welcome" as any);
+  };
   // logout();
   return (
     <Provider store={store}>
