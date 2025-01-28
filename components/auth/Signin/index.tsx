@@ -47,7 +47,7 @@ const SigninPage: React.FC = () => {
       console.log("API Response:", response);
 
       const token = response?.data?.access_token;
-      console.log("Access Token:", token);
+      console.log(response);
 
       if (token) {
         await AsyncStorage.setItem("access_token", token);

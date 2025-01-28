@@ -69,6 +69,7 @@ const SignUpPage: React.FC = () => {
 
       await AsyncStorage.removeItem("access_token");
       await AsyncStorage.setItem("access_token", response?.data?.access_token);
+      console.log(response);
       router.push("/(auth)/verify" as any);
     } catch (error: any) {
       console.error("Sign up failed:", error);
