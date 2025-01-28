@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "rgba(139, 194, 64, 0)",
     paddingTop: 6,
-    alignItems: "flex-start", // Align items to the start
+    alignItems: "flex-start",
   },
   flatListContent: {
     paddingHorizontal: 10,
@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#8BC240",
   },
+
   ownerShip: {
     fontSize: 12,
     color: "#808080",
@@ -120,6 +121,18 @@ const styles = StyleSheet.create({
     marginLeft: 4,
     fontSize: 12,
     color: "#818181",
+  },
+  soldOutLabel: {
+    position: "relative",
+    width: "50%",
+    fontSize: 18,
+    color: "#FF0000",
+    marginTop: 5,
+    marginLeft: 10,
+    marginBottom: -15,
+    opacity: 1,
+    borderRadius: 10,
+    fontFamily: "Inter",
   },
 });
 

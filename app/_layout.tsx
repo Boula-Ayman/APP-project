@@ -1,14 +1,53 @@
-import { Stack } from "expo-router";
-import { StyleSheet, View, Text } from "react-native";
+import React, { useEffect } from "react";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
+import { router, Stack } from "expo-router";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import store, { Persistor } from "../src/store/index";
+import * as SplashScreen from "expo-splash-screen";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+SplashScreen.preventAutoHideAsync();
+
+export default function Layout() {
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      await SplashScreen.hideAsync();
+      router.push("Home/Homescreen" as any);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-    </Stack>
+    <Provider store={store}>
+      <PersistGate
+        loading={<ActivityIndicator size="large" color="#0000ff" />}
+        persistor={Persistor}
+      >
+        <Stack screenOptions={{ headerShown: false }}>
+          {/* <Stack.Screen
+            name="verify"
+            options={{
+              title: "All Properties",
+              headerShown: false,
+            }}
+          /> */}
+        </Stack>
+      </PersistGate>
+    </Provider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  splashScreen: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
+  splashText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
 });

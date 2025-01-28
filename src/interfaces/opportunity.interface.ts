@@ -12,5 +12,10 @@ export interface Opportunity {
   opportunity_type: string;
   number_of_bedrooms: number;
   number_of_bathrooms: number;
+  status: string;
   available_shares: number;
+}
+
+export interface CardListProps {
+  opportunities: Opportunity[];
 }

@@ -1,10 +1,9 @@
-// CardList.tsx
 import React, { useRef, useState } from "react";
-import { Animated, FlatList, View, Dimensions } from "react-native";
+import { Animated, View, Dimensions, Pressable } from "react-native";
 import styles from "./CardListStyle";
-import Card from "./CardListoportunity/Card";
-import i18n from "../../src/i18n/i18n";
+import Card from "../Home/CardListoportunity/Card";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
+import { Link } from "expo-router";
 
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = 284;
@@ -51,15 +50,22 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
             outputRange: [0.9, 1, 0.9],
             extrapolate: "clamp",
           });
-
+          
           return (
-            <Animated.View style={[{ transform: [{ scale }] }]}>
-              <Card
-                item={item}
-                isLiked={likedItems.includes(item.id)}
-                onLoveIconPress={() => handleLoveIconPress(item.id)}
-              />
-            </Animated.View>
+            <Link
+              href={`/carddetails/${item.id}?type=${item.opportunity_type}`} // Use query parameters
+              asChild
+            >
+              <Pressable>
+                <Animated.View style={[{ transform: [{ scale }] }]}>
+                  <Card
+                    item={item}
+                    isLiked={likedItems.includes(item.id)}
+                    onLoveIconPress={() => handleLoveIconPress(item.id)}
+                  />
+                </Animated.View>
+              </Pressable>
+            </Link>
           );
         }}
       />

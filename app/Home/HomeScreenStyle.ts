@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
-  barIcon: {
+
+  barIconPressed: {
     flexDirection: "row",
     left: 290,
     marginTop: -70,
@@ -77,13 +78,37 @@ const styles = StyleSheet.create({
     borderColor: "#92929233",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#8BC240",
   },
-  barIcon2: {
-    alignItems: "center",
-    width: 24,
-    height: 24,
-  },
+  // barIcon: {
+  //   flexDirection: "row",
+  //   left: 290,
+  //   marginTop: -70,
+  //   marginBottom: 16,
+  //   width: 51,
+  //   height: 51,
+  //   borderRadius: 25,
+  //   borderWidth: 1,
+  //   borderColor: "#92929233",
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   backgroundColor: "#fff",
+  // },
+  // barIcon2: {
+  //   alignItems: "center",
+  //   width: 24,
+  //   height: 24,
+  // },
+  // modalContainer: {
+  //   position: "absolute",
+  //   top: 0,
+  //   left: 0,
+  //   right: 0,
+  //   bottom: 0,
+  //   backgroundColor: "rgba(0, 0, 0, 0.8)",
+  //   justifyContent: "flex-end",
+  // },
+
   filters: {
     width: 350,
     height: 48,

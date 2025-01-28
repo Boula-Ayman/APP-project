@@ -6,8 +6,9 @@ import i18n from "../../../src/i18n/i18n";
 
 interface SearchBarProps {
   searchTerm: string;
-  onChangeText: (text: string) => void; // Update the prop name and type
+  onChangeText: (text: string) => void;
 }
+
 const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onChangeText }) => {
   return (
     <View style={styles.searchContainer}>
@@ -18,7 +19,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onChangeText }) => {
           value={searchTerm}
           onChangeText={onChangeText}
         />
-
         <MagnifyingGlass style={styles.searchIcon} />
       </View>
     </View>

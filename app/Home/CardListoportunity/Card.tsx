@@ -1,4 +1,3 @@
-
 import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import styles from "../CardListStyle";
@@ -11,14 +10,20 @@ import { formatPrice } from "@/utils/formatPrice";
 import i18n from "../../../src/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 
-interface CardProps {
+export interface CardProps {
   item: Opportunity;
   isLiked: boolean;
   onLoveIconPress: () => void;
 }
+
 const Card: React.FC<CardProps> = ({ item, isLiked, onLoveIconPress }) => {
   return (
     <View style={styles.card}>
+      <View>
+        {item.status === "sold out" && (
+          <Text style={styles.soldOutLabel}>{i18n.t("soldOut")}</Text>
+        )}
+      </View>
       <View style={styles.imageWrapper}>
         <Image
           source={{ uri: item?.media[item?.media.length - 1]?.url }}
