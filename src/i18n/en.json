@@ -15,6 +15,7 @@
     "filterBy": "Filter By",
     "loading": "Loading..."
   },
+  "shares": "Shares",
   "filter": "Filter By",
   "bedrooms": "Bedrooms: {{count}}",
   "bathroom": "Bathroom: {{count}}",
@@ -82,10 +83,7 @@
     "The OTP is incorrect. Please try again.": "The OTP is incorrect. Please try again.",
     "Verification failed. Please try again.": "Verification failed. Please try again."
   },
-   
-    
-      "sliderSignIn": "Sign In",
-      "sliderSignUp": "Sign Up"
-    
-  
+
+  "sliderSignIn": "Sign In",
+  "sliderSignUp": "Sign Up"
 }
