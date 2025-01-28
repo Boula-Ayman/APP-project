@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     height: 132,
     borderTopColor: "#ccc",
-    marginBottom: 8,
+    paddingBottom: 10,
   },
   buttonDark: {
     backgroundColor: "#1A1A1A",
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     lineHeight: 25.6,
     textAlign: "left",
-    marginTop: 10,
+    marginTop: 8,
   },
   buttonText: {
     color: "#FFFFFF",

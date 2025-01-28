@@ -16,6 +16,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18n from "../../../src/i18n/i18n";
 import styles from "./signupStyle";
 import Button from "@/commonComponent/button/Button";
+import Arrow from "../../../assets/icons/Arrow.svg";
+
+import { useFonts } from "expo-font";
 const SignUpPage: React.FC = () => {
   const { t } = { t: i18n.t.bind(i18n) };
   const [firstName, setFirstName] = useState("");
@@ -27,6 +30,14 @@ const SignUpPage: React.FC = () => {
   const [birthDate, setBirthDate] = useState("");
   const [postSignUp] = usePostSignUpMutation();
 
+  const [fontsLoaded] = useFonts({
+    Inter_400Regular: require("../../../assets/fonts/Inter/Inter_24pt-Regular.ttf"),
+    Inter_600SemiBold: require("../../../assets/fonts/Inter/Inter_24pt-SemiBold.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -57,11 +68,11 @@ const SignUpPage: React.FC = () => {
     }
 
     // birth date validation
-    const birthDateRegex = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD format
-    if (!birthDateRegex.test(birthDate)) {
-      setErrorMessage(t("signup.invalidBirthDate"));
-      return;
-    }
+    // const birthDateRegex = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD format
+    // if (!birthDateRegex.test(birthDate)) {
+    //   setErrorMessage(t("signup.invalidBirthDate"));
+    //   return;
+    // }
 
     try {
       const response = await postSignUp(formData).unwrap();
@@ -86,6 +97,9 @@ const SignUpPage: React.FC = () => {
       }
     }
   };
+  const handleBackPress = () => {
+    router.push("/Welcome" as any);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -93,10 +107,25 @@ const SignUpPage: React.FC = () => {
       style={styles.container}
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* <TouchableOpacity style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity> */}
-        <Text style={styles.title}>{t("signup.title")}</Text>
+        <View style={styles.backContainer}>
+          <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+            <Arrow />
+          </TouchableOpacity>
+          <Text style={styles.backText}>
+            <Text style={styles.one}>1</Text> / 2
+          </Text>
+        </View>
+        <Text style={[styles.title, { fontFamily: "Inter_600SemiBold" }]}>
+          {t("signup.title")}
+        </Text>
+        <Text style={[styles.firstName, { fontFamily: "Inter_600SemiBold" }]}>
+          First Name
+        </Text>
+        <View>
+          <Text style={[styles.lastName, { fontFamily: "Inter_600SemiBold" }]}>
+            Last Name
+          </Text>
+        </View>
         <View style={styles.row}>
           <TextInput
             style={[styles.input, styles.halfInput]}
@@ -104,6 +133,7 @@ const SignUpPage: React.FC = () => {
             value={firstName}
             onChangeText={setFirstName}
           />
+
           <TextInput
             style={[styles.input, styles.halfInput]}
             placeholder="Last Name"
@@ -111,20 +141,28 @@ const SignUpPage: React.FC = () => {
             onChangeText={setLastName}
           />
         </View>
-        <TextInput
-          style={styles.input}
-          placeholder={t("signup.emailPlaceholder")}
-          keyboardType="email-address"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <TextInput
+        <View style={styles.emailContainer}>
+          <Text style={[styles.email, { fontFamily: "Inter_600SemiBold" }]}>
+            Email
+          </Text>
+          <TextInput
+            style={styles.input}
+            placeholder={t("signup.emailPlaceholder")}
+            keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail}
+          />
+        </View>
+        {/* <TextInput
           style={styles.input}
           placeholder={t("signup.birthDatePlaceholder")}
           value={birthDate}
           onChangeText={setBirthDate}
-        />
+        /> */}
         <View style={styles.passwordContainer}>
+          <Text style={[styles.password, { fontFamily: "Inter_600SemiBold" }]}>
+            Password
+          </Text>
           <TextInput
             style={[styles.passwordInput]}
             placeholder={t("signup.passwordPlaceholder")}
@@ -156,7 +194,9 @@ const SignUpPage: React.FC = () => {
         {errorMessage ? (
           <Text style={styles.errorText}>{errorMessage}</Text>
         ) : null}
-        <Button onPress={handleSignUp}>{t("signup.signUpButton")}</Button>
+        <View style={styles.signUpButton}>
+          <Button onPress={handleSignUp}>{t("signup.signUpButton")}</Button>
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );

@@ -14,15 +14,17 @@ import { LinearGradient } from "expo-linear-gradient";
 import Bathroom from "../../assets/icons/bathroom.svg";
 import Bedroom from "../../assets/icons/Bedroom.svg";
 import Parking from "../../assets/icons/parking.svg";
-import { useFonts, Inter_500Medium } from "@expo-google-fonts/inter";
+import { useFonts } from "expo-font";
 import * as Font from "expo-font";
+import { styles } from "./SliderContainerStyle";
 
 const Welcome = () => {
   const { width: screenWidth } = Dimensions.get("window");
   const [activeSlide, setActiveSlide] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const [fontsLoaded] = useFonts({
-    Inter_500Medium,
+    Inter_400Regular: require("../../assets/fonts/Inter/Inter_24pt-Regular.ttf"),
+    Inter_600SemiBold: require("../../assets/fonts/Inter/Inter_24pt-SemiBold.ttf"),
   });
 
   useEffect(() => {
@@ -59,7 +61,7 @@ const Welcome = () => {
         <View style={styles.phoneContainer}>
           <Phone width={300} height={350} />
           <View style={styles.screenContainer}>
-            <Screen width={259} height={270} />
+            <Screen width={259} height={270} style={styles.House} />
           </View>
         </View>
       ),
@@ -89,15 +91,15 @@ const Welcome = () => {
         {item.id === "2" && (
           <View style={styles.iconsContainer}>
             <View style={styles.iconItem1}>
-              <Bathroom width={28} height={28} />
+              <Bathroom width={28} height={28} style={styles.Bathroom} />
               <Text style={styles.iconLabel}>3 bathrooms</Text>
             </View>
             <View style={styles.iconItem2}>
-              <Bedroom width={28} height={28} />
+              <Bedroom width={28} height={28} style={styles.Bedroom} />
               <Text style={styles.iconLabel}>3 Bedrooms</Text>
             </View>
             <View style={styles.iconItem3}>
-              <Parking width={28} height={28} />
+              <Parking width={28} height={28} style={styles.Parking} />
               <Text style={styles.iconLabel}>6 parking zones</Text>
             </View>
           </View>
@@ -175,138 +177,5 @@ const Welcome = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    top: -50,
-  },
-  slideContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 20,
-  },
-  phoneContainer: {
-    position: "relative",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  screenContainer: {
-    position: "absolute",
-    top: 50,
-    left: 21,
-    borderRadius: 50,
-  },
-  gradientOverlay: {
-    position: "absolute",
-    width: 375,
-    height: 145,
-    top: 315,
-  },
-  gradient: {
-    flex: 1,
-  },
-  header: {
-    marginBottom: 30,
-    top: 20,
-    textAlign: "center",
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 24,
-    fontWeight: "600",
-    lineHeight: 25.6,
-    textDecorationLine: "none",
-    color: "#0E0C20",
-    width: 315,
-  },
-  description: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 16,
-    fontWeight: "400",
-    lineHeight: 25,
-    textAlign: "center",
-    color: "#242B36",
-    top: 3,
-  },
-  gradientDot: {
-    width: 20,
-    height: 5,
-    borderRadius: 5,
-    marginHorizontal: 5,
-    right: 10,
-    top: -85,
-  },
-  inactiveDot: {
-    width: 20,
-    height: 5,
-    borderRadius: 4,
-    backgroundColor: "#ccc",
-    marginHorizontal: 5,
-    top: -85,
-    right: 10,
-  },
-  paginationContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 20,
-  },
-  iconsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    position: "absolute",
-    top: 150,
-  },
-  iconItem1: {
-    flexDirection: "row",
-    alignItems: "center",
-    textAlign: "center",
-    width: 141,
-    height: 52,
-    backgroundColor: "white",
-    borderRadius: 10,
-    gap: 10,
-    left: 37,
-    top: 7,
-  },
-  iconItem2: {
-    flexDirection: "row",
-    alignItems: "center",
-    textAlign: "center",
-    width: 141,
-    height: 52,
-    backgroundColor: "white",
-    borderRadius: 10,
-    gap: 10,
-    left: 110,
-    top: 80,
-  },
-  iconItem3: {
-    flexDirection: "row",
-    alignItems: "center",
-    textAlign: "center",
-    width: 145,
-    height: 52,
-    backgroundColor: "white",
-    borderRadius: 10,
-    gap: 5,
-    top: 255,
-    right: 145,
-    zIndex: 100,
-  },
-  iconLabel: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 14,
-    fontWeight: "400",
-    color: "#242B36",
-    alignItems: "center",
-    right: 1,
-    zIndex: 100,
-  },
-});
 
 export default Welcome;
