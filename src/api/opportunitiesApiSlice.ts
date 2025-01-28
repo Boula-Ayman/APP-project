@@ -3,9 +3,9 @@ import apiSlice from "./apiSlice";
 const opportunitiesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getOpportunities: builder.query({
-      query: ({ type, country, status }) => ({
+      query: (params) => ({
         url: `/opportunities`,
-        params: { type, country, status },
+        params,
         method: "GET",
       }),
     }),
