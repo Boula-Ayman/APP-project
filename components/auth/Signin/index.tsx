@@ -24,6 +24,8 @@ import Arrow from "../../../assets/icons/Arrow.svg";
 import { Ionicons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import Checkbox from "expo-checkbox";
+import { setUser } from "@/src/auth/signin/userSlice";
+import { useDispatch } from "react-redux";
 
 interface SignInFormValues {
   email: string;
@@ -41,7 +43,7 @@ const SigninPage: React.FC = () => {
   const [postSignIn] = usePostSignInMutation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
-
+  const dispatch = useDispatch();
   const [fontsLoaded] = useFonts({
     Inter_400Regular: require("../../../assets/fonts/Inter/Inter_24pt-Regular.ttf"),
     Inter_600SemiBold: require("../../../assets/fonts/Inter/Inter_24pt-SemiBold.ttf"),
@@ -65,10 +67,11 @@ const SigninPage: React.FC = () => {
       console.log("API Response:", response);
 
       const token = response?.data?.access_token;
-      console.log(response);
+      dispatch(setUser(response.data));
       if (token) {
         await AsyncStorage.setItem("access_token", token);
         console.log("Token stored successfully");
+
         router.push("/" as any);
         setErrorMessage(null);
       } else {

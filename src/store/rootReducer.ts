@@ -1,10 +1,12 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import apiSlice from "../api/apiSlice";
-import wishlistReducer from "../wishList/wishlistSlice";
+import wishListReducer from "../wishList/wishlistSlice";
+import userSlice from "../auth/signin/userSlice";
 
 export const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
-  wishlist: wishlistReducer,
+  wishlist: wishListReducer,
+  user: userSlice,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

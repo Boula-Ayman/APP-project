@@ -13,35 +13,38 @@ const getAccessToken = async () => {
 };
 
 const wishListApiSlice = apiSlice.injectEndpoints({
+  overrideExisting: true,
   endpoints: (builder) => ({
+    getWishList: builder.query({
+      query: () => ({
+        url: "/users/wishlist/me",
+        method: "GET",
+      }),
+      providesTags: ["WishList"],
+    }),
     postWishList: builder.mutation({
-      async queryFn({ id }, _queryApi, _extraOptions, fetchWithBQ) {
-        const token = await getAccessToken();
-        const result = await fetchWithBQ({
-          url: `users/wishlist/${id}`,
+      query(arg) {
+        return {
+          url: `users/wishlist/${arg.id}`,
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        return result.error ? { error: result.error } : { data: result.data };
+        };
       },
+      invalidatesTags: ["WishList"],
     }),
     removeWishList: builder.mutation({
-      async queryFn({ id }, _queryApi, _extraOptions, fetchWithBQ) {
-        const token = await getAccessToken();
-        const result = await fetchWithBQ({
-          url: `users/wishlist/${id}`,
+      query(arg) {
+        return {
+          url: `users/wishlist/${arg.id}`,
           method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        return result.error ? { error: result.error } : { data: result.data };
+        };
       },
+      invalidatesTags: ["WishList"],
     }),
   }),
 });
 
-export const { usePostWishListMutation, useRemoveWishListMutation } =
-  wishListApiSlice;
+export const {
+  usePostWishListMutation,
+  useRemoveWishListMutation,
+  useGetWishListQuery,
+} = wishListApiSlice;

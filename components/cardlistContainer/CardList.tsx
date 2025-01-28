@@ -12,10 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   addToWishlist,
   removeFromWishlist,
-  setWishlist,
 } from "../../src/wishList/wishlistSlice";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { loadLikedItems } from "../../utils/wishlistUtils"; // Import the function
 
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = 284;
@@ -28,31 +25,20 @@ interface CardListProps {
 const CardList: React.FC<CardListProps> = ({ opportunities }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const likedItems = useSelector((state: any) => state.wishlist.likedItems);
-  const dispatch = useDispatch(); // Get dispatch function
+  const dispatch = useDispatch();
   const [postWishList] = usePostWishListMutation();
   const [removeWishList] = useRemoveWishListMutation();
 
-  useEffect(() => {
-    loadLikedItems(dispatch);
-  }, [dispatch]);
-
   const handleLoveIconPress = async (id: number, item: Opportunity) => {
     const isLiked = likedItems.includes(id);
-    if (isLiked) {
-      dispatch(removeFromWishlist(id));
-    } else {
-      dispatch(addToWishlist(id));
-    }
-
-    AsyncStorage.setItem("likedItems", JSON.stringify(likedItems));
 
     try {
       if (isLiked) {
-        const result = await removeWishList({ id }).unwrap();
-        console.log("Removed from wishlist:", result);
+        await removeWishList({ id }).unwrap();
+        dispatch(removeFromWishlist(id));
       } else {
-        const result = await postWishList({ id }).unwrap();
-        console.log("Added to wishlist:", result);
+        dispatch(addToWishlist(id));
+        await postWishList({ id }).unwrap();
       }
     } catch (error) {
       console.error("Failed to update wishlist:", error);

@@ -36,7 +36,7 @@ const VerificationScreen: React.FC = () => {
   const handleVerify = async () => {
     console.log("OTP entered:", otp);
     if (!otp || otp.length !== 4) {
-      setErrorMessage(t("verify.otpIncorrect"));
+      setErrorMessage("OTP must be exactly 4 digits");
       return;
     }
 
@@ -53,14 +53,9 @@ const VerificationScreen: React.FC = () => {
       router.push("/" as any);
     } catch (error) {
       if (typeof error === "object" && error !== null && "data" in error) {
-        setErrorMessage("The OTP is incorrect. Please try again.");
-        console.error(
-          "Verify failed:",
-          (error as { data: { message: string } }).data.message
-        );
+        setErrorMessage("The OTP is incorrect. Please try again");
       } else {
-        setErrorMessage("Verification failed. Please try again.");
-        console.error("Verify failed:", error);
+        setErrorMessage("The OTP is incorrect. Please try again");
       }
     }
   };
