@@ -63,23 +63,29 @@
     "signUpText": "Don't have an account?",
     "signUp": "Sign Up"
   },
-  "signup": {
+  "signUp": {
     "title": "Sign Up",
     "firstName": "First Name",
     "lastName": "Last Name",
-    "emailPlaceholder": "Sample@gmail.com",
-    "birthDatePlaceholder": "Birth Date (YYYY-MM-DD)",
-    "passwordPlaceholder": "Password",
-    "termsText": "By continuing you are indicating that you agree to the",
+    "email": "Email",
+    "password": "Password",
+    "phoneNumber": "Phone Number",
+    "birthDate": "Birth Date",
+    "firstNameRequired": "First name is required.",
+    "lastNameRequired": "Last name is required.",
+    "emailRequired": "Email is required.",
+    "invalidEmail": "Please enter a valid email address.",
+    "passwordRequired": "Password is required.",
+    "passwordTooShort": "Password must be at least 8 characters long.",
+    "invalidPassword": "Password must include uppercase, lowercase, number, and special character.",
+    "phoneNumberRequired": "Phone number is required.",
+    "invalidPhoneNumber": "Please enter a valid phone number.",
+    "birthDateRequired": "Birth date is required.",
+    "invalidDate": "Please enter a valid date.",
+    "agreeToTermsPrefix": "By continuing you are indicating that you agree to the",
     "terms": "Terms",
     "and": "and",
-    "privacyPolicy": "Privacy Policy",
-    "signUpButton": "Sign up",
-    "invalidEmail": "Please enter a valid email address.",
-    "invalidPassword": "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.",
-    "invalidBirthDate": "Birth date must be a date (YYYY-MM-DD).",
-    "emailExists": "Email already exists. Please use a different email.",
-    "signupFailed": "Sign up failed. Please try again."
+    "privacyPolicy": "Privacy Policy."
   },
   "verify": {
     "verify_email_title": "Verify your email address",
@@ -88,10 +94,7 @@
     "The OTP is incorrect. Please try again.": "The OTP is incorrect. Please try again.",
     "Verification failed. Please try again.": "Verification failed. Please try again."
   },
-   
-    
-      "sliderSignIn": "Sign In",
-      "sliderSignUp": "Sign Up"
-    
-  
+
+  "sliderSignIn": "Sign In",
+  "sliderSignUp": "Sign Up"
 }

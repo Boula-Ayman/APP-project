@@ -29,7 +29,7 @@
     "expo-font": "~13.0.3",
     "expo-linear-gradient": "~14.0.1",
     "expo-linking": "~7.0.3",
-    "expo-localization": "~16.0.0",
+    "expo-localization": "~16.0.1",
     "expo-router": "~4.0.11",
     "expo-splash-screen": "~0.29.20",
     "expo-status-bar": "~2.0.1",
@@ -59,7 +59,6 @@
     "react-redux": "^9.2.0",
     "redux-persist": "^6.0.0",
     "yup": "^1.6.1",
-    "undefined": "expo-google-fonts/inter",
     "expo-image": "~2.0.4"
   },
   "devDependencies": {

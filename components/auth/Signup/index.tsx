@@ -21,24 +21,24 @@ import * as Yup from "yup";
 import DropDownPicker from "react-native-dropdown-picker";
 
 const SignUpSchema = Yup.object().shape({
-  firstName: Yup.string().required(i18n.t("signup.required")),
-  lastName: Yup.string().required(i18n.t("signup.required")),
+  firstName: Yup.string().required(i18n.t("signUp.firstNameRequired")),
+  lastName: Yup.string().required(i18n.t("signUp.lastNameRequired")),
   email: Yup.string()
-    .email(i18n.t("signup.invalidEmail"))
-    .required(i18n.t("signup.required")),
+    .email(i18n.t("signUp.invalidEmail"))
+    .required(i18n.t("signUp.emailRequired")),
   password: Yup.string()
-    .min(8, i18n.t("signup.passwordTooShort"))
+    .min(8, i18n.t("signUp.passwordTooShort"))
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\[\]{};':"\\|,.<>\/?`~\-]).{8,}$/,
-      i18n.t("signup.invalidPassword")
+      i18n.t("signUp.invalidPassword")
     )
-    .required(i18n.t("signup.required")),
+    .required(i18n.t("signUp.passwordRequired")),
   phoneNumber: Yup.string()
-    .required(i18n.t("signup.required"))
-    .matches(/^\d+$/, i18n.t("signup.invalidPhoneNumber")),
+    .required(i18n.t("signUp.phoneNumberRequired"))
+    .matches(/^\d+$/, i18n.t("signUp.invalidPhoneNumber")),
   birthDate: Yup.date()
-    .required(i18n.t("signup.required"))
-    .typeError(i18n.t("signup.invalidDate")),
+    .required(i18n.t("signUp.birthDateRequired"))
+    .typeError(i18n.t("signUp.invalidDate")),
 });
 
 const SignUpPage: React.FC = () => {
@@ -47,6 +47,7 @@ const SignUpPage: React.FC = () => {
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [countryCode, setCountryCode] = useState("+20");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [focusedInput, setFocusedInput] = useState<string | null>(null);
 
   const handleSignUp = async (
     values: {
@@ -82,7 +83,7 @@ const SignUpPage: React.FC = () => {
 
       router.push("/(auth)/verify");
     } catch (error: any) {
-      console.error("Signup error:", error);
+      console.error("signUp error:", error);
 
       if (error.status === "FETCH_ERROR") {
         console.error(
@@ -93,18 +94,26 @@ const SignUpPage: React.FC = () => {
       }
 
       if (error?.status === 409) {
-        actions.setErrors({ email: t("signup.emailExists") });
+        actions.setErrors({ email: t("signUp.emailExists") });
       } else if (
         error?.status === 400 &&
         error?.message?.includes("phone_number")
       ) {
-        actions.setErrors({ phoneNumber: t("signup.invalidPhoneNumber") });
+        actions.setErrors({ phoneNumber: t("signUp.invalidPhoneNumber") });
       } else {
-        setGeneralError(t("signup.signupFailed"));
+        setGeneralError(t("signUp.signupFailed"));
       }
     } finally {
       actions.setSubmitting(false);
     }
+  };
+
+  const handleFocus = (inputName: string) => {
+    setFocusedInput(inputName);
+  };
+
+  const handleBlurInput = () => {
+    setFocusedInput(null);
   };
 
   return (
@@ -147,17 +156,30 @@ const SignUpPage: React.FC = () => {
                   <Text style={styles.one}>1</Text> / 2
                 </Text>
               </View>
-              <Text style={styles.title}>{t("signup.title")}</Text>
+              <Text style={styles.title}>{t("signUp.title")}</Text>
 
               <View style={styles.row}>
                 <View style={styles.inputContainer}>
                   <View style={{ flex: 1 }}>
-                    <Text style={styles.Name}>{t("signup.firstName")}</Text>
+                    <Text style={styles.Name}>{t("signUp.firstName")}</Text>
                     <TextInput
-                      style={styles.input}
-                      placeholder="First Name"
+                      style={[
+                        styles.input,
+                        {
+                          borderColor:
+                            errors.firstName && touched.firstName
+                              ? "red"
+                              : focusedInput === "firstName" || values.firstName
+                              ? "#8BC240"
+                              : "#ccc",
+                        },
+                      ]}
                       onChangeText={handleChange("firstName")}
-                      onBlur={handleBlur("firstName")}
+                      onFocus={() => handleFocus("firstName")}
+                      onBlur={() => {
+                        handleBlur("firstName");
+                        handleBlurInput();
+                      }}
                       value={values.firstName}
                     />
                     {touched.firstName && errors.firstName && (
@@ -165,12 +187,25 @@ const SignUpPage: React.FC = () => {
                     )}
                   </View>
                   <View style={{ flex: 1 }}>
-                    <Text style={styles.Name}>{t("signup.lastName")}</Text>
+                    <Text style={styles.Name}>{t("signUp.lastName")}</Text>
                     <TextInput
-                      style={styles.input}
-                      placeholder="Last Name"
+                      style={[
+                        styles.input,
+                        {
+                          borderColor:
+                            errors.lastName && touched.lastName
+                              ? "red"
+                              : focusedInput === "lastName" || values.lastName
+                              ? "#8BC240"
+                              : "#ccc",
+                        },
+                      ]}
                       onChangeText={handleChange("lastName")}
-                      onBlur={handleBlur("lastName")}
+                      onFocus={() => handleFocus("lastName")}
+                      onBlur={() => {
+                        handleBlur("lastName");
+                        handleBlurInput();
+                      }}
                       value={values.lastName}
                     />
                     {touched.lastName && errors.lastName && (
@@ -180,13 +215,26 @@ const SignUpPage: React.FC = () => {
                 </View>
               </View>
               <View style={styles.emailContainer}>
-                <Text style={styles.Name}>{t("signup.email")}</Text>
+                <Text style={styles.Name}>{t("signUp.email")}</Text>
                 <TextInput
-                  style={styles.input}
-                  placeholder={t("signup.emailPlaceholder")}
+                  style={[
+                    styles.input,
+                    {
+                      borderColor:
+                        errors.email && touched.email
+                          ? "red"
+                          : focusedInput === "email" || values.email
+                          ? "#8BC240"
+                          : "#ccc",
+                    },
+                  ]}
                   keyboardType="email-address"
                   onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
+                  onFocus={() => handleFocus("email")}
+                  onBlur={() => {
+                    handleBlur("email");
+                    handleBlurInput();
+                  }}
                   value={values.email}
                 />
                 {touched.email && errors.email && (
@@ -194,13 +242,26 @@ const SignUpPage: React.FC = () => {
                 )}
               </View>
               <View>
-                <Text style={styles.Name}>{t("signup.password")}</Text>
+                <Text style={styles.Name}>{t("signUp.password")}</Text>
                 <TextInput
-                  style={styles.input}
-                  placeholder={t("signup.passwordPlaceholder")}
+                  style={[
+                    styles.input,
+                    {
+                      borderColor:
+                        errors.password && touched.password
+                          ? "red"
+                          : focusedInput === "password" || values.password
+                          ? "#8BC240"
+                          : "#ccc",
+                    },
+                  ]}
                   secureTextEntry
                   onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
+                  onFocus={() => handleFocus("password")}
+                  onBlur={() => {
+                    handleBlur("password");
+                    handleBlurInput();
+                  }}
                   value={values.password}
                 />
                 {touched.password && errors.password && (
@@ -208,7 +269,7 @@ const SignUpPage: React.FC = () => {
                 )}
               </View>
               <View>
-                <Text style={styles.Name}>{t("signup.phoneNumber")}</Text>
+                <Text style={styles.Name}>{t("signUp.phoneNumber")}</Text>
                 <View style={styles.phoneInputContainer}>
                   <DropDownPicker
                     open={isDropdownOpen}
@@ -231,10 +292,25 @@ const SignUpPage: React.FC = () => {
                     }}
                   />
                   <TextInput
-                    style={styles.phoneNumberInput}
+                    style={[
+                      styles.phoneNumberInput,
+                      {
+                        borderColor:
+                          errors.phoneNumber && touched.phoneNumber
+                            ? "red"
+                            : focusedInput === "phoneNumber" ||
+                              values.phoneNumber
+                            ? "#8BC240"
+                            : "#ccc",
+                      },
+                    ]}
                     keyboardType="phone-pad"
                     onChangeText={handleChange("phoneNumber")}
-                    onBlur={handleBlur("phoneNumber")}
+                    onFocus={() => handleFocus("phoneNumber")}
+                    onBlur={() => {
+                      handleBlur("phoneNumber");
+                      handleBlurInput();
+                    }}
                     value={values.phoneNumber}
                   />
                 </View>
@@ -248,10 +324,24 @@ const SignUpPage: React.FC = () => {
               <View>
                 <Text style={styles.Name}>Birth Date</Text>
                 <TextInput
-                  style={styles.input}
-                  placeholder={t("signup.birthDatePlaceholder")}
+                  style={[
+                    styles.input,
+                    {
+                      borderColor:
+                        errors.birthDate && touched.birthDate
+                          ? "red"
+                          : focusedInput === "birthDate" || values.birthDate
+                          ? "#8BC240"
+                          : "#ccc",
+                    },
+                  ]}
+                  // placeholder={t("signUp.birthDatePlaceholder")}
                   onChangeText={handleChange("birthDate")}
-                  onBlur={handleBlur("birthDate")}
+                  onFocus={() => handleFocus("birthDate")}
+                  onBlur={() => {
+                    handleBlur("birthDate");
+                    handleBlurInput();
+                  }}
                   value={values.birthDate}
                 />
                 {touched.birthDate && errors.birthDate && (
@@ -264,14 +354,15 @@ const SignUpPage: React.FC = () => {
               )}
               <View style={styles.TextContainer}>
                 <Text style={styles.MainText}>
-                  By continuing you are indicating that you agree to the{" "}
-                  <Text style={styles.Text}>Terms</Text> and{" "}
-                  <Text style={styles.Text}> Privacy Policy.</Text>
+                  {t("signUp.agreeToTermsPrefix")}
+                  <Text style={styles.Text}>{t("signUp.terms")}</Text>
+                  {t("signUp.and")}
+                  <Text style={styles.Text}>{t("signUp.privacyPolicy")}</Text>
                 </Text>
               </View>
               <View style={styles.signUpButton}>
                 <Button onPress={() => handleSubmit()} disabled={isSubmitting}>
-                  <Text>{t("signup.signUpButton")}</Text>
+                  <Text>{t("signUp.signUpButton")}</Text>
                 </Button>
               </View>
             </>

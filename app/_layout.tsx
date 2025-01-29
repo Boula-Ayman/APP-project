@@ -49,7 +49,7 @@ export default function Layout() {
     await AsyncStorage.removeItem("access_token");
     router.push("/Welcome" as any);
   };
-  // logout();
+  logout();
   return (
     <Provider store={store}>
       <PersistGate
@@ -57,17 +57,17 @@ export default function Layout() {
         persistor={Persistor}
       >
         <Stack
-            screenOptions={{
-                headerShown: false,
-            }}
+          screenOptions={{
+            headerShown: false,
+          }}
         >
-            <Stack.Screen name="Home/index" />
-            <Stack.Screen 
-                name="AllProperties/index"
-                options={{
-                    headerShown: false,
-                }}
-            />
+          <Stack.Screen name="Home/index" />
+          <Stack.Screen
+            name="AllProperties/index"
+            options={{
+              headerShown: false,
+            }}
+          />
         </Stack>
       </PersistGate>
     </Provider>

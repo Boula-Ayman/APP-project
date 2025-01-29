@@ -43,6 +43,8 @@ const SigninPage: React.FC = () => {
   const [postSignIn] = usePostSignInMutation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const [focusedInput, setFocusedInput] = useState<string | null>(null);
+
   const dispatch = useDispatch();
   const [fontsLoaded] = useFonts({
     Inter_400Regular: require("../../../assets/fonts/Inter/Inter_24pt-Regular.ttf"),
@@ -86,7 +88,13 @@ const SigninPage: React.FC = () => {
     console.log(values);
     actions.setSubmitting(false);
   };
+  const handleFocus = (inputName: string) => {
+    setFocusedInput(inputName);
+  };
 
+  const handleBlurInput = () => {
+    setFocusedInput(null);
+  };
   const handleBackPress = () => {
     router.push("/Welcome" as any);
   };
@@ -136,12 +144,25 @@ const SigninPage: React.FC = () => {
                     </Text>
                     <View style={styles.iconContainer1}>
                       <User1 style={styles.icon} />
-
                       <TextInput
-                        style={styles.input}
+                        style={[
+                          styles.input,
+                          {
+                            borderColor:
+                              errors.email && touched.email
+                                ? "red"
+                                : focusedInput === "email" || values.email
+                                ? "#8BC240"
+                                : "#ccc",
+                          },
+                        ]}
                         // placeholder={t("signIn.emailPlaceholder")}
                         onChangeText={handleChange("email")}
-                        onBlur={handleBlur("email")}
+                        onFocus={() => handleFocus("email")}
+                        onBlur={() => {
+                          handleBlur("firstName");
+                          handleBlurInput();
+                        }}
                         value={values.email}
                         keyboardType="email-address"
                       />
@@ -159,15 +180,27 @@ const SigninPage: React.FC = () => {
                     >
                       {t("signIn.password")}
                     </Text>
-
                     <View style={styles.iconContainer2}>
                       <Lock style={styles.icon2} />
-
                       <TextInput
-                        style={styles.input}
+                        style={[
+                          styles.input,
+                          {
+                            borderColor:
+                              errors.password && touched.password
+                                ? "red"
+                                : focusedInput === "password" || values.password
+                                ? "#8BC240"
+                                : "#ccc",
+                          },
+                        ]}
                         // placeholder={t("signIn.passwordPlaceholder")}
                         onChangeText={handleChange("password")}
-                        onBlur={handleBlur("password")}
+                        onFocus={() => handleFocus("password")}
+                        onBlur={() => {
+                          handleBlur("password");
+                          handleBlurInput();
+                        }}
                         value={values.password}
                         secureTextEntry
                       />
