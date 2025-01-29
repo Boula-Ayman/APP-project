@@ -1,4 +1,5 @@
 export interface Opportunity {
+  country: string;
   id: number;
   media: { url: string }[];
   type: string;

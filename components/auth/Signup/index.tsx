@@ -9,11 +9,10 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { usePostSignUpMutation } from "../../../src/auth/signup/signuupApiSlice";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import i18n from "../../../src/i18n/i18n";
+import i18n from "../../../i18n/i18n";
 import styles from "./signupStyle";
 import Button from "@/commonComponent/button/Button";
 import Arrow from "../../../assets/icons/Arrow.svg";

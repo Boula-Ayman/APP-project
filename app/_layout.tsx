@@ -36,16 +36,7 @@ export default function Layout() {
   useEffect(() => {
     const timer = setTimeout(async () => {
       await SplashScreen.hideAsync();
-
-      // Check for token in local storage
-      const token = await AsyncStorage.getItem("access_token");
-
-      if (token) {
-        router.push("/" as any);
-      } else {
-        router.push("/Welcome" as any);
-      }
-    }, 200);
+    }, 500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -65,9 +56,19 @@ export default function Layout() {
         loading={<ActivityIndicator size="large" color="#0000ff" />}
         persistor={Persistor}
       >
-        <View onLayout={onLayoutRootView} style={styles.container}>
-          <Stack screenOptions={{ headerShown: false }} />
-        </View>
+        <Stack
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
+            <Stack.Screen name="Home/index" />
+            <Stack.Screen 
+                name="AllProperties/index"
+                options={{
+                    headerShown: false,
+                }}
+            />
+        </Stack>
       </PersistGate>
     </Provider>
   );

@@ -38,9 +38,11 @@
     "express": "^4.21.2",
     "formik": "^2.4.6",
     "i18n-js": "^4.5.0",
+    "i18next": "^24.2.2",
     "otplib": "^12.0.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-i18next": "^15.4.0",
     "react-native": "0.76.3",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-gesture-handler": "~2.20.2",
@@ -56,7 +58,9 @@
     "react-native-web": "~0.19.13",
     "react-redux": "^9.2.0",
     "redux-persist": "^6.0.0",
-    "yup": "^1.6.1"
+    "yup": "^1.6.1",
+    "undefined": "expo-google-fonts/inter",
+    "expo-image": "~2.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

@@ -16,7 +16,7 @@ import * as Yup from "yup";
 import { usePostSignInMutation } from "@/src/auth/signin/signinApiSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import i18n from "../../../src/i18n/i18n";
+import i18n from "../../../i18n/i18n";
 import styles from "./signInStyle";
 import User1 from "../../../assets/icons/User1.svg";
 import Lock from "../../../assets/icons/Lock.svg";

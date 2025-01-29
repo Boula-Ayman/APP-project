@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, KeyboardAvoidingView, Platform, Keyboard } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "./Home/homescreen";
+import HomeScreen from "./Home";
 import PortfolioPage from "./PortfolioSreen/index";
 import Favorite from "./Favourite";
 import HomeIcon from "../assets/icons/home-wifi.svg";
@@ -10,6 +10,7 @@ import Building from "../assets/icons/building.svg";
 import ProfileIcon from "../assets/icons/profile.svg";
 import Profile from "./profile/Profile";
 import styles from "./indexStyle";
+import '../i18n/i18n'
 
 const Tab = createBottomTabNavigator();
 

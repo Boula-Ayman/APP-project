@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import { Modal, TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useGetOpportunitiesQuery } from "../../../src/api/opportunitiesApiSlice";
-import i18n from "../../../src/i18n/i18n";
+import i18n from "../../../i18n/i18n";
 import IMark from "../../../assets/icons/iMark.svg";
 import FilterIcon from "../../../assets/icons/Tuning2.svg";
 import DropDownPicker from "react-native-dropdown-picker";
 import styles from "../../FilterButton/FilterScreenStyle";
+import { PROPERTIES_STATUS, PropertiesStatusKeys } from "@/constants/Enums";
 
 const staticData = {
   types: [
-    { id: 1, label: "Project", value: "Project" },
-    { id: 2, label: "Property", value: "Property" },
+    { id: 1, label: "Project", value: "project" },
+    { id: 2, label: "Property", value: "property" },
   ],
   locations: [
     { id: 1, label: "UAE", value: "UAE" },
@@ -25,11 +26,11 @@ const staticData = {
 };
 
 type FilterButtonProps = {
-  onFilterChange: (filters: {
+  onFilterChange: (filters: Partial<{
     type: string | null;
     country: string | null;
-    status: string | null;
-  }) => void;
+    status: typeof PROPERTIES_STATUS[PropertiesStatusKeys];
+  }>) => void;
 };
 
 const FilterButton: React.FC<FilterButtonProps> = ({ onFilterChange }) => {
@@ -41,21 +42,32 @@ const FilterButton: React.FC<FilterButtonProps> = ({ onFilterChange }) => {
   const [isLocationOpen, setIsLocationOpen] = useState(false);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
 
-  const [filters, setFilters] = useState<{
+  const [filters, setFilters] = useState<Partial<{
     type: string | null;
     country: string | null;
     status: string | null;
-  }>({
-    type: null,
-    country: null,
-    status: null,
-  });
+  }>>({});
   const handleFilterResults = () => {
-    const newFilters = {
-      type: selectedType,
-      country: selectedLocation,
-      status: selectedStatus,
-    };
+    let newFilters = {};
+
+    if(selectedLocation) {
+        newFilters = {
+            ...newFilters,
+            country: selectedLocation
+        }
+    }
+    if(selectedType) {
+        newFilters = {
+            ...newFilters,
+            type: selectedType
+        }
+    }
+    if(selectedStatus && selectedStatus !== 'all') {
+        newFilters = {
+            ...newFilters,
+            status: selectedStatus
+        }
+    }
     setIsModalVisible(false);
     setFilters(newFilters);
     onFilterChange(newFilters);

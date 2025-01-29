@@ -11,7 +11,7 @@ import { usePostVerifyMutation } from "../../../src/auth/veirfy/verify";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { OtpInput } from "react-native-otp-entry";
 import { router } from "expo-router";
-import i18n from "../../../src/i18n/i18n";
+import i18n from "../../../i18n/i18n";
 import { useFonts } from "expo-font";
 import Arrow from "../../../assets/icons/Arrow.svg";
 

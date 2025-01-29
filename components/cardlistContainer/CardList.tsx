@@ -1,8 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Animated, View, Dimensions, Pressable } from "react-native";
+import { Animated, View, Dimensions, Pressable, Text } from "react-native";
 import styles from "./CardListStyle";
 import Card from "../../app/Home/CardListoportunity/Card";
-import i18n from "../../src/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 import { Link } from "expo-router";
 import {
@@ -52,7 +51,8 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
 
   return (
     <View style={styles.container}>
-      <Animated.FlatList
+        {opportunities.length ? 
+        <Animated.FlatList
         data={opportunities}
         keyExtractor={(item) => item.id.toString()}
         horizontal
@@ -96,7 +96,15 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
             </Link>
           );
         }}
-      />
+      /> : <View style={{
+        flex: 1,
+        marginTop: '25%',
+        marginInline: 'auto',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+        <Text>No opportunities found</Text>
+      </View>}
     </View>
   );
 };

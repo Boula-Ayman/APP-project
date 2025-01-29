@@ -1,6 +1,6 @@
 import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
-import i18n from "../../src/i18n/i18n";
+import i18n from "../../i18n/i18n";
 import { useFonts, Inter_500Medium } from "@expo-google-fonts/inter";
 
 import SliderPage from "./SliderPage";
