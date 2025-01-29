@@ -23,7 +23,6 @@ const HomeScreen: React.FC = ({}) => {
   const notifications = 0;
 
   const [searchTerm, setSearchTerm] = useState("");
-
   const [opportunities, setOpportunities] = useState([]);
 
   const [filters, setFilters] = useState<Partial<{
