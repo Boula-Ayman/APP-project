@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     justifyContent: "center",
     flexDirection: "row",
-    top: 38,
+    top: 45,
   },
   icon1: {
     backgroundColor: "white",
@@ -52,13 +52,13 @@ const styles = StyleSheet.create({
     width: 40,
     justifyContent: "center",
     alignItems: "center",
-    left: 20,
+    left: 25,
   },
   icon2: {
     backgroundColor: "white",
     borderRadius: 50,
     padding: 8,
-    left: 260,
+    left: 250,
   },
   detailsCard: {
     padding: 16,

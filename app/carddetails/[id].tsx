@@ -277,10 +277,9 @@ const PriceDetailsSection = ({
             value={sliderValue}
             onValueChange={handleSliderChange}
             minimumTrackTintColor="transparent"
-            trackImage={require("@/assets/icons/whiteCircle.svg")}
             maximumTrackTintColor="transparent"
             disabled={false}
-            thumbImage={require("@/assets/icons/whiteCircle.svg")}
+            thumbTintColor="white"
           />
           <View
             style={{

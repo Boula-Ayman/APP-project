@@ -58,7 +58,7 @@ export default function Layout() {
     await AsyncStorage.removeItem("access_token");
     router.push("/Welcome" as any);
   };
-  logout();
+  // logout();
   return (
     <Provider store={store}>
       <PersistGate

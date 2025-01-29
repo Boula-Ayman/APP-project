@@ -23,7 +23,7 @@ const TabLayout = () => {
   };
   return (
     <>
-      <Stack>
+      <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen
           options={{ headerShown: false }}
           name="(carddetails)/[id]"

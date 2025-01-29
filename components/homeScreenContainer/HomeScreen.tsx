@@ -18,6 +18,8 @@ import { Opportunity } from "@/src/interfaces/opportunity.interface";
 
 import { debounce } from "@/utils/debounce";
 import { StatusBar } from "expo-status-bar";
+import { useDispatch } from "react-redux";
+import { clearWishlist } from "@/src/wishList/wishlistSlice";
 
 const HomeScreen: React.FC = ({}) => {
   const notifications = 0;
@@ -68,7 +70,6 @@ const HomeScreen: React.FC = ({}) => {
           location.toLowerCase().includes(searchTerm.toLowerCase())
         );
       });
-
       setOpportunities(filteredOpportunities);
     }
   }, [searchTerm]);
@@ -83,18 +84,16 @@ const HomeScreen: React.FC = ({}) => {
       const response = await refetch();
 
       setOpportunities(response.data.data);
-    } catch (error) {
-      // console.log(error);
-    }
+    } catch (error) {}
   };
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(clearWishlist());
+  }, []);
   return (
     <>
       <StatusBar style="dark" />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{ flex: 1, marginTop: 30 }}
-      >
+      <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <View style={styles.container}>
           <LinearGradient
             colors={[

@@ -2,12 +2,12 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
-    top: -5,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginTop: 25,
   },
   logo: {
     flexDirection: "row",
@@ -80,35 +80,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#8BC240",
   },
-  // barIcon: {
-  //   flexDirection: "row",
-  //   left: 290,
-  //   marginTop: -70,
-  //   marginBottom: 16,
-  //   width: 51,
-  //   height: 51,
-  //   borderRadius: 25,
-  //   borderWidth: 1,
-  //   borderColor: "#92929233",
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  //   backgroundColor: "#fff",
-  // },
-  // barIcon2: {
-  //   alignItems: "center",
-  //   width: 24,
-  //   height: 24,
-  // },
-  // modalContainer: {
-  //   position: "absolute",
-  //   top: 0,
-  //   left: 0,
-  //   right: 0,
-  //   bottom: 0,
-  //   backgroundColor: "rgba(0, 0, 0, 0.8)",
-  //   justifyContent: "flex-end",
-  // },
-
   filters: {
     width: 350,
     height: 48,
@@ -118,7 +89,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   filterButton: {
-    width: 106,
+    width: 100,
     height: 48,
     padding: 14,
     paddingHorizontal: 24,
@@ -140,9 +111,17 @@ const styles = StyleSheet.create({
     color: "#555",
     width: 67,
     height: 20,
+    marginLeft: -12,
+    textAlign: "center",
+    alignContent: "center",
+    justifyContent: "center",
+    fontWeight: "500",
   },
   filterTextActive: {
     color: "#fff",
+    width: 67,
+    height: 20,
+    marginLeft: -12,
     textAlign: "center",
     alignContent: "center",
     justifyContent: "center",
