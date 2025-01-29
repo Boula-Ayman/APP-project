@@ -32,9 +32,10 @@ export const styles = StyleSheet.create({
   },
   gradientOverlay: {
     position: "absolute",
-    width: 375,
-    height: 145,
-    top: 327,
+    width: "100%",
+    height: "20%",
+    top: "43%",
+    zIndex: 1,
   },
   gradient: {
     flex: 1,
@@ -46,10 +47,7 @@ export const styles = StyleSheet.create({
     fontFamily: "Inter_600SemiBold",
     fontSize: 24,
     fontWeight: "600",
-    lineHeight: 25.6,
-    textDecorationLine: "none",
     color: "#0E0C20",
-    width: 315,
   },
   description: {
     fontFamily: "Inter_400Regular",
@@ -62,7 +60,7 @@ export const styles = StyleSheet.create({
   },
   gradientDot: {
     width: 20,
-    height: 5,
+    height: 4,
     borderRadius: 5,
     marginHorizontal: 5,
     right: 10,
@@ -72,7 +70,7 @@ export const styles = StyleSheet.create({
     width: 20,
     height: 5,
     borderRadius: 4,
-    backgroundColor: "#ccc",
+    backgroundColor: "#C9C9C9",
     marginHorizontal: 5,
     top: -85,
     right: 10,

@@ -46,9 +46,9 @@ const Welcome = () => {
       id: "1",
       image: (
         <View style={styles.phoneContainer}>
-          <Phone width={300} height={350} />
+          <Phone />
           <View style={styles.screenContainer}>
-            <Screen width={259} height={270} />
+            <Screen />
           </View>
         </View>
       ),

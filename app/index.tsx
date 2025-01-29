@@ -10,7 +10,7 @@ import Building from "../assets/icons/building.svg";
 import ProfileIcon from "../assets/icons/profile.svg";
 import Profile from "./profile/Profile";
 import styles from "./indexStyle";
-import '../i18n/i18n'
+import "../i18n/i18n";
 
 const Tab = createBottomTabNavigator();
 
