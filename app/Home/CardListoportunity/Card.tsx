@@ -1,14 +1,16 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import styles from "../CardListStyle";
-import Flag from "../../../assets/icons/UAE.svg";
+import styles from "../../../components/cardlistContainer/CardListStyle";
+import UaeFlag from "../../../assets/icons/UAE.svg";
+import EgyptFlag from "../../../assets/icons/egypt.svg";
 import LoveIcon from "../../../assets/icons/Heart.svg";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Frame52 from "../../../assets/icons/Frame52.svg";
 import Frame54 from "../../../assets/icons/Frame54.svg";
 import { formatPrice } from "@/utils/formatPrice";
-import i18n from "../../../src/i18n/i18n";
+import i18n from "../../../i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
+import FilledHeart from "@/assets/icons/filledHeart.svg";
 
 export interface CardProps {
   item: Opportunity;
@@ -20,17 +22,14 @@ const Card: React.FC<CardProps> = ({ item, isLiked, onLoveIconPress }) => {
   return (
     <View style={styles.card}>
       <View>
-        {item.status === "sold out" && (
+        {/* {item.status === "sold out" && (
           <Text style={styles.soldOutLabel}>{i18n.t("soldOut")}</Text>
-        )}
+        )} */}
       </View>
       <View style={styles.imageWrapper}>
-        <Image
-          source={{ uri: item?.media[item?.media.length - 1]?.url }}
-          style={styles.cardImage}
-        />
+        <Image source={{ uri: item?.media[0]?.url }} style={styles.cardImage} />
         <View style={styles.overlay}>
-          <Flag style={styles.overlayIcon} />
+            {item.country === "Egypt" ? <EgyptFlag style={styles.overlayIcon} /> : <UaeFlag style={styles.overlayIcon} />}
           <View style={styles.textContainer}>
             <Text style={styles.overlayText}>{item.opportunity_type}</Text>
           </View>
@@ -49,14 +48,15 @@ const Card: React.FC<CardProps> = ({ item, isLiked, onLoveIconPress }) => {
             style={styles.HeartOverlay}
             onPress={onLoveIconPress}
           >
-            <LoveIcon
-              style={styles.Heart}
-              fill={isLiked ? "#8BC240" : "white"}
-            />
+            {!isLiked ? (
+              <LoveIcon style={styles.Heart} fill={"white"} />
+            ) : (
+              <FilledHeart />
+            )}
           </TouchableOpacity>
         </View>
         <Text style={styles.cardTitle}>
-          {i18n.locale === "ar" ? item.title_ar : item.title_en}
+          {i18n.language === "ar" ? item.title_ar : item.title_en}
         </Text>
         <View style={styles.locationSection}>
           <AntDesign
@@ -66,7 +66,7 @@ const Card: React.FC<CardProps> = ({ item, isLiked, onLoveIconPress }) => {
             style={styles.location}
           />
           <Text style={styles.cardLocation}>
-            {i18n.locale === "ar" ? item.location_ar : item.location_en}
+            {i18n.language === "ar" ? item.location_ar : item.location_en}
           </Text>
         </View>
         <View style={styles.features}>

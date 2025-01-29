@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,218 +7,218 @@ import {
   View,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
+  SafeAreaView,
+  ActivityIndicator,
 } from "react-native";
-import { Formik, FormikHelpers } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import { usePostSignInMutation } from "@/src/auth/signin/signinApiSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import i18n from "../../../src/i18n/i18n";
-
-interface SignInFormValues {
-  email: string;
-  password: string;
-}
+import i18n from "../../../i18n/i18n";
+import styles from "./signInStyle";
+import User1 from "../../../assets/icons/User1.svg";
+import Lock from "../../../assets/icons/Lock.svg";
+import Arrow from "../../../assets/icons/Arrow.svg";
+import { useFonts } from "expo-font";
+import Checkbox from "expo-checkbox";
+import { setUser } from "@/src/auth/signin/userSlice";
+import { useDispatch } from "react-redux";
 
 const SignInSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Required"),
-  password: Yup.string().required("Required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  password: Yup.string().required("Password is required"),
 });
 
 const SigninPage: React.FC = () => {
   const { t } = { t: i18n.t.bind(i18n) };
-  const initialValues: SignInFormValues = { email: "", password: "" };
   const [postSignIn] = usePostSignInMutation();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const [focusedInput, setFocusedInput] = useState<string | null>(null);
 
-  const handleSubmit = async (
-    values: SignInFormValues,
-    actions: FormikHelpers<SignInFormValues>
-  ) => {
-    const credentials = {
-      email: values.email,
-      password: values.password,
-    };
-    console.log("Credentials being sent:", credentials);
+  const dispatch = useDispatch();
+  const [fontsLoaded] = useFonts({
+    Inter_400Regular: require("../../../assets/fonts/Inter/Inter_24pt-Regular.ttf"),
+    Inter_600SemiBold: require("../../../assets/fonts/Inter/Inter_24pt-SemiBold.ttf"),
+  });
+
+  if (!fontsLoaded) return null;
+
+  const handleSubmit = async (values, actions) => {
     try {
-      const response = await postSignIn(credentials).unwrap();
-      console.log("API Response:", response);
-
+      const response = await postSignIn(values).unwrap();
       const token = response?.data?.access_token;
-      console.log("Access Token:", token);
-
+      dispatch(setUser(response.data));
       if (token) {
-        await AsyncStorage.removeItem("access_token");
         await AsyncStorage.setItem("access_token", token);
-        router.push("/Home/Homescreen" as any);
+        router.push("/" as any);
+        setErrorMessage(null);
       } else {
-        console.error("Invalid access token");
+        setErrorMessage("Invalid email or password");
       }
-    } catch (error) {
-      console.error("Sign in failed:", error);
-      const errorDetails = (error as any)?.data;
-      if (errorDetails) {
-        console.error("Error details:", errorDetails);
-      }
+    } catch {
+      setErrorMessage("Invalid email or password");
     }
-    console.log(values);
     actions.setSubmitting(false);
+  };
+  const handleFocus = (inputName: string) => {
+    setFocusedInput(inputName);
+  };
+
+  const handleBlurInput = () => {
+    setFocusedInput(null);
+  };
+  const handleBackPress = () => {
+    router.push("/Welcome" as any);
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <View style={styles.innerContainer}>
-        <Text style={styles.title}>{t("signIn.title")}</Text>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={SignInSchema}
-          onSubmit={handleSubmit}
+    <SafeAreaView style={styles.SaveAreaView}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 0}
+        behavior={Platform.OS === "ios" ? "height" : "height"}
+      >
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => router.push("/Welcome" as any)}
         >
-          {({
-            handleChange,
-            handleBlur,
-            values,
-            errors,
-            touched,
-            submitForm,
-          }) => (
-            <View>
-              <Text style={styles.header}>{t("signIn.email")}</Text>
-              <TextInput
-                style={styles.input}
-                placeholder={t("signIn.emailPlaceholder")}
-                onChangeText={handleChange("email")}
-                onBlur={handleBlur("email")}
-                value={values.email}
-                keyboardType="email-address"
-              />
-              {touched.email && errors.email && (
-                <Text style={styles.errorText}>{errors.email}</Text>
-              )}
-              <Text style={styles.header}>{t("signIn.password")}</Text>
-              <TextInput
-                style={styles.input}
-                placeholder={t("signIn.passwordPlaceholder")}
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-                value={values.password}
-                secureTextEntry
-              />
-              {touched.password && errors.password && (
-                <Text style={styles.errorText}>{errors.password}</Text>
-              )}
-
-              <TouchableOpacity style={styles.button} onPress={submitForm}>
-                <Text style={styles.buttonText}>{t("signIn.buttonText")}</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </Formik>
-        <TouchableOpacity>
-          <Text style={styles.signUpText}>
-            {t("signIn.signUpText")}{" "}
-            <Text
-              style={styles.signUp}
-              onPress={() => router.push("/(auth)/Signup" as any)}
-            >
-              {t("signIn.signUp")}
-            </Text>
-          </Text>
+          <Arrow />
         </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+        <ScrollView style={styles.scrollContent}>
+          <View style={styles.innerContainer}>
+            <Text style={styles.title}>{t("signIn.title")}</Text>
+            {errorMessage && (
+              <Text style={styles.errorText}>{errorMessage}</Text>
+            )}
+            <Formik
+              initialValues={{ email: "", password: "" }}
+              validationSchema={SignInSchema}
+              onSubmit={handleSubmit}
+            >
+              {({
+                handleChange,
+                handleBlur,
+                values,
+                errors,
+                touched,
+                submitForm,
+                isSubmitting,
+              }) => (
+                <View>
+                  <View style={styles.headerContainer}>
+                    <Text style={styles.header}>{t("signIn.email")}</Text>
+                    <View style={styles.iconContainer1}>
+                      <User1 style={styles.icon} />
+                      <TextInput
+                        style={[
+                          styles.input,
+                          {
+                            borderColor:
+                              errors.email && touched.email
+                                ? "red"
+                                : focusedInput === "email" || values.email
+                                ? "#8BC240"
+                                : "#ccc",
+                          },
+                        ]}
+                        // placeholder={t("signIn.emailPlaceholder")}
+
+                        onChangeText={handleChange("email")}
+                        onFocus={() => handleFocus("email")}
+                        onBlur={() => {
+                          handleBlur("firstName");
+                          handleBlurInput();
+                        }}
+                        value={values.email}
+                        keyboardType="email-address"
+                      />
+                    </View>
+                  </View>
+                  {touched.email && errors.email && (
+                    <Text style={styles.errorText}>{errors.email}</Text>
+                  )}
+                  <View style={styles.headerContainer}>
+                    <Text
+                      style={[
+                        styles.header,
+                        { fontFamily: "Inter_400Regular" },
+                      ]}
+                    >
+                      {t("signIn.password")}
+                    </Text>
+                    <View style={styles.iconContainer2}>
+                      <Lock style={styles.icon2} />
+                      <TextInput
+                        style={[
+                          styles.input,
+                          {
+                            borderColor:
+                              errors.password && touched.password
+                                ? "red"
+                                : focusedInput === "password" || values.password
+                                ? "#8BC240"
+                                : "#ccc",
+                          },
+                        ]}
+                        // placeholder={t("signIn.passwordPlaceholder")}
+                        onChangeText={handleChange("password")}
+                        onFocus={() => handleFocus("password")}
+                        onBlur={() => {
+                          handleBlur("password");
+                          handleBlurInput();
+                        }}
+                        value={"*".repeat(values.password.length)}
+                      />
+                    </View>
+                  </View>
+                  {touched.password && errors.password && (
+                    <Text style={styles.errorText}>{errors.password}</Text>
+                  )}
+                  <View style={styles.rememberMeContainer}>
+                    <Checkbox
+                      style={styles.checkbox}
+                      value={rememberMe}
+                      onValueChange={setRememberMe}
+                      color={rememberMe ? "#8BC240" : undefined}
+                    />
+                    <Text style={styles.Remember}>Remember Me</Text>
+                    <Text style={styles.forgotPassword}>Forgot Password?</Text>
+                  </View>
+                  <TouchableOpacity
+                    disabled={isSubmitting}
+                    style={styles.button}
+                    onPress={submitForm}
+                  >
+                    <Text style={styles.buttonText}>
+                      {isSubmitting ? (
+                        <ActivityIndicator color="white" />
+                      ) : (
+                        t("signIn.buttonText")
+                      )}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </Formik>
+            <TouchableOpacity
+              onPress={() => {
+                router.push("/(auth)/Signup" as any);
+                console.log("Sign up clicked");
+              }}
+            >
+              <Text style={styles.signUpText}>
+                {t("signIn.signUpText")}{" "}
+                <Text style={styles.signUp}>{t("signIn.signUp")}</Text>
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 16,
-  },
-  innerContainer: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  title: {
-    fontFamily: "Inter",
-    fontSize: 32,
-    fontWeight: "600",
-    lineHeight: 38.73,
-    letterSpacing: 0.5,
-    textAlign: "center",
-    right: 100,
-    top: -70,
-    color: "#000000",
-  },
-  header: {
-    width: 100,
-    height: 16,
-    top: -14,
-    fontFamily: "Inter",
-    fontSize: 14,
-    fontWeight: "600",
-    lineHeight: 16,
-    letterSpacing: 0.5,
-    textAlign: "left",
-  },
-  input: {
-    height: 40,
-    borderWidth: 1,
-    marginBottom: 25,
-    paddingHorizontal: 8,
-    borderColor: "#EFEFEF",
-  },
-  button: {
-    backgroundColor: "#8BC240",
-    padding: 10,
-    alignItems: "center",
-    marginBottom: 12,
-    width: 335,
-    height: 60,
-    borderRadius: 40,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    top: 10,
-  },
-  errorText: {
-    color: "red",
-    marginBottom: 8,
-    fontSize: 14,
-    fontWeight: "bold",
-    textAlign: "center",
-    padding: 5,
-    borderRadius: 5,
-  },
-  signUpText: {
-    width: 242,
-    height: 20,
-    textAlign: "center",
-    color: "black",
-    top: 170,
-    left: 30,
-    fontFamily: "Inter",
-    fontSize: 16,
-    fontWeight: "400",
-    lineHeight: 25.6,
-  },
-  signUp: {
-    color: "#8BC240",
-    textAlign: "center",
-    height: 30,
-    fontFamily: "Inter",
-    fontSize: 16,
-    fontWeight: "400",
-    lineHeight: 25.6,
-  },
-});
 
 export default SigninPage;

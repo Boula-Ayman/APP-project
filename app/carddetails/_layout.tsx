@@ -6,10 +6,12 @@ import {
   StyleSheet,
   Linking,
 } from "react-native";
-import { Tabs } from "expo-router";
+import { Stack, Tabs } from "expo-router";
 import { useNavigation } from "@react-navigation/native";
+import { useOpportunityRegisterInterestMutation } from "@/src/api/opportunitiesApiSlice";
 const TabLayout = () => {
   const navigation = useNavigation();
+  const [handleRegisterInterest] = useOpportunityRegisterInterestMutation();
 
   const handleGoogleClick = () => {
     // redirect to Google
@@ -21,15 +23,12 @@ const TabLayout = () => {
   };
   return (
     <>
-      <Tabs screenOptions={{ headerShown: false }}>
-        <Tabs.Screen
-          name="carddetails/[id]"
-          options={{
-            href: "/carddetails/[id]",
-            tabBarStyle: { display: "none" },
-          }}
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="(carddetails)/[id]"
         />
-      </Tabs>
+      </Stack>
       <View style={styles.tabContainer}>
         <TouchableOpacity
           style={styles.buttonGreen}
@@ -54,10 +53,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    padding: 10,
-    backgroundColor: "#fff",
-    borderTopWidth: 1,
-    borderTopColor: "#ccc",
+    padding: 20,
   },
   buttonGreen: {
     backgroundColor: "#8BC240",

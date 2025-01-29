@@ -2,9 +2,9 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   mainContainer: {
-    width: 350,
+    paddingHorizontal: 24,
     flex: 1,
-    marginTop: -10,
+    backgroundColor: "white",
   },
   headContainer: {
     width: 335,
@@ -12,15 +12,17 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   searchContainer: {
-    right: 25,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 10,
     marginTop: 15,
     alignItems: "center",
   },
   container: {
-    marginTop: -5,
+    paddingBlock: 20,
     flex: 1,
     alignItems: "center",
-    paddingHorizontal: 10,
   },
 });
 

@@ -1,31 +1,75 @@
 // FilterButtons.tsx
-import React from "react";
+import React, { useState } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
-import styles from "./HomeScreenStyle";
-import i18n from "../../src/i18n/i18n";
+import styles from "../../components/homeScreenContainer/HomeScreenStyle";
+import i18n from "../../i18n/i18n";
+import { PROPERTIES_STATUS, PropertiesStatusKeys } from "../../constants/Enums";
+
 interface FilterButtonsProps {
-  onFilterChange: (filter?: string) => void;
+  currentStatus: (typeof PROPERTIES_STATUS)[PropertiesStatusKeys];
+  onFilterChange: (
+    newStatus: (typeof PROPERTIES_STATUS)[PropertiesStatusKeys]
+  ) => void;
 }
-const FilterButtons: React.FC<FilterButtonsProps> = ({ onFilterChange }) => {
+const FilterButtons: React.FC<FilterButtonsProps> = ({
+  currentStatus,
+  onFilterChange,
+}) => {
   return (
     <View style={styles.filters}>
       <TouchableOpacity
-        style={styles.filterButtonActive}
-        onPress={() => onFilterChange()}
+        style={
+          currentStatus === "all"
+            ? styles.filterButtonActive
+            : styles.filterButton
+        }
+        onPress={() => onFilterChange("all")}
       >
-        <Text style={styles.filterTextActive}>{i18n.t("home.all")}</Text>
+        <Text
+          style={
+            currentStatus === "all"
+              ? styles.filterTextActive
+              : styles.filterText
+          }
+        >
+          {i18n.t("home.all")}
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.filterButton}
+        style={
+          currentStatus === "available"
+            ? styles.filterButtonActive
+            : styles.filterButton
+        }
         onPress={() => onFilterChange("available")}
       >
-        <Text style={styles.filterText}>{i18n.t("home.available")}</Text>
+        <Text
+          style={
+            currentStatus === "available"
+              ? styles.filterTextActive
+              : styles.filterText
+          }
+        >
+          {i18n.t("home.available")}
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.filterButton}
+        style={
+          currentStatus === "sold out"
+            ? styles.filterButtonActive
+            : styles.filterButton
+        }
         onPress={() => onFilterChange("sold out")}
       >
-        <Text style={styles.filterText}>{i18n.t("home.soldOut")}</Text>
+        <Text
+          style={
+            currentStatus === "sold out"
+              ? styles.filterTextActive
+              : styles.filterText
+          }
+        >
+          {i18n.t("home.soldOut")}
+        </Text>
       </TouchableOpacity>
     </View>
   );

@@ -34,5 +34,4 @@ const verifyApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-// Export hooks for usage in functional components
 export const { usePostVerifyMutation } = verifyApiSlice;

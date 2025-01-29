@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
+    opacity: 1,
   },
   header: {
     flexDirection: "row",
@@ -10,7 +11,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   propertyImage: {
-    width: 360,
     height: 350,
     resizeMode: "cover",
   },
@@ -42,13 +42,17 @@ const styles = StyleSheet.create({
     position: "absolute",
     justifyContent: "center",
     flexDirection: "row",
-    top: 15,
+    top: 45,
   },
   icon1: {
     backgroundColor: "white",
     borderRadius: 50,
     padding: 8,
-    left: 20,
+    height: 40,
+    width: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    left: 25,
   },
   icon2: {
     backgroundColor: "white",
@@ -63,14 +67,15 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
     marginTop: -35,
-    backgroundColor: "white", // Ensure background color is set
+    backgroundColor: "white",
   },
   priceSection: {
     width: "60%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 8,
+    marginBottom: 12,
+    top: 5,
   },
   price: {
     fontFamily: "Poppins",
@@ -81,7 +86,7 @@ const styles = StyleSheet.create({
   },
   shares: {
     fontSize: 14,
-    color: "#666",
+    color: "#464851",
     marginLeft: 20,
   },
   title: {
@@ -115,6 +120,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: 22,
   },
+  featureIcon: {
+    width: "80%",
+    height: "80%",
+  },
   featureText: {
     marginLeft: 4,
     fontSize: 12,
@@ -123,17 +132,24 @@ const styles = StyleSheet.create({
   badge: {
     width: 88,
     backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 1.84,
     padding: 15,
     borderWidth: 1,
     borderColor: "#8BC240",
-    borderRadius: 300,
+    borderRadius: 50,
     marginVertical: 8,
   },
   badgeText: {
     width: 88,
     justifyContent: "center",
     alignItems: "center",
-    color: "#4CAF50",
+    color: "#14161C",
     fontSize: 15,
   },
   descriptionTitle: {
@@ -142,8 +158,9 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   description: {
-    fontSize: 14,
-    color: "#666",
+    fontSize: 16,
+    color: "#464851",
+    fontWeight: "400",
   },
   amenitiesFeatures: {
     flexDirection: "row",
@@ -193,48 +210,41 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   contactCard: {
-    width: 335,
+    width: "100%",
     height: 178,
-    left: 12,
+    borderColor: "#EBEBEB",
+    borderWidth: 1,
     borderRadius: 33,
-    borderRightWidth: 0,
-    borderBottomWidth: 0,
-    borderLeftWidth: 0,
     padding: 16,
     backgroundColor: "#fff",
     marginVertical: 8,
     elevation: 2,
   },
   contactTitle: {
-    width: 269,
-    height: 19,
     fontFamily: "Inter",
     fontSize: 16,
     fontWeight: "500",
-    lineHeight: 25,
-    letterSpacing: -0.48,
     textAlign: "left",
+    marginBottom: 12,
   },
   whatsappIcon: {
     width: 39,
     height: 40,
-    left: 265,
-    top: -25,
+    right: 0,
+    top: -40,
+    position: "absolute",
   },
   contactDescription: {
     fontFamily: "Inter",
     fontSize: 14,
     fontWeight: "400",
-    lineHeight: 24,
-    letterSpacing: -0.48,
     textAlign: "left",
-    top: -28,
-    width: "70%",
+    width: "90%",
+    marginBottom: 16,
   },
   personContainer: {
     flexDirection: "row",
     alignItems: "center",
-    top: -20,
     marginLeft: 8,
   },
   person: {
@@ -245,17 +255,17 @@ const styles = StyleSheet.create({
   },
   whatsappButtonText: {
     color: "#14161C",
-    fontSize: 14,
-    fontWeight: "bold",
+    fontSize: 16,
+    fontWeight: "medium",
     marginLeft: 8,
   },
   priceCard: {
-    width: 335,
-    height: 300,
+    width: "100%",
+    maxHeight: 330,
     padding: 16,
     marginVertical: 6,
     borderRadius: 33,
-    left: 14,
+
     backgroundColor: "#8BC240",
   },
   pricecontent: {
@@ -345,9 +355,9 @@ const styles = StyleSheet.create({
     marginBottom: 100,
   },
   card: {
-    width: 334,
+    width: "100%",
     height: 208,
-    left: 15,
+
     backgroundColor: "#8BC240",
     borderRadius: 24,
     padding: 16,

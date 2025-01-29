@@ -1,16 +1,16 @@
-// index.tsx
 import React, { useEffect, useState } from "react";
 import { View, KeyboardAvoidingView, Platform, Keyboard } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "./Home/Homescreen";
-import SettingsScreen from "./Settings/SettingScreen";
-import Favorite from "./Favourite/Favourite";
+import HomeScreen from "./Home";
+import PortfolioPage from "./PortfolioSreen/index";
+import Favorite from "./Favourite";
 import HomeIcon from "../assets/icons/home-wifi.svg";
 import FavouriteIcon from "../assets/icons/fav.svg";
 import Building from "../assets/icons/building.svg";
 import ProfileIcon from "../assets/icons/profile.svg";
 import Profile from "./profile/Profile";
 import styles from "./indexStyle";
+import "../i18n/i18n";
 
 const Tab = createBottomTabNavigator();
 
@@ -92,8 +92,8 @@ const App: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
+        name="PortfolioPage"
+        component={PortfolioPage}
         options={{
           tabBarLabel: "",
           tabBarIcon: ({ focused }) => (
@@ -128,5 +128,4 @@ const App: React.FC = () => {
     </Tab.Navigator>
   );
 };
-
 export default App;

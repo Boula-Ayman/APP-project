@@ -25,6 +25,9 @@
     "about": "شقة بغرفة نوم واحدة في برج الصحراء 4، الواقع في منطقة النهدة، الشارقة، توفر مساحة معيشية مريحة وعصرية. تم تصميم هذه الشقق لتجمع بين الراحة والفخامة، مما يجعلها مثالية للأفراد أو العائلات الصغيرة.",
     "opportunity_type": "مشروع"
   },
+  "allProperties": {
+    "title": "جميع العقارات"
+  },
   "filter": "الفلتر",
   "bedroomsam": "غرف النوم",
   "bathroomam": "الحمامات",
@@ -52,21 +55,29 @@
   "From": "من",
   "To": "الي",
   "ROI-Expected Appreciation": "عائد الاستثمار - التقدير المتوقع",
-  "signup": {
-    "title": "تسجيل",
-    "emailPlaceholder": "Sample@gmail.com",
-    "birthDatePlaceholder": "تاريخ الميلاد (YYYY-MM-DD)",
-    "passwordPlaceholder": "كلمة المرور",
-    "termsText": "بمواصلتك، فإنك تشير إلى أنك توافق على",
+  "signUp": {
+    "title": "التسجيل",
+    "firstName": "الاسم الأول",
+    "lastName": "الاسم الأخير",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "phoneNumber": "رقم الهاتف",
+    "birthDate": "تاريخ الميلاد",
+    "firstNameRequired": "الاسم الأول مطلوب.",
+    "lastNameRequired": "الاسم الأخير مطلوب.",
+    "emailRequired": "البريد الإلكتروني مطلوب.",
+    "invalidEmail": "الرجاء إدخال عنوان بريد إلكتروني صحيح.",
+    "passwordRequired": "كلمة المرور مطلوبة.",
+    "passwordTooShort": "يجب أن تكون كلمة المرور على الأقل 8 أحرف.",
+    "invalidPassword": "يجب أن تحتوي كلمة المرور على حرف كبير وحرف صغير ورقم ورمز خاص.",
+    "phoneNumberRequired": "رقم الهاتف مطلوب.",
+    "invalidPhoneNumber": "الرجاء إدخال رقم هاتف صحيح.",
+    "birthDateRequired": "تاريخ الميلاد مطلوب.",
+    "invalidDate": "الرجاء إدخال تاريخ صحيح.",
+    "agreeToTermsPrefix": "من خلال الاستمرار، أنت توافق على",
     "terms": "الشروط",
     "and": "و",
-    "privacyPolicy": "سياسة الخصوصية",
-    "signUpButton": "تسجيل",
-    "invalidEmail": "يرجى إدخال عنوان بريد إلكتروني صالح.",
-    "invalidPassword": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل، وحرف صغير واحد، ورقم واحد، ورمز خاص واحد.",
-    "invalidBirthDate": "يجب أن يكون تاريخ الميلاد سلسلة تاريخ  صالحة (YYYY-MM-DD).",
-    "emailExists": "البريد الإلكتروني موجود بالفعل. يرجى استخدام بريد إلكتروني مختلف.",
-    "signupFailed": "فشل التسجيل. يرجى المحاولة مرة أخرى."
+    "privacyPolicy": "سياسة الخصوصية."
   },
   "signIn": {
     "title": "تسجيل الدخول",

@@ -15,6 +15,9 @@
     "filterBy": "Filter By",
     "loading": "Loading..."
   },
+  "allProperties": {
+    "title": "All Properties"
+  },
   "filter": "Filter By",
   "bedrooms": "Bedrooms: {{count}}",
   "bathroom": "Bathroom: {{count}}",
@@ -49,22 +52,7 @@
   "From": "From",
   "To": "To",
   "ROI-Expected Appreciation": "ROI - Expected Appreciation",
-  "signup": {
-    "title": "Sign Up",
-    "emailPlaceholder": "Sample@gmail.com",
-    "birthDatePlaceholder": "Birth Date (YYYY-MM-DD)",
-    "passwordPlaceholder": "Password",
-    "termsText": "By continuing you are indicating that you agree to the",
-    "terms": "Terms",
-    "and": "and",
-    "privacyPolicy": "Privacy Policy",
-    "signUpButton": "Sign up",
-    "invalidEmail": "Please enter a valid email address.",
-    "invalidPassword": "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.",
-    "invalidBirthDate": "Birth date must be a date (YYYY-MM-DD).",
-    "emailExists": "Email already exists. Please use a different email.",
-    "signupFailed": "Sign up failed. Please try again."
-  },
+
   "signIn": {
     "title": "Sign In",
     "email": "Email",
@@ -75,6 +63,30 @@
     "signUpText": "Don't have an account?",
     "signUp": "Sign Up"
   },
+  "signUp": {
+    "title": "Sign Up",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "password": "Password",
+    "phoneNumber": "Phone Number",
+    "birthDate": "Birth Date",
+    "firstNameRequired": "First name is required.",
+    "lastNameRequired": "Last name is required.",
+    "emailRequired": "Email is required.",
+    "invalidEmail": "Please enter a valid email address.",
+    "passwordRequired": "Password is required.",
+    "passwordTooShort": "Password must be at least 8 characters long.",
+    "invalidPassword": "Password must include uppercase, lowercase, number, and special character.",
+    "phoneNumberRequired": "Phone number is required.",
+    "invalidPhoneNumber": "Please enter a valid phone number.",
+    "birthDateRequired": "Birth date is required.",
+    "invalidDate": "Please enter a valid date.",
+    "agreeToTermsPrefix": "By continuing you are indicating that you agree to the",
+    "terms": "Terms",
+    "and": "and",
+    "privacyPolicy": "Privacy Policy."
+  },
   "verify": {
     "verify_email_title": "Verify your email address",
     "enter_otp_message": "Enter the 4 digits code that you received on your e-mail",
@@ -82,10 +94,7 @@
     "The OTP is incorrect. Please try again.": "The OTP is incorrect. Please try again.",
     "Verification failed. Please try again.": "Verification failed. Please try again."
   },
-   
-    
-      "sliderSignIn": "Sign In",
-      "sliderSignUp": "Sign Up"
-    
-  
+
+  "sliderSignIn": "Sign In",
+  "sliderSignUp": "Sign Up"
 }

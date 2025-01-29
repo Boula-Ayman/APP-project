@@ -7,11 +7,8 @@ const styles = StyleSheet.create({
     padding: 20,
     top: 50,
   },
-    barIcon: {
+  barIcon: {
     flexDirection: "row",
-    left: 290,
-    marginTop: -70,
-    marginBottom: 16,
     width: 51,
     height: 51,
     borderRadius: 25,

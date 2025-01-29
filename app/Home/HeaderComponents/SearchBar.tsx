@@ -1,8 +1,8 @@
 import React from "react";
 import { View, TextInput } from "react-native";
 import MagnifyingGlass from "../../../assets/icons/magnifying-glass.svg";
-import styles from "../HomeScreenStyle";
-import i18n from "../../../src/i18n/i18n";
+import styles from "../../../components/homeScreenContainer/HomeScreenStyle";
+import i18n from "../../../i18n/i18n";
 
 interface SearchBarProps {
   searchTerm: string;

@@ -10,9 +10,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   card: {
-    width: 284,
-    height: 380,
-    marginRight: 10, // Spacing between cards
+    width: 'auto',
+    height: 'auto',
     borderRadius: 22,
     backgroundColor: "#fff",
     borderWidth: 0.85,
@@ -21,19 +20,21 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     position: "relative",
-    left: 15,
-    top: 15,
+    padding: 15,
+    paddingBottom: 0,
   },
   cardImage: {
-    width: 252,
+    flexGrow: 1,
+    width: '100%',
     height: 210,
     marginBottom: 10,
     borderRadius: 22,
   },
   overlay: {
     position: "absolute",
-    top: 10,
-    left: 10,
+    top: 25,
+    left: 15,
+    paddingHorizontal: 15,
     flexDirection: "row",
     alignItems: "center",
   },
@@ -83,8 +84,8 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   Heart: {
-    width: 20,
-    height: 20,
+    width: 24,
+    height: 24,
   },
   cardTitle: {
     fontSize: 14,
