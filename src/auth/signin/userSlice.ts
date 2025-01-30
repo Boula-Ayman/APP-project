@@ -23,8 +23,11 @@ const userSlice = createSlice({
       state.accessToken = null;
       state.user = initialState.user;
     },
+    setAccessToken: (state, action) => {
+      state.accessToken = action.payload;
+    },
   },
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser, clearUser, setAccessToken } = userSlice.actions;
 export default userSlice.reducer;

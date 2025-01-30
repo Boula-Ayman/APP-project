@@ -121,7 +121,7 @@ const SigninPage: React.FC = () => {
                                 ? "red"
                                 : focusedInput === "email" || values.email
                                 ? "#8BC240"
-                                : "#ccc",
+                                : "#EFEFEF",
                           },
                         ]}
                         // placeholder={t("signIn.emailPlaceholder")}
@@ -160,7 +160,7 @@ const SigninPage: React.FC = () => {
                                 ? "red"
                                 : focusedInput === "password" || values.password
                                 ? "#8BC240"
-                                : "#ccc",
+                                : "#EFEFEF",
                           },
                         ]}
                         // placeholder={t("signIn.passwordPlaceholder")}
@@ -203,20 +203,20 @@ const SigninPage: React.FC = () => {
                 </View>
               )}
             </Formik>
-            <TouchableOpacity
-              onPress={() => {
-                router.push("/(auth)/Signup" as any);
-                console.log("Sign up clicked");
-              }}
-            >
-              <Text style={styles.signUpText}>
-                {t("signIn.signUpText")}{" "}
-                <Text style={styles.signUp}>{t("signIn.signUp")}</Text>
-              </Text>
-            </TouchableOpacity>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+      <TouchableOpacity
+        onPress={() => {
+          router.push("/(auth)/Signup" as any);
+          console.log("Sign up clicked");
+        }}
+      >
+        <Text style={styles.signUpText}>
+          {t("signIn.signUpText")}{" "}
+          <Text style={styles.signUp}>{t("signIn.signUp")}</Text>
+        </Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };

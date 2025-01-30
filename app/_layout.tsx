@@ -6,6 +6,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import store, { Persistor } from "../src/store/index";
 import * as SplashScreen from "expo-splash-screen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-toast-message";
 import {
   useFonts,
   Inter_400Regular,
@@ -45,17 +46,18 @@ export default function Layout() {
     return null;
   }
 
-  const logout = async () => {
-    await AsyncStorage.removeItem("access_token");
-    router.push("/Welcome" as any);
-  };
-  logout();
+  // const logout = async () => {
+  //   await AsyncStorage.removeItem("access_token");
+  //   router.push("/Welcome" as any);
+  // };
+  // logout();
   return (
     <Provider store={store}>
       <PersistGate
         loading={<ActivityIndicator size="large" color="#0000ff" />}
         persistor={Persistor}
       >
+        <Toast />
         <Stack
           screenOptions={{
             headerShown: false,

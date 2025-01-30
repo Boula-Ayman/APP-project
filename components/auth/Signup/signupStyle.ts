@@ -79,18 +79,19 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#3A3D46",
     borderRadius: 8,
+    paddingRight: 40,
     padding: 10,
     marginBottom: 10,
-    fontSize: 16,
+    fontSize: 14,
     height: 50,
   },
   passwordContainer: {
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#EFEFEF",
     borderRadius: 8,
     paddingHorizontal: 12,
     marginBottom: 15,
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     fontSize: 14,
-    textAlign: "center",
+    textAlign: "left",
     marginTop: -10,
   },
 
@@ -166,6 +167,7 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_400Regular",
     justifyContent: "center",
     textAlign: "center",
+    color: "#404040",
   },
   Text: {
     color: "#8BC240",
@@ -173,7 +175,7 @@ const styles = StyleSheet.create({
   errorTextPhone: {
     color: "red",
     fontSize: 14,
-    textAlign: "center",
+    textAlign: "left",
     marginTop: 5,
   },
 });
