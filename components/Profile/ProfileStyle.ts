@@ -6,6 +6,13 @@ export const styles = StyleSheet.create({
     alignItems: "flex-start",
     backgroundColor: "#f5f5f5",
   },
+  gradient: {
+    height: 305,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+  },
   text: {
     color: "#000000",
     paddingHorizontal: 30,
@@ -41,20 +48,27 @@ export const styles = StyleSheet.create({
   ProfileContainer: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "flex-start",
+    alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    marginTop: 60,
-    marginLeft: 30,
-    gap: 60,
-    padding: 5,
+    marginTop: 50,
+    gap: 15,
+    paddingHorizontal: 30,
   },
+
   ProfileItem: {
     display: "flex",
     flexDirection: "row",
-    alignItems: "flex-start",
+    alignItems: "center",
+    justifyContent: "flex-start",
     gap: 15,
     width: "100%",
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "#92929233",
+    borderRadius: 14,
+    height: 60,
+    paddingHorizontal: 20,
   },
   ProfileItemText: {
     fontFamily: "Inter_400Regular",
@@ -62,35 +76,37 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 20,
     color: "#000000",
-    width: "65%",
+    width: "75%",
   },
   ProfileItemIcon: {
     width: 24,
     height: 24,
   },
+
   ProfileItemIconLogout: {
     width: 24,
     height: 24,
-    marginLeft: 2,
+    marginLeft: 5,
   },
   ProfileItemTextLogout: {
-    fontFamily: "Inter_400Regular",
+    fontFamily: "Poppins",
     fontWeight: "400",
     fontSize: 16,
     lineHeight: 20,
     color: "#FF2650",
-    width: "65%",
   },
+
   ProfileItemTextContainer: {
     display: "flex",
     flexDirection: "row",
-
+    // marginLeft: 5,
     width: "100%",
   },
   ProfileArrow: {
     color: "#2F2D3D",
     width: 9,
     height: 15,
+    marginLeft: 12,
     justifyContent: "flex-end",
   },
   PrivacyContainer: {

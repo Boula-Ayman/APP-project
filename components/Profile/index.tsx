@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
 import React from "react";
 import { usePostLogoutMutation } from "../../src/auth/logout/logoutApiSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import Ai from "../../assets/icons/Ai.svg";
 import Settings from "../../assets/icons/setting.svg";
 import Share from "../../assets/icons/share.svg";
@@ -11,17 +11,20 @@ import { useFonts } from "expo-font";
 import i18n from "../../i18n/i18n";
 import ProfileArrow from "../../assets/icons/ProfileArrow.svg";
 import { styles } from "./ProfileStyle";
+import { LinearGradient } from "expo-linear-gradient";
 const Profile = () => {
   const [postLogout, { isLoading, isSuccess, isError, error }] =
     usePostLogoutMutation();
   const [fontsLoaded, fonts] = useFonts({
     Inter_400Regular: require("../../assets/fonts/Inter/Inter_24pt-Regular.ttf"),
     Inter_600SemiBold: require("../../assets/fonts/Inter/Inter_24pt-SemiBold.ttf"),
+    Inter_700Bold: require("../../assets/fonts/Inter/Inter_24pt-Bold.ttf"),
   });
+
   const handleLogout = async () => {
     try {
       const token = await AsyncStorage.getItem("access_token");
-      console.log("Token before logout:", token); // Log the token
+      console.log("Token before logout:", token);
 
       if (!token) {
         console.error("No token found, cannot logout.");
@@ -43,6 +46,16 @@ const Profile = () => {
 
   return (
     <View style={styles.container}>
+      <LinearGradient
+        colors={[
+          "rgba(139, 194, 64, 0)",
+          "rgba(139, 194, 64, 0.032)",
+          "rgba(139, 194, 64, 0.16)",
+        ]}
+        style={styles.gradient}
+        start={{ x: 0, y: 1 }}
+        end={{ x: 0, y: 0 }}
+      />
       <Text style={styles.text}>{i18n.t("profile.profile")}</Text>
       <View style={styles.ImageContainer}>
         <Ai style={styles.Ai} />
@@ -51,12 +64,15 @@ const Profile = () => {
       <View style={styles.ProfileContainer}>
         <View style={styles.ProfileItem}>
           <Settings style={styles.ProfileItemIcon} />
-          <View style={styles.ProfileItemTextContainer}>
+          <TouchableOpacity
+            style={styles.ProfileItemTextContainer}
+            onPress={() => router.push("/profileSettingesPage" as any)}
+          >
             <Text style={styles.ProfileItemText}>
               {i18n.t("profile.settings")}
             </Text>
             <ProfileArrow style={styles.ProfileArrow} />
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.ProfileItem}>
           <Share style={styles.ProfileItemIcon} />
@@ -73,7 +89,6 @@ const Profile = () => {
             <Text style={styles.ProfileItemTextLogout}>
               {i18n.t("profile.logout")}
             </Text>
-            <ProfileArrow style={styles.ProfileArrow} />
           </View>
         </TouchableOpacity>
       </View>
