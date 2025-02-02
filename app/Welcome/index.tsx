@@ -22,8 +22,8 @@ const TabLayout = () => {
     router.push("/(auth)/signIn");
   };
   const handleSignUp = () => {
-    router.push("/(auth)/Signup" as any);
-    // router.push("/" as any);
+    // router.push("/(auth)/Signup" as any);
+    router.push("/" as any);
     // router.push("/(auth)/verify" as any);
   };
   return (
