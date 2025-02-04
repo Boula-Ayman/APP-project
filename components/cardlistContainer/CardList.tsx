@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 import { Animated, View, Dimensions, Pressable, Text } from "react-native";
 import styles from "./CardListStyle";
 import Card from "../../app/Home/CardListoportunity/Card";
@@ -13,7 +13,6 @@ import {
   addToWishlist,
   removeFromWishlist,
 } from "../../src/wishList/wishlistSlice";
-import { clearUser } from "@/src/auth/signin/userSlice";
 
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = 284;
@@ -25,7 +24,7 @@ interface CardListProps {
 
 const CardList: React.FC<CardListProps> = ({ opportunities }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
-  const likedItems = useSelector((state: any) => state.wishlist);
+  const likedItems = useSelector((state: any) => state.wishlist.likedItems);
   const dispatch = useDispatch();
   const [postWishList] = usePostWishListMutation();
   const [removeWishList] = useRemoveWishListMutation();
@@ -49,8 +48,6 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
       }
     }
   };
-
-  console.log('likedItems now is', likedItems)
 
   return (
     <View style={styles.container}>
