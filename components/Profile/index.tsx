@@ -10,6 +10,7 @@ import Logout from "../../assets/icons/LogoutIcon.svg";
 import { useFonts } from "expo-font";
 import i18n from "../../i18n/i18n";
 import ProfileArrow from "../../assets/icons/ProfileArrow.svg";
+import CardCoin from "../../assets/icons/cardCoin.svg";
 import { styles } from "./ProfileStyle";
 import { LinearGradient } from "expo-linear-gradient";
 const Profile = () => {
@@ -62,6 +63,19 @@ const Profile = () => {
         <Text style={styles.AiText}>Kamal Mohamed</Text>
       </View>
       <View style={styles.ProfileContainer}>
+        <View style={styles.ProfileItem}>
+          <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+            <CardCoin style={styles.ProfileItemIcon} />
+            <Text style={styles.ProfileItemText}>
+              {i18n.t("profile.myBookings")}
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => router.push("/profileSettingesPage" as any)}
+          >
+            <ProfileArrow style={styles.ProfileArrow} />
+          </TouchableOpacity>
+        </View>
         <View style={styles.ProfileItem}>
           <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
             <Settings style={styles.ProfileItemIcon} />
