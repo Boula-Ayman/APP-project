@@ -49,7 +49,7 @@ const Profile = () => {
       <LinearGradient
         colors={[
           "rgba(139, 194, 64, 0)",
-          "rgba(139, 194, 64, 0.032)",
+          "rgba(139, 194, 64, 0.03)",
           "rgba(139, 194, 64, 0.16)",
         ]}
         style={styles.gradient}
@@ -63,29 +63,32 @@ const Profile = () => {
       </View>
       <View style={styles.ProfileContainer}>
         <View style={styles.ProfileItem}>
-          <Settings style={styles.ProfileItemIcon} />
-          <TouchableOpacity
-            style={styles.ProfileItemTextContainer}
-            onPress={() => router.push("/profileSettingesPage" as any)}
-          >
+          <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+            <Settings style={styles.ProfileItemIcon} />
             <Text style={styles.ProfileItemText}>
               {i18n.t("profile.settings")}
             </Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => router.push("/profileSettingesPage" as any)}
+          >
             <ProfileArrow style={styles.ProfileArrow} />
           </TouchableOpacity>
         </View>
         <View style={styles.ProfileItem}>
-          <Share style={styles.ProfileItemIcon} />
-          <View style={styles.ProfileItemTextContainer}>
+          <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+            <Share style={styles.ProfileItemIcon} />
             <Text style={styles.ProfileItemText}>
               {i18n.t("profile.tellYourFriends")}
             </Text>
+          </View>
+          <View>
             <ProfileArrow style={styles.ProfileArrow} />
           </View>
         </View>
         <TouchableOpacity style={styles.ProfileItem} onPress={handleLogout}>
-          <Logout style={styles.ProfileItemIconLogout} />
-          <View style={styles.ProfileItemTextContainer}>
+          <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+            <Logout style={styles.ProfileItemIconLogout} />
             <Text style={styles.ProfileItemTextLogout}>
               {i18n.t("profile.logout")}
             </Text>

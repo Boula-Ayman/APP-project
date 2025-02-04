@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     gap: 15,
     width: "100%",
     borderWidth: 1,
@@ -76,7 +76,6 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 20,
     color: "#000000",
-    width: "75%",
   },
   ProfileItemIcon: {
     width: 24,
@@ -96,12 +95,6 @@ export const styles = StyleSheet.create({
     color: "#FF2650",
   },
 
-  ProfileItemTextContainer: {
-    display: "flex",
-    flexDirection: "row",
-    // marginLeft: 5,
-    width: "100%",
-  },
   ProfileArrow: {
     color: "#2F2D3D",
     width: 9,
