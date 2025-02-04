@@ -29,11 +29,11 @@ const baseQueryWithoutAuth = fetchBaseQuery({
 const baseQuery = async (args: any, api: any, extraOptions: any) => {
     try {
         let result = await baseQueryWithoutAuth(args, api, extraOptions);
-  
+
       if (
         result.error &&
         isUnauthorizedStatus((result.error as FetchBaseQueryError).status as number) &&
-        (api.getState() as RootState).auth?.token
+        (api.getState() as RootState).user.accessToken
       ) {
         // Try to refresh the token
         const refreshResult = await baseQueryWithoutAuth(
@@ -51,12 +51,6 @@ const baseQuery = async (args: any, api: any, extraOptions: any) => {
               user: user,
               token: access_token,
             })
-          );
-  
-          // Debug log after dispatch
-          console.log(
-            "Auth state after dispatch:",
-            (api.getState() as RootState).auth
           );
   
           // Retry the original request
