@@ -24,6 +24,7 @@ import Checkbox from "expo-checkbox";
 import { setUser } from "@/src/auth/signin/userSlice";
 import { useDispatch } from "react-redux";
 import { setWishlist } from "@/src/wishList/wishlistSlice";
+import { Opportunity } from "@/src/interfaces/opportunity.interface";
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -52,7 +53,7 @@ const SigninPage: React.FC = () => {
             user: response?.data?.user,
             token: response?.data?.access_token
         }))
-        dispatch(setWishlist(response?.data?.user?.wishlist))
+        dispatch(setWishlist(response?.data?.user?.wishlist.map((item: Opportunity) => item.id)))
         router.push("/Home");
         setErrorMessage(null);
     } catch(e) {

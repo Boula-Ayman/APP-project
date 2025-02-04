@@ -4,13 +4,15 @@ import SearchBar from "../Home/HeaderComponents/SearchBar";
 import FilterButton from "../Home/HeaderComponents/FilterButton";
 import { useGetOpportunitiesQuery, useLazyGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
 import Card from "../Home/CardListoportunity/Card";
-
 import styles from "./indexStyle";
 import PageHeader from "@/components/page/header";
 import { useTranslation } from "react-i18next";
 import { PROPERTIES_STATUS, PropertiesStatusKeys } from "@/constants/Enums";
 import i18n from "@/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
+import { useDispatch, useSelector } from "react-redux";
+import { addToWishlist } from "@/src/wishList/wishlistSlice";
+import { RootState } from "@/src/store/rootReducer";
 
 interface FilterScreenProps {
   searchTerm: string;
@@ -18,8 +20,11 @@ interface FilterScreenProps {
 }
 
 const ViewAll: React.FC<FilterScreenProps> = ({}) => {
-    const [likedItems, setLikedItems] = useState<number[]>([]);
+    const wishList = useSelector((state: RootState) => state.wishlist);
+
     const [searchTerm, setSearchTerm] = useState<string>("");
+
+    const dispatch = useDispatch();
 
     const [filters, setFilters] = useState<Partial<{
       type: string | null;
@@ -46,12 +51,7 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
   const { t } = useTranslation();
 
   const handleLoveIconPress = (id: number) => {
-    setLikedItems((prev) => {
-      const newLikedItems = prev.includes(id)
-        ? prev.filter((item) => item !== id)
-        : [...prev, id];
-      return newLikedItems;
-    });
+    dispatch(addToWishlist(id));
   };
 
   const handleSearch = (newSearchTerm: string) => {
@@ -121,7 +121,7 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
             renderItem={({ item }) => (
               <Card
                 item={item}
-                isLiked={likedItems.includes(item.id)}
+                isLiked={wishList.includes(item.id)}
                 onLoveIconPress={() => handleLoveIconPress(item.id)}
               />
             )}

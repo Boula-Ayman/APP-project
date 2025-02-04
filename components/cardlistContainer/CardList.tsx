@@ -24,13 +24,15 @@ interface CardListProps {
 
 const CardList: React.FC<CardListProps> = ({ opportunities }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
-  const likedItems = useSelector((state: any) => state.wishlist.likedItems);
+  
+  const wishList = useSelector((state: any) => state.wishlist);
   const dispatch = useDispatch();
+  
   const [postWishList] = usePostWishListMutation();
   const [removeWishList] = useRemoveWishListMutation();
   
   const handleLoveIconPress = async (id: number, item: Opportunity) => {
-      const isLiked = likedItems.map((i: any) => i.id).includes(item.id);
+      const isLiked = wishList.includes(item.id);
 
     try {
       if (isLiked) {
@@ -81,14 +83,14 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
                 <Link
                 href={`/carddetails/${item.id}?type=${
                     item.opportunity_type
-                }&likedItems=${JSON.stringify(likedItems)}`}
+                }&likedItems=${JSON.stringify(wishList)}`}
                 asChild
                 >
                 <Pressable>
                     <Animated.View style={[{ transform: [{ scale }] }]}>
                     <Card
                         item={item}
-                        isLiked={likedItems.map((i: Opportunity) => i.id).includes(item.id)}
+                        isLiked={wishList.includes(item.id)}
                         onLoveIconPress={() => handleLoveIconPress(item.id, item)}
                     />
                     </Animated.View>

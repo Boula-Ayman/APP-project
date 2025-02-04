@@ -7,9 +7,6 @@ import { useGetWishListQuery } from "@/src/wishList/AdWishList/wishListApiSliceA
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const TestWishListComponent = () => {
-  const likedItems = useSelector(
-    (state: RootState) => state.wishlist.likedItems
-  );
   const { data, error, isLoading, refetch } = useGetWishListQuery({
       refetchOnMountOrArgChange: true,
       refetchOnFocus: true,
