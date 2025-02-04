@@ -15,8 +15,6 @@ import {
 import i18n from "@/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 import { StatusBar } from "expo-status-bar";
-import { useDispatch } from "react-redux";
-import { clearWishlist } from "@/src/wishList/wishlistSlice";
 import { PROPERTIES_STATUS, PropertiesStatusKeys } from "@/constants/Enums";
 
 const HomeScreen: React.FC = ({}) => {
@@ -86,10 +84,6 @@ const HomeScreen: React.FC = ({}) => {
       // TODO: show error messages
     }
   };
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(clearWishlist());
-  }, []);
   return (
     <>
       <StatusBar style="dark" />

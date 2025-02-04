@@ -1,32 +1,26 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface WishlistState {
-  likedItems: number[];
-}
-
-const initialState: WishlistState = {
-  likedItems: [],
-};
+const initialState: number[] = [];
 
 const wishlistSlice = createSlice({
   name: "wishlist",
   initialState,
   reducers: {
     addToWishlist(state, action: PayloadAction<number>) {
-      if (!state.likedItems.includes(action.payload)) {
-        state.likedItems.push(action.payload);
+      if (!state.includes(action.payload)) {
+        state.push(action.payload);
       }
     },
     removeFromWishlist(state, action: PayloadAction<number>) {
-      state.likedItems = state.likedItems.filter(
+      state = state.filter(
         (item) => item !== action.payload
       );
     },
     setWishlist(state, action: PayloadAction<number[]>) {
-      state.likedItems = action.payload;
+      state = action.payload;
     },
     clearWishlist(state) {
-      state.likedItems = [];
+      state = [];
     },
   },
 });

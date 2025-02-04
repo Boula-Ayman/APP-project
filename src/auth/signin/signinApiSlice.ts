@@ -3,11 +3,11 @@ import apiSlice from "../../api/apiSlice";
 const signinApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     postSignIn: builder.mutation({
-      query: (credentials) => ({
+      query: ({body}) => ({
         url: "/auth/login",
         method: "POST",
-        body: credentials,
-      }),
+        body,
+    }),
     }),
   }),
 });

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -14,7 +13,6 @@ import {
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { usePostSignInMutation } from "@/src/auth/signin/signinApiSlice";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import i18n from "../../../i18n/i18n";
 import styles from "./signInStyle";
@@ -25,6 +23,7 @@ import { useFonts } from "expo-font";
 import Checkbox from "expo-checkbox";
 import { setUser } from "@/src/auth/signin/userSlice";
 import { useDispatch } from "react-redux";
+import { setWishlist } from "@/src/wishList/wishlistSlice";
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -48,20 +47,21 @@ const SigninPage: React.FC = () => {
 
   const handleSubmit = async (values, actions) => {
     try {
-      const response = await postSignIn(values).unwrap();
-      const token = response?.data?.access_token;
-      dispatch(setUser(response.data));
-      if (token) {
-        await AsyncStorage.setItem("access_token", token);
-        router.push("/" as any);
+      const response = await postSignIn({body: values}).unwrap();
+        dispatch(setUser({
+            user: response?.data?.user,
+            token: response?.data?.access_token
+        }))
+        dispatch(setWishlist(response?.data?.user?.wishlist))
+        router.push("/Home");
         setErrorMessage(null);
-      } else {
-        setErrorMessage("Invalid email or password");
-      }
-    } catch {
+    } catch(e) {
+        console.log("error sign in", e);
       setErrorMessage("Invalid email or password");
     }
-    actions.setSubmitting(false);
+    finally {
+      actions.setSubmitting(false);
+    }
   };
   const handleFocus = (inputName: string) => {
     setFocusedInput(inputName);
@@ -69,9 +69,6 @@ const SigninPage: React.FC = () => {
 
   const handleBlurInput = () => {
     setFocusedInput(null);
-  };
-  const handleBackPress = () => {
-    router.push("/Welcome" as any);
   };
 
   return (
@@ -170,7 +167,7 @@ const SigninPage: React.FC = () => {
                           handleBlur("password");
                           handleBlurInput();
                         }}
-                        value={"*".repeat(values.password.length)}
+                        value={values.password}
                       />
                     </View>
                   </View>
