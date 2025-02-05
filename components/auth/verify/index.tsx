@@ -17,7 +17,7 @@ import { OtpInput } from "react-native-otp-entry";
 import { router, useLocalSearchParams } from "expo-router";
 import i18n from "../../../i18n/i18n";
 import { useFonts } from "expo-font";
-import Arrow from "../../../assets/icons/Arrow.svg";
+import Arrow from "../../../assets/icons/arrow.svg";
 import Toast from "react-native-toast-message";
 import { usePostSignInMutation } from "@/src/auth/signin/signinApiSlice";
 import { useDispatch, useSelector } from "react-redux";
