@@ -54,7 +54,7 @@ const SigninPage: React.FC = () => {
             token: response?.data?.access_token
         }))
         dispatch(setWishlist(response?.data?.user?.wishlist.map((item: Opportunity) => item.id)))
-        router.push("/Home");
+        router.replace("/");
         setErrorMessage(null);
     } catch(e) {
         console.log("error sign in", e);
