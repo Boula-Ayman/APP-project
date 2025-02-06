@@ -3,21 +3,18 @@ import {
   View,
   Text,
   TextInput,
-  StyleSheet,
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  Pressable,
   ActivityIndicator,
 } from "react-native";
 import { usePostSignUpMutation } from "../../../src/auth/signup/signuupApiSlice";
 import { router } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18n from "../../../i18n/i18n";
 import styles from "./signupStyle";
 import Button from "@/commonComponent/button/Button";
-import Arrow from "../../../assets/icons/arrow.svg";
+import Arrow from "../../../assets/icons/Arrow.svg";
 import { Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { useDispatch, UseDispatch } from "react-redux";

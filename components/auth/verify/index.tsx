@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
@@ -12,15 +11,14 @@ import {
   usePostVerifyMutation,
   useResendVerifyMutation,
 } from "../../../src/auth/veirfy/verify";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { OtpInput } from "react-native-otp-entry";
 import { router, useLocalSearchParams } from "expo-router";
 import i18n from "../../../i18n/i18n";
 import { useFonts } from "expo-font";
-import Arrow from "../../../assets/icons/arrow.svg";
+import Arrow from "../../../assets/icons/Arrow.svg";
 import Toast from "react-native-toast-message";
 import { usePostSignInMutation } from "@/src/auth/signin/signinApiSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUser } from "@/src/auth/signin/userSlice";
 
 const VerificationScreen: React.FC = () => {
