@@ -3,24 +3,16 @@ import { useSelector } from "react-redux";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { RootState } from "../../src/store";
 import CardList from "@/components/cardlistContainer/CardList";
-import { useGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
 import { useGetWishListQuery } from "@/src/wishList/AdWishList/wishListApiSliceAdd";
-import { ref } from "yup";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 const TestWishListComponent = () => {
-  const likedItems = useSelector(
-    (state: RootState) => state.wishlist.likedItems
-  );
-  console.log("Liked Items:", likedItems);
   const { data, error, isLoading, refetch } = useGetWishListQuery({
-    refetchOnMountOrArgChange: true,
-    refetchOnFocus: true,
-    refetchOnReconnect: true,
-    refetchOnUnmount: true,
-  });
-  const user = useSelector((state: RootState) => state.user);
-  console.log("user", user);
-  console.log(data, "data");
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+      refetchOnReconnect: true,
+      refetchOnUnmount: true,
+    });
   return (
     <SafeAreaView style={styles.container}>
       {data?.data.length > 0 ? (

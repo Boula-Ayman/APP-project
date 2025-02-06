@@ -1,28 +1,27 @@
-import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
-import React from "react";
-import { usePostLogoutMutation } from "../../src/auth/logout/logoutApiSlice";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { useLogoutMutation } from "../../src/auth/logout/logoutApiSlice";
 import { router } from "expo-router";
+import { useDispatch } from "react-redux";
+import { clearUser } from "@/src/auth/signin/userSlice";
+import { clearWishlist } from "@/src/wishList/wishlistSlice";
 
 const Profile = () => {
-  const [postLogout, { isLoading, isSuccess, isError, error }] =
-    usePostLogoutMutation();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [postLogout, { isLoading, isSuccess, isError, error }] = useLogoutMutation();
+  
+  const dispatch = useDispatch();
 
   const handleLogout = async () => {
     try {
-      const token = await AsyncStorage.getItem("access_token");
-      console.log("Token before logout:", token); // Log the token
-
-      if (!token) {
-        console.error("No token found, cannot logout.");
-        return;
-      }
-
-      // Pass the token to postLogout
-      await postLogout(token).unwrap();
-      console.log("Logout successful");
-      await AsyncStorage.removeItem("access_token");
-      router.push("/Welcome" as any);
+      await postLogout().unwrap();
+      
+      dispatch(clearUser());
+      dispatch(clearWishlist());
+      
+      router.push("/Welcome");
+      
+      setErrorMessage(null);
     } catch (err) {
       console.error("Failed to logout:", err);
       if (err && typeof err === "object" && "data" in err) {

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
+  Platform,
 } from "react-native";
 import Phone from "../../assets/Images/iPhone.svg";
 import Screen from "../../assets/Images/Screentest.svg";
@@ -105,11 +106,16 @@ const Welcome = () => {
           </View>
         )}
 
-        <View style={styles.gradientOverlay}>
+        <View
+          style={[
+            styles.gradientOverlay,
+            { top: Platform.OS === "ios" ? "43.5%" : "44.5%" },
+          ]}
+        >
           <LinearGradient
             colors={["rgba(255, 255, 255, 0.0001)", "#FFFFFF"]}
-            start={{ x: 0, y: 0 }} // Start from the top
-            end={{ x: 0, y: 1 }} // End at the bottom
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
             style={styles.gradient}
           />
         </View>
