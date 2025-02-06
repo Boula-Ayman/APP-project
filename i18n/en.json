@@ -96,7 +96,15 @@
     "The OTP is incorrect. Please try again.": "The OTP is incorrect. Please try again.",
     "Verification failed. Please try again.": "Verification failed. Please try again."
   },
-
+  "profile": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "tellYourFriends": "Tell your friends",
+    "logout": "Logout",
+    "privacyPolicy": "Privacy Policy",
+    "appVersion": "App version 100.2.1",
+    "myBookings": "My Bookings"
+  },
   "sliderSignIn": "Sign In",
   "sliderSignUp": "Sign Up"
 }

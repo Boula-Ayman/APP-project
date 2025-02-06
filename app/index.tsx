@@ -8,7 +8,7 @@ import HomeIcon from "../assets/icons/home-wifi.svg";
 import FavouriteIcon from "../assets/icons/fav.svg";
 import Building from "../assets/icons/building.svg";
 import ProfileIcon from "../assets/icons/profile.svg";
-import Profile from "./profile/Profile";
+import Profile from "./profile";
 import styles from "./indexStyle";
 import "../i18n/i18n";
 import { useSelector } from "react-redux";
