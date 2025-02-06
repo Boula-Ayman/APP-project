@@ -65,7 +65,9 @@ const styles = StyleSheet.create({
     left: 15,
     top: 39,
   },
-  iconContainer2: {},
+  iconContainer2: {
+    position: "relative",
+  },
   icon2: {
     position: "relative",
     left: 15,

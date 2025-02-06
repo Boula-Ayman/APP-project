@@ -18,13 +18,14 @@ import i18n from "../../../i18n/i18n";
 import styles from "./signInStyle";
 import User1 from "../../../assets/icons/User1.svg";
 import Lock from "../../../assets/icons/Lock.svg";
-import Arrow from "../../../assets/icons/arrow.svg";
+import Arrow from "../../../assets/icons/Arrow.svg";
 import { useFonts } from "expo-font";
 import Checkbox from "expo-checkbox";
 import { setUser } from "@/src/auth/signin/userSlice";
 import { useDispatch } from "react-redux";
 import { setWishlist } from "@/src/wishList/wishlistSlice";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
+import { Ionicons } from "@expo/vector-icons";
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -37,6 +38,7 @@ const SigninPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const dispatch = useDispatch();
   const [fontsLoaded] = useFonts({
@@ -169,7 +171,23 @@ const SigninPage: React.FC = () => {
                           handleBlurInput();
                         }}
                         value={values.password}
+                        secureTextEntry={!showPassword}
                       />
+                      <TouchableOpacity
+                         onPress={() => setShowPassword(!showPassword)}
+                         style={{
+                            position: "absolute",
+                            height: "100%",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            right: 10,
+                        }}>
+                        <Ionicons
+                            name={showPassword ? "eye-off" : "eye"}
+                            size={24}
+                        />
+                       </TouchableOpacity>
                     </View>
                   </View>
                   {touched.password && errors.password && (
