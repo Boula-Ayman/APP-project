@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -14,7 +13,6 @@ import {
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { usePostSignInMutation } from "@/src/auth/signin/signinApiSlice";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import i18n from "../../../i18n/i18n";
 import styles from "./signInStyle";
@@ -25,6 +23,9 @@ import { useFonts } from "expo-font";
 import Checkbox from "expo-checkbox";
 import { setUser } from "@/src/auth/signin/userSlice";
 import { useDispatch } from "react-redux";
+import { setWishlist } from "@/src/wishList/wishlistSlice";
+import { Opportunity } from "@/src/interfaces/opportunity.interface";
+import { Ionicons } from "@expo/vector-icons";
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -37,6 +38,7 @@ const SigninPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const dispatch = useDispatch();
   const [fontsLoaded] = useFonts({
@@ -48,20 +50,21 @@ const SigninPage: React.FC = () => {
 
   const handleSubmit = async (values, actions) => {
     try {
-      const response = await postSignIn(values).unwrap();
-      const token = response?.data?.access_token;
-      dispatch(setUser(response.data));
-      if (token) {
-        await AsyncStorage.setItem("access_token", token);
-        router.push("/" as any);
+      const response = await postSignIn({body: values}).unwrap();
+        dispatch(setUser({
+            user: response?.data?.user,
+            token: response?.data?.access_token
+        }))
+        dispatch(setWishlist(response?.data?.user?.wishlist.map((item: Opportunity) => item.id)))
+        router.replace("/");
         setErrorMessage(null);
-      } else {
-        setErrorMessage("Invalid email or password");
-      }
-    } catch {
+    } catch(e) {
+        console.log("error sign in", e);
       setErrorMessage("Invalid email or password");
     }
-    actions.setSubmitting(false);
+    finally {
+      actions.setSubmitting(false);
+    }
   };
   const handleFocus = (inputName: string) => {
     setFocusedInput(inputName);
@@ -69,9 +72,6 @@ const SigninPage: React.FC = () => {
 
   const handleBlurInput = () => {
     setFocusedInput(null);
-  };
-  const handleBackPress = () => {
-    router.push("/Welcome" as any);
   };
 
   return (
@@ -121,7 +121,7 @@ const SigninPage: React.FC = () => {
                                 ? "red"
                                 : focusedInput === "email" || values.email
                                 ? "#8BC240"
-                                : "#ccc",
+                                : "#EFEFEF",
                           },
                         ]}
                         // placeholder={t("signIn.emailPlaceholder")}
@@ -160,7 +160,7 @@ const SigninPage: React.FC = () => {
                                 ? "red"
                                 : focusedInput === "password" || values.password
                                 ? "#8BC240"
-                                : "#ccc",
+                                : "#EFEFEF",
                           },
                         ]}
                         // placeholder={t("signIn.passwordPlaceholder")}
@@ -170,8 +170,24 @@ const SigninPage: React.FC = () => {
                           handleBlur("password");
                           handleBlurInput();
                         }}
-                        value={"*".repeat(values.password.length)}
+                        value={values.password}
+                        secureTextEntry={!showPassword}
                       />
+                      <TouchableOpacity
+                         onPress={() => setShowPassword(!showPassword)}
+                         style={{
+                            position: "absolute",
+                            height: "100%",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            right: 10,
+                        }}>
+                        <Ionicons
+                            name={showPassword ? "eye-off" : "eye"}
+                            size={24}
+                        />
+                       </TouchableOpacity>
                     </View>
                   </View>
                   {touched.password && errors.password && (
@@ -203,20 +219,20 @@ const SigninPage: React.FC = () => {
                 </View>
               )}
             </Formik>
-            <TouchableOpacity
-              onPress={() => {
-                router.push("/(auth)/Signup" as any);
-                console.log("Sign up clicked");
-              }}
-            >
-              <Text style={styles.signUpText}>
-                {t("signIn.signUpText")}{" "}
-                <Text style={styles.signUp}>{t("signIn.signUp")}</Text>
-              </Text>
-            </TouchableOpacity>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+      <TouchableOpacity
+        onPress={() => {
+          router.push("/(auth)/Signup" as any);
+          console.log("Sign up clicked");
+        }}
+      >
+        <Text style={styles.signUpText}>
+          {t("signIn.signUpText")}{" "}
+          <Text style={styles.signUp}>{t("signIn.signUp")}</Text>
+        </Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };

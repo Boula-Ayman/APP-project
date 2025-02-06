@@ -82,11 +82,12 @@
     "invalidPhoneNumber": "Please enter a valid phone number.",
     "birthDateRequired": "Birth date is required.",
     "invalidDate": "Please enter a valid date.",
-    "agreeToTermsPrefix": "By continuing you are indicating that you agree to the",
-    "terms": "Terms",
-    "and": "and",
-    "privacyPolicy": "Privacy Policy.",
-    "signUpButton": "Sign Up"
+    "agreeToTermsPrefix": "By continuing you are indicating that you \n agree  to the",
+    "terms": " Terms",
+    "and": " and",
+    "privacyPolicy": " Privacy Policy.",
+    "signUpButton": "Sign Up",
+    "invalidCountryNumber": "Please enter a valid country number."
   },
   "verify": {
     "verify_email_title": "Verify your email address",

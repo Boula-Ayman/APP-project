@@ -77,7 +77,9 @@
     "agreeToTermsPrefix": "من خلال الاستمرار، أنت توافق على",
     "terms": "الشروط",
     "and": "و",
-    "privacyPolicy": "سياسة الخصوصية."
+    "privacyPolicy": "سياسة الخصوصية.",
+    "signUpButton": "تسجيل",
+    "invalidCountryNumber": "الرجاء إدخال رقم بلد صحيح."
   },
   "signIn": {
     "title": "تسجيل الدخول",
