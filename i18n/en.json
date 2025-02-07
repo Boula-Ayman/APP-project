@@ -90,11 +90,14 @@
     "invalidCountryNumber": "Please enter a valid country number."
   },
   "verify": {
+    "title": "Verify",
     "verify_email_title": "Verify your email address",
     "enter_otp_message": "Enter the 4 digits code that you received on your e-mail",
     "OTP must be exactly 4 digits": "OTP must be exactly 4 digits",
     "The OTP is incorrect. Please try again.": "The OTP is incorrect. Please try again.",
-    "Verification failed. Please try again.": "Verification failed. Please try again."
+    "Verification failed. Please try again.": "Verification failed. Please try again.",
+    "resend_code_in:": "Resend code in:",
+    "resend_code": "Resend code"
   },
   "profile": {
     "profile": "Profile",

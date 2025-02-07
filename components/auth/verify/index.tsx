@@ -20,6 +20,7 @@ import Toast from "react-native-toast-message";
 import { usePostSignInMutation } from "@/src/auth/signin/signinApiSlice";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/src/auth/signin/userSlice";
+import { localizeNumber } from "@/utils/numbers";
 
 const VerificationScreen: React.FC = () => {
   const [timer, setTimer] = useState<number>(90);
@@ -82,7 +83,11 @@ const VerificationScreen: React.FC = () => {
   const formatTime = (time: number): string => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
-    return `${minutes}:${seconds < 10 ? seconds : seconds}`;
+    
+    const localizedSeconds = localizeNumber(seconds, i18n.language);
+    const localizedMinutes = localizeNumber(minutes, i18n.language);
+
+    return `${localizedMinutes}:${seconds < 10 ? `${localizeNumber(0, i18n.language)}${localizedSeconds}` : localizedSeconds}`;
   };
 
   const [fontsLoaded] = useFonts({
@@ -132,18 +137,18 @@ const VerificationScreen: React.FC = () => {
         >
           {timer > 0 ? (
             <Text style={styles.resendText}>
-              Resend code in:
+              {`${t("verify.resend_code_in")}: `}
               <Text style={styles.counter}> {formatTime(timer)} </Text>
             </Text>
           ) : (
-            <Text style={styles.resendText}>Resend code</Text>
+            <Text style={styles.resendText}>{t("verify.resend_code")}</Text>
           )}
         </TouchableOpacity>
         <TouchableOpacity style={styles.verifyButton} onPress={handleVerify}>
           {loading ? (
             <ActivityIndicator size="small" color="white" />
           ) : (
-            <Text style={styles.verifyButtonText}>Verify</Text>
+            <Text style={styles.verifyButtonText}>{t("verify.title")}</Text>
           )}
         </TouchableOpacity>
       </ScrollView>
