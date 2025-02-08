@@ -118,7 +118,7 @@ const SignUpPage: React.FC = () => {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       style={styles.container}
     >
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView contentContainerStyle={{...styles.scrollContent}}>
         <Formik
           initialValues={{
             firstName: "",
@@ -188,7 +188,7 @@ const SignUpPage: React.FC = () => {
                         handleBlur("firstName");
                         handleBlurInput();
                       }}
-                      placeholder="First Name"
+                      placeholder={t("signUp.firstName")}
                       placeholderTextColor="#68677799"
                       value={values.firstName}
                     />
@@ -213,7 +213,7 @@ const SignUpPage: React.FC = () => {
                       onChangeText={handleChange("lastName")}
                       onFocus={() => handleFocus("lastName")}
                       placeholderTextColor="#68677799"
-                      placeholder="Last Name"
+                      placeholder={t("signUp.lastName")}
                       onBlur={() => {
                         handleBlur("lastName");
                         handleBlurInput();
@@ -248,7 +248,7 @@ const SignUpPage: React.FC = () => {
                     handleBlurInput();
                   }}
                   placeholderTextColor="#68677799"
-                  placeholder="Email"
+                  placeholder={t("signUp.email")}
                   value={values.email}
                 />
                 {touched.email && errors.email && (
@@ -368,7 +368,7 @@ const SignUpPage: React.FC = () => {
                 )}
               </TouchableOpacity>
               <View>
-                <Text style={styles.Name}>Birth Date</Text>
+                <Text style={styles.Name}>{t("signUp.birthDate")}</Text>
                 <TextInput
                   style={[
                     styles.input,
