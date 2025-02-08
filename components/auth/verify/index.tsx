@@ -56,8 +56,11 @@ const VerificationScreen: React.FC = () => {
     try {
       setLoading(true);
       await PostVerify(formData).unwrap();
-      const response = await postSignIn({ email, password }).unwrap();
-      dispatch(setUser(response.data));
+      const response = await postSignIn({ body: { email, password } }).unwrap();
+      dispatch(setUser({
+        user: response?.data?.user,
+        token: response?.data?.access_token
+    }))
       router.push("/" as any);
       setLoading(false);
     } catch (error: any) {
@@ -87,7 +90,7 @@ const VerificationScreen: React.FC = () => {
     const localizedSeconds = localizeNumber(seconds, i18n.language);
     const localizedMinutes = localizeNumber(minutes, i18n.language);
 
-    return `${localizedMinutes}:${seconds < 10 ? `${localizeNumber(0, i18n.language)}${localizedSeconds}` : localizedSeconds}`;
+    return `${minutes < 10 ? `${localizeNumber(0, i18n.language)}${localizedMinutes}` : localizedMinutes}:${seconds < 10 ? `${localizeNumber(0, i18n.language)}${localizedSeconds}` : localizedSeconds}`;
   };
 
   const [fontsLoaded] = useFonts({

@@ -96,7 +96,7 @@
     "OTP must be exactly 4 digits": "OTP must be exactly 4 digits",
     "The OTP is incorrect. Please try again.": "The OTP is incorrect. Please try again.",
     "Verification failed. Please try again.": "Verification failed. Please try again.",
-    "resend_code_in:": "Resend code in:",
+    "resend_code_in": "Resend code in",
     "resend_code": "Resend code"
   },
   "profile": {
