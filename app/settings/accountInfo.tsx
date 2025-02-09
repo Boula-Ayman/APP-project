@@ -209,9 +209,8 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    color: '#666666',
     marginBottom: 8,
-    fontFamily: 'Inter_400Regular',
+    fontFamily: 'Inter_500Medium',
   },
   input: {
     height: 48,

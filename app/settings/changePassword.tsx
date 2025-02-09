@@ -120,8 +120,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    fontFamily: 'Inter',
-    fontWeight: '500',
+    fontFamily: 'Inter_500Medium',
   },
   input: {
     height: 48,
