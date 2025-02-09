@@ -72,21 +72,15 @@ const App: React.FC = () => {
                 headerShown: false,
 
                 tabBarStyle: {
-                    width: "96%",
+                    width: "93%",
                     height: 74,
                     backgroundColor: "#061C27",
-                    borderTopWidth: 0,
                     borderRadius: 40,
                     elevation: 0,
-                    gap: 10,
-                    flex: 1,
-                    marginBottom: 6,
-                    position: "absolute",
-                    bottom: 0,
-                    transform: [{ translateX: "2%" }],
+                    marginBottom: '3%',
+                    alignSelf: "center",
                     display: isKeyboardVisible ? "none" : "flex",
                 },
-
                 tabBarItemStyle: {
                     paddingVertical: 10,
                 },
