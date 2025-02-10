@@ -35,8 +35,8 @@
   "registerInterest": "Register Interest",
   "sittingArea": "Sitting Area",
   "kitchen": "Kitchen",
-  "getInTouchWithSophie": "Get in touch with Sophie",
-  "getInTouchDescription": "Get in touch with Sophie Moore from PropCut Sales Representative Team",
+  "getInTouchWithSophie": "Get in touch with Ahmed Hassan",
+  "getInTouchDescription": "Get in touch with Ahmed Hassan from PropCut Sales Representative Team",
   "buyUpTo50Percent": "You can buy up to 50% of the property only",
   "expected1YearAppreciation": "Expected 1 Year Appreciation",
   "expected5YearAppreciation": "Expected 5 Year Appreciation",
@@ -52,6 +52,12 @@
   "From": "From",
   "To": "To",
   "ROI-Expected Appreciation": "ROI - Expected Appreciation",
+  "shares": "Shares",
+  "commercial": "Commercial",
+  "residential": "Residential",
+  "thankYouForYourInterest": "Thank you for your interest",
+  "registrationSuccess1": "We are pleased to confirm that your",
+  "registrationSuccess2": "registration of interest has been successfully recorded.",
 
   "signIn": {
     "title": "Sign In",

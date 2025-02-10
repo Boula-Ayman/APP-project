@@ -16,153 +16,164 @@ import { RootState } from "@/src/store/rootReducer";
 import { router, useRootNavigationState } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import {
-    useFonts,
-    Inter_400Regular,
-    Inter_600SemiBold,
+  useFonts,
+  Inter_400Regular,
+  Inter_600SemiBold,
 } from "@expo-google-fonts/inter";
+import Toast from "react-native-toast-message";
 
 const Tab = createBottomTabNavigator();
 
 const App: React.FC = () => {
-    
-    const [fontsLoaded] = useFonts({
-        Inter_400Regular,
-        Inter_600SemiBold,
+  const [fontsLoaded] = useFonts({
+    InterRegular: require("@/assets/fonts/Inter/Inter_24pt-Regular.ttf"),
+    InterSemiBold: require("@/assets/fonts/Inter/Inter_24pt-SemiBold.ttf"),
+    InterBold: require("@/assets/fonts/Inter/Inter_24pt-Bold.ttf"),
+    InterMedium: require("@/assets/fonts/Inter/Inter_24pt-Medium.ttf"),
+    PoppinsRegular: require("@/assets/fonts/Poppins/Poppins-Regular.ttf"),
+    PoppinsMedium: require("@/assets/fonts/Poppins/Poppins-Medium.ttf"),
+    PoppinsSemiBold: require("@/assets/fonts/Poppins/Poppins-SemiBold.ttf"),
+    PoppinsBold: require("@/assets/fonts/Poppins/Poppins-Bold.ttf"),
+    PlusJakartaSansSemiBold: require("@/assets/fonts/PlusJakartaSans/PlusJakartaSans-SemiBold.ttf"),
+    PlusJakartaSansMedium: require("@/assets/fonts/PlusJakartaSans/PlusJakartaSans-Medium.ttf"),
+    NunitoSansRegular: require("@/assets/fonts/NunitoSans/NunitoSans_7pt-Regular.ttf"),
+  });
+
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  const user = useSelector((state: RootState) => state?.user);
+
+  const rootNavigationState = useRootNavigationState();
+
+  useEffect(() => {
+    const initializeApp = async () => {
+      if (fontsLoaded) {
+        await SplashScreen.hideAsync();
+      }
+    };
+
+    initializeApp();
+  }, [fontsLoaded]);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardVisible(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardVisible(false);
     });
 
-    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-    
-    const user = useSelector((state: RootState) => state?.user);
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
-    const rootNavigationState = useRootNavigationState();
-    
-    useEffect(() => {
-        const initializeApp = async () => {
-            if (fontsLoaded) {
-                await SplashScreen.hideAsync();
-            }
-        };
-        
-        initializeApp();
-    }, [fontsLoaded]);
+  useEffect(() => {
+    if (!user.accessToken && rootNavigationState?.key) {
+      router.push("/Welcome");
+    }
+  }, [user.accessToken, rootNavigationState?.key]);
 
-    useEffect(() => {
-        const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-            setKeyboardVisible(true);
-        });
-        const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-            setKeyboardVisible(false);
-        });
+  return (
+    <>
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
 
-        return () => {
-            showSubscription.remove();
-            hideSubscription.remove();
-        };
-    }, []);
+          tabBarStyle: {
+            width: "96%",
+            height: 74,
+            backgroundColor: "#061C27",
+            borderTopWidth: 0,
+            borderRadius: 40,
+            elevation: 0,
+            gap: 10,
+            flex: 1,
+            marginBottom: 6,
+            position: "absolute",
+            bottom: 0,
+            transform: [{ translateX: "2%" }],
+            display: isKeyboardVisible ? "none" : "flex",
+          },
 
-    useEffect(() => {
-        if (!user.accessToken && rootNavigationState?.key) {
-            router.push("/Welcome");
-        }
-    }, [user.accessToken, rootNavigationState?.key]);
-
-    return (
-        <Tab.Navigator
-            screenOptions={{
-                headerShown: false,
-
-                tabBarStyle: {
-                    width: "96%",
-                    height: 74,
-                    backgroundColor: "#061C27",
-                    borderTopWidth: 0,
-                    borderRadius: 40,
-                    elevation: 0,
-                    gap: 10,
-                    flex: 1,
-                    marginBottom: 6,
-                    position: "absolute",
-                    bottom: 0,
-                    transform: [{ translateX: "2%" }],
-                    display: isKeyboardVisible ? "none" : "flex",
-                },
-
-                tabBarItemStyle: {
-                    paddingVertical: 10,
-                },
-                tabBarHideOnKeyboard: true,
-            }}
-        >
-            <Tab.Screen
-                name="Home"
-                component={HomeScreen}
-                options={{
-                    tabBarLabel: "",
-                    tabBarIcon: ({ focused }) => (
-                        <View
-                            style={[
-                                styles.iconContainer,
-                                focused && styles.iconContainerFocused,
-                            ]}
-                        >
-                            <HomeIcon width={24} height={24} />
-                        </View>
-                    ),
-                }}
-            />
-            <Tab.Screen
-                name="Favorite"
-                component={Favorite}
-                options={{
-                    tabBarLabel: "",
-                    tabBarIcon: ({ focused }) => (
-                        <View
-                            style={[
-                                styles.iconContainer,
-                                focused && styles.iconContainerFocused,
-                            ]}
-                        >
-                            <FavouriteIcon width={24} height={24} />
-                        </View>
-                    ),
-                }}
-            />
-            <Tab.Screen
-                name="PortfolioPage"
-                component={PortfolioPage}
-                options={{
-                    tabBarLabel: "",
-                    tabBarIcon: ({ focused }) => (
-                        <View
-                            style={[
-                                styles.iconContainer,
-                                focused && styles.iconContainerFocused,
-                            ]}
-                        >
-                            <Building width={24} height={24} />
-                        </View>
-                    ),
-                }}
-            />
-            <Tab.Screen
-                name="Profile"
-                component={Profile}
-                options={{
-                    tabBarLabel: "",
-                    tabBarIcon: ({ focused }) => (
-                        <View
-                            style={[
-                                styles.iconContainer,
-                                focused && styles.iconContainerFocused,
-                            ]}
-                        >
-                            <ProfileIcon width={24} height={24} />
-                        </View>
-                    ),
-                }}
-            />
-        </Tab.Navigator>
-    );
+          tabBarItemStyle: {
+            paddingVertical: 10,
+          },
+          tabBarHideOnKeyboard: true,
+        }}
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            tabBarLabel: "",
+            tabBarIcon: ({ focused }) => (
+              <View
+                style={[
+                  styles.iconContainer,
+                  focused && styles.iconContainerFocused,
+                ]}
+              >
+                <HomeIcon width={24} height={24} />
+              </View>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Favorite"
+          component={Favorite}
+          options={{
+            tabBarLabel: "",
+            tabBarIcon: ({ focused }) => (
+              <View
+                style={[
+                  styles.iconContainer,
+                  focused && styles.iconContainerFocused,
+                ]}
+              >
+                <FavouriteIcon width={24} height={24} />
+              </View>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="PortfolioPage"
+          component={PortfolioPage}
+          options={{
+            tabBarLabel: "",
+            tabBarIcon: ({ focused }) => (
+              <View
+                style={[
+                  styles.iconContainer,
+                  focused && styles.iconContainerFocused,
+                ]}
+              >
+                <Building width={24} height={24} />
+              </View>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            tabBarLabel: "",
+            tabBarIcon: ({ focused }) => (
+              <View
+                style={[
+                  styles.iconContainer,
+                  focused && styles.iconContainerFocused,
+                ]}
+              >
+                <ProfileIcon width={24} height={24} />
+              </View>
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </>
+  );
 };
 
 export default App;

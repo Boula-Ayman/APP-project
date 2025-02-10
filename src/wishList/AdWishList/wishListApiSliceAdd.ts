@@ -17,7 +17,7 @@ const wishListApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getWishList: builder.query({
       query: () => ({
-        url: "/users/wishlist/me",
+        url: "/users/me/wishlist",
         method: "GET",
       }),
       providesTags: ["WishList"],
@@ -25,7 +25,7 @@ const wishListApiSlice = apiSlice.injectEndpoints({
     postWishList: builder.mutation({
       query(arg) {
         return {
-          url: `users/wishlist/${arg.id}`,
+          url: `users/me/wishlist`,
           method: "POST",
         };
       },
@@ -34,7 +34,7 @@ const wishListApiSlice = apiSlice.injectEndpoints({
     removeWishList: builder.mutation({
       query(arg) {
         return {
-          url: `users/wishlist/${arg.id}`,
+          url: `users/me/wishlist`,
           method: "DELETE",
         };
       },

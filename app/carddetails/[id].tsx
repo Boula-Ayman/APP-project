@@ -8,11 +8,12 @@ import {
   FlatList,
   BackHandler,
   Dimensions,
-  StyleSheet,
   NativeSyntheticEvent,
   NativeScrollEvent,
   Linking,
   Alert,
+  SafeAreaView,
+  Modal,
 } from "react-native";
 import { useGetOpportunityQuery } from "@/src/api/opportunitiesApiSlice";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -28,8 +29,9 @@ import Sophie from "@/assets/icons/sophie.svg";
 import WhatApp from "@/assets/icons/whatsapp.svg";
 import styles from "./CardDetails";
 import FilledHeart from "@/assets/icons/filledHeart.svg";
-import Slider from "@react-native-community/slider";
-import WhiteCircle from "@/assets/icons/whiteCircle.svg";
+import { StatusBar } from "expo-status-bar";
+import { Slider } from "@miblanchard/react-native-slider";
+import AppText from "@/commonComponent/appText/AppText";
 
 const Header = ({
   media,
@@ -74,7 +76,6 @@ const Header = ({
       </TouchableOpacity>
     </View>
 
-    {/*  Three Dots*/}
     <View style={styles.paginationContainer}>
       {media
         .slice(0, 3)
@@ -96,20 +97,29 @@ const PriceSection = ({
   number_of_shares,
 }) => (
   <View style={styles.priceSection}>
-    <Text style={styles.price}>
-      {formatPrice(share_price)} {currency}
-    </Text>
-    <Text style={styles.shares}>
-      <Text
-        style={{
-          color: "#8BC240",
-        }}
-      >
-        1
-      </Text>
-      /<Text style={{ color: "#808080" }}>{number_of_shares}</Text>{" "}
-      {i18n.t("shares")}
-    </Text>
+    <AppText
+      text={formatPrice(share_price) + " " + currency}
+      style={styles.price}
+    />
+    <AppText text={i18n.t("shares") + " "} style={styles.shares} />
+    <AppText
+      text="1/"
+      style={{
+        color: "#8BC240",
+        fontWeight: "500",
+        fontFamily: "InterMedium",
+        fontSize: 14,
+      }}
+    />
+    <AppText
+      style={{
+        color: "#464851",
+        fontWeight: "500",
+        fontSize: 14,
+        fontFamily: "InterMedium",
+      }}
+      text={number_of_shares}
+    />
   </View>
 );
 
@@ -117,19 +127,21 @@ const FeaturesSection = ({ number_of_bedrooms, number_of_bathrooms, area }) => (
   <View style={styles.features}>
     <View style={styles.featureItem}>
       <Furniture />
-      <Text style={styles.featureText}>{area} sqft</Text>
+      <AppText text={`${area} sqft`} style={styles.featureText} />
     </View>
     <View style={styles.featureItem}>
       <Frame52 />
-      <Text style={styles.featureText}>
-        {i18n.t("bedrooms", { count: number_of_bedrooms })}
-      </Text>
+      <AppText
+        style={styles.featureText}
+        text={i18n.t("bedrooms", { count: number_of_bedrooms })}
+      />
     </View>
     <View style={styles.featureItem}>
       <Frame54 />
-      <Text style={styles.featureText}>
-        {i18n.t("bathroom", { count: number_of_bathrooms })}
-      </Text>
+      <AppText
+        text={i18n.t("bathroom", { count: number_of_bathrooms })}
+        style={styles.featureText}
+      />
     </View>
   </View>
 );
@@ -141,12 +153,21 @@ const BadgeAndDescription = ({
 }) => (
   <View>
     <View style={styles.badge}>
-      <Text style={styles.badgeText}>{opportunity_type}</Text>
+      <AppText
+        text={
+          opportunity_type === "project"
+            ? i18n.t("commercial")
+            : i18n.t("residential")
+        }
+        style={styles.badgeText}
+      />
     </View>
-    <Text style={styles.descriptionTitle}>{i18n.t("description")}</Text>
-    <Text style={styles.description}>
-      {i18n.language === "en" ? description_en : description_ar}
-    </Text>
+    <AppText text={i18n.t("description")} style={styles.descriptionTitle} />
+
+    <AppText
+      text={i18n.language === "en" ? description_en : description_ar}
+      style={styles.description}
+    />
   </View>
 );
 
@@ -154,27 +175,41 @@ const AmenitiesSection = ({ data }) => (
   <View style={styles.amenitiesFeatures}>
     <View style={styles.amenitiesItem}>
       <Frame52 />
-      <Text style={styles.amenitiesFeatureNum}>{data?.number_of_bedrooms}</Text>
-      <Text style={styles.amenitiesFeatureText}>{i18n.t("bedroomsam")}</Text>
+      <AppText
+        text={data?.number_of_bedrooms}
+        style={styles.amenitiesFeatureNum}
+      />
+      <AppText
+        text={i18n.t("bedroomsam")}
+        style={styles.amenitiesFeatureText}
+      />
     </View>
     <View style={styles.amenitiesItem}>
       <Frame54 />
-      <Text style={styles.amenitiesFeatureNum}>
-        {data?.number_of_bathrooms}
-      </Text>
-      <Text style={styles.amenitiesFeatureText}>{i18n.t("bathroomam")}</Text>
+      <AppText
+        text={data?.number_of_bathrooms}
+        style={styles.amenitiesFeatureNum}
+      />
+      <AppText
+        text={i18n.t("bathroomam")}
+        style={styles.amenitiesFeatureText}
+      />
     </View>
     <View style={styles.amenitiesItem}>
       <Chandelier style={styles.icon} />
-      <Text style={styles.amenitiesFeatureNum}>2</Text>
-      <Text style={styles.amenitiesFeatureText}>{i18n.t("SittingArea")}</Text>
+      <AppText text="2" style={styles.amenitiesFeatureNum} />
+      <AppText
+        text={i18n.t("SittingArea")}
+        style={styles.amenitiesFeatureText}
+      />
     </View>
     <View style={styles.amenitiesItem}>
       <Fridge style={styles.icon} />
-      <Text style={styles.amenitiesFeatureNum}>
-        {data?.number_of_bathrooms}
-      </Text>
-      <Text style={styles.amenitiesFeatureText}>{i18n.t("Kitchen")}</Text>
+      <AppText
+        text={data?.number_of_bathrooms}
+        style={styles.amenitiesFeatureNum}
+      />
+      <AppText text={i18n.t("Kitchen")} style={styles.amenitiesFeatureText} />
     </View>
   </View>
 );
@@ -182,7 +217,10 @@ const AmenitiesSection = ({ data }) => (
 const ContactSection = () => (
   <View style={{ padding: 20 }}>
     <View style={styles.contactCard}>
-      <Text style={styles.contactTitle}>{i18n.t("getInTouchWithSophie")}</Text>
+      <AppText
+        text={i18n.t("getInTouchWithSophie")}
+        style={styles.contactTitle}
+      />
       <TouchableOpacity
         onPress={() => {
           Linking.openURL("https://wa.me/201100007003");
@@ -190,12 +228,16 @@ const ContactSection = () => (
       >
         <WhatApp style={styles.whatsappIcon} />
       </TouchableOpacity>
-      <Text style={styles.contactDescription}>
-        {i18n.t("getInTouchDescription")}
-      </Text>
+      <AppText
+        text={i18n.t("getInTouchDescription")}
+        style={styles.contactDescription}
+      />
       <View style={styles.personContainer}>
-        <Sophie style={styles.person} />
-        <Text style={styles.whatsappButtonText}>Sophie Moore</Text>
+        <Image
+          source={require("@/assets/Images/personAI.jpg")}
+          style={styles.person}
+        />
+        <AppText text="Ahmed Hassan" style={styles.whatsappButtonText} />
       </View>
     </View>
   </View>
@@ -209,13 +251,15 @@ const PriceDetailsSection = ({
   available_shares,
   unit_appreciation,
   unit_appreciation_percentage,
+  total_return_1_year,
+  total_return_5_years,
+  sliderValue,
+  setSliderValue,
 }) => {
-  const [sliderValue, setSliderValue] = useState(1);
   const maxAllowedShares = number_of_shares / 2;
 
   const handleSliderChange = (value) => {
-    const cappedValue = Math.min(value, maxAllowedShares);
-    setSliderValue(cappedValue);
+    setSliderValue(value);
   };
 
   const marks = Array.from(
@@ -227,19 +271,24 @@ const PriceDetailsSection = ({
     <View style={{ padding: 20 }}>
       <View style={styles.priceCard}>
         <View style={styles.pricecontent}>
-          <Text style={styles.priceTitle}>
-            {formatPrice(share_price)} {currency}
-          </Text>
-          <Text style={styles.priceSubtitle}>
-            {sliderValue}/{number_of_shares} {i18n.t("shares")}
-          </Text>
+          <AppText
+            text={`${formatPrice(share_price)} ${currency}`}
+            style={styles.priceTitle}
+          />
+          <AppText
+            text={`${sliderValue}/${number_of_shares} ${i18n.t("shares")}`}
+            style={styles.priceSubtitle}
+          />
         </View>
-        <Text style={styles.priceDetails}>{i18n.t("buyUpTo50Percent")}</Text>
+        <AppText
+          text={i18n.t("buyUpTo50Percent")}
+          style={styles.priceDetails}
+        />
 
         <View
           style={{
             width: "100%",
-            height: 25,
+            height: 14,
             backgroundColor: "#D1E7b3",
             opacity: 0.6,
             borderRadius: 20,
@@ -250,36 +299,81 @@ const PriceDetailsSection = ({
         >
           <View
             style={{
-              width: `${((sliderValue / maxAllowedShares) * 100) / 2 + 5}%`,
-              height: 25,
+              width: `12%`,
+              height: 14,
               backgroundColor: "#8BC240",
               opacity: 0.6,
               borderRadius: 20,
               justifyContent: "center",
               alignItems: "center",
               position: "absolute",
-              left: 0,
+              left: "0%",
               zIndex: 1,
             }}
           />
           <Slider
-            style={{
-              width: "50%",
-              left: -2,
-              justifyContent: "flex-start",
-              alignSelf: "flex-start",
-              height: 14,
-              marginLeft: 40,
-            }}
-            minimumValue={1}
-            maximumValue={maxAllowedShares}
-            step={1}
             value={sliderValue}
             onValueChange={handleSliderChange}
-            minimumTrackTintColor="transparent"
+            step={1}
+            minimumValue={1}
+            maximumValue={maxAllowedShares}
+            minimumTrackTintColor="#8BC240"
             maximumTrackTintColor="transparent"
-            disabled={false}
+            animationType="timing"
+            animateTransitions
+            minimumTrackStyle={{
+              opacity: 0.6,
+              height: 14,
+              borderRadius: 20,
+            }}
             thumbTintColor="white"
+            renderTrackMarkComponent={(trackProps: any) => {
+              const isActiveMark = marks[trackProps] === sliderValue[0];
+              return (
+                <TouchableOpacity
+                  onPress={() => handleSliderChange(trackProps.value)}
+                  style={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: 3,
+                    backgroundColor: "white",
+                    display: isActiveMark ? "none" : "flex",
+                  }}
+                />
+              );
+            }}
+            trackMarks={marks}
+            trackStyle={{
+              width: "50%",
+              height: 14,
+              opacity: 1,
+              borderRadius: 20,
+              backgroundColor: "transparent",
+            }}
+            containerStyle={{
+              width: "50%",
+              height: 14,
+              backgroundColor: "transparent",
+              opacity: 1,
+              borderRadius: 20,
+              justifyContent: "center",
+              alignItems: "flex-start",
+              position: "absolute",
+              left: 0,
+              zIndex: 1,
+              marginLeft: "10%",
+            }}
+            thumbImage={require("@/assets/icons/whiteCircle.svg")}
+            thumbStyle={{
+              width: 12,
+              height: 12,
+              borderRadius: 5,
+              backgroundColor: "white",
+              position: "absolute",
+              left: 0,
+              zIndex: 2,
+              opacity: 1,
+            }}
           />
           <View
             style={{
@@ -292,55 +386,35 @@ const PriceDetailsSection = ({
               zIndex: 2,
             }}
           />
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              width: "48%",
-              marginTop: 4,
-              position: "absolute",
-              left: 40,
-              right: 0,
-              bottom: 8,
-              zIndex: 2,
-            }}
-          >
-            {marks.map((mark, index) => (
-              <Text key={index} style={{ fontSize: 12 }}>
-                <TouchableOpacity
-                  onPress={() => handleSliderChange(mark)}
-                  style={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: 5,
-                    backgroundColor: "white",
-                  }}
-                />
-              </Text>
-            ))}
-          </View>
         </View>
 
-        <Text style={styles.Cashtitle}>{i18n.t("cashPrice")}</Text>
-        <Text style={styles.priceTitle}>
-          {formatPrice(share_price * sliderValue)} {currency}
-        </Text>
+        <AppText text={i18n.t("cashPrice")} style={styles.cashPriceTitle} />
+        <AppText
+          text={`${formatPrice(share_price * sliderValue)} ${currency}`}
+          style={styles.cashPriceInfo}
+        />
 
         {opportunityType === "project" && (
           <>
             <View style={styles.priceInfo}>
-              <Text style={styles.priceLabel}>
-                {i18n.t("expected1YearAppreciation")}
-              </Text>
-              <Text style={styles.priceValue}>
-                {unit_appreciation_percentage}%
-              </Text>
+              <AppText
+                text={i18n.t("expected1YearAppreciation")}
+                style={styles.priceLabel}
+              />
+              <AppText
+                text={`${total_return_1_year}%`}
+                style={styles.priceValue}
+              />
             </View>
             <View style={styles.priceInfo}>
-              <Text style={styles.priceLabel}>
-                {i18n.t("expected5YearAppreciation")}
-              </Text>
-              <Text style={styles.priceValue}>{unit_appreciation}%</Text>
+              <AppText
+                text={i18n.t("expected5YearAppreciation")}
+                style={styles.priceLabel}
+              />
+              <AppText
+                text={`${total_return_5_years}%`}
+                style={styles.priceValue}
+              />
             </View>
           </>
         )}
@@ -350,52 +424,59 @@ const PriceDetailsSection = ({
 };
 
 const ROIPerYearSection = ({ data }) => (
-  <View style={{ padding: 20, marginBottom: 50 }}>
+  <View style={{ padding: 20, marginBottom: 150 }}>
     <View style={styles.card}>
-      <Text style={styles.sectionTitle}>{i18n.t("ROI-Rental Rev")}</Text>
+      <AppText text={i18n.t("ROI-Rental Rev")} style={styles.sectionTitle} />
       <View>
-        <Text style={styles.sectionTitle}>
-          {i18n.t("From")} {data?.data?.roi_revenue_from}% {i18n.t("To")}{" "}
-          {data?.data?.roi_revenue_to}%{" "}
-        </Text>
+        <AppText
+          text={`${i18n.t("From")} ${data?.data?.roi_revenue_from}% ${i18n.t(
+            "To"
+          )} ${data?.data?.roi_revenue_to}%`}
+          style={styles.fromToText}
+        />
       </View>
-      <Text style={styles.bar}></Text>
+      <AppText text="" style={styles.bar} />
       <View>
-        <Text style={styles.sectionTitle}>
-          {" "}
-          {i18n.t("ROI-Expected Appreciation")}
-        </Text>
-        <Text style={styles.sectionTitle}>
-          {i18n.t("From")} {data?.data?.roi_appreciation_from}% {i18n.t("To")}{" "}
-          {data?.data?.roi_appreciation_to}%{" "}
-        </Text>
+        <AppText
+          text={i18n.t("ROI-Expected Appreciation")}
+          style={styles.sectionTitle}
+        />
+        <AppText
+          text={`${i18n.t("From")} ${
+            data?.data?.roi_appreciation_from
+          }% ${i18n.t("To")} ${data?.data?.roi_appreciation_to}%`}
+          style={styles.fromToText}
+        />
       </View>
     </View>
   </View>
 );
 
-const NightsPerYearSection = ({ data }) => (
+const NightsPerYearSection = ({ data, sliderValue }) => (
   <View style={styles.card1}>
-    <Text style={styles.sectionTitle}>{i18n.t("nightsPerYear")}</Text>
-    <Text style={styles.largeText}>{data?.data?.nights_per_year}</Text>
+    <AppText text={i18n.t("nightsPerYear")} style={styles.sectionTitle} />
+    <AppText
+      text={`${Math.floor(365 / data?.data.number_of_shares) * sliderValue}`}
+      style={styles.largeText}
+    />
   </View>
 );
 
 const CardDetails = () => {
-  const [opportunityType, setOpportunityType] = useState("property");
   const [isLiked, setisLiked] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const router = useRouter();
   const { id, type } = useLocalSearchParams();
-  const { data, isLoading, isError } = useGetOpportunityQuery(
-    { id, type },
+  const { data, isLoading, isError, error } = useGetOpportunityQuery(
+    { id },
     {
-      skip: !id || !type,
+      skip: !id,
       refetchOnMountOrArgChange: true,
       refetchOnReconnect: true,
       refetchOnFocus: true,
     }
   );
+  // you can check if the user has already shares or no by owned_shares (youssef bahgat)
 
   useEffect(() => {
     const backAction = () => {
@@ -419,12 +500,8 @@ const CardDetails = () => {
     setActiveSlide(index);
   };
 
-  if (!id || !type) return <Text>{i18n.t("noOpportunityIdOrType")}</Text>;
-  if (isLoading) return <Text>{i18n.t("loading")}</Text>;
-  if (isError) return <Text>{i18n.t("errorOccurred")}</Text>;
-  if (!data) return <Text>{i18n.t("noDataAvailable")}</Text>;
-
   const renderContent = () => {
+    const [sliderValue, setSliderValue] = useState(1);
     const commonProps = {
       media: data?.data?.media,
       onBackPress: () => router.push("/"),
@@ -434,6 +511,49 @@ const CardDetails = () => {
       activeSlide,
       onScroll: handleScroll,
     };
+    const sectionToRender =
+      data?.data?.opportunity_type === "project" ? (
+        <NightsPerYearSection
+          data={data}
+          sliderValue={sliderValue}
+          key="nights"
+        />
+      ) : (
+        <ROIPerYearSection data={data} key="roi" />
+      );
+    if (isLoading)
+      return (
+        <SafeAreaView
+          style={[
+            styles.container,
+            { flex: 1, alignItems: "center", justifyContent: "center" },
+          ]}
+        >
+          <Text>{i18n.t("loading")}</Text>
+        </SafeAreaView>
+      );
+    if (error)
+      return (
+        <SafeAreaView
+          style={[
+            styles.container,
+            { flex: 1, alignItems: "center", justifyContent: "center" },
+          ]}
+        >
+          <Text>{i18n.t("errorOccurred")}</Text>
+        </SafeAreaView>
+      );
+    if (!data)
+      return (
+        <View
+          style={[
+            styles.container,
+            { flex: 1, alignItems: "center", justifyContent: "center" },
+          ]}
+        >
+          <Text>{i18n.t("noDataAvailable")}</Text>
+        </View>
+      );
 
     return (
       <ScrollView style={styles.container}>
@@ -446,20 +566,20 @@ const CardDetails = () => {
             number_of_shares={data?.data?.number_of_shares}
           />
           <Text style={styles.title}>
-            {i18n.language === "ar" ? data?.data?.title_ar : data?.data?.title_en}
+            {i18n.language === "ar"
+              ? data?.data?.title_ar
+              : data?.data?.title_en}
           </Text>
           <View style={styles.locationContainer}>
-            <AntDesign
-              name="enviromento"
-              size={17}
-              color="black"
-              style={styles.locationicon}
+            <AntDesign name="enviromento" size={20} color="#808080" />
+            <AppText
+              text={
+                i18n.language === "ar"
+                  ? data?.data?.location_ar
+                  : data?.data?.location_en
+              }
+              style={styles.location}
             />
-            <Text style={styles.location}>
-              {i18n.language === "ar"
-                ? data?.data?.location_ar
-                : data?.data?.location_en}
-            </Text>
           </View>
           <FeaturesSection
             number_of_bedrooms={data?.data?.number_of_bedrooms}
@@ -479,20 +599,20 @@ const CardDetails = () => {
           currency={data?.data?.currency}
           available_shares={data?.data?.available_shares}
           number_of_shares={data?.data?.number_of_shares}
-          opportunityType={opportunityType}
+          opportunityType={data?.data?.opportunity_type}
           unit_appreciation={data?.data?.unit_appreciation}
           unit_appreciation_percentage={data?.data?.unit_appreciation}
+          total_return_1_year={data?.data?.total_return_1_year}
+          total_return_5_years={data?.data?.total_return_5_years}
+          sliderValue={sliderValue}
+          setSliderValue={setSliderValue}
         />
-        {opportunityType === "project" ? (
-          <NightsPerYearSection data={data} />
-        ) : (
-          <ROIPerYearSection data={data} />
-        )}
+        {sectionToRender}
       </ScrollView>
     );
   };
 
-  return <View>{renderContent()}</View>;
+  return <View style={[styles.container, { flex: 1 }]}>{renderContent()}</View>;
 };
 
 export default CardDetails;

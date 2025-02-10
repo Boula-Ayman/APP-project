@@ -10,14 +10,14 @@ const opportunitiesApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getOpportunity: builder.query({
-      query: ({ id, type }) => ({
-        url: `/opportunities/${type}/${id}`,
+      query: ({ id }) => ({
+        url: `/opportunities/${id}`,
         method: "GET",
       }),
     }),
     opportunityRegisterInterest: builder.mutation({
-      query: ({ id, body, type }) => ({
-        url: `/opportunities/register-interest/${id}?opportunity_type=${type}`,
+      query: ({ id, body }) => ({
+        url: `/opportunities/${id}/interest-requests`,
         method: "POST",
         body,
       }),

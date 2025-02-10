@@ -55,6 +55,13 @@
   "From": "من",
   "To": "الي",
   "ROI-Expected Appreciation": "عائد الاستثمار - التقدير المتوقع",
+  "shares": "اشتراكات",
+  "commercial": "تجاري",
+  "residential": "سكني",
+  "thankYouForYourInterest": "شكرا للتسجيل للمتمكنين من الحصول على فرص الاستثمار المتنوعة",
+  "registrationSuccess1": "We are pleased to confirm that your",
+  "registrationSuccess2": "registration of interest has been successfully recorded.",
+
   "signUp": {
     "title": "التسجيل",
     "firstName": "الاسم الأول",
