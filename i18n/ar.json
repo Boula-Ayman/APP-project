@@ -92,11 +92,14 @@
     "signUp": "سجل"
   },
   "verify": {
+    "title": "تحقق",
     "verify_email_title": "تحقق من عنوان بريدك الإلكتروني",
     "enter_otp_message": "أدخل رمز الـ 4 أرقام الذي تلقيته على بريدك الإلكتروني",
     "OTP must be exactly 4 digits": "يجب أن يكون OTP بالضبط 4 أرقام",
     "The OTP is incorrect. Please try again.": "الرمز غير صحيح. يرجى المحاولة مرة أخرى.",
-    "Verification failed. Please try again.": "فشل التحقق. يرجى المحاولة مرة أخرى."
+    "Verification failed. Please try again.": "فشل التحقق. يرجى المحاولة مرة أخرى.",
+    "resend_code_in": "إعادة الإرسال خلال",
+    "resend_code": "إعادة الإرسال"
   },
   "profile": {
     "profile": "الحساب",
