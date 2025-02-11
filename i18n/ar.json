@@ -18,7 +18,8 @@
       "loadingOpportunities": "خطأ في تحميل الفرص."
     },
     "bedrooms": "غرف النوم: {{count}}",
-    "Bathroom": "الحمامات: {{count}}",
+    "bathroom": "الحمامات: {{count}}",
+    "area": "{{count}} قدم مربع",
     "ownerShip": "الملكية",
 
     "location": "النهدة، الشارقة، دبي، الإمارات العربية المتحدة",

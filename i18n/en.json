@@ -19,8 +19,9 @@
     "title": "All Properties"
   },
   "filter": "Filter By",
-  "bedrooms": "Bedrooms: {{count}}",
-  "bathroom": "Bathroom: {{count}}",
+  "bedrooms": "{{count}} Bedroom",
+  "bathroom": "{{count}} Bathroom",
+  "area": "{{count}} sqft",
   "ownerShip": "Owner Ship",
   "location": "Al Nahda, Sharjah, Dubai, UAE",
   "about": "bedroom apartment in Sahara Tower 4, located in Al Nahda, Sharjah, offers a comfortable and modern living space. These apartments are designed to provide a blend of convenience and luxury, making them ideal for singles or small families.",
