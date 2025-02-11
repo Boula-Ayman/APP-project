@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View, Button, Image } from "react-native";
+import { Text, View, Image, StyleSheet  } from "react-native";
 import React from "react";
 import { useLogoutMutation } from "../../src/auth/logout/logoutApiSlice";
-import { useGetCurrentUserProfileQuery } from "../../src/api/userApiSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import Ai from "../../assets/icons/Ai.svg";
 import Settings from "../../assets/icons/setting.svg";
@@ -10,20 +10,32 @@ import Logout from "../../assets/icons/LogoutIcon.svg";
 import i18n from "../../i18n/i18n";
 import CardCoin from "../../assets/icons/cardCoin.svg";
 import { LinearGradient } from "expo-linear-gradient";
-import SettingButton from "@/commonComponent/button/SettingButton";
 import { useDispatch } from "react-redux";
+import SettingButton from "@/commonComponent/button/SettingButton";
 import { clearUser } from "@/src/auth/signin/userSlice";
-
-
+import { clearWishlist } from "@/src/wishList/wishlistSlice";
+import { useGetCurrentUserProfileQuery } from "@/src/api/userApiSlice";
 const Profile = () => {
-  const [postLogout] = useLogoutMutation();
+  const [postLogout, { isLoading, isSuccess, isError, error }] =
+  useLogoutMutation();
+  
   const { data: userData } = useGetCurrentUserProfileQuery();
+
   const dispatch = useDispatch();
+
   const handleLogout = async () => {
     try {
+      const token = await AsyncStorage.getItem("access_token");
+      console.log("Token before logout:", token);
+
+      // Pass the token to postLogout
       await postLogout().unwrap();
+      
       dispatch(clearUser());
-      router.push("/Welcome" as any);
+      dispatch(clearWishlist());
+      
+      router.push("/Welcome");
+      
     } catch (err) {
       console.error("Failed to logout:", err);
       if (err && typeof err === "object" && "data" in err) {
