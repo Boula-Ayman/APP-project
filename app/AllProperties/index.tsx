@@ -10,9 +10,8 @@ import { useTranslation } from "react-i18next";
 import { PROPERTIES_STATUS, PropertiesStatusKeys } from "@/constants/Enums";
 import i18n from "@/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
-import { useDispatch, useSelector } from "react-redux";
-import { addToWishlist } from "@/src/wishList/wishlistSlice";
-import { RootState } from "@/src/store/rootReducer";
+import { useDispatch } from "react-redux";
+import { useGetWishListQuery } from "@/src/wishList/wishListApiSlice";
 
 interface FilterScreenProps {
   searchTerm: string;
@@ -20,11 +19,10 @@ interface FilterScreenProps {
 }
 
 const ViewAll: React.FC<FilterScreenProps> = ({}) => {
-    const wishList = useSelector((state: RootState) => state.wishlist);
 
     const [searchTerm, setSearchTerm] = useState<string>("");
 
-    const dispatch = useDispatch();
+    const {data: wishList, refetch} = useGetWishListQuery({});
 
     const [filters, setFilters] = useState<Partial<{
       type: string | null;
@@ -51,7 +49,7 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
   const { t } = useTranslation();
 
   const handleLoveIconPress = (id: number) => {
-    dispatch(addToWishlist(id));
+    
   };
 
   const handleSearch = (newSearchTerm: string) => {
@@ -121,8 +119,7 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
             renderItem={({ item }) => (
               <Card
                 item={item}
-                isLiked={wishList.includes(item.id)}
-                onLoveIconPress={() => handleLoveIconPress(item.id)}
+                isLiked={wishList?.data?.some((likedItem: Opportunity) => likedItem.id === item.id)}
               />
             )}
             keyExtractor={(item) => item.id.toString()}

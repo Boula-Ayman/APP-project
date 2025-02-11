@@ -1,23 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import apiSlice from "../../api/apiSlice";
-
-// Function to get the access token using AsyncStorage
-const getAccessToken = async () => {
-  try {
-    const token = await AsyncStorage.getItem("access_token");
-    return token || "";
-  } catch (error) {
-    console.error("Failed to retrieve access token:", error);
-    return "";
-  }
-};
+import apiSlice from "../api/apiSlice";
 
 const wishListApiSlice = apiSlice.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
     getWishList: builder.query({
       query: () => ({
-        url: "/users/wishlist/me",
+        url: "/users/me/wishlist",
         method: "GET",
       }),
       providesTags: ["WishList"],
@@ -25,8 +14,9 @@ const wishListApiSlice = apiSlice.injectEndpoints({
     postWishList: builder.mutation({
       query(arg) {
         return {
-          url: `users/wishlist/${arg.id}`,
+          url: `users/me/wishlist/`,
           method: "POST",
+          body: arg,
         };
       },
       invalidatesTags: ["WishList"],
@@ -34,7 +24,7 @@ const wishListApiSlice = apiSlice.injectEndpoints({
     removeWishList: builder.mutation({
       query(arg) {
         return {
-          url: `users/wishlist/${arg.id}`,
+          url: `users/me/wishlist/${arg.id}`,
           method: "DELETE",
         };
       },

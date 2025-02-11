@@ -15,7 +15,7 @@ import { styles } from "./ProfileStyle";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
 import { clearUser } from "@/src/auth/signin/userSlice";
-import { clearWishlist } from "@/src/wishList/wishlistSlice";
+
 const Profile = () => {
   const [postLogout, { isLoading, isSuccess, isError, error }] =
   useLogoutMutation();
@@ -36,7 +36,6 @@ const Profile = () => {
       await postLogout().unwrap();
       
       dispatch(clearUser());
-      dispatch(clearWishlist());
       
       router.push("/Welcome");
       

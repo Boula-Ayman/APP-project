@@ -5,14 +5,10 @@ import Card from "../../app/Home/CardListoportunity/Card";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 import { Link } from "expo-router";
 import {
+    useGetWishListQuery,
   usePostWishListMutation,
   useRemoveWishListMutation,
-} from "@/src/wishList/AdWishList/wishListApiSliceAdd";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  addToWishlist,
-  removeFromWishlist,
-} from "../../src/wishList/wishlistSlice";
+} from "@/src/wishList/wishListApiSlice";
 
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = 284;
@@ -25,21 +21,18 @@ interface CardListProps {
 const CardList: React.FC<CardListProps> = ({ opportunities }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   
-  const wishList = useSelector((state: any) => state.wishlist);
-  const dispatch = useDispatch();
+  const {data: wishList, refetch} = useGetWishListQuery({});
   
   const [postWishList] = usePostWishListMutation();
   const [removeWishList] = useRemoveWishListMutation();
   
   const handleLoveIconPress = async (id: number, item: Opportunity) => {
-      const isLiked = wishList.includes(item.id);
+      const isLiked = wishList?.data?.some((likedItem: Opportunity) => likedItem.id === id);
 
     try {
       if (isLiked) {
         await removeWishList({ id }).unwrap();
-        dispatch(removeFromWishlist(id));
       } else {
-        dispatch(addToWishlist(id));
         await postWishList({ id }).unwrap();
       }
     } catch (error) {
@@ -48,6 +41,9 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
         console.error("Error message:", error.message);
         console.error("Error stack:", error.stack);
       }
+    }
+    finally {
+      refetch();
     }
   };
 
@@ -90,8 +86,7 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
                     <Animated.View style={[{ transform: [{ scale }] }]}>
                     <Card
                         item={item}
-                        isLiked={wishList.includes(item.id)}
-                        onLoveIconPress={() => handleLoveIconPress(item.id, item)}
+                        isLiked={wishList?.data?.some((likedItem: Opportunity) => likedItem.id === item.id)}
                     />
                     </Animated.View>
                 </Pressable>
