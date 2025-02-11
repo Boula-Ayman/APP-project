@@ -106,7 +106,7 @@ export const useAccountForm = () => {
     if (updatedProfile) {
       const verificationFailed: string[] = [];
       
-      const fieldsToVerify = {
+      const fieldsToVerify: Partial<Record<keyof typeof updatedProfile, string | null>> = {
         name: updateData.name,
         gender: updateData.gender,
         birth_date: updateData.birth_date,
@@ -120,7 +120,7 @@ export const useAccountForm = () => {
 
       Object.entries(fieldsToVerify).forEach(([key, value]) => {
         if (value !== null) {
-          let serverValue = updatedProfile[key as keyof typeof updatedProfile];
+          let serverValue = updatedProfile[key];
           
           if (key === 'birth_date' && typeof serverValue === 'string') {
             serverValue = new Date(serverValue).toISOString().split('T')[0];
