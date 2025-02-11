@@ -32,10 +32,10 @@ const accountInfoValidationSchema = Yup.object().shape({
 const AccountInfoScreen = () => {
   const { isLoadingProfile, isUpdating, getInitialValues, handleSubmit } = useAccountForm();
   const [genderOpen, setGenderOpen] = useState(false);
-  const [genderItems] = useState([
+  const genderItems = [
     { label: i18n.t('settings.male'), value: 'male' },
     { label: i18n.t('settings.female'), value: 'female' }
-  ]);
+  ];
 
   if (isLoadingProfile) {
     return (
