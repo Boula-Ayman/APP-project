@@ -254,7 +254,9 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights }: Calen
 
       <View style={styles.nightsContainer}>
         <Text style={styles.nightsText}>
-          {t('bookings.nights', { count: endDate && startDate ? Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)) : 0 })}
+          {endDate && startDate 
+            ? <><Text style={styles.greenText}>{Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24))}</Text>{` ${t('bookings.nights')}`}</>
+            : <><Text style={styles.greenText}>0</Text>{` ${t('bookings.nights')}`}</>}
         </Text>
         <Text style={styles.termsText}>
           {t('bookings.calendar.termsAgreement')}
@@ -417,6 +419,10 @@ const styles = StyleSheet.create({
   },
   errorIconBackground: {
     backgroundColor: '#FF000033',
+  },
+  greenText: {
+    color: '#8BC240',
+    fontFamily: 'Inter_600SemiBold',
   },
 });
 
