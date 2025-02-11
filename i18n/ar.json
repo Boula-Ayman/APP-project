@@ -61,7 +61,9 @@
   "thankYouForYourInterest": "شكرا للتسجيل للمتمكنين من الحصول على فرص الاستثمار المتنوعة",
   "registrationSuccess1": "We are pleased to confirm that your",
   "registrationSuccess2": "registration of interest has been successfully recorded.",
-
+  "availableNights": "الليلات المتاحة",
+  "estimatedSalesRange": "نطاق المبيعات المقدر",
+  "inverstors": "{{investors}} مستثمرين",
   "signUp": {
     "title": "التسجيل",
     "firstName": "الاسم الأول",

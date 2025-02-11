@@ -58,7 +58,9 @@
   "thankYouForYourInterest": "Thank you for your interest",
   "registrationSuccess1": "We are pleased to confirm that your",
   "registrationSuccess2": "registration of interest has been successfully recorded.",
-
+  "availableNights": "Available Nights",
+  "estimatedSalesRange": "Estimated sales range",
+  "inverstors": "{{investors}} Inverstors",
   "signIn": {
     "title": "Sign In",
     "email": "Email",

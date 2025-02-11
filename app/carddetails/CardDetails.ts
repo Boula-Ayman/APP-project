@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
     opacity: 1,
+    position: "relative",
   },
   header: {
     flexDirection: "row",
@@ -130,7 +131,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   badge: {
-    width: "40%",
     height: 36,
     backgroundColor: "transparent",
     shadowColor: "#000",
@@ -140,14 +140,18 @@ const styles = StyleSheet.create({
     },
     justifyContent: "center",
     alignItems: "center",
-    alignContent: "center",
+    alignSelf: "flex-start",
     shadowOpacity: 0.25,
     shadowRadius: 1.84,
     borderWidth: 1,
     borderColor: "#8BC240",
     borderRadius: 50,
     marginVertical: 8,
+    flexDirection: "row",
+    paddingHorizontal: 12,
+    gap: 4,
   },
+
   badgeText: {
     justifyContent: "center",
     alignItems: "center",
@@ -420,6 +424,36 @@ const styles = StyleSheet.create({
   descriptionWebView: {
     width: "100%",
     backgroundColor: "transparent",
+  },
+  tabContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 20,
+  },
+  buttonGreen: {
+    backgroundColor: "#8BC240",
+    borderRadius: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    marginBottom: 10,
+    width: "100%",
+    alignItems: "center",
+  },
+  buttonDark: {
+    backgroundColor: "#061C27",
+    borderRadius: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    width: "100%",
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "500",
+    fontFamily: "interMedium",
   },
 });
 

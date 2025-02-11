@@ -22,6 +22,12 @@ const opportunitiesApiSlice = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    sellSharesOpportunity: builder.mutation({
+      query: ({ id }) => ({
+        url: `/opportunities/${id}/sell-requests`,
+        method: "POST",
+      }),
+    }),
   }),
 });
 
@@ -30,4 +36,5 @@ export const {
   useGetOpportunityQuery,
   useLazyGetOpportunitiesQuery,
   useOpportunityRegisterInterestMutation,
+  useSellSharesOpportunityMutation,
 } = opportunitiesApiSlice;

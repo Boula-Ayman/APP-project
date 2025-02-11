@@ -27,6 +27,7 @@ const wishListApiSlice = apiSlice.injectEndpoints({
         return {
           url: `users/me/wishlist`,
           method: "POST",
+          body: { id: arg.id },
         };
       },
       invalidatesTags: ["WishList"],
@@ -34,7 +35,7 @@ const wishListApiSlice = apiSlice.injectEndpoints({
     removeWishList: builder.mutation({
       query(arg) {
         return {
-          url: `users/me/wishlist`,
+          url: `users/me/wishlist/${arg.id}`,
           method: "DELETE",
         };
       },

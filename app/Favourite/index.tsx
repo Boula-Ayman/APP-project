@@ -8,11 +8,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const TestWishListComponent = () => {
   const { data, error, isLoading, refetch } = useGetWishListQuery({
-      refetchOnMountOrArgChange: true,
-      refetchOnFocus: true,
-      refetchOnReconnect: true,
-      refetchOnUnmount: true,
-    });
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    refetchOnUnmount: true,
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       {data?.data.length > 0 ? (

@@ -24,15 +24,15 @@ interface CardListProps {
 
 const CardList: React.FC<CardListProps> = ({ opportunities }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
-  
+
   const wishList = useSelector((state: any) => state.wishlist);
   const dispatch = useDispatch();
-  
+
   const [postWishList] = usePostWishListMutation();
   const [removeWishList] = useRemoveWishListMutation();
-  
+
   const handleLoveIconPress = async (id: number, item: Opportunity) => {
-      const isLiked = wishList.includes(item.id);
+    const isLiked = wishList.includes(item.id);
 
     try {
       if (isLiked) {
@@ -53,60 +53,65 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
 
   return (
     <View style={styles.container}>
-        {opportunities.length ? 
+      {opportunities.length ? (
         <Animated.FlatList
-            data={opportunities}
-            keyExtractor={(item) => item.id.toString()}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            snapToInterval={CARD_WIDTH + SPACING}
-            decelerationRate="fast"
-            contentContainerStyle={styles.flatListContent}
-            onScroll={Animated.event(
+          data={opportunities}
+          keyExtractor={(item) => item.id.toString()}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={CARD_WIDTH + SPACING}
+          decelerationRate="fast"
+          contentContainerStyle={styles.flatListContent}
+          onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { x: scrollX } } }],
             { useNativeDriver: true }
-            )}
-            scrollEventThrottle={16}
-            renderItem={({ item, index }) => {
+          )}
+          scrollEventThrottle={16}
+          renderItem={({ item, index }) => {
             const inputRange = [
-                (index - 1) * (CARD_WIDTH + SPACING),
-                index * (CARD_WIDTH + SPACING),
-                (index + 1) * (CARD_WIDTH + SPACING),
+              (index - 1) * (CARD_WIDTH + SPACING),
+              index * (CARD_WIDTH + SPACING),
+              (index + 1) * (CARD_WIDTH + SPACING),
             ];
             const scale = scrollX.interpolate({
-                inputRange,
-                outputRange: [0.9, 1, 0.9],
-                extrapolate: "clamp",
+              inputRange,
+              outputRange: [0.9, 1, 0.9],
+              extrapolate: "clamp",
             });
 
             return (
-                <Link
+              <Link
                 href={`/carddetails/${item.id}?type=${
-                    item.opportunity_type
+                  item.opportunity_type
                 }&likedItems=${JSON.stringify(wishList)}`}
                 asChild
-                >
+              >
                 <Pressable>
-                    <Animated.View style={[{ transform: [{ scale }] }]}>
+                  <Animated.View style={[{ transform: [{ scale }] }]}>
                     <Card
-                        item={item}
-                        isLiked={wishList.includes(item.id)}
-                        onLoveIconPress={() => handleLoveIconPress(item.id, item)}
+                      item={item}
+                      isLiked={wishList.includes(item.id)}
+                      onLoveIconPress={() => handleLoveIconPress(item.id, item)}
                     />
-                    </Animated.View>
+                  </Animated.View>
                 </Pressable>
-                </Link>
+              </Link>
             );
-            }}
-      /> : <View style={{
-        flex: 1,
-        marginTop: '25%',
-        marginInline: 'auto',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-        <Text>No opportunities found</Text>
-      </View>}
+          }}
+        />
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            marginTop: "25%",
+            marginInline: "auto",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text>No opportunities found</Text>
+        </View>
+      )}
     </View>
   );
 };

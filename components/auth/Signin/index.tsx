@@ -50,19 +50,25 @@ const SigninPage: React.FC = () => {
 
   const handleSubmit = async (values, actions) => {
     try {
-      const response = await postSignIn({body: values}).unwrap();
-        dispatch(setUser({
-            user: response?.data?.user,
-            token: response?.data?.access_token
-        }))
-        dispatch(setWishlist(response?.data?.user?.wishlist.map((item: Opportunity) => item.id)))
-        router.replace("/");
-        setErrorMessage(null);
-    } catch(e) {
-        console.log("error sign in", e);
+      const response = await postSignIn({ body: values }).unwrap();
+      dispatch(
+        setUser({
+          user: response?.data?.user,
+          token: response?.data?.access_token,
+        })
+      );
+      console.log(response?.data?.user?.wishlist);
+      dispatch(
+        setWishlist(
+          response?.data?.user?.wishlist.map((item: Opportunity) => item.id)
+        )
+      );
+      router.replace("/");
+      setErrorMessage(null);
+    } catch (e) {
+      console.log("error sign in", e);
       setErrorMessage("Invalid email or password");
-    }
-    finally {
+    } finally {
       actions.setSubmitting(false);
     }
   };
@@ -174,20 +180,21 @@ const SigninPage: React.FC = () => {
                         secureTextEntry={!showPassword}
                       />
                       <TouchableOpacity
-                         onPress={() => setShowPassword(!showPassword)}
-                         style={{
-                            position: "absolute",
-                            height: "100%",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            right: 10,
-                        }}>
+                        onPress={() => setShowPassword(!showPassword)}
+                        style={{
+                          position: "absolute",
+                          height: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          right: 10,
+                        }}
+                      >
                         <Ionicons
-                            name={showPassword ? "eye-off" : "eye"}
-                            size={24}
+                          name={showPassword ? "eye-off" : "eye"}
+                          size={24}
                         />
-                       </TouchableOpacity>
+                      </TouchableOpacity>
                     </View>
                   </View>
                   {touched.password && errors.password && (
