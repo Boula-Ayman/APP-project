@@ -8,14 +8,14 @@ export interface User {
     phone_number?: string;
     created_at: string;
     updated_at: string;
-    wishlist: number[];
+    wishlist: any[];  // or more specific type if known
     is_verified: boolean;
     birth_date?: string; // yy-mm-dd format
     job_title?: string;
     country?: string;
     gender?: Gender;
-    profile_picture?: string;
-  }
+    image_url?: string;
+}
 
 export interface ResponseData<T> {
     data: T
