@@ -522,7 +522,7 @@ const CardDetails = () => {
       const body = {
         email: user?.email,
         phone: user?.phone_number,
-        fullName: user?.name,
+        full_name: user?.name,
       };
       console.log(body);
       await handleRegisterInterest({
