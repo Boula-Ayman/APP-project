@@ -73,7 +73,7 @@ const Profile = () => {
         <SettingButton
           icon={CardCoin}
           title={i18n.t("profile.myBookings")}
-          onPress={() => {}}
+          onPress={() => router.push('/bookings' as any)}
           style={styles.ProfileItem}
         />
 
