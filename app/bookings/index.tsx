@@ -3,15 +3,17 @@ import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-na
 import BookingList from '../../components/Bookings/BookingList';
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomHeader from '../../commonComponent/Header/CustomHeader';
+import { useTranslation } from 'react-i18next';
 
 type TabType = 'upcoming' | 'past';
 
 const MyBookingsScreen = () => {
   const [activeTab, setActiveTab] = useState<TabType>('upcoming');
+  const { t } = useTranslation();
 
   return (
       <>
-      <CustomHeader title="My Bookings"/>
+      <CustomHeader title={t('bookings.title')}/>
       <SafeAreaView style={styles.container}>
       <View style={styles.tabContainer}>
         <View style={styles.tabWrapper}>
@@ -20,7 +22,7 @@ const MyBookingsScreen = () => {
             onPress={() => setActiveTab('upcoming')}
           >
             <Text style={[styles.tabText, activeTab === 'upcoming' && styles.activeTabText]}>
-              Upcoming
+              {t('bookings.upcoming')}
             </Text>
           </TouchableOpacity>
 
@@ -29,7 +31,7 @@ const MyBookingsScreen = () => {
             onPress={() => setActiveTab('past')}
           >
             <Text style={[styles.tabText, activeTab === 'past' && styles.activeTabText]}>
-              Past
+              {t('bookings.past')}
             </Text>
           </TouchableOpacity>
         </View>
