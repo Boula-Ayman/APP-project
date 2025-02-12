@@ -22,9 +22,10 @@ import Microwave from "@/assets/icons/Microwave.svg";
 import Lockpad from "@/assets/icons/Lockpad.svg";
 import KidsZone from "@/assets/icons/Kids zone.svg";
 import Garage from "@/assets/icons/Garage.svg";
+import { View } from "react-native";
 
 const ICON_MAPPING: Record<string, JSX.Element> = {
-  GYM: <GYM />,
+  GYM: <GYM color="black" />,
   "Air conditioner": <AirCondition />,
   "Cable TV": <CableTv />,
   Dishwasher: <Dishwasher />,
@@ -57,7 +58,22 @@ type Props = {
 const DynamicIcon = ({ IconType }: Props) => {
   const Icon = ICON_MAPPING[IconType];
 
-  return Icon ? Icon : <>Icon not found</>;
+  return Icon ? (
+    <View
+      style={{
+        height: 50,
+        width: 49,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 25,
+        backgroundColor: "#F3F3F3",
+      }}
+    >
+      <View>{Icon}</View>
+    </View>
+  ) : (
+    <>Icon not found</>
+  );
 };
 
 export default DynamicIcon;
