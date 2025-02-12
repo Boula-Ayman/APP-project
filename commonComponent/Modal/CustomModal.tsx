@@ -10,8 +10,6 @@ interface CustomModalProps {
 }
 
 const CustomModal: React.FC<CustomModalProps> = ({ isVisible, onClose, onModalHide, children }) => {
-  console.log('isVisible', isVisible);
-
   const handleDismiss = () => {
     onModalHide?.();
   };
