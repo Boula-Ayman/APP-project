@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, Image, StyleSheet  } from "react-native";
 import React from "react";
 import { useLogoutMutation } from "../../src/auth/logout/logoutApiSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -7,23 +7,19 @@ import Ai from "../../assets/icons/Ai.svg";
 import Settings from "../../assets/icons/setting.svg";
 import Share from "../../assets/icons/share.svg";
 import Logout from "../../assets/icons/LogoutIcon.svg";
-import { useFonts } from "expo-font";
 import i18n from "../../i18n/i18n";
-import ProfileArrow from "../../assets/icons/ProfileArrow.svg";
 import CardCoin from "../../assets/icons/cardCoin.svg";
-import { styles } from "./ProfileStyle";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
+import SettingButton from "@/commonComponent/button/SettingButton";
 import { clearUser } from "@/src/auth/signin/userSlice";
+import { useGetCurrentUserProfileQuery } from "@/src/api/userApiSlice";
 
 const Profile = () => {
   const [postLogout, { isLoading, isSuccess, isError, error }] =
   useLogoutMutation();
-  const [fontsLoaded, fonts] = useFonts({
-    Inter_400Regular: require("../../assets/fonts/Inter/Inter_24pt-Regular.ttf"),
-    Inter_600SemiBold: require("../../assets/fonts/Inter/Inter_24pt-SemiBold.ttf"),
-    Inter_700Bold: require("../../assets/fonts/Inter/Inter_24pt-Bold.ttf"),
-  });
+  
+  const { data: userData } = useGetCurrentUserProfileQuery();
 
   const dispatch = useDispatch();
 
@@ -46,7 +42,7 @@ const Profile = () => {
       }
     }
   };
-
+  
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -61,56 +57,50 @@ const Profile = () => {
       />
       <Text style={styles.text}>{i18n.t("profile.profile")}</Text>
       <View style={styles.ImageContainer}>
-        <Ai style={styles.Ai} />
-        <Text style={styles.AiText}>Kamal Mohamed</Text>
+        {userData?.data.image_url ? (
+          <Image 
+            source={{ uri: userData.data.image_url }} 
+            style={styles.profileImage} 
+          />
+        ) : (
+          <Ai style={styles.Ai} />
+        )}
+        <Text style={styles.AiText}>{userData?.data.name || "Loading..."}</Text>
       </View>
+
       <View style={styles.ProfileContainer}>
-        <View style={styles.ProfileItem}>
-          <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-            <CardCoin style={styles.ProfileItemIcon} />
-            <Text style={styles.ProfileItemText}>
-              {i18n.t("profile.myBookings")}
-            </Text>
-          </View>
-          <TouchableOpacity
-            onPress={() => router.push("/profileSettingesPage" as any)}
-          >
-            <ProfileArrow style={styles.ProfileArrow} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.ProfileItem}>
-          <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-            <Settings style={styles.ProfileItemIcon} />
-            <Text style={styles.ProfileItemText}>
-              {i18n.t("profile.settings")}
-            </Text>
-          </View>
-          <TouchableOpacity
-            onPress={() => router.push("/profileSettingesPage" as any)}
-          >
-            <ProfileArrow style={styles.ProfileArrow} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.ProfileItem}>
-          <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-            <Share style={styles.ProfileItemIcon} />
-            <Text style={styles.ProfileItemText}>
-              {i18n.t("profile.tellYourFriends")}
-            </Text>
-          </View>
-          <View>
-            <ProfileArrow style={styles.ProfileArrow} />
-          </View>
-        </View>
-        <TouchableOpacity style={styles.ProfileItem} onPress={handleLogout}>
-          <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-            <Logout style={styles.ProfileItemIconLogout} />
-            <Text style={styles.ProfileItemTextLogout}>
-              {i18n.t("profile.logout")}
-            </Text>
-          </View>
-        </TouchableOpacity>
+        <SettingButton
+          icon={CardCoin}
+          title={i18n.t("profile.myBookings")}
+          onPress={() => {}}
+          style={styles.ProfileItem}
+        />
+
+        <SettingButton
+          icon={Settings}
+          title={i18n.t("profile.settings")}
+          onPress={() => router.push("/settings" as any)}
+          style={styles.ProfileItem}
+        />
+
+        <SettingButton
+          icon={Share}
+          title={i18n.t("profile.tellYourFriends")}
+          onPress={() => {}}
+          style={styles.ProfileItem}
+        />
+
+        <SettingButton
+          icon={Logout}
+          title={i18n.t("profile.logout")}
+          onPress={handleLogout}
+          style={styles.ProfileItem}
+          textColor="#FF4B55"
+          iconColor="#FF4B55"
+          showArrow={false}
+        />
       </View>
+
       <View style={styles.PrivacyContainer}>
         <Text style={styles.Privacy}>{i18n.t("profile.privacyPolicy")}</Text>
       </View>
@@ -122,3 +112,110 @@ const Profile = () => {
 };
 
 export default Profile;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+  },
+  gradient: {
+    height: 305,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+  },
+  text: {
+    color: "#000000",
+    paddingHorizontal: 30,
+    paddingTop: 55,
+    fontFamily: "Inter_700Bold",
+    fontSize: 26,
+    fontWeight: "700",
+    lineHeight: 31.47,
+    textAlign: "left",
+  },
+  ImageContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: 131,
+    marginTop: 30,
+    gap: 15,
+  },
+  Ai: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 83,
+    height: 31,
+  },
+  AiText: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 16,
+    fontWeight: "600",
+    lineHeight: 19.36,
+    color: "#000000",
+  },
+  ProfileContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    marginTop: 50,
+    gap: 15,
+    paddingHorizontal: 30,
+  },
+  ProfileItem: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 15,
+    width: "100%",
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "#92929233",
+    borderRadius: 14,
+    height: 60,
+    paddingHorizontal: 20,
+  },
+  PrivacyContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    marginTop: 70,
+  },
+  Privacy: {
+    fontFamily: "Inter_400Regular",
+    fontWeight: "400",
+    fontSize: 16,
+    lineHeight: 17.44,
+    color: "#8BC240",
+    textDecorationLine: "underline",
+    textDecorationStyle: "solid",
+  },
+  VersionContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    marginTop: 40,
+  },
+  VersionText: {
+    fontFamily: "Poppins",
+    fontSize: 16,
+    fontWeight: "400",
+    lineHeight: 17.4,
+    color: "#1D1D1C",
+  },
+  profileImage: {
+    width: 83,
+    height: 83,
+    borderRadius: 41.5,
+  },
+});
