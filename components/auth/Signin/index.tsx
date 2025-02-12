@@ -23,8 +23,6 @@ import { useFonts } from "expo-font";
 import Checkbox from "expo-checkbox";
 import { setUser } from "@/src/auth/signin/userSlice";
 import { useDispatch } from "react-redux";
-import { setWishlist } from "@/src/wishList/wishlistSlice";
-import { Opportunity } from "@/src/interfaces/opportunity.interface";
 import { Ionicons } from "@expo/vector-icons";
 
 const SignInSchema = Yup.object().shape({
@@ -55,7 +53,6 @@ const SigninPage: React.FC = () => {
             user: response?.data?.user,
             token: response?.data?.access_token
         }))
-        dispatch(setWishlist(response?.data?.user?.wishlist.map((item: Opportunity) => item.id)))
         router.replace("/");
         setErrorMessage(null);
     } catch(e) {

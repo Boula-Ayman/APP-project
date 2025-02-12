@@ -13,8 +13,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
 import SettingButton from "@/commonComponent/button/SettingButton";
 import { clearUser } from "@/src/auth/signin/userSlice";
-import { clearWishlist } from "@/src/wishList/wishlistSlice";
 import { useGetCurrentUserProfileQuery } from "@/src/api/userApiSlice";
+
 const Profile = () => {
   const [postLogout, { isLoading, isSuccess, isError, error }] =
   useLogoutMutation();
@@ -32,7 +32,6 @@ const Profile = () => {
       await postLogout().unwrap();
       
       dispatch(clearUser());
-      dispatch(clearWishlist());
       
       router.push("/Welcome");
       
