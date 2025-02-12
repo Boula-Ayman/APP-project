@@ -114,26 +114,26 @@ const BookingDetailsScreen = () => {
           <View style={styles.content}>
             <View style={styles.header}>
               <Text style={styles.dateRange}>
-                {formatDate(booking.booking.from)} - {formatDate(booking.booking.to)}
+                {formatDate(booking.from)} - {formatDate(booking.to)}
               </Text>
 
               <Tag 
-                text={booking.booking.status.charAt(0).toUpperCase() + booking.booking.status.slice(1)}
+                text={booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
                 type="status"
-                status={booking.booking.status as 'confirmed' | 'pending' | 'cancelled'}
+                status={booking.status as 'confirmed' | 'pending' | 'cancelled'}
                 containerStyle={styles.statusContainer}
               />
             </View>
 
             <View style={styles.propertyCard}>
               <Image
-                source={{ uri: booking.booking.property.media[0]?.url }}
+                source={{ uri: booking.property.media[0]?.url }}
                 style={styles.propertyImage}
               />
               <View style={styles.propertyDetails}>
-                <Text style={styles.propertyName}>{booking.booking.property.title_en}</Text>
-                <Text style={styles.location}>{booking.booking.property.location_en}</Text>
-                <Text style={styles.bookingRef}>{t('bookings.bookingId', { id: '' }).split('#')[0]}<Text style={{color: '#8BC240'}}>#{booking.booking.id}</Text></Text>
+                <Text style={styles.propertyName}>{booking.property.title_en}</Text>
+                <Text style={styles.location}>{booking.property.location_en}</Text>
+                <Text style={styles.bookingRef}>{t('bookings.bookingId', { id: '' }).split('#')[0]}<Text style={{color: '#8BC240'}}>#{booking.id}</Text></Text>
               </View>
             </View>
 
@@ -147,7 +147,7 @@ const BookingDetailsScreen = () => {
 
             <View style={styles.nightsContainer}>
               <Text style={styles.nightsText}>
-                <Text style={{color: '#8BC240'}}>{booking.booking.number_of_days}</Text> {t('bookings.nights', { count: 1 })}
+                <Text style={{color: '#8BC240'}}>{booking.number_of_days}</Text> {t('bookings.nights', { count: 1 })}
               </Text>
             </View>
 
