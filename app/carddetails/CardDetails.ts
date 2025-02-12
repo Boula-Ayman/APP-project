@@ -178,18 +178,19 @@ const styles = StyleSheet.create({
 
   amenitiesFeatures: {
     flexDirection: "row",
-    alignItems: "center",
-
+    alignItems: "flex-start",
     marginTop: 20,
-    gap: 20,
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    paddingHorizontal: 20,
+    flexWrap: "wrap",
+    gap: 16,
   },
   amenitiesItem: {
     flexDirection: "column",
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
-    marginBottom: 16,
+    width: "20%",
     position: "relative",
   },
   icon: {
@@ -220,7 +221,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     lineHeight: 14.97,
     color: "#818181",
-    marginTop: 15,
+    marginTop: 3,
     justifyContent: "center",
     textAlign: "center",
   },

@@ -52,6 +52,7 @@ import HaveNightsCard from "./components/haveNightsCard";
 import EstimatedSalesRangeCard from "./components/estimatedSalesRangeCard";
 import TotalReturnCard from "./components/totalReturnCard";
 import TotalRentIncome from "./components/totalRentIncome";
+import DynamicIcon from "@/utils/RenderAmenitiesIcons";
 
 const Header = ({
   media,
@@ -177,48 +178,25 @@ const BadgeAndDescription = ({ description_en, description_ar }) => (
   </View>
 );
 
-const AmenitiesSection = ({ data }) => (
-  <View style={styles.amenitiesFeatures}>
-    <View style={styles.amenitiesItem}>
-      <Frame52 />
-      <AppText
-        text={data?.number_of_bedrooms}
-        style={styles.amenitiesFeatureNum}
-      />
-      <AppText
-        text={i18n.t("bedroomsam")}
-        style={styles.amenitiesFeatureText}
-      />
+const AmenitiesSection = ({ data }) => {
+  console.log(data.amenities);
+  return (
+    <View style={styles.amenitiesFeatures}>
+      {data?.amenities?.map((amenity) => (
+        <View key={amenity} style={styles.amenitiesItem}>
+          <DynamicIcon IconType={amenity} />
+          <Text
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={styles.amenitiesFeatureText}
+          >
+            {amenity}
+          </Text>
+        </View>
+      ))}
     </View>
-    <View style={styles.amenitiesItem}>
-      <Frame54 />
-      <AppText
-        text={data?.number_of_bathrooms}
-        style={styles.amenitiesFeatureNum}
-      />
-      <AppText
-        text={i18n.t("bathroomam")}
-        style={styles.amenitiesFeatureText}
-      />
-    </View>
-    <View style={styles.amenitiesItem}>
-      <Chandelier style={styles.icon} />
-      <AppText text="2" style={styles.amenitiesFeatureNum} />
-      <AppText
-        text={i18n.t("SittingArea")}
-        style={styles.amenitiesFeatureText}
-      />
-    </View>
-    <View style={styles.amenitiesItem}>
-      <Fridge style={styles.icon} />
-      <AppText
-        text={data?.number_of_bathrooms}
-        style={styles.amenitiesFeatureNum}
-      />
-      <AppText text={i18n.t("Kitchen")} style={styles.amenitiesFeatureText} />
-    </View>
-  </View>
-);
+  );
+};
 
 const ContactSection = () => (
   <View style={{ padding: 20 }}>
