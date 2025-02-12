@@ -1,42 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useTranslation } from 'react-i18next';
-
-interface ActionButtonProps {
-  icon: React.ReactNode;
-  label: string;
-  onPress?: () => void;
-  stretched?: boolean;
-  disabled?: boolean;
-}
-
-const ActionButton: React.FC<ActionButtonProps> = ({ 
-  icon, 
-  label, 
-  onPress, 
-  stretched = false, 
-  disabled = false 
-}) => (
-  <TouchableOpacity 
-    style={[
-      styles.actionItem,
-      stretched && styles.stretchedActionItem
-    ]}
-    onPress={onPress}
-    disabled={disabled}
-  >
-    <View style={[
-      styles.actionButton,
-      stretched && styles.stretchedActionButton
-    ]}>
-      {icon}
-    </View>
-    <Text style={styles.actionText}>{label}</Text>
-  </TouchableOpacity>
-);
+import ActionButton from './ActionButton';
 
 interface BookingActionsProps {
   shouldShowDirections: boolean;
@@ -104,43 +72,11 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
   },
-  actionItem: {
-    alignItems: 'center',
-    width: '30%',
-  },
-  stretchedActionItem: {
-    width: '100%',
-    alignItems: 'center',
-    paddingHorizontal: 8,
-  },
-  stretchedActionButton: {
-    width: '100%',
-    height: 70,
-    borderRadius: 12,
-    backgroundColor: '#F7F8FA',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
   cancelledActions: {
     justifyContent: 'center',
     width: '100%',
     alignSelf: 'center',
-  },
-  actionButton: {
-    width: 70,
-    height: 70,
-    borderRadius: 12,
-    backgroundColor: '#F7F8FA',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  actionText: {
-    fontSize: 12,
-    fontFamily: 'Inter_400Regular',
-    color: '#333',
-  },
+  }
 });
 
 export default BookingActions; 
