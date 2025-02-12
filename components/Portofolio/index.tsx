@@ -4,101 +4,96 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  Image,
-  TouchableOpacity,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import MoneySend from "../../assets/icons/money-send.svg";
-import MoneyRecive from "../../assets/icons/money-recive.svg";
-import LoveIcon from "../../assets/icons/Heart.svg";
+import { useGetMyInvestmentsQuery, useGetMyInvestmentStatsQuery } from "../../src/api/investmentsApiSlice";
+import { useGetMyRentsQuery } from "../../src/api/rentsApiSlice";
+import { useGetWishListQuery, usePostWishListMutation, useRemoveWishListMutation } from "../../src/wishList/wishListApiSlice";
+import PropertyCard from "@/commonComponent/PropertyCard/PropertyCard";
+import { LinearGradient } from "expo-linear-gradient";
+import PortfolioStats from "./components/PortfolioStats";
+import { useTranslation } from "react-i18next";
 
 const PortfolioPage: React.FC = () => {
-  const units = [
-    {
-      id: 1,
-      price: "75,000 AED",
-      ownership: "4/8 ownership",
-      name: "Tranquil Haven in the Woods",
-      location: "Dubai Marina, Dubai, UAE",
-      size: "2,553 sqft",
-      bedrooms: "2 Bedroom",
-      bathrooms: "2 Bathroom",
-      image: "https://via.placeholder.com/150", // Replace with your image URL
-    },
-    {
-      id: 2,
-      price: "75,000 AED",
-      ownership: "4/8 ownership",
-      name: "Tranquil Haven in the Woods",
-      location: "Dubai Marina, Dubai, UAE",
-      size: "2,553 sqft",
-      bedrooms: "2 Bedroom",
-      bathrooms: "2 Bathroom",
-      image: "https://via.placeholder.com/150", // Replace with your image URL
-    },
-  ];
+  const { t } = useTranslation();
+  const { data: investmentsData } = useGetMyInvestmentsQuery();
+  const { data: investmentStatsData } = useGetMyInvestmentStatsQuery();
+  const { data: rentsData } = useGetMyRentsQuery();
+  const { data: wishlistData } = useGetWishListQuery({});
+  const [addToWishlist] = usePostWishListMutation();
+  const [removeFromWishlist] = useRemoveWishListMutation();
+  const { refetch } = useGetWishListQuery({});
+
+  const handleLikeToggle = async (id: number) => {
+    try {
+      const isLiked = wishlistData?.data.some(item => item.id === id);
+      if (isLiked) {
+        await removeFromWishlist({ id }).unwrap();
+      } else {
+        await addToWishlist({ id }).unwrap();
+      }
+      await refetch();
+    } catch (error) {
+      console.error('Error toggling wishlist:', error);
+    }
+  };
 
   return (
-    <ScrollView style={styles.container}>
-      {/* Page Title */}
-      <Text style={styles.title}>My Portfolio</Text>
+    <View style={styles.container}>
+      <LinearGradient
+        colors={[
+          "rgba(139, 194, 64, 0)",
+          "rgba(139, 194, 64, 0.03)",
+          "rgba(139, 194, 64, 0.16)",
+        ]}
+        style={styles.gradient}
+        start={{ x: 0, y: 1 }}
+        end={{ x: 0, y: 0 }}
+      />
+      <ScrollView style={styles.scrollContainer}>
+        <Text style={styles.title}>{t('portfolio.title')}</Text>
 
-      {/* Summary Cards */}
-      <View style={styles.summaryContainer}>
-        <View style={[styles.summaryCard, { backgroundColor: "#8BC240" }]}>
-          <MoneySend style={styles.summaryIcon} />
+        <PortfolioStats
+          totalInvestment={investmentStatsData?.data.total_amount || 0}
+          totalRentalIncome={rentsData?.data.total_amount || 0}
+          totalUsableNights={investmentStatsData?.data.total_available_nights || 0}
+          yield={Number((rentsData?.data.total_yield || 0).toFixed(2))}
+          currency={investmentStatsData?.data.currency || rentsData?.data.currency || ''}
+        />
 
-          <Text style={styles.summaryTitle}>
-            1,000,000 <Text style={styles.summaryDetails}>AED</Text>
-          </Text>
-          <Text style={styles.summarySubtitle1}>Total Investment</Text>
-        </View>
-      </View>
-      <View style={[styles.summaryCard, { backgroundColor: "#90CAF9" }]}>
-        <MoneyRecive style={styles.summaryIcon} />
-        <Text style={styles.summaryTitle}>
-          200,000 <Text style={styles.summaryDetails}>AED</Text>
+        <Text style={styles.sectionTitle}>
+          {t('portfolio.myUnits')} ({investmentsData?.data.length || 0})
         </Text>
-        <Text style={styles.summarySubtitle2}>Total Rental Income Paid</Text>
-      </View>
+        <Text style={styles.sectionSubtitle}>
+          {t('portfolio.exploreDescription')}
+        </Text>
 
-      {/* Stats Section */}
-      <View style={styles.statsContainer}>
-        <View style={styles.statsBox}>
-          <Text style={styles.statsValue}>41</Text>
-          <Text style={styles.statsLabel}>Nights</Text>
-        </View>
-        <View style={styles.statsBox}>
-          <Text style={styles.statsValue}>5.37%</Text>
-          <Text style={styles.statsLabel}>Yield in 2024</Text>
-        </View>
-      </View>
-
-      {/* My Units Section */}
-      <Text style={styles.sectionTitle}>My Units (5)</Text>
-      <Text style={styles.sectionSubtitle}>
-        Explore your curated investment portfolio, where you can effortlessly.
-      </Text>
-
-      {units.map((unit) => (
-        <View key={unit.id} style={styles.unitCard}>
-          <Image source={{ uri: unit.image }} style={styles.unitImage} />
-          <View style={styles.unitIcons}></View>
-          <View style={styles.unitDetails}>
-            <TouchableOpacity style={styles.iconButton}>
-              <LoveIcon style={styles.icon} />
-            </TouchableOpacity>
-            <Text style={styles.unitPrice}>{unit.price}</Text>
-            <Text style={styles.unitOwnership}>{unit.ownership}</Text>
-            <Text style={styles.unitName}>{unit.name}</Text>
-            <Text style={styles.unitLocation}>{unit.location}</Text>
-            <Text style={styles.unitInfo}>
-              {unit.size} • {unit.bedrooms} • {unit.bathrooms}
-            </Text>
-          </View>
-        </View>
-      ))}
-    </ScrollView>
+        {investmentsData?.data.map((investment) => (
+          <PropertyCard
+            key={investment.id}
+            item={{
+              id: investment.id.toString(),
+              media: investment.media,
+              country: investment.country as "UAE" | "Egypt",
+              opportunity_type: investment.opportunity_type,
+              share_price: investment.share_price,
+              currency: investment.currency,
+              available_shares: investment.owned_shares,
+              number_of_shares: investment.number_of_shares,
+              title_en: investment.title_en,
+              title_ar: investment.title_ar,
+              location_en: investment.location_en,
+              location_ar: investment.location_ar,
+              number_of_bedrooms: investment.number_of_bedrooms,
+              number_of_bathrooms: investment.number_of_bathrooms,
+              area: investment.area,
+              status: investment.status
+            }}
+            isLiked={wishlistData?.data.some(item => item.id === investment.id)}
+            onLoveIconPress={() => handleLikeToggle(investment.id)}
+          />
+        ))}
+      </ScrollView>
+    </View>
   );
 };
 
@@ -106,99 +101,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F5F5F5",
+  },
+  gradient: {
+    height: 305,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+  },
+  scrollContainer: {
+    flex: 1,
     paddingHorizontal: 16,
     paddingVertical: 20,
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  summaryContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 20,
-  },
-  summaryCard: {
-    flex: 1,
-    height: 100,
-    borderRadius: 20,
-    padding: 16,
-
-    marginHorizontal: 8,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  summaryIcon: {
-    position: "absolute",
-    top: 35,
-    left: 25,
-  },
-  summaryTitle: {
-    fontFamily: "Inter",
-    fontSize: 24,
-    fontWeight: "600",
-    color: "#14161C",
-  },
-  summaryDetails: {
-    fontFamily: "Inter",
-    fontSize: 18,
-    fontWeight: "500",
-    lineHeight: 80.28,
-    letterSpacing: -0.48,
-    textAlign: "left",
-    color: "#fff",
-  },
-  summarySubtitle1: {
-    fontSize: 14,
-    color: "#464851",
-    left: -20,
-    top: -5,
-    fontFamily: "Inter",
-    fontWeight: "500",
-    letterSpacing: -0.48,
-  },
-  summarySubtitle2: {
-    fontSize: 14,
-    color: "#464851",
-    left: 10,
-    top: -5,
-    fontFamily: "Inter",
-    fontWeight: "500",
-    letterSpacing: -0.48,
-  },
-  statsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 20,
-  },
-  statsBox: {
-    flex: 1,
-    height: 80,
-    borderRadius: 30,
-    borderColor: "#8BC240",
-    borderWidth: 1,
-    backgroundColor: "#fff",
-    marginHorizontal: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  statsValue: {
     fontSize: 26,
-    fontWeight: "600",
-    color: "#333",
-    fontFamily: "Inter",
-    lineHeight: 31.2,
-    letterSpacing: -0.48,
-    right: 23,
-  },
-  statsLabel: {
-    fontSize: 14,
-    color: "#777",
-    fontFamily: "Inter",
-    right: 17,
-    top: 4,
+    fontFamily: "Inter_700Bold",
+    fontWeight: "700",
+    color: "#000000",
+    marginBottom: 20,
+    paddingTop: 35,
   },
   sectionTitle: {
     fontSize: 20,
@@ -216,71 +138,6 @@ const styles = StyleSheet.create({
     color: "#464851",
     marginBottom: 15,
     marginLeft: 10,
-  },
-
-  unitCard: {
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    marginBottom: 20,
-    elevation: 3,
-    width: "95%",
-    marginLeft: 6,
-  },
-  unitImage: {
-    height: 150,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    width: 299,
-  },
-  unitIcons: {
-    position: "absolute",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-    paddingHorizontal: 16,
-    top: 10,
-  },
-  iconButton: {
-    justifyContent: "flex-start",
-    width: 38,
-    height: 36,
-    marginLeft: 240,
-    backgroundColor: "white",
-    padding: 10,
-    borderRadius: 20,
-  },
-  icon: {
-    fontSize: 20,
-    color: "black",
-    alignSelf: "center",
-    top: -2,
-  },
-  unitDetails: {
-    padding: 16,
-  },
-  unitPrice: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#000",
-  },
-  unitOwnership: {
-    fontSize: 14,
-    color: "#777",
-    marginBottom: 8,
-  },
-  unitName: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 4,
-  },
-  unitLocation: {
-    fontSize: 14,
-    color: "#777",
-    marginBottom: 8,
-  },
-  unitInfo: {
-    fontSize: 14,
-    color: "#333",
   },
 });
 
