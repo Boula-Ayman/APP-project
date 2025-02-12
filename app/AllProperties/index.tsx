@@ -10,7 +10,6 @@ import { useTranslation } from "react-i18next";
 import { PROPERTIES_STATUS, PropertiesStatusKeys } from "@/constants/Enums";
 import i18n from "@/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
-import { useDispatch } from "react-redux";
 import { useGetWishListQuery } from "@/src/wishList/wishListApiSlice";
 
 interface FilterScreenProps {
@@ -47,10 +46,6 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
   }, [data]);
 
   const { t } = useTranslation();
-
-  const handleLoveIconPress = (id: number) => {
-    
-  };
 
   const handleSearch = (newSearchTerm: string) => {
     setSearchTerm(newSearchTerm);
