@@ -156,5 +156,46 @@
     "success": "Success",
     "error": "Error",
     "ok": "OK"
+  },
+  "bookings": {
+    "title": "My Bookings",
+    "upcoming": "Upcoming",
+    "past": "Past",
+    "bookingId": "Booking ID: #{{id}}",
+    "nights": "Nights",
+    "calendar": {
+      "bookNights": "Book Nights",
+      "availableNights": "Available Nights",
+      "selectDates": "Select Dates",
+      "bookNow": "Book Now",
+      "termsAgreement": "By confirming your booking, you agree to our Terms of Service",
+      "success": {
+        "title": "Your booking has been placed!",
+        "description": "You can track your booking progress and status in your account portal.",
+        "viewBookings": "My Bookings"
+      },
+      "error": {
+        "title": "Booking Failed",
+        "description": "We couldn't process your booking request. Please try again or contact support if the issue persists.",
+        "tryAgain": "Try Again"
+      }
+    },
+    "actions": {
+      "directions": "Directions",
+      "reschedule": "Reschedule",
+      "cancel": "Cancel"
+    },
+    "cancellation": {
+      "title": "Please Confirm",
+      "message": "Hold on! Are you sure you want to cancel this booking?",
+      "cancel": "Cancel",
+      "confirm": "Yes, Confirm",
+      "success": "Your booking has been cancelled successfully",
+      "error": "Failed to cancel booking. Please try again."
+    },
+    "policy": {
+      "title": "Cancellation policy",
+      "description": "Cancel for free before 72h in advance, otherwise you will be conducted 100% of the service nights for not showing up."
+    }
   }
 }
