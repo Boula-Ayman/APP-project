@@ -1,44 +1,15 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, Alert, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
-import { useGetBookingQuery, useCancelBookingMutation, useRescheduleBookingMutation } from '@/src/api/bookingsApiSlice';
 import type { TransformedBookingData } from '@/src/api/bookingsApiSlice';
 import CustomHeader from '@/commonComponent/Header/CustomHeader';
-import { format, isPast } from 'date-fns';
+import { format } from 'date-fns';
 import Tag from '@/commonComponent/Tag/Tag';
 import CalendarModal from '@/components/Bookings/CalendarModal';
 import BookingActions from '@/components/Bookings/BookingActions';
+import useBooking from '@/components/Bookings/useBooking';
 import { useTranslation } from 'react-i18next';
 
-const useBooking = (id: string) => {
-  const { data: bookingResponse, isLoading, error } = useGetBookingQuery(id, {
-    refetchOnMountOrArgChange: true
-  });
-  const [cancelBooking, { isLoading: isCancelling }] = useCancelBookingMutation();
-  const [rescheduleBooking, { isLoading: isRescheduling }] = useRescheduleBookingMutation();
-  const booking = bookingResponse?.data as TransformedBookingData | undefined;
-
-  const isBookingPast = useMemo(() => {
-    if (!booking?.booking?.to) return false;
-    return isPast(new Date(booking.booking.to));
-  }, [booking?.booking?.to]);
-
-  const shouldShowDirections = booking?.booking?.status === 'cancelled' || isBookingPast;
-
-  return {
-    booking,
-    isLoading,
-    error,
-    isCancelling,
-    isRescheduling,
-    cancelBooking,
-    rescheduleBooking,
-    isBookingPast,
-    shouldShowDirections
-  };
-};
-
-// Main component
 const BookingDetailsScreen = () => {
   const { t } = useTranslation();
   const { id } = useLocalSearchParams();
