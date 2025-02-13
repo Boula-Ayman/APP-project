@@ -51,6 +51,14 @@ export interface InvestmentsResponse {
   data: Investment[];
 }
 
+export interface InvestmentStatsResponse {
+  data: {
+    total_amount: number;
+    total_available_nights: number;
+    currency: string;
+  }
+}
+
 const investmentsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getMyInvestments: builder.query<InvestmentsResponse, void>({
@@ -59,9 +67,16 @@ const investmentsApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getMyInvestmentStats: builder.query<InvestmentStatsResponse, void>({
+      query: () => ({
+        url: '/investments/customer/me',
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
 export const {
   useGetMyInvestmentsQuery,
+  useGetMyInvestmentStatsQuery,
 } = investmentsApiSlice; 
