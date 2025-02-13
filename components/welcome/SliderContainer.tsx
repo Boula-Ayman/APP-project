@@ -62,7 +62,7 @@ const Welcome = () => {
         <View style={styles.phoneContainer}>
           <Phone width={300} height={350} />
           <View style={styles.screenContainer}>
-            <Screen width={259} height={270} style={styles.House} />
+            <Screen width={259} height={270} />
           </View>
         </View>
       ),
@@ -109,7 +109,7 @@ const Welcome = () => {
         <View
           style={[
             styles.gradientOverlay,
-            { top: Platform.OS === "ios" ? "43.5%" : "44.5%" },
+            { transform: [{ translateY: "30%" }] },
           ]}
         >
           <LinearGradient

@@ -13,13 +13,13 @@ const styles = StyleSheet.create({
   backContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
+    marginTop: 40,
   },
   backButton: {
     width: 48,
     height: 48,
-    top: 25,
-    right: 58,
+
     backgroundColor: "#F6F6F6",
     borderRadius: 100,
     justifyContent: "center",
@@ -29,8 +29,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     fontFamily: "Inter_600SemiBold",
-    top: 40,
-    left: 15,
+
     color: "gray",
   },
   one: {
@@ -81,7 +80,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#3A3D46",
     borderRadius: 8,
-    paddingRight: 40,
+
     padding: 10,
     marginBottom: 10,
     fontSize: 14,

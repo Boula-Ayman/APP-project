@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    marginTop: 100,
+
     padding: 17,
   },
   innerContainer: {
@@ -20,15 +20,14 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   backButton: {
-    position: "absolute",
     width: 48,
     height: 48,
     backgroundColor: "#F6F6F6",
     borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",
-    top: 50,
-    left: 18,
+    marginInline: 10,
+    marginVertical: 40,
   },
   title: {
     fontFamily: "Inter_600SemiBold",
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
   iconContainer1: {},
   icon: {
     position: "relative",
-    left: 15,
+
     top: 39,
   },
   iconContainer2: {
@@ -98,7 +97,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     borderRadius: 5,
-    marginTop: -15,
+    marginBottom: 10,
   },
   signUpText: {
     color: "#3A3D46",
@@ -121,11 +120,11 @@ const styles = StyleSheet.create({
   },
   rememberMeContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
     marginTop: 12,
     marginBottom: 20,
-    right: 10,
+
     borderColor: "#EFEFEF",
     borderRadius: 4,
   },
@@ -152,6 +151,10 @@ const styles = StyleSheet.create({
     lineHeight: 22.4,
     left: 15,
     color: "#3A3D46",
+  },
+  rememberMe: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
 

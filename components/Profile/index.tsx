@@ -1,4 +1,4 @@
-import { Text, View, Image, StyleSheet  } from "react-native";
+import { Text, View, Image, StyleSheet } from "react-native";
 import React from "react";
 import { useLogoutMutation } from "../../src/auth/logout/logoutApiSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -10,31 +10,29 @@ import Logout from "../../assets/icons/LogoutIcon.svg";
 import i18n from "../../i18n/i18n";
 import CardCoin from "../../assets/icons/cardCoin.svg";
 import { LinearGradient } from "expo-linear-gradient";
-import { useDispatch } from "react-redux";
 import SettingButton from "@/commonComponent/button/SettingButton";
+import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "@/src/auth/signin/userSlice";
 import { useGetCurrentUserProfileQuery } from "@/src/api/userApiSlice";
 
 const Profile = () => {
   const [postLogout, { isLoading, isSuccess, isError, error }] =
-  useLogoutMutation();
-  
+    useLogoutMutation();
+
   const { data: userData } = useGetCurrentUserProfileQuery();
 
   const dispatch = useDispatch();
-
+  const user = useSelector((state: any) => state?.user.user);
   const handleLogout = async () => {
     try {
       const token = await AsyncStorage.getItem("access_token");
-      console.log("Token before logout:", token);
 
       // Pass the token to postLogout
       await postLogout().unwrap();
-      
+
       dispatch(clearUser());
-      
+
       router.push("/Welcome");
-      
     } catch (err) {
       console.error("Failed to logout:", err);
       if (err && typeof err === "object" && "data" in err) {
@@ -42,7 +40,7 @@ const Profile = () => {
       }
     }
   };
-  
+
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -58,9 +56,9 @@ const Profile = () => {
       <Text style={styles.text}>{i18n.t("profile.profile")}</Text>
       <View style={styles.ImageContainer}>
         {userData?.data.image_url ? (
-          <Image 
-            source={{ uri: userData.data.image_url }} 
-            style={styles.profileImage} 
+          <Image
+            source={{ uri: userData.data.image_url }}
+            style={styles.profileImage}
           />
         ) : (
           <Ai style={styles.Ai} />
@@ -72,7 +70,7 @@ const Profile = () => {
         <SettingButton
           icon={CardCoin}
           title={i18n.t("profile.myBookings")}
-          onPress={() => router.push('/bookings' as any)}
+          onPress={() => router.push("/bookings" as any)}
           style={styles.ProfileItem}
         />
 

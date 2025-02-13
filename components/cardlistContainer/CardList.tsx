@@ -10,6 +10,10 @@ import {
   useRemoveWishListMutation,
 } from "@/src/wishList/wishListApiSlice";
 
+import { useSelector, useDispatch } from "react-redux";
+
+import i18n from "@/i18n/i18n";
+
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = 284;
 const SPACING = 25;
@@ -58,7 +62,14 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
           showsHorizontalScrollIndicator={false}
           snapToInterval={CARD_WIDTH + SPACING}
           decelerationRate="fast"
-          contentContainerStyle={styles.flatListContent}
+          style={{
+            direction: "ltr",
+          }}
+          contentContainerStyle={[
+            styles.flatListContent,
+            { direction: i18n.language === "ar" ? "rtl" : "ltr" },
+          ]}
+          inverted={i18n.language === "ar" ? true : false}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { x: scrollX } } }],
             { useNativeDriver: true }

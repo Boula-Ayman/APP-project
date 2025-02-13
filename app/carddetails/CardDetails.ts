@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 10,
     position: "absolute",
-    top: 270,
-    left: 120,
+    bottom: 50,
+    width: "100%",
   },
   gradientDot: {
     width: 20,
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   featureItem: {
     flexDirection: "row",
     alignItems: "center",
-    marginRight: 22,
+    gap: 4,
   },
 
   featureText: {
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
   whatsappIcon: {
     width: 39,
     height: 40,
-    right: 0,
+
     top: -40,
     position: "absolute",
   },
@@ -263,13 +263,12 @@ const styles = StyleSheet.create({
   personContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginLeft: 8,
+    gap: 10,
   },
   person: {
     width: 60,
     height: 60,
     borderRadius: 50,
-    marginRight: 10,
   },
   whatsappButtonText: {
     color: "#14161C",
@@ -455,6 +454,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     fontFamily: "interMedium",
+  },
+  soldOutLabel: {
+    position: "relative",
+
+    fontSize: 14,
+    color: "white",
+    fontWeight: "medium",
+    fontFamily: "InterMedium",
   },
 });
 
