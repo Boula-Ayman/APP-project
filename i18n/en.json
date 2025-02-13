@@ -19,8 +19,9 @@
     "title": "All Properties"
   },
   "filter": "Filter By",
-  "bedrooms": "Bedrooms: {{count}}",
-  "bathroom": "Bathroom: {{count}}",
+  "bedrooms": "{{count}} Bedroom",
+  "bathroom": "{{count}} Bathroom",
+  "area": "{{count}} sqft",
   "ownerShip": "Owner Ship",
   "location": "Al Nahda, Sharjah, Dubai, UAE",
   "about": "bedroom apartment in Sahara Tower 4, located in Al Nahda, Sharjah, offers a comfortable and modern living space. These apartments are designed to provide a blend of convenience and luxury, making them ideal for singles or small families.",
@@ -153,6 +154,103 @@
     "appVersion": "App version 100.2.1",
     "myBookings": "My Bookings"
   },
+  "settings": {
+    "title": "Settings",
+    "soundEffects": "Sound Effects",
+    "notifications": "Notifications",
+    "language": "Language",
+    "moreSettings": "More Settings",
+    "accountInfo": "Account Information",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "enterCurrentPassword": "Current password",
+    "enterNewPassword": "New password",
+    "currentPasswordRequired": "Current password is required",
+    "newPasswordRequired": "New password is required",
+    "passwordMismatch": "New passwords do not match",
+    "passwordUpdateSuccess": "Password updated successfully",
+    "passwordUpdateError": "Failed to update password. Please try again",
+    "policy": "Policy",
+    "termsOfService": "Terms of Service",
+    "userPolicy": "User Policy",
+    "update": "Update",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "dateOfBirth": "Date of Birth",
+    "mobileNumber": "Mobile Number",
+    "selectPhoto": "Select Photo",
+    "invalidDateFormat": "Invalid date format",
+    "useDateFormat": "Please use DD/MM/YYYY format",
+    "profileUpdateSuccess": "Profile updated successfully",
+    "profileUpdateError": "Failed to update profile. Please try again",
+    "enterFirstName": "First name",
+    "enterLastName": "Last name",
+    "enterDateOfBirth": "Date of birth (DD/MM/YYYY)",
+    "enterMobileNumber": "Mobile number",
+    "updateProfileSuccess": "Profile updated successfully",
+    "updateProfileError": "Failed to update profile. Please try again"
+  },
   "sliderSignIn": "Sign In",
-  "sliderSignUp": "Sign Up"
+  "sliderSignUp": "Sign Up",
+  "common": {
+    "loading": "Loading...",
+    "success": "Success",
+    "error": "Error",
+    "ok": "OK"
+  },
+  "bookings": {
+    "title": "My Bookings",
+    "upcoming": "Upcoming",
+    "past": "Past",
+    "bookingId": "Booking ID: #{{id}}",
+    "nights": "Nights",
+    "calendar": {
+      "bookNights": "Book Nights",
+      "availableNights": "Available Nights",
+      "selectDates": "Select Dates",
+      "bookNow": "Book Now",
+      "termsAgreement": "By confirming your booking, you agree to our Terms of Service",
+      "success": {
+        "title": "Your booking has been placed!",
+        "description": "You can track your booking progress and status in your account portal.",
+        "viewBookings": "My Bookings"
+      },
+      "error": {
+        "title": "Booking Failed",
+        "description": "We couldn't process your booking request. Please try again or contact support if the issue persists.",
+        "tryAgain": "Try Again"
+      }
+    },
+    "actions": {
+      "directions": "Directions",
+      "reschedule": "Reschedule",
+      "cancel": "Cancel"
+    },
+    "cancellation": {
+      "title": "Please Confirm",
+      "message": "Hold on! Are you sure you want to cancel this booking?",
+      "cancel": "Cancel",
+      "confirm": "Yes, Confirm",
+      "success": "Your booking has been cancelled successfully",
+      "error": "Failed to cancel booking. Please try again."
+    },
+    "policy": {
+      "title": "Cancellation policy",
+      "description": "Cancel for free before 72h in advance, otherwise you will be conducted 100% of the service nights for not showing up."
+    }
+  },
+  "portfolio": {
+    "title": "My Portfolio",
+    "myUnits": "My Units",
+    "exploreDescription": "Explore your curated investment portfolio, where you can effortlessly",
+    "totalInvestment": "Total Investment",
+    "totalRentalIncome": "Total Rental Income Paid",
+    "totalUsableNights": "Total usable nights",
+    "yieldLastYear": "Yield in {{year}}"
+  }
 }

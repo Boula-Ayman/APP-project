@@ -118,7 +118,7 @@ const SignUpPage: React.FC = () => {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       style={styles.container}
     >
-      <ScrollView contentContainerStyle={{...styles.scrollContent}}>
+      <ScrollView contentContainerStyle={{ ...styles.scrollContent }}>
         <Formik
           initialValues={{
             firstName: "",

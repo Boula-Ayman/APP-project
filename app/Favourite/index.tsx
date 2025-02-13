@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { RootState } from "../../src/store";
 import CardList from "@/components/cardlistContainer/CardList";
-import { useGetWishListQuery } from "@/src/wishList/AdWishList/wishListApiSliceAdd";
+import { useGetWishListQuery } from "@/src/wishList/wishListApiSlice";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const TestWishListComponent = () => {

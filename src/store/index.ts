@@ -13,12 +13,13 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { rootReducer } from "./rootReducer";
 import apiSlice from "../api/apiSlice";
+import { bookingsApi } from "../api/bookingsApiSlice";
 
 const persistConfig = {
   key: "root",
   version: 1,
   storage: AsyncStorage,
-  blacklist: [apiSlice.reducerPath],
+  blacklist: [apiSlice.reducerPath, bookingsApi.reducerPath],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -30,7 +31,7 @@ const store: Store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(apiSlice.middleware),
+    }).concat(apiSlice.middleware, bookingsApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

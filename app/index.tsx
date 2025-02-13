@@ -75,104 +75,101 @@ const App: React.FC = () => {
     }
   }, [user.accessToken, rootNavigationState?.key]);
 
+  useEffect(() => {
+    if (!user.accessToken && rootNavigationState?.key) {
+      router.push("/Welcome");
+    }
+  }, [user.accessToken, rootNavigationState?.key]);
+
   return (
-    <>
-      <Tab.Navigator
-        screenOptions={{
-          headerShown: false,
-
-          tabBarStyle: {
-            width: "96%",
-            height: 74,
-            backgroundColor: "#061C27",
-            borderTopWidth: 0,
-            borderRadius: 40,
-            elevation: 0,
-            gap: 10,
-            flex: 1,
-            marginBottom: 6,
-            position: "absolute",
-            bottom: 0,
-            transform: [{ translateX: "2%" }],
-            display: isKeyboardVisible ? "none" : "flex",
-          },
-
-          tabBarItemStyle: {
-            paddingVertical: 10,
-          },
-          tabBarHideOnKeyboard: true,
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          width: "93%",
+          height: 74,
+          backgroundColor: "#061C27",
+          borderRadius: 40,
+          elevation: 0,
+          marginBottom: "3%",
+          alignSelf: "center",
+          display: isKeyboardVisible ? "none" : "flex",
+        },
+        tabBarItemStyle: {
+          paddingVertical: 10,
+        },
+        tabBarHideOnKeyboard: true,
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarLabel: "",
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={[
+                styles.iconContainer,
+                focused && styles.iconContainerFocused,
+              ]}
+            >
+              <HomeIcon width={24} height={24} />
+            </View>
+          ),
         }}
-      >
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            tabBarLabel: "",
-            tabBarIcon: ({ focused }) => (
-              <View
-                style={[
-                  styles.iconContainer,
-                  focused && styles.iconContainerFocused,
-                ]}
-              >
-                <HomeIcon width={24} height={24} />
-              </View>
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Favorite"
-          component={Favorite}
-          options={{
-            tabBarLabel: "",
-            tabBarIcon: ({ focused }) => (
-              <View
-                style={[
-                  styles.iconContainer,
-                  focused && styles.iconContainerFocused,
-                ]}
-              >
-                <FavouriteIcon width={24} height={24} />
-              </View>
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="PortfolioPage"
-          component={PortfolioPage}
-          options={{
-            tabBarLabel: "",
-            tabBarIcon: ({ focused }) => (
-              <View
-                style={[
-                  styles.iconContainer,
-                  focused && styles.iconContainerFocused,
-                ]}
-              >
-                <Building width={24} height={24} />
-              </View>
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Profile"
-          component={Profile}
-          options={{
-            tabBarLabel: "",
-            tabBarIcon: ({ focused }) => (
-              <View
-                style={[
-                  styles.iconContainer,
-                  focused && styles.iconContainerFocused,
-                ]}
-              >
-                <ProfileIcon width={24} height={24} />
-              </View>
-            ),
-          }}
-        />
-      </Tab.Navigator>
-    </>
+      />
+      <Tab.Screen
+        name="Favorite"
+        component={Favorite}
+        options={{
+          tabBarLabel: "",
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={[
+                styles.iconContainer,
+                focused && styles.iconContainerFocused,
+              ]}
+            >
+              <FavouriteIcon width={24} height={24} />
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="PortfolioPage"
+        component={PortfolioPage}
+        options={{
+          tabBarLabel: "",
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={[
+                styles.iconContainer,
+                focused && styles.iconContainerFocused,
+              ]}
+            >
+              <Building width={24} height={24} />
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarLabel: "",
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={[
+                styles.iconContainer,
+                focused && styles.iconContainerFocused,
+              ]}
+            >
+              <ProfileIcon width={24} height={24} />
+            </View>
+          ),
+        }}
+      />
+    </Tab.Navigator>
   );
 };
 

@@ -32,15 +32,13 @@ import FilledHeart from "@/assets/icons/filledHeart.svg";
 import MultiUsers from "@/assets/icons/multiUsers.svg";
 import { Slider } from "@miblanchard/react-native-slider";
 import AppText from "@/commonComponent/appText/AppText";
-import {
-  addToWishlist,
-  removeFromWishlist,
-} from "@/src/wishList/wishlistSlice";
+
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 import {
+  useGetWishListQuery,
   usePostWishListMutation,
   useRemoveWishListMutation,
-} from "@/src/wishList/AdWishList/wishListApiSliceAdd";
+} from "@/src/wishList/wishListApiSlice";
 import { useSelector, useDispatch } from "react-redux";
 import BgRightCircle from "../../assets/icons/bgRightCircle.svg";
 import { useOpportunityRegisterInterestMutation } from "@/src/api/opportunitiesApiSlice";
@@ -531,7 +529,8 @@ const CardDetails = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   const router = useRouter();
   const { id, type } = useLocalSearchParams();
-  const wishList = useSelector((state: any) => state.wishlist);
+  const { data: wishList, refetch } = useGetWishListQuery({});
+
   const dispatch = useDispatch();
   const [handleRegisterInterest] = useOpportunityRegisterInterestMutation();
   const [isRegistered, setIsRegistered] = React.useState(false);
@@ -571,7 +570,9 @@ const CardDetails = () => {
       console.log(e);
     }
   };
-  const isLiked = wishList.includes(Number(id));
+  const isLiked = wishList?.data?.some(
+    (likedItem: Opportunity) => likedItem.id === Number(id)
+  );
 
   useEffect(() => {
     const backAction = () => {
@@ -590,9 +591,7 @@ const CardDetails = () => {
     try {
       if (isLiked) {
         await removeWishList({ id }).unwrap();
-        dispatch(removeFromWishlist(id));
       } else {
-        dispatch(addToWishlist(id));
         await postWishList({ id }).unwrap();
       }
     } catch (error) {
