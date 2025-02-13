@@ -84,10 +84,14 @@ const HomeScreen: React.FC = ({}) => {
       // TODO: show error messages
     }
   };
+
   return (
     <>
       <StatusBar style="dark" />
-      <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ flex: 1, direction: i18n.language === "ar" ? "rtl" : "ltr" }}
+      >
         <View style={styles.container}>
           <LinearGradient
             colors={[

@@ -138,7 +138,6 @@ const styles = StyleSheet.create({
     lineHeight: 24.2,
     textDecorationLine: "none",
     textDecorationStyle: "solid",
-    left: 16,
   },
   viewAll: {
     fontFamily: "Inter",

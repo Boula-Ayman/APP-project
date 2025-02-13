@@ -45,7 +45,7 @@ const VerificationScreen: React.FC = () => {
   const handleVerify = async () => {
     setErrorMessage("");
     if (!otp || otp.length !== 4) {
-      setErrorMessage("OTP must be exactly 4 digits");
+      setErrorMessage(t("otpValidation"));
       return;
     }
 
@@ -67,7 +67,7 @@ const VerificationScreen: React.FC = () => {
       setLoading(false);
     } catch (error: any) {
       setLoading(false);
-      setErrorMessage(error.data.message);
+      setErrorMessage(t("otpError"));
     }
   };
 
@@ -116,9 +116,18 @@ const VerificationScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { direction: i18n.language === "ar" ? "rtl" : "ltr" },
+      ]}
+    >
       <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-        <Arrow />
+        {i18n.language === "ar" ? (
+          <Arrow style={{ transform: [{ rotate: "180deg" }] }} />
+        ) : (
+          <Arrow />
+        )}
       </TouchableOpacity>
       <ScrollView style={styles.scrollContent}>
         <Text style={[styles.title, { fontFamily: "Inter_600SemiBold" }]}>
@@ -127,7 +136,7 @@ const VerificationScreen: React.FC = () => {
         <Text style={[styles.subtitle, { fontFamily: "Inter_400Regular" }]}>
           {t("verify.enter_otp_message")}
         </Text>
-        <View style={styles.otpInputContainer}>
+        <View style={[styles.otpInputContainer, { direction: "ltr" }]}>
           <OtpInput
             numberOfDigits={4}
             onTextChange={(text) => setOtp(text)}
@@ -174,7 +183,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 16,
-    marginTop: 20,
+
     backgroundColor: "white",
   },
   backButton: {
@@ -185,6 +194,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 20,
   },
   scrollContent: {
     flexGrow: 1,

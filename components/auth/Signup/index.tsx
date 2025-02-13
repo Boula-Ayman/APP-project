@@ -9,6 +9,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { usePostSignUpMutation } from "../../../src/auth/signup/signuupApiSlice";
 import { router } from "expo-router";
 import i18n from "../../../i18n/i18n";
@@ -17,11 +18,10 @@ import Button from "@/commonComponent/button/Button";
 import Arrow from "../../../assets/icons/Arrow.svg";
 import { Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
-import { useDispatch, UseDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import PhoneInput from "react-native-phone-number-input";
-import { setAccessToken, setUser } from "@/src/auth/signin/userSlice";
-import { usePostSignInMutation } from "@/src/auth/signin/signinApiSlice";
+import { setAccessToken } from "@/src/auth/signin/userSlice";
 
 const SignUpSchema = Yup.object().shape({
   firstName: Yup.string().trim().required(i18n.t("signUp.firstNameRequired")),
@@ -53,9 +53,9 @@ const SignUpPage: React.FC = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [error, setError] = useState("");
   const [formattedPhoneNumber, setFormattedPhoneNumber] = useState("");
-  const [postSignIn] = usePostSignInMutation();
-
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const dispatch = useDispatch();
+
   const handleSignUp = async (
     values: {
       firstName: string;
@@ -86,7 +86,6 @@ const SignUpPage: React.FC = () => {
 
       const response = await postSignUp(body).unwrap();
       const accessToken = response?.data?.access_token;
-      console.log("accessToken", accessToken);
 
       dispatch(setAccessToken(accessToken));
 
@@ -113,10 +112,26 @@ const SignUpPage: React.FC = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  const handleDateChange = (
+    event: any,
+    selectedDate: Date | undefined,
+    setFieldValue: any
+  ) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      const formattedDate = selectedDate.toISOString().split("T")[0];
+      setFieldValue("birthDate", formattedDate);
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : undefined}
-      style={styles.container}
+      style={[
+        styles.container,
+        { direction: i18n.language === "ar" ? "rtl" : "ltr" },
+      ]}
     >
       <ScrollView contentContainerStyle={{ ...styles.scrollContent }}>
         <Formik
@@ -148,10 +163,17 @@ const SignUpPage: React.FC = () => {
                   style={styles.backButton}
                   onPress={() => router.push("/Welcome")}
                 >
-                  <Arrow />
+                  {i18n.language === "en" ? (
+                    <Arrow />
+                  ) : (
+                    <Arrow style={{ transform: [{ rotate: "180deg" }] }} />
+                  )}
                 </TouchableOpacity>
                 <Text style={styles.backText}>
-                  <Text style={styles.one}>1</Text> / 2
+                  <Text style={styles.one}>
+                    {i18n.language === "en" ? "1" : (1).toLocaleString("ar-EG")}
+                  </Text>{" "}
+                  / {i18n.language === "en" ? "2" : (2).toLocaleString("ar-EG")}
                 </Text>
               </View>
               <Text style={styles.title}>{t("signUp.title")}</Text>
@@ -180,6 +202,8 @@ const SignUpPage: React.FC = () => {
                               : focusedInput === "firstName" || values.firstName
                               ? "#8BC240"
                               : "#EFEFEF",
+                          direction: i18n.language === "ar" ? "rtl" : "ltr",
+                          textAlign: i18n.language === "ar" ? "right" : "left",
                         },
                       ]}
                       onChangeText={handleChange("firstName")}
@@ -208,6 +232,8 @@ const SignUpPage: React.FC = () => {
                               : focusedInput === "lastName" || values.lastName
                               ? "#8BC240"
                               : "#EFEFEF",
+                          direction: i18n.language === "ar" ? "rtl" : "ltr",
+                          textAlign: i18n.language === "ar" ? "right" : "left",
                         },
                       ]}
                       onChangeText={handleChange("lastName")}
@@ -238,6 +264,8 @@ const SignUpPage: React.FC = () => {
                           : focusedInput === "email" || values.email
                           ? "#8BC240"
                           : "#EFEFEF",
+                      direction: i18n.language === "ar" ? "rtl" : "ltr",
+                      textAlign: i18n.language === "ar" ? "right" : "left",
                     },
                   ]}
                   keyboardType="email-address"
@@ -267,6 +295,8 @@ const SignUpPage: React.FC = () => {
                           : focusedInput === "password" || values.password
                           ? "#8BC240"
                           : "#EFEFEF",
+                      direction: i18n.language === "ar" ? "rtl" : "ltr",
+                      textAlign: i18n.language === "ar" ? "right" : "left",
                     },
                   ]}
                   onChangeText={handleChange("password")}
@@ -281,17 +311,22 @@ const SignUpPage: React.FC = () => {
                   placeholder="******"
                 />
 
-                <TouchableOpacity onPress={togglePasswordVisibility}>
-                  <Ionicons
-                    name={showPassword ? "eye-off" : "eye"}
-                    size={24}
-                    style={{
-                      position: "absolute",
-                      right: 10,
-                      top: -47,
-                    }}
-                  />
-                </TouchableOpacity>
+                {values.password.length > 0 && (
+                  <TouchableOpacity onPress={togglePasswordVisibility}>
+                    <Ionicons
+                      name={showPassword ? "eye" : "eye-off"}
+                      size={24}
+                      style={[
+                        {
+                          position: "absolute",
+
+                          top: -47,
+                        },
+                        i18n.language === "ar" ? { left: 10 } : { right: 10 },
+                      ]}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
               {touched.password && errors.password && (
                 <Text style={styles.errorText}>{errors.password}</Text>
@@ -321,6 +356,7 @@ const SignUpPage: React.FC = () => {
                         : "#EFEFEF",
                     borderRadius: 8,
                     padding: 2,
+                    direction: "ltr",
                   }}
                   textContainerStyle={{
                     backgroundColor: "white",
@@ -369,29 +405,40 @@ const SignUpPage: React.FC = () => {
               </TouchableOpacity>
               <View>
                 <Text style={styles.Name}>{t("signUp.birthDate")}</Text>
-                <TextInput
-                  style={[
-                    styles.input,
-                    {
-                      borderColor:
-                        errors.birthDate && touched.birthDate
-                          ? "red"
-                          : focusedInput === "birthDate" || values.birthDate
-                          ? "#8BC240"
-                          : "#EFEFEF",
-                    },
-                  ]}
-                  // placeholder={t("signUp.birthDatePlaceholder")}
-                  onChangeText={handleChange("birthDate")}
-                  onFocus={() => handleFocus("birthDate")}
-                  onBlur={() => {
-                    handleBlur("birthDate");
-                    handleBlurInput();
-                  }}
-                  placeholderTextColor="#68677799"
-                  placeholder="YYYY-MM-DD"
-                  value={values.birthDate}
-                />
+                <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                  <TextInput
+                    style={[
+                      styles.input,
+                      {
+                        borderColor:
+                          errors.birthDate && touched.birthDate
+                            ? "red"
+                            : focusedInput === "birthDate" || values.birthDate
+                            ? "#8BC240"
+                            : "#EFEFEF",
+                        direction: i18n.language === "ar" ? "rtl" : "ltr",
+                        textAlign: i18n.language === "ar" ? "right" : "left",
+                      },
+                    ]}
+                    onPress={() => setShowDatePicker(true)}
+                    placeholder="YYYY-MM-DD"
+                    placeholderTextColor="#68677799"
+                    value={values.birthDate}
+                    editable={false}
+                  />
+                </TouchableOpacity>
+                {showDatePicker && (
+                  <DateTimePicker
+                    value={
+                      values.birthDate ? new Date(values.birthDate) : new Date()
+                    }
+                    mode="date"
+                    display={Platform.OS === "ios" ? "spinner" : "default"}
+                    onChange={(event, selectedDate) =>
+                      handleDateChange(event, selectedDate, setFieldValue)
+                    }
+                  />
+                )}
                 {touched.birthDate && errors.birthDate && (
                   <Text style={styles.errorText}>{errors.birthDate}</Text>
                 )}
@@ -399,9 +446,9 @@ const SignUpPage: React.FC = () => {
 
               <View style={styles.TextContainer}>
                 <Text style={styles.MainText}>
-                  {t("signUp.agreeToTermsPrefix")}
-                  <Text style={styles.Text}>{t("signUp.terms")}</Text>
-                  {t("signUp.and")}
+                  {t("signUp.agreeToTermsPrefix")}{" "}
+                  <Text style={styles.Text}>{t("signUp.terms")}</Text>{" "}
+                  {t("signUp.and")}{" "}
                   <Text style={styles.Text}>{t("signUp.privacyPolicy")}</Text>
                 </Text>
               </View>

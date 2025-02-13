@@ -22,7 +22,6 @@ import {
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import i18n from "@/i18n/i18n";
-import { formatPrice } from "@/utils/formatPrice";
 import Frame52 from "@/assets/icons/Frame52.svg";
 import Frame54 from "@/assets/icons/Frame54.svg";
 import Furniture from "@/assets/icons/Furniture.svg";
@@ -48,6 +47,7 @@ import EstimatedSalesRangeCard from "./components/estimatedSalesRangeCard";
 import TotalReturnCard from "./components/totalReturnCard";
 import TotalRentIncome from "./components/totalRentIncome";
 import DynamicIcon from "@/utils/RenderAmenitiesIcons";
+import { noImagePlaceHolder } from "@/utils/noImagePlaceHolder";
 
 const Header = ({
   media,
@@ -57,18 +57,24 @@ const Header = ({
   activeSlide,
   onScroll,
 }) => (
-  <View style={styles.header}>
+  <View style={[styles.header, { direction: "ltr" }]}>
     <FlatList
       data={media?.slice(0, 3)}
       horizontal
       pagingEnabled
       showsHorizontalScrollIndicator={false}
+      contentContainerStyle={{
+        direction: i18n.language === "en" ? "ltr" : "rtl",
+      }}
+      inverted={i18n.language === "ar"}
       style={{
         flex: 1,
       }}
       renderItem={({ item }) => (
         <Image
-          source={{ uri: item.url }}
+          source={{
+            uri: item.url ? item.url : noImagePlaceHolder,
+          }}
           style={[
             styles.propertyImage,
             { width: Dimensions.get("window").width },
@@ -79,9 +85,18 @@ const Header = ({
       onScroll={onScroll}
       scrollEventThrottle={16}
     />
-    <View style={styles.icons}>
+    <View
+      style={[
+        styles.icons,
+        { direction: i18n.language === "ar" ? "rtl" : "ltr" },
+      ]}
+    >
       <TouchableOpacity style={styles.icon1} onPress={onBackPress}>
-        <Ionicons name="chevron-back" size={16} color="black" />
+        {i18n.language === "en" ? (
+          <Ionicons name="chevron-back" size={16} color="black" />
+        ) : (
+          <Ionicons name="chevron-forward" size={16} color="black" />
+        )}
       </TouchableOpacity>
       <TouchableOpacity style={styles.icon2} onPress={onLikePress}>
         {isLiked ? (
@@ -92,7 +107,14 @@ const Header = ({
       </TouchableOpacity>
     </View>
 
-    <View style={styles.paginationContainer}>
+    <View
+      style={[
+        styles.paginationContainer,
+        i18n.language === "ar"
+          ? { flexDirection: "row-reverse" }
+          : { flexDirection: "row" },
+      ]}
+    >
       {media
         ?.slice(0, 3)
         ?.map((_, index) =>
@@ -111,41 +133,71 @@ const PriceSection = ({
   currency,
   available_shares,
   number_of_shares,
-}) => (
-  <View style={styles.priceSection}>
-    <AppText
-      text={
-        i18n.language === "en"
-          ? share_price
-          : share_price.toLocaleString("ar-EG") + " " + t(`${currency}`)
-      }
-      style={styles.price}
-    />
-    <AppText text={i18n.t("shares") + " "} style={styles.shares} />
-    <AppText
-      text={i18n.language === "en" ? " 1" : (1).toLocaleString("ar-EG") + `/`}
-      style={{
-        color: "#8BC240",
-        fontWeight: "500",
-        fontFamily: "InterMedium",
-        fontSize: 14,
-      }}
-    />
-    <AppText
-      style={{
-        color: "#464851",
-        fontWeight: "500",
-        fontSize: 14,
-        fontFamily: "InterMedium",
-      }}
-      text={
-        i18n.language === "en"
-          ? number_of_shares
-          : number_of_shares.toLocaleString("ar-EG")
-      }
-    />
-  </View>
-);
+  status,
+}) => {
+  return (
+    <View
+      style={[
+        styles.priceSection,
+        {
+          justifyContent:
+            status === "sold out" ? "space-between" : "flex-start",
+        },
+      ]}
+    >
+      <AppText
+        text={`${
+          i18n.language === "en"
+            ? share_price.toLocaleString()
+            : share_price.toLocaleString("ar-EG")
+        } ${t(currency)} `}
+        style={styles.price}
+      />
+
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <AppText text={i18n.t("shares") + " "} style={styles.shares} />
+        <AppText
+          text={`${i18n.language === "en" ? "1" : (1).toLocaleString("ar-EG")}`}
+          style={{
+            color: "#8BC240",
+            fontWeight: "500",
+            fontFamily: "InterMedium",
+            fontSize: 14,
+          }}
+        />
+        <Text>/</Text>
+        <AppText
+          style={{
+            color: "#464851",
+            fontWeight: "500",
+            fontSize: 14,
+            fontFamily: "InterMedium",
+          }}
+          text={
+            i18n.language === "en"
+              ? number_of_shares
+              : number_of_shares.toLocaleString("ar-EG")
+          }
+        />
+      </View>
+      {status === "sold out" && (
+        <View
+          style={{
+            height: 30,
+            width: 80,
+            alignSelf: "center",
+            borderRadius: 10,
+            backgroundColor: "red",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={styles.soldOutLabel}>{i18n.t("soldOut")}</Text>
+        </View>
+      )}
+    </View>
+  );
+};
 
 const FeaturesSection = ({ number_of_bedrooms, number_of_bathrooms, area }) => (
   <View style={styles.features}>
@@ -227,7 +279,12 @@ const ContactSection = () => (
           Linking.openURL("https://wa.me/201100007003");
         }}
       >
-        <WhatApp style={styles.whatsappIcon} />
+        <WhatApp
+          style={[
+            styles.whatsappIcon,
+            i18n.language === "en" ? { right: 20 } : { left: 20 },
+          ]}
+        />
       </TouchableOpacity>
       <AppText
         text={i18n.t("getInTouchDescription")}
@@ -272,11 +329,11 @@ const PriceDetailsSection = ({
       <View style={styles.priceCard}>
         <View style={styles.pricecontent}>
           <AppText
-            text={`${formatPrice(
+            text={`${
               i18n.language === "en"
                 ? share_price
                 : share_price.toLocaleString("ar-EG")
-            )} ${t(`${currency}`)}`}
+            } ${t(`${currency}`)}`}
             style={styles.priceTitle}
           />
           <AppText
@@ -374,6 +431,7 @@ const PriceDetailsSection = ({
               left: 0,
               zIndex: 1,
               marginLeft: "10%",
+              direction: "ltr",
             }}
             thumbImage={require("@/assets/icons/whiteCircle.svg")}
             thumbStyle={{
@@ -420,9 +478,9 @@ const PriceDetailsSection = ({
               <AppText
                 text={`${
                   i18n.language === "en"
-                    ? total_return_1_year
-                    : total_return_1_year.toLocaleString("ar-EG")
-                }%`}
+                    ? `${total_return_1_year}%`
+                    : `%${total_return_1_year.toLocaleString("ar-EG")}`
+                }`}
                 style={styles.priceValue}
               />
             </View>
@@ -434,9 +492,9 @@ const PriceDetailsSection = ({
               <AppText
                 text={`${
                   i18n.language === "en"
-                    ? total_return_5_years
-                    : total_return_5_years.toLocaleString("ar-EG")
-                }%`}
+                    ? `${total_return_5_years}%`
+                    : `%${total_return_5_years.toLocaleString("ar-EG")}`
+                }`}
                 style={styles.priceValue}
               />
             </View>
@@ -559,7 +617,6 @@ const CardDetails = () => {
         phone: user?.phone_number,
         full_name: user?.name,
       };
-      console.log(body);
       await handleRegisterInterest({
         id,
         body,
@@ -616,7 +673,6 @@ const CardDetails = () => {
     try {
       setIsSelling(true);
       const response = await sellOpportunityShares({ id }).unwrap();
-      console.log(response, "sellOpportunityShares response");
       setIsWantToSellModal(false);
       setIsSelling(false);
     } catch (error) {
@@ -688,7 +744,12 @@ const CardDetails = () => {
       );
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView
+        style={[
+          styles.container,
+          { direction: i18n.language === "ar" ? "rtl" : "ltr" },
+        ]}
+      >
         <ScrollView style={styles.container}>
           <Header {...commonProps} />
           <View style={styles.detailsCard}>
@@ -697,6 +758,7 @@ const CardDetails = () => {
               currency={data?.data?.currency}
               available_shares={data?.data?.available_shares}
               number_of_shares={data?.data?.number_of_shares}
+              status={data?.data?.status}
             />
             <Text style={styles.title}>
               {i18n.language === "ar"

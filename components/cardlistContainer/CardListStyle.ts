@@ -4,14 +4,13 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "rgba(139, 194, 64, 0)",
     paddingTop: 6,
-    alignItems: "flex-start",
   },
   flatListContent: {
     paddingHorizontal: 10,
   },
   card: {
-    width: 'auto',
-    height: 'auto',
+    maxWidth: 284,
+    height: "auto",
     borderRadius: 22,
     backgroundColor: "#fff",
     borderWidth: 0.85,
@@ -25,7 +24,7 @@ const styles = StyleSheet.create({
   },
   cardImage: {
     flexGrow: 1,
-    width: '100%',
+    width: "100%",
     height: 210,
     marginBottom: 10,
     borderRadius: 22,
@@ -33,7 +32,7 @@ const styles = StyleSheet.create({
   overlay: {
     position: "absolute",
     top: 25,
-    left: 15,
+
     paddingHorizontal: 15,
     flexDirection: "row",
     alignItems: "center",
@@ -97,6 +96,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 12,
+    gap: 3,
   },
   location: {
     width: 15,
@@ -116,7 +116,6 @@ const styles = StyleSheet.create({
   featureItem: {
     flexDirection: "row",
     alignItems: "center",
-    marginRight: 22,
   },
   featureText: {
     marginLeft: 4,
@@ -125,15 +124,11 @@ const styles = StyleSheet.create({
   },
   soldOutLabel: {
     position: "relative",
-    width: "50%",
-    fontSize: 18,
-    color: "#FF0000",
-    marginTop: 5,
-    marginLeft: 10,
-    marginBottom: -15,
-    opacity: 1,
-    borderRadius: 10,
-    fontFamily: "Inter",
+
+    fontSize: 14,
+    color: "white",
+    fontWeight: "medium",
+    fontFamily: "InterMedium",
   },
 });
 

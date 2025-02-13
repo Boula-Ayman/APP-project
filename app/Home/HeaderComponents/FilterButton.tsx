@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useGetOpportunitiesQuery } from "../../../src/api/opportunitiesApiSlice";
@@ -8,6 +8,7 @@ import FilterIcon from "../../../assets/icons/Tuning2.svg";
 import DropDownPicker from "react-native-dropdown-picker";
 import styles from "../../FilterButton/FilterScreenStyle";
 import { PROPERTIES_STATUS, PropertiesStatusKeys } from "@/constants/Enums";
+import { t } from "i18next";
 
 const staticData = {
   types: [
@@ -15,22 +16,19 @@ const staticData = {
     { id: 2, label: "Property", value: "property" },
   ],
   locations: [
-    { id: 1, label: "UAE", value: "UAE" },
-    { id: 2, label: "Egypt", value: "Egypt" },
-  ],
-  statuses: [
-    { id: 1, label: "ALL", value: "all" },
-    { id: 2, label: "Available", value: "available" },
-    { id: 3, label: "Sold Out", value: "sold out" },
+    { id: 1, label: t("UAE"), value: "UAE" },
+    { id: 2, label: t("Egypt"), value: "Egypt" },
   ],
 };
 
 type FilterButtonProps = {
-  onFilterChange: (filters: Partial<{
-    type: string | null;
-    country: string | null;
-    status: typeof PROPERTIES_STATUS[PropertiesStatusKeys];
-  }>) => void;
+  onFilterChange: (
+    filters: Partial<{
+      type: string | null;
+      country: string | null;
+      status: (typeof PROPERTIES_STATUS)[PropertiesStatusKeys];
+    }>
+  ) => void;
 };
 
 const FilterButton: React.FC<FilterButtonProps> = ({ onFilterChange }) => {
@@ -40,34 +38,30 @@ const FilterButton: React.FC<FilterButtonProps> = ({ onFilterChange }) => {
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [isTypeOpen, setIsTypeOpen] = useState(false);
   const [isLocationOpen, setIsLocationOpen] = useState(false);
-  const [isStatusOpen, setIsStatusOpen] = useState(false);
 
-  const [filters, setFilters] = useState<Partial<{
-    type: string | null;
-    country: string | null;
-    status: string | null;
-  }>>({});
+  const [filters, setFilters] = useState<
+    Partial<{
+      type: string | null;
+      country: string | null;
+      status: string | null;
+    }>
+  >({});
   const handleFilterResults = () => {
     let newFilters = {};
 
-    if(selectedLocation) {
-        newFilters = {
-            ...newFilters,
-            country: selectedLocation
-        }
+    if (selectedLocation) {
+      newFilters = {
+        ...newFilters,
+        country: selectedLocation,
+      };
     }
-    if(selectedType) {
-        newFilters = {
-            ...newFilters,
-            type: selectedType
-        }
+    if (selectedType) {
+      newFilters = {
+        ...newFilters,
+        type: selectedType,
+      };
     }
-    if(selectedStatus && selectedStatus !== 'all') {
-        newFilters = {
-            ...newFilters,
-            status: selectedStatus
-        }
-    }
+
     setIsModalVisible(false);
     setFilters(newFilters);
     onFilterChange(newFilters);
@@ -75,15 +69,27 @@ const FilterButton: React.FC<FilterButtonProps> = ({ onFilterChange }) => {
 
   return (
     <View>
-      {/* Filter Button */}
-      <TouchableOpacity
-        style={styles.barIcon}
-        onPress={() => setIsModalVisible(true)}
-      >
-        <FilterIcon style={styles.barIcon2} />
-      </TouchableOpacity>
-
-      {/* Modal for FilterScreen */}
+      {selectedLocation || selectedType ? (
+        <TouchableOpacity
+          style={styles.barIcon}
+          onPress={() => {
+            setSelectedType(null);
+            setSelectedLocation(null);
+            setSelectedStatus(null);
+            setFilters({});
+            onFilterChange({});
+          }}
+        >
+          <Ionicons name="close" size={20} color="black" />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          style={styles.barIcon}
+          onPress={() => setIsModalVisible(true)}
+        >
+          <FilterIcon />
+        </TouchableOpacity>
+      )}
       <Modal
         visible={isModalVisible}
         animationType="slide"
@@ -104,103 +110,82 @@ const FilterButton: React.FC<FilterButtonProps> = ({ onFilterChange }) => {
           <View style={styles.middleSection}>
             <View style={styles.contentSection}>
               <Text style={styles.sectionTitle}>{i18n.t("filter")}</Text>
-              {/* Dropdown for Type */}
-              <View style={styles.dropdownContainer}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Text style={[styles.label, { marginRight: 7 }]}>Type</Text>
-                  <View style={styles.cirlce}>
-                    <IMark />
-                  </View>
-                </View>
-                <DropDownPicker
-                  open={isTypeOpen}
-                  value={selectedType}
-                  items={staticData.types}
-                  closeOnBackPressed={true}
-                  closeAfterSelecting={true}
-                  setOpen={setIsTypeOpen}
-                  setValue={setSelectedType}
-                  placeholder="All"
-                  style={{
-                    borderColor: "#ccc",
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    padding: 12,
-                    marginBottom: 15,
-                  }}
-                  dropDownContainerStyle={{
-                    borderColor: "#ccc",
-                    borderWidth: 1,
-                    borderRadius: 8,
-                  }}
-                />
-              </View>
-
-              {/* Dropdown for Location */}
               <View style={styles.dropdownContainer}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Text style={[styles.label, { marginRight: 7 }]}>
-                    Location
+                    {t("type")}
                   </Text>
                   <View style={styles.cirlce}>
                     <IMark />
                   </View>
                 </View>
-                <DropDownPicker
-                  open={isLocationOpen}
-                  value={selectedLocation}
-                  items={staticData.locations}
-                  closeOnBackPressed={true}
-                  closeAfterSelecting={true}
-                  setOpen={setIsLocationOpen}
-                  setValue={setSelectedLocation}
-                  placeholder="All"
-                  style={{
-                    borderColor: "#ccc",
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    padding: 12,
-                  }}
-                  dropDownContainerStyle={{
-                    borderColor: "#ccc",
-                    borderWidth: 1,
-                    borderRadius: 8,
-                  }}
-                />
+                <View style={{ zIndex: 2 }}>
+                  <DropDownPicker
+                    open={isTypeOpen}
+                    value={selectedType}
+                    items={staticData.types.map((item) => ({
+                      label: item.label,
+                      value: item.value,
+                    }))}
+                    closeOnBackPressed={true}
+                    closeAfterSelecting={true}
+                    setOpen={setIsTypeOpen}
+                    setValue={setSelectedType}
+                    placeholder={t("all")}
+                    style={{
+                      borderColor: "#ccc",
+                      borderWidth: 1,
+                      borderRadius: 8,
+                      padding: 12,
+                      zIndex: 999,
+                    }}
+                    dropDownContainerStyle={{
+                      borderColor: "#ccc",
+                      borderWidth: 1,
+                      borderRadius: 8,
+                      zIndex: 1500,
+                    }}
+                  />
+                </View>
               </View>
 
-              {/* Dropdown for Status */}
               <View style={styles.dropdownContainer}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Text style={[styles.label, { marginRight: 7 }]}>Status</Text>
+                  <Text style={[styles.label, { marginRight: 7 }]}>
+                    {t("location")}
+                  </Text>
                   <View style={styles.cirlce}>
                     <IMark />
                   </View>
                 </View>
-                <DropDownPicker
-                  open={isStatusOpen}
-                  value={selectedStatus}
-                  items={staticData.statuses}
-                  closeOnBackPressed={true}
-                  closeAfterSelecting={true}
-                  setOpen={setIsStatusOpen}
-                  setValue={setSelectedStatus}
-                  placeholder="All"
-                  style={{
-                    borderColor: "#ccc",
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    padding: 12,
-                  }}
-                  dropDownContainerStyle={{
-                    borderColor: "#ccc",
-                    borderWidth: 1,
-                    borderRadius: 8,
-                  }}
-                />
+                <View style={{ zIndex: 1 }}>
+                  <DropDownPicker
+                    open={isLocationOpen}
+                    value={selectedLocation}
+                    items={staticData.locations.map((item) => ({
+                      label: item.label,
+                      value: item.value,
+                    }))}
+                    closeOnBackPressed={true}
+                    closeAfterSelecting={true}
+                    setOpen={setIsLocationOpen}
+                    setValue={setSelectedLocation}
+                    placeholder={t("all")}
+                    style={{
+                      borderColor: "#ccc",
+                      borderWidth: 1,
+                      borderRadius: 8,
+                      padding: 12,
+                    }}
+                    dropDownContainerStyle={{
+                      borderColor: "#ccc",
+                      borderWidth: 1,
+                      borderRadius: 8,
+                    }}
+                  />
+                </View>
               </View>
 
-              {/* Filter Results Button */}
               <TouchableOpacity
                 style={styles.filterButtonLarge}
                 onPress={handleFilterResults}
