@@ -14,7 +14,7 @@ import { router } from "expo-router";
 import i18n from "../../../i18n/i18n";
 import styles from "./signupStyle";
 import Button from "@/commonComponent/button/Button";
-import Arrow from "../../../assets/icons/arrow.svg";
+import Arrow from "../../../assets/icons/Arrow.svg";
 import { Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { useDispatch, UseDispatch } from "react-redux";
@@ -118,7 +118,7 @@ const SignUpPage: React.FC = () => {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       style={styles.container}
     >
-      <ScrollView contentContainerStyle={{...styles.scrollContent}}>
+      <ScrollView contentContainerStyle={{ ...styles.scrollContent }}>
         <Formik
           initialValues={{
             firstName: "",

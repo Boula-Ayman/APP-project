@@ -1,5 +1,5 @@
 import { Pressable, Text, View } from "react-native";
-import BackArrow from "../../assets/icons/arrow.svg";
+import BackArrow from "../../assets/icons/Arrow.svg";
 import { router } from "expo-router";
 import styles from "./pageStyles";
 

@@ -5,7 +5,7 @@ import Card from "../../app/Home/CardListoportunity/Card";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 import { Link } from "expo-router";
 import {
-    useGetWishListQuery,
+  useGetWishListQuery,
   usePostWishListMutation,
   useRemoveWishListMutation,
 } from "@/src/wishList/wishListApiSlice";
@@ -20,14 +20,16 @@ interface CardListProps {
 
 const CardList: React.FC<CardListProps> = ({ opportunities }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
-  
-  const {data: wishList, refetch} = useGetWishListQuery({});
-  
+
+  const { data: wishList, refetch } = useGetWishListQuery({});
+
   const [postWishList] = usePostWishListMutation();
   const [removeWishList] = useRemoveWishListMutation();
-  
+
   const handleLoveIconPress = async (id: number, item: Opportunity) => {
-      const isLiked = wishList?.data?.some((likedItem: Opportunity) => likedItem.id === id);
+    const isLiked = wishList?.data?.some(
+      (likedItem: Opportunity) => likedItem.id === id
+    );
 
     try {
       if (isLiked) {
@@ -41,67 +43,73 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
         console.error("Error message:", error.message);
         console.error("Error stack:", error.stack);
       }
-    }
-    finally {
+    } finally {
       refetch();
     }
   };
 
   return (
     <View style={styles.container}>
-        {opportunities.length ? 
+      {opportunities.length ? (
         <Animated.FlatList
-            data={opportunities}
-            keyExtractor={(item) => item.id.toString()}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            snapToInterval={CARD_WIDTH + SPACING}
-            decelerationRate="fast"
-            contentContainerStyle={styles.flatListContent}
-            onScroll={Animated.event(
+          data={opportunities}
+          keyExtractor={(item) => item.id.toString()}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={CARD_WIDTH + SPACING}
+          decelerationRate="fast"
+          contentContainerStyle={styles.flatListContent}
+          onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { x: scrollX } } }],
             { useNativeDriver: true }
-            )}
-            scrollEventThrottle={16}
-            renderItem={({ item, index }) => {
+          )}
+          scrollEventThrottle={16}
+          renderItem={({ item, index }) => {
             const inputRange = [
-                (index - 1) * (CARD_WIDTH + SPACING),
-                index * (CARD_WIDTH + SPACING),
-                (index + 1) * (CARD_WIDTH + SPACING),
+              (index - 1) * (CARD_WIDTH + SPACING),
+              index * (CARD_WIDTH + SPACING),
+              (index + 1) * (CARD_WIDTH + SPACING),
             ];
             const scale = scrollX.interpolate({
-                inputRange,
-                outputRange: [0.9, 1, 0.9],
-                extrapolate: "clamp",
+              inputRange,
+              outputRange: [0.9, 1, 0.9],
+              extrapolate: "clamp",
             });
 
             return (
-                <Link
+              <Link
                 href={`/carddetails/${item.id}?type=${
-                    item.opportunity_type
+                  item.opportunity_type
                 }&likedItems=${JSON.stringify(wishList)}`}
                 asChild
-                >
+              >
                 <Pressable>
-                    <Animated.View style={[{ transform: [{ scale }] }]}>
+                  <Animated.View style={[{ transform: [{ scale }] }]}>
                     <Card
-                        item={item}
-                        isLiked={wishList?.data?.some((likedItem: Opportunity) => likedItem.id === item.id)}
+                      item={item}
+                      isLiked={wishList?.data?.some(
+                        (likedItem: Opportunity) => likedItem.id === item.id
+                      )}
                     />
-                    </Animated.View>
+                  </Animated.View>
                 </Pressable>
-                </Link>
+              </Link>
             );
-            }}
-      /> : <View style={{
-        flex: 1,
-        marginTop: '25%',
-        marginInline: 'auto',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-        <Text>No opportunities found</Text>
-      </View>}
+          }}
+        />
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            marginTop: "25%",
+            marginInline: "auto",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text>No opportunities found</Text>
+        </View>
+      )}
     </View>
   );
 };
