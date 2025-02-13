@@ -603,9 +603,6 @@ const CardDetails = () => {
       }
     }
   };
-  useEffect(() => {
-    i18n.changeLanguage("ar");
-  }, [isRegistered]);
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const slideWidth = Dimensions.get("window").width;
