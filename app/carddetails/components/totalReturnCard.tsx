@@ -1,5 +1,6 @@
 import AppText from "@/commonComponent/appText/AppText";
 import i18n from "@/i18n/i18n";
+import { t } from "i18next";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
@@ -14,10 +15,14 @@ const TotalReturnCard = ({ data }) => {
         }}
       >
         <AppText
-          text={`${(data?.data?.share_price).toLocaleString()}`}
+          text={`${
+            i18n.language === "en"
+              ? data?.data?.share_price.toLocaleString()
+              : data?.data?.share_price.toLocaleString("ar-EG")
+          } ${data?.data?.currency}`}
           style={styles.largeText}
         />
-        <AppText text="Purchase Price" style={styles.purchaseText} />
+        <AppText text={t("purchasePrice")} style={styles.purchaseText} />
       </View>
       <View
         style={{
@@ -27,9 +32,16 @@ const TotalReturnCard = ({ data }) => {
           marginBottom: 10,
         }}
       >
-        <AppText text="1 Year Total Return" style={styles.totalReturnText} />
         <AppText
-          text={`${data?.data?.total_return_5_years}%`}
+          text={`${i18n.t("return5Year")}`}
+          style={styles.totalReturnText}
+        />
+        <AppText
+          text={`${
+            i18n.language === "en"
+              ? data?.data?.total_return_5_years
+              : data?.data?.total_return_5_years.toLocaleString("ar-EG")
+          }%`}
           style={styles.percentageText}
         />
       </View>
@@ -40,9 +52,16 @@ const TotalReturnCard = ({ data }) => {
           justifyContent: "space-between",
         }}
       >
-        <AppText text="5 Year Total Return" style={styles.totalReturnText} />
         <AppText
-          text={`${data?.data?.total_return_1_year}%`}
+          text={`${i18n.t("return1Year")}`}
+          style={styles.totalReturnText}
+        />
+        <AppText
+          text={`${
+            i18n.language === "en"
+              ? data?.data?.total_return_1_year
+              : data?.data?.total_return_1_year.toLocaleString("ar-EG")
+          }%`}
           style={styles.percentageText}
         />
       </View>

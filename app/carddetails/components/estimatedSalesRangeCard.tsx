@@ -9,9 +9,15 @@ const EstimatedSalesRangeCard = ({ data }) => {
     <View style={styles.card1}>
       <AppText text={t("estimatedSalesRange")} style={styles.largeText} />
       <AppText
-        text={`${(data?.data?.estimate_sales_range_start).toLocaleString()} - ${(data?.data?.estimate_sales_range_end).toLocaleString()} ${
-          data?.data?.currency
-        }`}
+        text={`${
+          i18n.language === "en"
+            ? (data?.data?.estimate_sales_range_start).toLocaleString()
+            : (data?.data?.estimate_sales_range_start).toLocaleString("ar-EG")
+        } - ${
+          i18n.language === "en"
+            ? (data?.data?.estimate_sales_range_end).toLocaleString()
+            : (data?.data?.estimate_sales_range_end).toLocaleString("ar-EG")
+        } ${data?.data?.currency}`}
         style={styles.sectionTitle}
       />
     </View>

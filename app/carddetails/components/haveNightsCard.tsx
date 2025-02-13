@@ -7,7 +7,11 @@ const HaveNightsCard = ({ data }) => {
   return (
     <View style={styles.card1}>
       <AppText
-        text={`${data?.data?.available_nights}`}
+        text={`${
+          i18n.language === "en"
+            ? data?.data?.number_of_nights
+            : data?.data?.number_of_nights.toLocaleString("ar-EG")
+        }`}
         style={styles.largeText}
       />
       <AppText text={i18n.t("availableNights")} style={styles.sectionTitle} />

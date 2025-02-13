@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -26,9 +26,6 @@ import { formatPrice } from "@/utils/formatPrice";
 import Frame52 from "@/assets/icons/Frame52.svg";
 import Frame54 from "@/assets/icons/Frame54.svg";
 import Furniture from "@/assets/icons/Furniture.svg";
-import Chandelier from "@/assets/icons/Chandelier.svg";
-import Fridge from "@/assets/icons/Fridge.svg";
-import Sophie from "@/assets/icons/sophie.svg";
 import WhatApp from "@/assets/icons/whatsapp.svg";
 import styles from "./CardDetails";
 import FilledHeart from "@/assets/icons/filledHeart.svg";
@@ -119,12 +116,16 @@ const PriceSection = ({
 }) => (
   <View style={styles.priceSection}>
     <AppText
-      text={formatPrice(share_price) + " " + currency}
+      text={
+        i18n.language === "en"
+          ? share_price
+          : share_price.toLocaleString("ar-EG") + " " + t(`${currency}`)
+      }
       style={styles.price}
     />
     <AppText text={i18n.t("shares") + " "} style={styles.shares} />
     <AppText
-      text="1/"
+      text={i18n.language === "en" ? " 1" : (1).toLocaleString("ar-EG") + `/`}
       style={{
         color: "#8BC240",
         fontWeight: "500",
@@ -139,7 +140,11 @@ const PriceSection = ({
         fontSize: 14,
         fontFamily: "InterMedium",
       }}
-      text={number_of_shares}
+      text={
+        i18n.language === "en"
+          ? number_of_shares
+          : number_of_shares.toLocaleString("ar-EG")
+      }
     />
   </View>
 );
@@ -148,19 +153,34 @@ const FeaturesSection = ({ number_of_bedrooms, number_of_bathrooms, area }) => (
   <View style={styles.features}>
     <View style={styles.featureItem}>
       <Furniture />
-      <AppText text={`${area} sqft`} style={styles.featureText} />
+      <AppText
+        text={`${
+          i18n.language === "en" ? area : area.toLocaleString("ar-EG")
+        } ${i18n.t("sqft")}`}
+        style={styles.featureText}
+      />
     </View>
     <View style={styles.featureItem}>
       <Frame52 />
       <AppText
         style={styles.featureText}
-        text={i18n.t("bedrooms", { count: number_of_bedrooms })}
+        text={i18n.t("bedrooms", {
+          count:
+            i18n.language === "en"
+              ? number_of_bedrooms
+              : number_of_bedrooms.toLocaleString("ar-EG"),
+        })}
       />
     </View>
     <View style={styles.featureItem}>
       <Frame54 />
       <AppText
-        text={i18n.t("bathroom", { count: number_of_bathrooms })}
+        text={i18n.t("bathroom", {
+          count:
+            i18n.language === "en"
+              ? number_of_bathrooms
+              : number_of_bathrooms.toLocaleString("ar-EG"),
+        })}
         style={styles.featureText}
       />
     </View>
@@ -179,7 +199,6 @@ const BadgeAndDescription = ({ description_en, description_ar }) => (
 );
 
 const AmenitiesSection = ({ data }) => {
-  console.log(data.amenities);
   return (
     <View style={styles.amenitiesFeatures}>
       {data?.amenities?.map((amenity) => (
@@ -190,7 +209,7 @@ const AmenitiesSection = ({ data }) => {
             ellipsizeMode="tail"
             style={styles.amenitiesFeatureText}
           >
-            {amenity}
+            {t(`${amenity}`)}
           </Text>
         </View>
       ))}
@@ -221,7 +240,7 @@ const ContactSection = () => (
           source={require("@/assets/Images/personAI.jpg")}
           style={styles.person}
         />
-        <AppText text="Ahmed Hassan" style={styles.whatsappButtonText} />
+        <AppText text={t("ahmedHassan")} style={styles.whatsappButtonText} />
       </View>
     </View>
   </View>
@@ -241,7 +260,6 @@ const PriceDetailsSection = ({
   setSliderValue,
 }) => {
   const maxAllowedShares = number_of_shares / 2;
-
   const handleSliderChange = (value) => {
     setSliderValue(value);
   };
@@ -256,11 +274,23 @@ const PriceDetailsSection = ({
       <View style={styles.priceCard}>
         <View style={styles.pricecontent}>
           <AppText
-            text={`${formatPrice(share_price)} ${currency}`}
+            text={`${formatPrice(
+              i18n.language === "en"
+                ? share_price
+                : share_price.toLocaleString("ar-EG")
+            )} ${t(`${currency}`)}`}
             style={styles.priceTitle}
           />
           <AppText
-            text={`${sliderValue}/${number_of_shares} ${i18n.t("shares")}`}
+            text={`${
+              i18n.language === "en"
+                ? sliderValue
+                : sliderValue.toLocaleString("ar-EG")
+            }/${
+              i18n.language === "en"
+                ? number_of_shares
+                : number_of_shares.toLocaleString("ar-EG")
+            } ${i18n.t("shares")}`}
             style={styles.priceSubtitle}
           />
         </View>
@@ -374,7 +404,11 @@ const PriceDetailsSection = ({
 
         <AppText text={i18n.t("cashPrice")} style={styles.cashPriceTitle} />
         <AppText
-          text={`${formatPrice(share_price * sliderValue)} ${currency}`}
+          text={`${
+            i18n.language === "en"
+              ? (share_price * sliderValue).toLocaleString()
+              : (share_price * sliderValue).toLocaleString("ar-EG")
+          } ${t(`${currency}`)}`}
           style={styles.cashPriceInfo}
         />
 
@@ -386,7 +420,11 @@ const PriceDetailsSection = ({
                 style={styles.priceLabel}
               />
               <AppText
-                text={`${total_return_1_year}%`}
+                text={`${
+                  i18n.language === "en"
+                    ? total_return_1_year
+                    : total_return_1_year.toLocaleString("ar-EG")
+                }%`}
                 style={styles.priceValue}
               />
             </View>
@@ -396,7 +434,11 @@ const PriceDetailsSection = ({
                 style={styles.priceLabel}
               />
               <AppText
-                text={`${total_return_5_years}%`}
+                text={`${
+                  i18n.language === "en"
+                    ? total_return_5_years
+                    : total_return_5_years.toLocaleString("ar-EG")
+                }%`}
                 style={styles.priceValue}
               />
             </View>
@@ -418,9 +460,15 @@ const ROIPerYearSection = ({ data }) => (
       <AppText text={i18n.t("ROI-Rental Rev")} style={styles.sectionTitle} />
       <View>
         <AppText
-          text={`${i18n.t("From")} ${data?.data?.roi_revenue_from}% ${i18n.t(
-            "To"
-          )} ${data?.data?.roi_revenue_to}%`}
+          text={`${i18n.t("From")} ${
+            i18n.language === "en"
+              ? data?.data?.roi_revenue_from
+              : data?.data?.roi_revenue_from.toLocaleString("ar-EG")
+          }% ${i18n.t("To")} ${
+            i18n.language === "en"
+              ? data?.data?.roi_revenue_to
+              : data?.data?.roi_revenue_to.toLocaleString("ar-EG")
+          }%`}
           style={styles.fromToText}
         />
       </View>
@@ -432,8 +480,14 @@ const ROIPerYearSection = ({ data }) => (
         />
         <AppText
           text={`${i18n.t("From")} ${
-            data?.data?.roi_appreciation_from
-          }% ${i18n.t("To")} ${data?.data?.roi_appreciation_to}%`}
+            i18n.language === "en"
+              ? data?.data?.roi_appreciation_from
+              : data?.data?.roi_appreciation_from.toLocaleString("ar-EG")
+          }% ${i18n.t("To")} ${
+            i18n.language === "en"
+              ? data?.data?.roi_appreciation_to
+              : data?.data?.roi_appreciation_to.toLocaleString("ar-EG")
+          }%`}
           style={styles.fromToText}
         />
       </View>
@@ -449,7 +503,11 @@ const NightsPerYearSection = ({ data, sliderValue }) => {
           <AppText text={i18n.t("nightsPerYear")} style={styles.sectionTitle} />
           <AppText
             text={`${
-              Math.floor(365 / data?.data.number_of_shares) * sliderValue
+              i18n.language === "en"
+                ? Math.floor(365 / data?.data.number_of_shares) * sliderValue
+                : (
+                    Math.floor(365 / data?.data.number_of_shares) * sliderValue
+                  ).toLocaleString("ar-EG")
             }`}
             style={styles.largeText}
           />
@@ -545,6 +603,9 @@ const CardDetails = () => {
       }
     }
   };
+  useEffect(() => {
+    i18n.changeLanguage("ar");
+  }, [isRegistered]);
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const slideWidth = Dimensions.get("window").width;
@@ -673,7 +734,7 @@ const CardDetails = () => {
                   textAlign: "center",
                 }}
               >
-                You Own{" "}
+                {t("youOwn")}{" "}
                 <Text
                   style={{
                     color: "#8BC240",
@@ -696,7 +757,12 @@ const CardDetails = () => {
                     ? data?.data?.opportunity_type === "project"
                       ? i18n.t("commercial")
                       : i18n.t("residential")
-                    : i18n.t("inverstors", { investors: data?.data?.investors })
+                    : i18n.t("inverstors", {
+                        investors:
+                          i18n.language === "en"
+                            ? data?.data?.investors
+                            : data?.data?.investors.toLocaleString("ar-EG"),
+                      })
                 }
                 style={styles.badgeText}
               />
@@ -819,13 +885,13 @@ const CardDetails = () => {
               style={styles.buttonGreen}
               onPress={handleGoogleClick}
             >
-              <Text style={styles.buttonText}>Schedule a call</Text>
+              <Text style={styles.buttonText}>{t("scheduleCall")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.buttonDark}
               onPress={handlePlaceholderClick}
             >
-              <Text style={styles.buttonText}>Register Interest</Text>
+              <Text style={styles.buttonText}>{t("registerInterest")}</Text>
             </TouchableOpacity>
           </View>
         ) : (
@@ -835,14 +901,14 @@ const CardDetails = () => {
                 style={styles.buttonGreen}
                 onPress={handleGoogleClick}
               >
-                <Text style={styles.buttonText}>Book Nights Now</Text>
+                <Text style={styles.buttonText}>{t("bookRightNow")}</Text>
               </TouchableOpacity>
             )}
             <TouchableOpacity
               style={styles.buttonDark}
               onPress={() => setIsWantToSellModal(true)}
             >
-              <Text style={styles.buttonText}>Want to sell?</Text>
+              <Text style={styles.buttonText}>{t("wantToSell")}</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -888,7 +954,7 @@ const CardDetails = () => {
                     style={{
                       color: "#2B2B2B",
                     }}
-                    text="Please Confirm"
+                    text={t("pleaseConfirm")}
                   />
                   <TouchableOpacity onPress={() => setIsWantToSellModal(false)}>
                     <Ionicons name="close" size={20} color="#92929D" />
@@ -904,7 +970,7 @@ const CardDetails = () => {
                     fontWight: "400",
                     lineHeight: 26,
                   }}
-                  text="Hold on! Are you sure you want to submit a sales request regarding your own shares for this property to the PropCut Sales Representative team?"
+                  text={t("sellDescription")}
                 />
               </View>
 
@@ -920,7 +986,7 @@ const CardDetails = () => {
                       fontSize: 14,
                       fontWeight: "500",
                     }}
-                    text={` ${isSelling ? "Processing..." : "Yes, Confirm"}`}
+                    text={` ${isSelling ? t("loading") : t("yesConfirm")}`}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -936,7 +1002,7 @@ const CardDetails = () => {
                   onPress={() => setIsWantToSellModal(false)}
                 >
                   <AppText
-                    text="Cancel"
+                    text={t("cancel")}
                     style={{
                       color: "#747C95",
                       fontFamily: "PoppinsMedium",

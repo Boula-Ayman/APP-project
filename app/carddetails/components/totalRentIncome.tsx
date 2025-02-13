@@ -3,6 +3,7 @@ import i18n from "@/i18n/i18n";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import MoneyRecieve from "@/assets/icons/money-recive.svg";
+import { t } from "i18next";
 
 const TotalRentIncome = ({ data }) => {
   return (
@@ -16,11 +17,15 @@ const TotalRentIncome = ({ data }) => {
           }}
         >
           <AppText
-            text={`${data?.data?.total_rental_paid?.toLocaleString()}`}
+            text={`${
+              i18n.language === "en"
+                ? data?.data?.total_rental_income.toLocaleString()
+                : data?.data?.total_rental_income.toLocaleString("ar-EG")
+            }`}
             style={styles.largeText}
           />
           <AppText
-            text={`${data?.data?.currency}`}
+            text={`${t("data?.data?.currency")}`}
             style={styles.currencyText}
           />
         </View>
