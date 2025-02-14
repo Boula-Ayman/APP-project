@@ -12,7 +12,6 @@ import {
 import React, { useState } from "react";
 import CustomHeader from "../../commonComponent/Header/CustomHeader";
 import DropDownPicker from "react-native-dropdown-picker";
-import i18n from "../../i18n/i18n";
 import Button from "@/commonComponent/button/Button";
 import { Formik } from "formik";
 import { ProfileImagePicker } from "./components/ProfileImagePicker";
@@ -20,28 +19,29 @@ import { useAccountForm } from "./hooks/useAccountForm";
 import * as Yup from "yup";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { formatDateForDisplay } from "@/utils/dateUtils";
-
-const accountInfoValidationSchema = Yup.object().shape({
-  firstName: Yup.string().required(i18n.t("signUp.firstNameRequired")).trim(),
-  lastName: Yup.string().required(i18n.t("signUp.lastNameRequired")).trim(),
-  gender: Yup.string().oneOf(["male", "female"]).required(),
-  dateOfBirth: Yup.string()
-    .matches(/^\d{2}\/\d{2}\/\d{4}$/, i18n.t("settings.useDateFormat"))
-    .nullable(),
-  mobileNumber: Yup.string()
-    .matches(/^\d*$/, i18n.t("settings.invalidPhoneNumber"))
-    .nullable(),
-  countryCode: Yup.string(),
-  photo: Yup.string().nullable(),
-});
+import { useTranslation } from "react-i18next";
 
 const AccountInfoScreen = () => {
   const { isLoadingProfile, isUpdating, getInitialValues, handleSubmit } =
     useAccountForm();
   const [genderOpen, setGenderOpen] = useState(false);
+  const { t } = useTranslation();
+  const accountInfoValidationSchema = Yup.object().shape({
+    firstName: Yup.string().required(t("signUp.firstNameRequired")).trim(),
+    lastName: Yup.string().required(t("signUp.lastNameRequired")).trim(),
+    gender: Yup.string().oneOf(["male", "female"]).required(),
+    dateOfBirth: Yup.string()
+      .matches(/^\d{2}\/\d{2}\/\d{4}$/, t("settings.useDateFormat"))
+      .nullable(),
+    mobileNumber: Yup.string()
+      .matches(/^\d*$/, t("settings.invalidPhoneNumber"))
+      .nullable(),
+    countryCode: Yup.string(),
+    photo: Yup.string().nullable(),
+  });
   const genderItems = [
-    { label: i18n.t("settings.male"), value: "male" },
-    { label: i18n.t("settings.female"), value: "female" },
+    { label: t("settings.male"), value: "male" },
+    { label: t("settings.female"), value: "female" },
   ];
 
   if (isLoadingProfile) {
@@ -61,7 +61,7 @@ const AccountInfoScreen = () => {
   }) => (
     <View style={styles.row}>
       <View style={styles.halfInput}>
-        <Text style={styles.label}>{i18n.t("settings.firstName")}</Text>
+        <Text style={styles.label}>{t("settings.firstName")}</Text>
         <TextInput
           style={[
             styles.input,
@@ -70,14 +70,14 @@ const AccountInfoScreen = () => {
           value={values.firstName}
           onChangeText={handleChange("firstName")}
           onBlur={() => handleBlur("firstName")}
-          placeholder={i18n.t("settings.enterFirstName")}
+          placeholder={t("settings.enterFirstName")}
         />
         {touched.firstName && errors.firstName && (
           <Text style={styles.errorText}>{errors.firstName}</Text>
         )}
       </View>
       <View style={styles.halfInput}>
-        <Text style={styles.label}>{i18n.t("settings.lastName")}</Text>
+        <Text style={styles.label}>{t("settings.lastName")}</Text>
         <TextInput
           style={[
             styles.input,
@@ -86,7 +86,7 @@ const AccountInfoScreen = () => {
           value={values.lastName}
           onChangeText={handleChange("lastName")}
           onBlur={() => handleBlur("lastName")}
-          placeholder={i18n.t("settings.enterLastName")}
+          placeholder={t("settings.enterLastName")}
         />
         {touched.lastName && errors.lastName && (
           <Text style={styles.errorText}>{errors.lastName}</Text>
@@ -97,7 +97,7 @@ const AccountInfoScreen = () => {
 
   const renderGenderField = ({ values, setFieldValue }) => (
     <>
-      <Text style={styles.label}>{i18n.t("settings.gender")}</Text>
+      <Text style={styles.label}>{t("settings.gender")}</Text>
       <DropDownPicker
         open={genderOpen}
         value={values.gender}
@@ -144,7 +144,7 @@ const AccountInfoScreen = () => {
     };
     return (
       <View>
-        <Text style={styles.label}>{i18n.t("settings.dateOfBirth")}</Text>
+        <Text style={styles.label}>{t("settings.dateOfBirth")}</Text>
         <TouchableOpacity
           onPress={() =>
             Platform.OS === "android"
@@ -156,8 +156,8 @@ const AccountInfoScreen = () => {
             style={[
               styles.input,
               touched.dateOfBirth && errors.dateOfBirth && styles.inputError,
-              { direction: i18n.language === "ar" ? "rtl" : "ltr" },
-              { textAlign: i18n.language === "ar" ? "right" : "left" },
+              { direction: language === "ar" ? "rtl" : "ltr" },
+              { textAlign: language === "ar" ? "right" : "left" },
             ]}
             onPress={() =>
               Platform.OS === "android"
@@ -217,7 +217,7 @@ const AccountInfoScreen = () => {
     touched,
   }) => (
     <View>
-      <Text style={styles.label}>{i18n.t("settings.mobileNumber")}</Text>
+      <Text style={styles.label}>{t("settings.mobileNumber")}</Text>
       <View style={styles.phoneContainer}>
         <TextInput
           style={styles.countryCode}
@@ -233,7 +233,7 @@ const AccountInfoScreen = () => {
           value={values.mobileNumber}
           onChangeText={handleChange("mobileNumber")}
           onBlur={() => handleBlur("mobileNumber")}
-          placeholder={i18n.t("settings.enterMobileNumber")}
+          placeholder={t("settings.enterMobileNumber")}
           keyboardType="phone-pad"
         />
       </View>
@@ -245,7 +245,7 @@ const AccountInfoScreen = () => {
 
   return (
     <View style={styles.container}>
-      <CustomHeader title={i18n.t("settings.accountInfo")} />
+      <CustomHeader title={t("settings.accountInfo")} />
 
       <Formik
         initialValues={getInitialValues()}
@@ -272,7 +272,7 @@ const AccountInfoScreen = () => {
               disabled={isUpdating}
               isLoading={isUpdating}
             >
-              {i18n.t("settings.update")}
+              {t("settings.update")}
             </Button>
           </View>
         )}

@@ -160,7 +160,10 @@
   "profile": {
     "profile": "Profile",
     "settings": "Settings",
-    "tellYourFriends": "Tell your friends",
+    "tell_your_friends": {
+      "title": "Tell your friends",
+      "share_link": "Share Link"
+    },
     "logout": "Logout",
     "privacyPolicy": "Privacy Policy",
     "appVersion": "App version 100.2.1",

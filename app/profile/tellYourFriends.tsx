@@ -11,15 +11,15 @@ import {
   Share,
 } from "react-native";
 import * as Contacts from "expo-contacts";
-import * as Sharing from "expo-sharing";
 import { Ionicons } from "@expo/vector-icons";
 import CustomHeader from "../../commonComponent/Header/CustomHeader";
-import i18n from "../../i18n/i18n";
 import { noImagePlaceHolder } from "@/utils/noImagePlaceHolder";
+import { useTranslation } from "react-i18next";
 
 const TellYourFriends = () => {
   const [contacts, setContacts] = useState<Contacts.Contact[]>([]);
   const isRTL = I18nManager.isRTL; // Detect RTL for Arabic
+  const { t } = useTranslation();
 
   useEffect(() => {
     (async () => {
@@ -32,7 +32,7 @@ const TellYourFriends = () => {
         if (data.length > 0) {
           setContacts(data);
         } else {
-          Alert.alert(i18n.t("profile.noContactsFound"));
+          Alert.alert(t("profile.noContactsFound"));
         }
       }
     })();
@@ -54,7 +54,10 @@ const TellYourFriends = () => {
 
   return (
     <View style={styles.container}>
-      <CustomHeader title={i18n.t("profile.tellYourFriends")} showBackButton />
+      <CustomHeader
+        title={t("profile.tell_your_friends.title")}
+        showBackButton
+      />
 
       <FlatList
         data={contacts}
@@ -68,7 +71,9 @@ const TellYourFriends = () => {
                 gap: 10,
               }}
             >
-              <Text style={styles.contactName}>{i18n.t("Share Link")}</Text>
+              <Text style={styles.contactName}>
+                {t("profile.tell_your_friends.share_link")}
+              </Text>
               <Ionicons name="share-social" size={24} color="black" />
             </View>
           </TouchableOpacity>

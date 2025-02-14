@@ -1,4 +1,11 @@
-import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
 import React from "react";
 import { useLogoutMutation } from "../../src/auth/logout/logoutApiSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -71,20 +78,20 @@ const Profile = () => {
         <SettingButton
           icon={CardCoin}
           title={i18n.t("profile.myBookings")}
-          onPress={() => router.push("/bookings" as any)}
+          onPress={() => router.push("/bookings")}
           style={styles.ProfileItem}
         />
 
         <SettingButton
           icon={Settings}
           title={i18n.t("profile.settings")}
-          onPress={() => router.push("/settings" as any)}
+          onPress={() => router.push("/settings")}
           style={styles.ProfileItem}
         />
 
         <SettingButton
           icon={Share}
-          title={i18n.t("profile.tellYourFriends")}
+          title={i18n.t("profile.tell_your_friends.title")}
           onPress={() => {
             router.push("/profile/tellYourFriends");
           }}
@@ -111,7 +118,9 @@ const Profile = () => {
         }}
       >
         <TouchableOpacity
-          onPress={() => router.push("/profile/privacyPolicy")}
+          onPress={() =>
+            Linking.openURL("https://propcut.lightbyte.me/privacy-policy")
+          }
           style={styles.PrivacyContainer}
         >
           <Text style={styles.Privacy}>{i18n.t("profile.privacyPolicy")}</Text>

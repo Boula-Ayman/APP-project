@@ -5,6 +5,7 @@ import {
   Modal,
   TouchableOpacity,
   StyleSheet,
+  Linking,
 } from "react-native";
 import React, { useState } from "react";
 import { router } from "expo-router";
@@ -86,14 +87,14 @@ const SettingsScreen = () => {
         icon={TermsIcon}
         title={i18n.t("settings.termsOfService")}
         onPress={() => {
-          router.push("/settings/termsofService");
+          Linking.openURL("https://propcut.lightbyte.me/terms-and-conditions");
         }}
       />
       <SettingButton
         icon={PolicyIcon}
         title={i18n.t("settings.userPolicy")}
         onPress={() => {
-          router.push("/settings/userPolicy");
+          Linking.openURL("https://propcut.lightbyte.me/privacy-policy");
         }}
       />
 
