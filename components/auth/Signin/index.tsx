@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Text,
   TextInput,
@@ -9,12 +9,11 @@ import {
   ScrollView,
   SafeAreaView,
   ActivityIndicator,
-  Keyboard,
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { usePostSignInMutation } from "@/src/auth/signin/signinApiSlice";
-import { router, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import i18n from "../../../i18n/i18n";
 import styles from "./signInStyle";
 import User1 from "../../../assets/icons/User1.svg";
@@ -33,13 +32,12 @@ const SignInSchema = Yup.object().shape({
 });
 
 const SigninPage: React.FC = () => {
-  const { t } = { t: i18n.t.bind(i18n) };
+  const { t } = useTranslation();
   const [postSignIn] = usePostSignInMutation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const [fontsLoaded] = useFonts({
@@ -48,25 +46,7 @@ const SigninPage: React.FC = () => {
   });
 
   if (!fontsLoaded) return null;
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      () => {
-        setKeyboardVisible(true);
-      }
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      () => {
-        setKeyboardVisible(false);
-      }
-    );
 
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, []);
   const handleSubmit = async (values, actions) => {
     try {
       const response = await postSignIn({ body: values }).unwrap();
@@ -101,7 +81,7 @@ const SigninPage: React.FC = () => {
     >
       <KeyboardAvoidingView
         style={styles.container}
-        behavior={Platform.OS === "ios" ? "height" : "height"}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <TouchableOpacity
           style={styles.backButton}
@@ -274,8 +254,6 @@ const SigninPage: React.FC = () => {
             </Formik>
           </View>
         </ScrollView>
-      </KeyboardAvoidingView>
-      {!isKeyboardVisible && (
         <TouchableOpacity
           onPress={() => {
             router.push("/(auth)/Signup" as any);
@@ -286,7 +264,7 @@ const SigninPage: React.FC = () => {
             <Text style={styles.signUp}>{t("signIn.signUp")}</Text>
           </Text>
         </TouchableOpacity>
-      )}
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
