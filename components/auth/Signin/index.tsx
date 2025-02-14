@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   TextInput,
@@ -9,11 +9,12 @@ import {
   ScrollView,
   SafeAreaView,
   ActivityIndicator,
+  Keyboard,
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { usePostSignInMutation } from "@/src/auth/signin/signinApiSlice";
-import { router } from "expo-router";
+import { router, useRouter } from "expo-router";
 import i18n from "../../../i18n/i18n";
 import styles from "./signInStyle";
 import User1 from "../../../assets/icons/User1.svg";
@@ -24,6 +25,7 @@ import Checkbox from "expo-checkbox";
 import { setUser } from "@/src/auth/signin/userSlice";
 import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -37,7 +39,8 @@ const SigninPage: React.FC = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const router = useRouter();
   const dispatch = useDispatch();
   const [fontsLoaded] = useFonts({
     Inter_400Regular: require("../../../assets/fonts/Inter/Inter_24pt-Regular.ttf"),
@@ -45,7 +48,25 @@ const SigninPage: React.FC = () => {
   });
 
   if (!fontsLoaded) return null;
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false);
+      }
+    );
 
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
   const handleSubmit = async (values, actions) => {
     try {
       const response = await postSignIn({ body: values }).unwrap();
@@ -254,16 +275,18 @@ const SigninPage: React.FC = () => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      <TouchableOpacity
-        onPress={() => {
-          router.push("/(auth)/Signup" as any);
-        }}
-      >
-        <Text style={styles.signUpText}>
-          {t("signIn.signUpText")}{" "}
-          <Text style={styles.signUp}>{t("signIn.signUp")}</Text>
-        </Text>
-      </TouchableOpacity>
+      {!isKeyboardVisible && (
+        <TouchableOpacity
+          onPress={() => {
+            router.push("/(auth)/Signup" as any);
+          }}
+        >
+          <Text style={styles.signUpText}>
+            {t("signIn.signUpText")}{" "}
+            <Text style={styles.signUp}>{t("signIn.signUp")}</Text>
+          </Text>
+        </TouchableOpacity>
+      )}
     </SafeAreaView>
   );
 };

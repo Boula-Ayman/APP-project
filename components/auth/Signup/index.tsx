@@ -8,6 +8,8 @@ import {
   Platform,
   ScrollView,
   ActivityIndicator,
+  Modal,
+  Button as RNButton,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { usePostSignUpMutation } from "../../../src/auth/signup/signuupApiSlice";
@@ -22,6 +24,7 @@ import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import PhoneInput from "react-native-phone-number-input";
 import { setAccessToken } from "@/src/auth/signin/userSlice";
+import { formatDateForDisplay } from "@/utils/dateUtils";
 
 const SignUpSchema = Yup.object().shape({
   firstName: Yup.string().trim().required(i18n.t("signUp.firstNameRequired")),
@@ -55,6 +58,8 @@ const SignUpPage: React.FC = () => {
   const [formattedPhoneNumber, setFormattedPhoneNumber] = useState("");
   const [showDatePicker, setShowDatePicker] = useState(false);
   const dispatch = useDispatch();
+  const [showDatePickerModal, setShowDatePickerModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleSignUp = async (
     values: {
@@ -118,13 +123,24 @@ const SignUpPage: React.FC = () => {
     selectedDate: Date | undefined,
     setFieldValue: any
   ) => {
-    setShowDatePicker(false);
     if (selectedDate) {
       const formattedDate = selectedDate.toISOString().split("T")[0];
       setFieldValue("birthDate", formattedDate);
+      setShowDatePickerModal(false);
+    }
+
+    setShowDatePicker(false);
+  };
+  const handleDateChangeIos = (event: any, date?: Date) => {
+    if (date) {
+      setSelectedDate(date);
     }
   };
-
+  const handleDateConfirmIos = (setFieldValue: any) => {
+    const formattedDate = selectedDate.toISOString().split("T")[0];
+    setFieldValue("birthDate", formattedDate);
+    setShowDatePickerModal(false);
+  };
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -405,7 +421,13 @@ const SignUpPage: React.FC = () => {
               </TouchableOpacity>
               <View>
                 <Text style={styles.Name}>{t("signUp.birthDate")}</Text>
-                <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                <TouchableOpacity
+                  onPress={() =>
+                    Platform.OS === "android"
+                      ? setShowDatePicker(true)
+                      : setShowDatePickerModal(true)
+                  }
+                >
                   <TextInput
                     style={[
                       styles.input,
@@ -420,20 +442,24 @@ const SignUpPage: React.FC = () => {
                         textAlign: i18n.language === "ar" ? "right" : "left",
                       },
                     ]}
-                    onPress={() => setShowDatePicker(true)}
-                    placeholder="YYYY-MM-DD"
+                    onPress={() =>
+                      Platform.OS === "android"
+                        ? setShowDatePicker(true)
+                        : setShowDatePickerModal(true)
+                    }
+                    placeholder="DD/MM/YYYY"
                     placeholderTextColor="#68677799"
-                    value={values.birthDate}
+                    value={formatDateForDisplay(values.birthDate)}
                     editable={false}
                   />
                 </TouchableOpacity>
-                {showDatePicker && (
+                {showDatePicker && Platform.OS === "android" && (
                   <DateTimePicker
                     value={
                       values.birthDate ? new Date(values.birthDate) : new Date()
                     }
                     mode="date"
-                    display={Platform.OS === "ios" ? "spinner" : "default"}
+                    display={"default"}
                     onChange={(event, selectedDate) =>
                       handleDateChange(event, selectedDate, setFieldValue)
                     }
@@ -443,6 +469,28 @@ const SignUpPage: React.FC = () => {
                   <Text style={styles.errorText}>{errors.birthDate}</Text>
                 )}
               </View>
+              {Platform.OS === "ios" && (
+                <Modal
+                  visible={showDatePickerModal}
+                  transparent={true}
+                  animationType="slide"
+                >
+                  <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                      <DateTimePicker
+                        value={selectedDate}
+                        mode="date"
+                        display="spinner"
+                        onChange={handleDateChangeIos}
+                      />
+                      <RNButton
+                        title="Done"
+                        onPress={() => handleDateConfirmIos(setFieldValue)}
+                      />
+                    </View>
+                  </View>
+                </Modal>
+              )}
 
               <View style={styles.TextContainer}>
                 <Text style={styles.MainText}>

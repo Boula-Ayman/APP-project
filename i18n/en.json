@@ -46,6 +46,8 @@
   "Pool": "Pool",
   "AED": "AED",
   "EGP": "EGP",
+  "close": "Close",
+
   "Laundry": "Laundry",
   "Security cameras": "Security Cameras",
   "Iron": "Iron",
@@ -158,7 +160,10 @@
   "profile": {
     "profile": "Profile",
     "settings": "Settings",
-    "tellYourFriends": "Tell your friends",
+    "tell_your_friends": {
+      "title": "Tell your friends",
+      "share_link": "Share Link"
+    },
     "logout": "Logout",
     "privacyPolicy": "Privacy Policy",
     "appVersion": "App version 100.2.1",
@@ -203,7 +208,10 @@
     "enterDateOfBirth": "Date of birth (DD/MM/YYYY)",
     "enterMobileNumber": "Mobile number",
     "updateProfileSuccess": "Profile updated successfully",
-    "updateProfileError": "Failed to update profile. Please try again"
+    "updateProfileError": "Failed to update profile. Please try again",
+    "selectLanguage": "Select Language",
+    "english": "English",
+    "arabic": "Arabic"
   },
   "sliderSignIn": "Sign In",
   "sliderSignUp": "Sign Up",
