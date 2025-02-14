@@ -19,6 +19,7 @@ import {
   useGetOpportunityQuery,
   useSellSharesOpportunityMutation,
 } from "@/src/api/opportunitiesApiSlice";
+import { useCreateBookingMutation } from "@/src/api/bookingsApiSlice";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import i18n from "@/i18n/i18n";
@@ -31,6 +32,9 @@ import FilledHeart from "@/assets/icons/filledHeart.svg";
 import MultiUsers from "@/assets/icons/multiUsers.svg";
 import { Slider } from "@miblanchard/react-native-slider";
 import AppText from "@/commonComponent/appText/AppText";
+import Button from "@/commonComponent/button/Button";
+import CalendarModal from "@/components/Bookings/CalendarModal";
+import { format } from "date-fns";
 
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 import {
@@ -596,6 +600,8 @@ const CardDetails = () => {
   const [postWishList] = usePostWishListMutation();
   const [removeWishList] = useRemoveWishListMutation();
   const [isWantToSellModal, setIsWantToSellModal] = useState(false);
+  const [isCalendarModalVisible, setIsCalendarModalVisible] = useState(false);
+  const [createBooking] = useCreateBookingMutation();
 
   const { data, isLoading, isError, error } = useGetOpportunityQuery(
     { id },
@@ -682,6 +688,34 @@ const CardDetails = () => {
         console.error("Error message:", error.message);
         console.error("Error stack:", error.stack);
       }
+    }
+  };
+
+  const handleBookNow = () => {
+    setIsCalendarModalVisible(true);
+  };
+
+  const handleConfirmBooking = async (startDate: string | null, endDate: string | null) => {
+    if (!startDate || !endDate) {
+      Alert.alert(t('common.error'), t('bookings.calendar.selectDates'));
+      return false;
+    }
+
+    const formattedStartDate = format(new Date(startDate), 'yyyy-MM-dd');
+    const formattedEndDate = format(new Date(endDate), 'yyyy-MM-dd');
+
+    try {
+      await createBooking({
+        from: formattedStartDate,
+        to: formattedEndDate,
+        property_id: Number(id),
+        customer_id: user.id,
+      }).unwrap();
+      
+      return true;
+    } catch (error) {
+      console.error('Booking error:', error);
+      return false;
     }
   };
 
@@ -939,35 +973,35 @@ const CardDetails = () => {
         </ScrollView>
         {data?.data?.owned_shares === 0 ? (
           <View style={styles.tabContainer}>
-            <TouchableOpacity
+            <Button
               style={styles.buttonGreen}
               onPress={handleGoogleClick}
             >
-              <Text style={styles.buttonText}>{t("scheduleCall")}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+              {t("scheduleCall")}
+            </Button>
+            <Button
               style={styles.buttonDark}
               onPress={handlePlaceholderClick}
             >
-              <Text style={styles.buttonText}>{t("registerInterest")}</Text>
-            </TouchableOpacity>
+              {t("registerInterest")}
+            </Button>
           </View>
         ) : (
           <View style={styles.tabContainer}>
             {data?.data?.opportunity_type === "property" && (
-              <TouchableOpacity
+              <Button
                 style={styles.buttonGreen}
-                onPress={handleGoogleClick}
+                onPress={handleBookNow}
               >
-                <Text style={styles.buttonText}>{t("bookRightNow")}</Text>
-              </TouchableOpacity>
+                {t("bookRightNow")}
+              </Button>
             )}
-            <TouchableOpacity
+            <Button
               style={styles.buttonDark}
               onPress={() => setIsWantToSellModal(true)}
             >
-              <Text style={styles.buttonText}>{t("wantToSell")}</Text>
-            </TouchableOpacity>
+              {t("wantToSell")}
+            </Button>
           </View>
         )}
         <Modal
@@ -1033,21 +1067,14 @@ const CardDetails = () => {
               </View>
 
               <View style={styles.tabContainer}>
-                <TouchableOpacity
+                <Button
                   style={[styles.buttonGreen, { borderRadius: 10 }]}
                   onPress={handleSellOpportunityShares}
+                  isLoading={isSelling}
                 >
-                  <AppText
-                    style={{
-                      color: "white",
-                      fontFamily: "PoppinsMedium",
-                      fontSize: 14,
-                      fontWeight: "500",
-                    }}
-                    text={` ${isSelling ? t("loading") : t("yesConfirm")}`}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
+                  {isSelling ? t("loading") : t("yesConfirm")}
+                </Button>
+                <Button
                   style={[
                     styles.buttonDark,
                     {
@@ -1059,20 +1086,18 @@ const CardDetails = () => {
                   ]}
                   onPress={() => setIsWantToSellModal(false)}
                 >
-                  <AppText
-                    text={t("cancel")}
-                    style={{
-                      color: "#747C95",
-                      fontFamily: "PoppinsMedium",
-                      fontSize: 14,
-                      fontWeight: "500",
-                    }}
-                  />
-                </TouchableOpacity>
+                  {t("cancel")}
+                </Button>
               </View>
             </View>
           </View>
         </Modal>
+        <CalendarModal 
+          isVisible={isCalendarModalVisible}
+          onClose={() => setIsCalendarModalVisible(false)}
+          onConfirm={handleConfirmBooking}
+          availableNights={data?.data?.available_nights || 0}
+        />
       </SafeAreaView>
     );
   };
