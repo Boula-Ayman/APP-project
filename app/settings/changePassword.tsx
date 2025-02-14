@@ -1,4 +1,4 @@
-import { View, Alert, StyleSheet } from 'react-native';
+import { View, Alert, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import React, { useState } from 'react';
 import { router } from 'expo-router';
 import CustomHeader from '../../commonComponent/Header/CustomHeader';
@@ -53,7 +53,7 @@ const ChangePasswordScreen = () => {
     <View style={styles.container}>
       <CustomHeader title={i18n.t('settings.changePassword')} showBackButton />
       
-      <View style={styles.content}>
+      <KeyboardAvoidingView style={styles.content}>
         <Formik
           initialValues={initialValues}
           validationSchema={ChangePasswordSchema}
@@ -127,7 +127,7 @@ const ChangePasswordScreen = () => {
             </>
           )}
         </Formik>
-      </View>
+      </KeyboardAvoidingView>
     </View>
   );
 };

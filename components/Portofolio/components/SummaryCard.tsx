@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Platform } from "react-native";
 import { SvgProps } from "react-native-svg";
 
 interface SummaryCardProps {
@@ -48,17 +48,18 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   summaryTitle: {
-    fontFamily: "Inter",
+    fontFamily: "Inter_600SemiBold",
     fontSize: 24,
-    fontWeight: "600",
     color: "#14161C",
     alignSelf: "flex-start",
   },
   summaryDetails: {
-    fontFamily: "Inter",
+    fontFamily: "Inter_600SemiBold",
     fontSize: 16,
-    fontWeight: "500",
-    lineHeight: 80.28,
+    lineHeight: Platform.select({
+      ios: 80.28,
+      android: 24
+    }),
     letterSpacing: -0.48,
     textAlign: "left",
     color: "#fff",
@@ -66,8 +67,7 @@ const styles = StyleSheet.create({
   summarySubtitle: {
     fontSize: 14,
     color: "#464851",
-    fontFamily: "Inter",
-    fontWeight: "500",
+    fontFamily: "Inter_500Medium",
     letterSpacing: -0.48,
     alignSelf: "flex-start",
     marginTop: 3,
