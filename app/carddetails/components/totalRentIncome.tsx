@@ -19,8 +19,8 @@ const TotalRentIncome = ({ data }) => {
           <AppText
             text={`${
               i18n.language === "en"
-                ? data?.data?.total_rental_income.toLocaleString()
-                : data?.data?.total_rental_income.toLocaleString("ar-EG")
+                ? data?.data?.total_rental_income?.toLocaleString()
+                : data?.data?.total_rental_income?.toLocaleString("ar-EG")
             }`}
             style={styles.largeText}
           />
