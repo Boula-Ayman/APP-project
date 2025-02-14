@@ -1,40 +1,43 @@
-import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { View, Alert, StyleSheet } from 'react-native';
 import React, { useState } from 'react';
 import { router } from 'expo-router';
 import CustomHeader from '../../commonComponent/Header/CustomHeader';
 import i18n from '../../i18n/i18n';
 import Button from '@/commonComponent/button/Button';
 import { useUpdatePasswordMutation } from '@/src/api/userApiSlice';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import PasswordInput from './components/PasswordInput';
+
+const ChangePasswordSchema = Yup.object().shape({
+  currentPassword: Yup.string()
+    .required(i18n.t('settings.currentPasswordRequired')),
+  newPassword: Yup.string()
+    .min(8, i18n.t('signUp.passwordTooShort'))
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\[\]{};':"\\|,.<>\/?`~\-]).{8,}$/,
+      i18n.t('signUp.invalidPassword')
+    )
+    .required(i18n.t('settings.newPasswordRequired')),
+  confirmNewPassword: Yup.string()
+    .oneOf([Yup.ref('newPassword')], i18n.t('settings.passwordMismatch'))
+    .required(i18n.t('settings.confirmPasswordRequired')),
+});
 
 const ChangePasswordScreen = () => {
-  const [formData, setFormData] = useState({
+  const [updatePassword, { isLoading }] = useUpdatePasswordMutation();
+  const [focusedInput, setFocusedInput] = useState<string | null>(null);
+  const initialValues = {
     currentPassword: '',
     newPassword: '',
     confirmNewPassword: '',
-  });
+  };
 
-  const [updatePassword, { isLoading }] = useUpdatePasswordMutation();
-
-  const handleUpdate = async () => {
+  const handleUpdate = async (values: any) => {
     try {
-      if (!formData.currentPassword) {
-        Alert.alert('Error', i18n.t('settings.currentPasswordRequired'));
-        return;
-      }
-
-      if (!formData.newPassword) {
-        Alert.alert('Error', i18n.t('settings.newPasswordRequired'));
-        return;
-      }
-
-      if (formData.newPassword !== formData.confirmNewPassword) {
-        Alert.alert('Error', i18n.t('settings.passwordMismatch'));
-        return;
-      }
-
       await updatePassword({
-        current_password: formData.currentPassword,
-        new_password: formData.newPassword,
+        current_password: values.currentPassword,
+        new_password: values.newPassword,
       }).unwrap();
 
       Alert.alert(i18n.t('common.success'), i18n.t('settings.passwordUpdateSuccess'), [
@@ -51,60 +54,90 @@ const ChangePasswordScreen = () => {
       <CustomHeader title={i18n.t('settings.changePassword')} showBackButton />
       
       <View style={styles.content}>
-        <View style={styles.form}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>{i18n.t('settings.currentPassword')}</Text>
-            <TextInput
-              style={styles.input}
-              value={formData.currentPassword}
-              onChangeText={(text) => setFormData(prev => ({ ...prev, currentPassword: text }))}
-              secureTextEntry
-              placeholder={i18n.t('settings.enterCurrentPassword')}
-            />
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>{i18n.t('settings.newPassword')}</Text>
-            <TextInput
-              style={styles.input}
-              value={formData.newPassword}
-              onChangeText={(text) => setFormData(prev => ({ ...prev, newPassword: text }))}
-              secureTextEntry
-              placeholder={i18n.t('settings.enterNewPassword')}
-            />
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>{i18n.t('settings.confirmNewPassword')}</Text>
-            <TextInput
-              style={styles.input}
-              value={formData.confirmNewPassword}
-              onChangeText={(text) => setFormData(prev => ({ ...prev, confirmNewPassword: text }))}
-              secureTextEntry
-              placeholder={i18n.t('settings.confirmNewPassword')}
-            />
-          </View>
-        </View>
-
-        <Button 
-          onPress={handleUpdate} 
-          style={styles.updateButton}
-          disabled={isLoading}
+        <Formik
+          initialValues={initialValues}
+          validationSchema={ChangePasswordSchema}
+          onSubmit={handleUpdate}
         >
-          {isLoading ? i18n.t('common.loading') : i18n.t('settings.update')}
-        </Button>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+            isSubmitting,
+          }) => (
+            <>
+              <View style={styles.form}>
+                <PasswordInput
+                  label={i18n.t('settings.currentPassword')}
+                  value={values.currentPassword}
+                  onChangeText={handleChange('currentPassword')}
+                  onBlur={() => {
+                    handleBlur('currentPassword');
+                    setFocusedInput(null);
+                  }}
+                  error={errors.currentPassword}
+                  touched={touched.currentPassword}
+                  placeholder={i18n.t('settings.enterCurrentPassword')}
+                  onFocus={() => setFocusedInput('currentPassword')}
+                  isFocused={focusedInput === 'currentPassword'}
+                />
+
+                <PasswordInput
+                  label={i18n.t('settings.newPassword')}
+                  value={values.newPassword}
+                  onChangeText={handleChange('newPassword')}
+                  onBlur={() => {
+                    handleBlur('newPassword');
+                    setFocusedInput(null);
+                  }}
+                  error={errors.newPassword}
+                  touched={touched.newPassword}
+                  placeholder={i18n.t('settings.enterNewPassword')}
+                  onFocus={() => setFocusedInput('newPassword')}
+                  isFocused={focusedInput === 'newPassword'}
+                />
+
+                <PasswordInput
+                  label={i18n.t('settings.confirmNewPassword')}
+                  value={values.confirmNewPassword}
+                  onChangeText={handleChange('confirmNewPassword')}
+                  onBlur={() => {
+                    handleBlur('confirmNewPassword');
+                    setFocusedInput(null);
+                  }}
+                  error={errors.confirmNewPassword}
+                  touched={touched.confirmNewPassword}
+                  placeholder={i18n.t('settings.confirmNewPassword')}
+                  onFocus={() => setFocusedInput('confirmNewPassword')}
+                  isFocused={focusedInput === 'confirmNewPassword'}
+                />
+              </View>
+
+              <Button 
+                onPress={() => handleSubmit()} 
+                style={styles.updateButton}
+                disabled={isSubmitting || isLoading}
+                isLoading={isLoading || isSubmitting}
+              >
+                {i18n.t('settings.update')}
+              </Button>
+            </>
+          )}
+        </Formik>
       </View>
     </View>
   );
 };
-
-export default ChangePasswordScreen; 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '95%',
     alignSelf: 'center',
+    backgroundColor: '#FFFFFF',
   },
   content: {
     flex: 1,
@@ -114,33 +147,14 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
     gap: 24,
-  },
-  inputContainer: {
-    gap: 8,
-  },
-  label: {
-    fontSize: 14,
-    fontFamily: 'Inter_500Medium',
-  },
-  input: {
-    height: 48,
-    borderWidth: 1,
-    borderColor: '#E5E5E5',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    fontSize: 16,
-    color: '#1A1A1A',
-    fontFamily: 'Inter_400Regular',
+    paddingTop: 16,
   },
   updateButton: {
     marginBottom: 24,
   },
-  updateButtonText: {
-    fontSize: 16,
-    color: '#FFFFFF',
-    fontFamily: 'Inter_600SemiBold',
-  },
 });
+
+export default ChangePasswordScreen; 
 
 
 

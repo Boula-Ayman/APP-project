@@ -69,9 +69,6 @@ export const useAccountForm = () => {
         phone_number: values.mobileNumber ? values.countryCode + values.mobileNumber : null,
         image_url: values.photo,
         email: userProfile?.data?.email || '',
-        secondary_email: userProfile?.data?.secondary_email || null,
-        country: userProfile?.data?.country || null,
-        job_title: userProfile?.data?.job_title || null
       };
 
       await updateProfile(updateData).unwrap();
@@ -81,11 +78,6 @@ export const useAccountForm = () => {
         { text: i18n.t('common.ok'), onPress: () => router.back() }
       ]);
     } catch (error: any) {
-      
-      Alert.alert(i18n.t('common.success'), i18n.t('settings.profileUpdateSuccess'), [
-        { text: i18n.t('common.ok'), onPress: () => router.back() }
-      ]);
-
       console.error('Error updating account info:', error);
       Toast.show({
         type: 'error',
@@ -111,11 +103,7 @@ export const useAccountForm = () => {
         gender: updateData.gender,
         birth_date: updateData.birth_date,
         phone_number: updateData.phone_number,
-        image_url: updateData.image_url,
-        email: updateData.email,
-        secondary_email: updateData.secondary_email,
-        country: updateData.country,
-        job_title: updateData.job_title
+        image_url: updateData.image_url
       };
 
       Object.entries(fieldsToVerify).forEach(([key, value]) => {
