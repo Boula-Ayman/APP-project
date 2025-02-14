@@ -2,10 +2,9 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useTranslation } from 'react-i18next';
 import ActionButton from './ActionButton';
-
+import AntDesign from '@expo/vector-icons/AntDesign';
 interface BookingActionsProps {
   shouldShowDirections: boolean;
   handleReschedule?: () => void;
@@ -41,7 +40,7 @@ export const BookingActions: React.FC<BookingActionsProps> = ({
       disabled: isRescheduling
     },
     {
-      icon: <MaterialIcons name="close" size={24} color="#333" />,
+      icon: <AntDesign name="closecircle" size={24} color="#333" />,
       label: t('bookings.actions.cancel'),
       onPress: handleCancel,
       disabled: isCancelling
