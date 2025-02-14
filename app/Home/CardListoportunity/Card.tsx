@@ -102,10 +102,14 @@ const Card: React.FC<CardProps> = ({ item, isLiked }) => {
           </Text>
           <Text style={styles.ownerShip}>
             {i18n.language === "en"
-              ? `${item.available_shares}/${item.number_of_shares}`
-              : `${item.available_shares.toLocaleString(
-                  "ar-EG"
-                )}/${item.number_of_shares.toLocaleString("ar-EG")}`}{" "}
+              ? `${item.owned_shares ? item.owned_shares : 0}/${
+                  item.number_of_shares
+                }`
+              : `${
+                  item.owned_shares
+                    ? item.owned_shares?.toLocaleString("ar-EG")
+                    : (0).toLocaleString("ar-EG")
+                }/${item.number_of_shares.toLocaleString("ar-EG")}`}{" "}
             {i18n.t("ownerShip")}
           </Text>
           <TouchableOpacity
@@ -131,7 +135,11 @@ const Card: React.FC<CardProps> = ({ item, isLiked }) => {
             color="black"
             style={styles.location}
           />
-          <Text style={styles.cardLocation}>
+          <Text
+            style={styles.cardLocation}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
             {i18n.language === "ar" ? item.location_ar : item.location_en}
           </Text>
         </View>

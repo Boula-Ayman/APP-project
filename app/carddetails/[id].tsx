@@ -282,7 +282,7 @@ const ContactSection = () => (
         <WhatApp
           style={[
             styles.whatsappIcon,
-            i18n.language === "en" ? { right: 20 } : { left: 20 },
+            i18n.language === "en" ? { right: 0 } : { left: 0 },
           ]}
         />
       </TouchableOpacity>
@@ -509,7 +509,7 @@ const ROIPerYearSection = ({ data }) => (
   <View
     style={{
       padding: 20,
-      marginBottom: data?.data?.owned_shares > 0 ? 0 : 150,
+      marginBottom: data?.data?.owned_shares > 0 ? 0 : 50,
     }}
   >
     <View style={styles.card}>
@@ -836,7 +836,7 @@ const CardDetails = () => {
           </View>
 
           <View
-            style={{ marginBottom: data?.data?.owned_shares !== 0 ? 150 : 0 }}
+            style={{ marginBottom: data?.data?.owned_shares !== 0 ? 50 : 0 }}
           >
             <ContactSection />
           </View>

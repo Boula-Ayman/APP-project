@@ -109,6 +109,7 @@
   "ROI-Expected Appreciation": "عائد الاستثمار - التقدير المتوقع",
   "shares": "اسهم",
   "commercial": "تجاري",
+  "close": "اغلق",
   "ownerShip": "ملكية",
   "residential": "سكني",
   "thankYouForYourInterest": "شكرا للتسجيل للمتمكنين من الحصول على فرص الاستثمار المتنوعة",
@@ -212,7 +213,10 @@
     "enterFirstName": "أدخل اسمك الأول",
     "enterLastName": "أدخل اسمك الأخير",
     "enterDateOfBirth": "أدخل تاريخ ميلادك (DD/MM/YYYY)",
-    "enterMobileNumber": "أدخل رقم هاتفك المحمول"
+    "enterMobileNumber": "أدخل رقم هاتفك المحمول",
+    "english": "الانجليزية",
+    "arabic": "العربية",
+    "selectLanguage": "اختر اللغة"
   },
   "sliderSignIn": "تسجيل الدخول",
   "sliderSignUp": "إنشاء حساب",

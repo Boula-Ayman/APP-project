@@ -1,4 +1,4 @@
-import { Text, View, Image, StyleSheet } from "react-native";
+import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { useLogoutMutation } from "../../src/auth/logout/logoutApiSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -14,6 +14,7 @@ import SettingButton from "@/commonComponent/button/SettingButton";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "@/src/auth/signin/userSlice";
 import { useGetCurrentUserProfileQuery } from "@/src/api/userApiSlice";
+import Constants from "expo-constants";
 
 const Profile = () => {
   const [postLogout, { isLoading, isSuccess, isError, error }] =
@@ -84,7 +85,9 @@ const Profile = () => {
         <SettingButton
           icon={Share}
           title={i18n.t("profile.tellYourFriends")}
-          onPress={() => {}}
+          onPress={() => {
+            router.push("/profile/tellYourFriends");
+          }}
           style={styles.ProfileItem}
         />
 
@@ -99,11 +102,25 @@ const Profile = () => {
         />
       </View>
 
-      <View style={styles.PrivacyContainer}>
-        <Text style={styles.Privacy}>{i18n.t("profile.privacyPolicy")}</Text>
-      </View>
-      <View style={styles.VersionContainer}>
-        <Text style={styles.VersionText}>{i18n.t("profile.appVersion")}</Text>
+      <View
+        style={{
+          position: "absolute",
+          bottom: 10,
+          left: 0,
+          right: 0,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => router.push("/profile/privacyPolicy")}
+          style={styles.PrivacyContainer}
+        >
+          <Text style={styles.Privacy}>{i18n.t("profile.privacyPolicy")}</Text>
+        </TouchableOpacity>
+        <View style={styles.VersionContainer}>
+          <Text style={styles.VersionText}>
+            {Constants?.expoConfig?.version}
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -185,7 +202,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    marginTop: 70,
   },
   Privacy: {
     fontFamily: "Inter_400Regular",
@@ -202,7 +218,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    marginTop: 40,
+    marginTop: 20,
   },
   VersionText: {
     fontFamily: "Poppins",
