@@ -14,6 +14,7 @@ import PropertyCard from "@/commonComponent/PropertyCard/PropertyCard";
 import { LinearGradient } from "expo-linear-gradient";
 import PortfolioStats from "./components/PortfolioStats";
 import { useTranslation } from "react-i18next";
+import { router } from "expo-router";
 
 const PortfolioPage: React.FC = () => {
   const { t } = useTranslation();
@@ -38,6 +39,14 @@ const PortfolioPage: React.FC = () => {
       console.error("Error toggling wishlist:", error);
     }
   };
+
+  const handlePropertyPress = (id: number) => {
+    router.push({
+      pathname: '/carddetails/[id]',
+      params: { id: id }
+    } as any);
+  };
+
 
   return (
     <View style={styles.container}>
@@ -98,6 +107,7 @@ const PortfolioPage: React.FC = () => {
               (item) => item.id === investment.id
             )}
             onLoveIconPress={() => handleLikeToggle(investment.id)}
+            onPress={() => handlePropertyPress(investment.id)}
           />
         ))}
       </ScrollView>
