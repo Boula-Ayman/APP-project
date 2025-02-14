@@ -58,6 +58,13 @@ export interface TransformedBookingsResponse {
   data: TransformedBookingData[];
 }
 
+export interface CreateBookingRequest {
+  from: string;
+  to: string;
+  property_id: number;
+  customer_id: number;
+}
+
 const transformBookingToPropertyCard = (booking: Booking): TransformedBookingData => {
   return {
     booking,
@@ -119,6 +126,17 @@ export const bookingsApi = createApi({
       }),
       invalidatesTags: ['Bookings'],
     }),
+    createBooking: builder.mutation<{ data: TransformedBookingData }, CreateBookingRequest>({
+      query: (body) => ({
+        url: '/bookings',
+        method: 'POST',
+        body,
+      }),
+      transformResponse: (response: { data: Booking }): { data: TransformedBookingData } => ({
+        data: transformBookingToPropertyCard(response.data)
+      }),
+      invalidatesTags: ['Bookings'],
+    }),
   }),
 });
 
@@ -127,4 +145,5 @@ export const {
   useGetBookingQuery,
   useCancelBookingMutation,
   useRescheduleBookingMutation,
+  useCreateBookingMutation,
 } = bookingsApi; 
