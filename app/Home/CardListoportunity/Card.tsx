@@ -102,13 +102,10 @@ const Card: React.FC<CardProps> = ({ item, isLiked }) => {
           </Text>
           <Text style={styles.ownerShip}>
             {i18n.language === "en"
-              ? `${item.owned_shares ? item.owned_shares : 0}/${
-                  item.number_of_shares
-                }`
+              ? `${item.available_shares ?? 0}/${item.number_of_shares}`
               : `${
-                  item.owned_shares
-                    ? item.owned_shares?.toLocaleString("ar-EG")
-                    : (0).toLocaleString("ar-EG")
+                  item.available_shares?.toLocaleString("ar-EG") ??
+                  (0).toLocaleString("ar-EG")
                 }/${item.number_of_shares.toLocaleString("ar-EG")}`}{" "}
             {i18n.t("ownerShip")}
           </Text>

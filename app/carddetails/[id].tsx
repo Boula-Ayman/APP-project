@@ -136,6 +136,7 @@ const PriceSection = ({
   share_price,
   currency,
   available_shares,
+  owned_shares,
   number_of_shares,
   status,
 }) => {
@@ -161,7 +162,11 @@ const PriceSection = ({
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <AppText text={i18n.t("shares") + " "} style={styles.shares} />
         <AppText
-          text={`${i18n.language === "en" ? "1" : (1).toLocaleString("ar-EG")}`}
+          text={`${
+            i18n.language === "en"
+              ? owned_shares
+              : owned_shares.toLocaleString("ar-EG")
+          }`}
           style={{
             color: "#8BC240",
             fontWeight: "500",
@@ -577,9 +582,10 @@ const NightsPerYearSection = ({ data, sliderValue }) => {
           <TotalReturnCard data={data} />
           {data?.data?.opportunity_type === "project" ? (
             <TotalRentIncome data={data} />
-          ) : (
+          ) : data?.data?.opportunity_type === "property" &&
+            data?.data?.number_of_nights ? (
             <HaveNightsCard data={data} />
-          )}
+          ) : null}
           <EstimatedSalesRangeCard data={data} />
         </>
       )}
@@ -695,14 +701,17 @@ const CardDetails = () => {
     setIsCalendarModalVisible(true);
   };
 
-  const handleConfirmBooking = async (startDate: string | null, endDate: string | null) => {
+  const handleConfirmBooking = async (
+    startDate: string | null,
+    endDate: string | null
+  ) => {
     if (!startDate || !endDate) {
-      Alert.alert(t('common.error'), t('bookings.calendar.selectDates'));
+      Alert.alert(t("common.error"), t("bookings.calendar.selectDates"));
       return false;
     }
 
-    const formattedStartDate = format(new Date(startDate), 'yyyy-MM-dd');
-    const formattedEndDate = format(new Date(endDate), 'yyyy-MM-dd');
+    const formattedStartDate = format(new Date(startDate), "yyyy-MM-dd");
+    const formattedEndDate = format(new Date(endDate), "yyyy-MM-dd");
 
     try {
       await createBooking({
@@ -711,10 +720,10 @@ const CardDetails = () => {
         property_id: Number(id),
         customer_id: user.id,
       }).unwrap();
-      
+
       return true;
     } catch (error) {
-      console.error('Booking error:', error);
+      console.error("Booking error:", error);
       return false;
     }
   };
@@ -793,6 +802,7 @@ const CardDetails = () => {
               available_shares={data?.data?.available_shares}
               number_of_shares={data?.data?.number_of_shares}
               status={data?.data?.status}
+              owned_shares={data?.data?.owned_shares}
             />
             <Text style={styles.title}>
               {i18n.language === "ar"
@@ -973,26 +983,17 @@ const CardDetails = () => {
         </ScrollView>
         {data?.data?.owned_shares === 0 ? (
           <View style={styles.tabContainer}>
-            <Button
-              style={styles.buttonGreen}
-              onPress={handleGoogleClick}
-            >
+            <Button style={styles.buttonGreen} onPress={handleGoogleClick}>
               {t("scheduleCall")}
             </Button>
-            <Button
-              style={styles.buttonDark}
-              onPress={handlePlaceholderClick}
-            >
+            <Button style={styles.buttonDark} onPress={handlePlaceholderClick}>
               {t("registerInterest")}
             </Button>
           </View>
         ) : (
           <View style={styles.tabContainer}>
             {data?.data?.opportunity_type === "property" && (
-              <Button
-                style={styles.buttonGreen}
-                onPress={handleBookNow}
-              >
+              <Button style={styles.buttonGreen} onPress={handleBookNow}>
                 {t("bookRightNow")}
               </Button>
             )}
@@ -1092,7 +1093,7 @@ const CardDetails = () => {
             </View>
           </View>
         </Modal>
-        <CalendarModal 
+        <CalendarModal
           isVisible={isCalendarModalVisible}
           onClose={() => setIsCalendarModalVisible(false)}
           onConfirm={handleConfirmBooking}
