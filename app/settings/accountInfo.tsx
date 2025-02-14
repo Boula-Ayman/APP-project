@@ -3,7 +3,7 @@ import {
   Text,
   TextInput,
   ActivityIndicator,
-  StyleSheet,
+  StyleSheet, KeyboardAvoidingView, ScrollView,
   TouchableOpacity,
   Platform,
   Modal,
@@ -245,7 +245,7 @@ const AccountInfoScreen = () => {
 
   return (
     <View style={styles.container}>
-      <CustomHeader title={i18n.t("settings.accountInfo")} />
+      <CustomHeader title={i18n.t('settings.accountInfo')} />
 
       <Formik
         initialValues={getInitialValues()}
@@ -253,28 +253,40 @@ const AccountInfoScreen = () => {
         onSubmit={handleSubmit}
       >
         {(formikProps) => (
-          <View style={styles.content}>
-            <ProfileImagePicker
-              value={formikProps.values.photo}
-              onChange={(value) => formikProps.setFieldValue("photo", value)}
-            />
-
-            <View style={styles.form}>
-              {renderNameFields(formikProps)}
-              {renderGenderField(formikProps)}
-              {renderDateOfBirthField(formikProps)}
-              {renderPhoneField(formikProps)}
-            </View>
-
-            <Button
-              onPress={formikProps.handleSubmit}
-              style={styles.updateButton}
-              disabled={isUpdating}
-              isLoading={isUpdating}
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={{ flex: 1 }}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 88 : -20}
+          >
+            <ScrollView
+              style={styles.content}
+              contentContainerStyle={styles.scrollContent}
+              keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={false}
+              bounces={false}
             >
-              {i18n.t("settings.update")}
-            </Button>
-          </View>
+              <ProfileImagePicker
+                value={formikProps.values.photo}
+                onChange={(value) => formikProps.setFieldValue('photo', value)}
+              />
+
+              <View style={styles.form}>
+                {renderNameFields(formikProps)}
+                {renderGenderField(formikProps)}
+                {renderDateOfBirthField(formikProps)}
+                {renderPhoneField(formikProps)}
+              </View>
+
+              <Button
+                onPress={formikProps.handleSubmit}
+                style={styles.updateButton}
+                disabled={isUpdating}
+                isLoading={isUpdating}
+              >
+                {i18n.t('settings.update')}
+              </Button>
+            </ScrollView>
+          </KeyboardAvoidingView>
         )}
       </Formik>
     </View>
@@ -377,7 +389,10 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_400Regular",
   },
   updateButton: {
-    marginBottom: 24,
+    marginVertical: 20,
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
   modalContainer: {
     flex: 1,
@@ -390,4 +405,5 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
   },
+
 } as const);

@@ -29,16 +29,15 @@ const styles = StyleSheet.create({
   },
   statsValue: {
     fontSize: 26,
-    fontWeight: "600",
     color: "#333",
-    fontFamily: "Inter",
+    fontFamily: "Inter_600SemiBold",
     lineHeight: 31.2,
     letterSpacing: -0.48,
   },
   statsLabel: {
     fontSize: 14,
     color: "#777",
-    fontFamily: "Inter",
+    fontFamily: "Inter_500Medium",
   },
 });
 
