@@ -177,6 +177,16 @@ const styles = StyleSheet.create({
     textAlign: "left",
     marginTop: 5,
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+  },
 });
 
 export default styles;

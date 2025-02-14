@@ -15,6 +15,7 @@ export interface Opportunity {
   number_of_bathrooms: number;
   status: string;
   available_shares: number;
+  owned_shares: number;
 }
 
 export interface CardListProps {

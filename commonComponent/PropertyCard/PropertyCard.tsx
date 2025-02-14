@@ -8,7 +8,8 @@ import Area from "@/assets/icons/area.svg";
 import HeartOutlineIcon from "@/assets/icons/Heart.svg";
 import HeartFilledIcon from "@/assets/icons/filledHeart.svg";
 import i18n from "@/i18n/i18n";
-import Tag from '@/commonComponent/Tag/Tag';
+import Tag from "@/commonComponent/Tag/Tag";
+import { noImagePlaceHolder } from "@/utils/noImagePlaceHolder";
 
 export interface Opportunity {
   id: string;
@@ -39,14 +40,14 @@ export interface CardProps {
   showStatus?: boolean;
 }
 
-const PropertyCard: React.FC<CardProps> = ({ 
-  item, 
-  isLiked, 
+const PropertyCard: React.FC<CardProps> = ({
+  item,
+  isLiked,
   onLoveIconPress,
   showPriceSection = true,
   showFeatures = true,
   onPress,
-  showStatus = false
+  showStatus = false,
 }) => {
   const formatPrice = (price: number) => {
     return price.toLocaleString();
@@ -54,7 +55,7 @@ const PropertyCard: React.FC<CardProps> = ({
 
   const renderPriceSection = () => {
     if (!showPriceSection) return null;
-    
+
     return (
       <View style={styles.priceSection}>
         <Text style={styles.cardPrice}>
@@ -63,11 +64,22 @@ const PropertyCard: React.FC<CardProps> = ({
         <Text style={styles.ownerShip}>
           {item.available_shares}/{item.number_of_shares} Ownership
         </Text>
-        <TouchableOpacity
-          style={styles.HeartOverlay}
-          onPress={onLoveIconPress}
-        >
-         {isLiked ? <HeartFilledIcon width={21} height={21} style={styles.icon} fill={"white"} /> : <HeartOutlineIcon width={21} height={21} style={styles.icon} fill={"white"} />}
+        <TouchableOpacity style={styles.HeartOverlay} onPress={onLoveIconPress}>
+          {isLiked ? (
+            <HeartFilledIcon
+              width={21}
+              height={21}
+              style={styles.icon}
+              fill={"white"}
+            />
+          ) : (
+            <HeartOutlineIcon
+              width={21}
+              height={21}
+              style={styles.icon}
+              fill={"white"}
+            />
+          )}
         </TouchableOpacity>
       </View>
     );
@@ -76,9 +88,7 @@ const PropertyCard: React.FC<CardProps> = ({
   const renderPropertyInfo = () => {
     return (
       <>
-        <Text style={styles.cardTitle}>
-          {item.title_en}
-        </Text>
+        <Text style={styles.cardTitle}>{item.title_en}</Text>
         <View style={styles.locationSection}>
           <AntDesign
             name="enviromento"
@@ -86,9 +96,7 @@ const PropertyCard: React.FC<CardProps> = ({
             color="black"
             style={styles.location}
           />
-          <Text style={styles.cardLocation}>
-            {item.location_en}
-          </Text>
+          <Text style={styles.cardLocation}>{item.location_en}</Text>
         </View>
       </>
     );
@@ -128,23 +136,32 @@ const PropertyCard: React.FC<CardProps> = ({
   };
 
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={styles.card}
       onPress={onPress}
       activeOpacity={onPress ? 0.7 : 1}
       disabled={!onPress}
     >
       <View style={styles.imageWrapper}>
-        <Image source={{ uri: item?.media[0]?.url }} style={styles.cardImage} />
+        <Image
+          source={{
+            uri: item?.media[0]?.url ? item.media[0].url : noImagePlaceHolder,
+          }}
+          style={styles.cardImage}
+        />
         <View style={styles.overlay}>
-          <Tag 
-            text={showStatus ? (item.status || '') : (item.opportunity_type || '')}
-            type={showStatus ? 'status' : 'property_type'}
-            status={showStatus ? (item.status as 'confirmed' | 'pending' | 'cancelled') : undefined}
+          <Tag
+            text={showStatus ? item.status || "" : item.opportunity_type || ""}
+            type={showStatus ? "status" : "property_type"}
+            status={
+              showStatus
+                ? (item.status as "confirmed" | "pending" | "cancelled")
+                : undefined
+            }
           />
         </View>
       </View>
-      
+
       <View style={styles.details}>
         {renderPriceSection()}
         {renderPropertyInfo()}
@@ -156,8 +173,8 @@ const PropertyCard: React.FC<CardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    width: 'auto',
-    height: 'auto',
+    width: "auto",
+    height: "auto",
     borderRadius: 33,
     backgroundColor: "#fff",
     borderWidth: 0.85,
@@ -171,7 +188,7 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
   },
   cardImage: {
-    width: '100%',
+    width: "100%",
     height: 210,
     marginBottom: 10,
     borderRadius: 22,

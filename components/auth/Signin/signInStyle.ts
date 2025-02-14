@@ -124,7 +124,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 12,
     marginBottom: 20,
-
     borderColor: "#EFEFEF",
     borderRadius: 4,
   },
@@ -141,7 +140,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     lineHeight: 22.4,
-    right: 23,
+
     color: "#3A3D46",
   },
   forgotPassword: {
@@ -149,12 +148,13 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "400",
     lineHeight: 22.4,
-    left: 15,
+
     color: "#3A3D46",
   },
   rememberMe: {
     flexDirection: "row",
     alignItems: "center",
+    gap: 10,
   },
 });
 

@@ -46,6 +46,8 @@
   "Pool": "Pool",
   "AED": "AED",
   "EGP": "EGP",
+  "close": "Close",
+
   "Laundry": "Laundry",
   "Security cameras": "Security Cameras",
   "Iron": "Iron",
@@ -203,7 +205,10 @@
     "enterDateOfBirth": "Date of birth (DD/MM/YYYY)",
     "enterMobileNumber": "Mobile number",
     "updateProfileSuccess": "Profile updated successfully",
-    "updateProfileError": "Failed to update profile. Please try again"
+    "updateProfileError": "Failed to update profile. Please try again",
+    "selectLanguage": "Select Language",
+    "english": "English",
+    "arabic": "Arabic"
   },
   "sliderSignIn": "Sign In",
   "sliderSignUp": "Sign Up",
