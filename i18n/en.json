@@ -7,6 +7,9 @@
   "descr3": "Benefit from passive income streams and the potential for significant capital gains as you build your wealth portfolio.",
   "property": "Property",
   "project": "Project",
+  "canceled": "Canceled",
+  "pending": "Pending",
+  "confirmed": "Confirmed",
   "home": {
     "all": "All",
     "available": "Available",
@@ -16,7 +19,8 @@
     "viewAll": "View all",
     "filterBy": "Filter By",
     "loading": "Loading...",
-    "area": "{{area}} sqft"
+    "area": "{{area}} sqft",
+    "ownerShip": "Owner Ship"
   },
   "allProperties": {
     "title": "All Properties"
@@ -24,7 +28,6 @@
   "filter": "Filter By",
   "bedrooms": "{{count}} Bedroom",
   "bathroom": "{{count}} Bathroom",
-  "ownerShip": "Owner Ship",
   "about": "bedroom apartment in Sahara Tower 4, located in Al Nahda, Sharjah, offers a comfortable and modern living space. These apartments are designed to provide a blend of convenience and luxury, making them ideal for singles or small families.",
   "opportunity_type": "Project",
   "soldOut": "Sold Out",

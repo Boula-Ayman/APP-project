@@ -57,12 +57,12 @@ const PropertyCard: React.FC<CardProps> = ({
     if (!showPriceSection) return null;
 
     return (
-      <View style={styles.priceSection}>
+      <View style={{...styles.priceSection, flexDirection: i18n.language === "ar" ? "row-reverse" : "row"}}>
         <Text style={styles.cardPrice}>
           {formatPrice(item.share_price || 0)} {t(`${item.currency}`)}
         </Text>
         <Text style={styles.ownerShip}>
-          {item.available_shares}/{item.number_of_shares} Ownership
+          {localizeNumber(item.available_shares || 0, i18n.language)}/{localizeNumber(item.number_of_shares || 0, i18n.language)} {t("home.ownerShip")}
         </Text>
         <TouchableOpacity style={styles.HeartOverlay} onPress={onLoveIconPress}>
           {isLiked ? (
@@ -151,7 +151,7 @@ const PropertyCard: React.FC<CardProps> = ({
         />
         <View style={styles.overlay}>
           <Tag
-            text={showStatus ? item.status || "" : item.opportunity_type || ""}
+            text={showStatus ? t(`${item.status}`) || "" : t(`${item.opportunity_type}`) || ""}
             type={showStatus ? "status" : "property_type"}
             status={
               showStatus
