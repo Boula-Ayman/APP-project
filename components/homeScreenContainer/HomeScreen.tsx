@@ -16,6 +16,7 @@ import i18n from "@/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 import { StatusBar } from "expo-status-bar";
 import { PROPERTIES_STATUS, PropertiesStatusKeys } from "@/constants/Enums";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeScreen: React.FC = ({}) => {
   const notifications = 0;
@@ -43,6 +44,32 @@ const HomeScreen: React.FC = ({}) => {
       setOpportunities(data.data);
     }
   }, [data]);
+
+  useEffect(() => {
+    const loadFilters = async () => {
+      try {
+        const savedFilters = await AsyncStorage.getItem("filters");
+        if (savedFilters) {
+          setFilters(JSON.parse(savedFilters));
+        }
+      } catch (error) {
+        console.error("Failed to load filters", error);
+      }
+    };
+    loadFilters();
+  }, []);
+
+  useEffect(() => {
+    const saveFilters = async () => {
+      console.log(filters);
+      try {
+        await AsyncStorage.setItem("filters", JSON.stringify(filters));
+      } catch (error) {
+        console.error("Failed to save filters", error);
+      }
+    };
+    saveFilters();
+  }, [filters]);
 
   const handleSearch = (newSearchTerm: string) => {
     setSearchTerm(newSearchTerm);
