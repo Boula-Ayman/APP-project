@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   card: {
-    maxWidth: 284,
+    width: 284,
     height: "auto",
     borderRadius: 22,
     backgroundColor: "#fff",
