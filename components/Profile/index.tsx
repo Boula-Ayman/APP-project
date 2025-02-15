@@ -20,14 +20,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import SettingButton from "@/commonComponent/button/SettingButton";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "@/src/auth/signin/userSlice";
-import { useGetCurrentUserProfileQuery } from "@/src/api/userApiSlice";
 import Constants from "expo-constants";
 
 const Profile = () => {
   const [postLogout, { isLoading, isSuccess, isError, error }] =
     useLogoutMutation();
-
-  const { data: userData } = useGetCurrentUserProfileQuery();
 
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state?.user.user);
@@ -38,9 +35,9 @@ const Profile = () => {
       // Pass the token to postLogout
       await postLogout().unwrap();
 
+      router.push("/Welcome");
       dispatch(clearUser());
 
-      router.push("/Welcome");
     } catch (err) {
       console.error("Failed to logout:", err);
       if (err && typeof err === "object" && "data" in err) {
@@ -63,15 +60,15 @@ const Profile = () => {
       />
       <Text style={styles.text}>{i18n.t("profile.profile")}</Text>
       <View style={styles.ImageContainer}>
-        {userData?.data.image_url ? (
+        {user.image_url ? (
           <Image
-            source={{ uri: userData.data.image_url }}
+            source={{ uri: user.image_url }}
             style={styles.profileImage}
           />
         ) : (
           <Ai style={styles.Ai} />
         )}
-        <Text style={styles.AiText}>{userData?.data.name || "Loading..."}</Text>
+        <Text style={styles.AiText}>{user.name || "Loading..."}</Text>
       </View>
 
       <View style={styles.ProfileContainer}>

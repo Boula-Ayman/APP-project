@@ -25,6 +25,7 @@ const userApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["User"],
+      keepUnusedDataFor: 0,
     }),
     updateUserProfile: builder.mutation<ResponseData<User>, UpdateUserProfileData>({
       query: (data) => {
