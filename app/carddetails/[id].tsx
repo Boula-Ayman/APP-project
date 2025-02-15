@@ -159,7 +159,7 @@ const PriceSection = ({
         style={styles.price}
       />
 
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View style={{ display: "flex", flexDirection: i18n.language === "ar" ? "row-reverse" : "row", gap: 3, alignItems: "center"}}>
         <AppText text={i18n.t("shares") + " "} style={styles.shares} />
         <AppText
           text={`${
@@ -580,12 +580,13 @@ const NightsPerYearSection = ({ data, sliderValue }) => {
       ) : (
         <>
           <TotalReturnCard data={data} />
-          {data?.data?.opportunity_type === "project" ? (
-            <TotalRentIncome data={data} />
-          ) : data?.data?.opportunity_type === "property" &&
-            data?.data?.number_of_nights ? (
-            <HaveNightsCard data={data} />
-          ) : null}
+          {data?.data?.number_of_nights ?
+            data?.data?.opportunity_type === "project" ? (
+              <TotalRentIncome data={data} />
+            ) : data?.data?.opportunity_type === "property" ? (
+              <HaveNightsCard data={data} />
+            ) : null
+          : null}
           <EstimatedSalesRangeCard data={data} />
         </>
       )}

@@ -17,7 +17,7 @@ const EstimatedSalesRangeCard = ({ data }) => {
           i18n.language === "en"
             ? (data?.data?.estimate_sales_range_end).toLocaleString()
             : (data?.data?.estimate_sales_range_end).toLocaleString("ar-EG")
-        } ${data?.data?.currency}`}
+        } ${t(data?.data?.currency)}`}
         style={styles.sectionTitle}
       />
     </View>

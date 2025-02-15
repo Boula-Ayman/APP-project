@@ -12,25 +12,28 @@ const TotalRentIncome = ({ data }) => {
       <View>
         <View
           style={{
+            display: "flex",
+            gap: 10,
             flexDirection: "row",
             alignItems: "center",
           }}
         >
           <AppText
             text={`${
+                data?.data?.total_rental_income ?
               i18n.language === "en"
                 ? data?.data?.total_rental_income?.toLocaleString()
-                : data?.data?.total_rental_income?.toLocaleString("ar-EG")
+                : data?.data?.total_rental_income?.toLocaleString("ar-EG") : '--'
             }`}
             style={styles.largeText}
           />
           <AppText
-            text={`${t("data?.data?.currency")}`}
+            text={`${t(data?.data?.currency)}`}
             style={styles.currencyText}
           />
         </View>
         <AppText
-          text={i18n.t("Total Rental Income Paid")}
+          text={i18n.t("portfolio.totalRentalIncome")}
           style={styles.totalIncomeText}
         />
       </View>
