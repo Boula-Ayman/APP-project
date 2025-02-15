@@ -190,7 +190,9 @@ const FilterButton: React.FC<FilterButtonProps> = ({ onFilterChange }) => {
                 style={styles.filterButtonLarge}
                 onPress={handleFilterResults}
               >
-                <Text style={styles.filterButtonLargeText}>Filter Results</Text>
+                <Text style={styles.filterButtonLargeText}>
+                  {t("filterResult")}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
