@@ -137,6 +137,12 @@ const styles = StyleSheet.create({
     width: "70%",
     marginTop: 30,
   },
+  dropdownTitle: { 
+    display: "flex", 
+    alignItems: "center",
+    gap: 5,
+    flexDirection: "row"
+  },
 });
 
 export default styles;
