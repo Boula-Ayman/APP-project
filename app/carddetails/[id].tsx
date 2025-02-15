@@ -1083,12 +1083,12 @@ const CardDetails = () => {
                       borderRadius: 10,
                       backgroundColor: "white",
                       borderColor: "#E7EAE9",
-                      borderWidth: 1,
+                      borderWidth: 1
                     },
                   ]}
                   onPress={() => setIsWantToSellModal(false)}
                 >
-                  {t("cancel")}
+                  <Text style={{ color: "#464851" }}>{t("cancel")}</Text>
                 </Button>
               </View>
             </View>
