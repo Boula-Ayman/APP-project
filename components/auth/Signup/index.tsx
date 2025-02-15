@@ -142,6 +142,8 @@ const SignUpPage: React.FC = () => {
     setFieldValue("birthDate", formattedDate);
     setShowDatePickerModal(false);
   };
+  const openPrivacyAndPolicy = () =>
+    Linking.openURL("https://propcut.lightbyte.me/terms-and-conditions");
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -496,25 +498,11 @@ const SignUpPage: React.FC = () => {
               <View style={styles.TextContainer}>
                 <Text style={styles.MainText}>
                   {t("signUp.agreeToTermsPrefix")}{" "}
-                  <Text
-                    style={styles.Text}
-                    onPress={() => {
-                      Linking.openURL(
-                        "https://propcut.lightbyte.me/privacy-policy"
-                      );
-                    }}
-                  >
+                  <Text style={styles.Text} onPress={openPrivacyAndPolicy}>
                     {t("signUp.terms")}
                   </Text>{" "}
                   {t("signUp.and")}{" "}
-                  <Text
-                    style={styles.Text}
-                    onPress={() => {
-                      Linking.openURL(
-                        "https://propcut.lightbyte.me/privacy-policy"
-                      );
-                    }}
-                  >
+                  <Text style={styles.Text} onPress={openPrivacyAndPolicy}>
                     {t("signUp.privacyPolicy")}
                   </Text>
                 </Text>
