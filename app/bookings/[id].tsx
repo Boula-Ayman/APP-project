@@ -18,6 +18,7 @@ import BookingActions from "@/components/Bookings/BookingActions";
 import useBooking from "@/components/Bookings/useBooking";
 import { useTranslation } from "react-i18next";
 import { noImagePlaceHolder } from "@/utils/noImagePlaceHolder";
+import { useGetOpportunityQuery } from "@/src/api/opportunitiesApiSlice";
 
 const BookingDetailsScreen = () => {
   const { t } = useTranslation();
@@ -33,7 +34,15 @@ const BookingDetailsScreen = () => {
     shouldShowDirections,
   } = useBooking(id as string);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [availableNights] = useState(41);
+  
+  const { data: opportunityData } = useGetOpportunityQuery({ 
+    id: booking?.property?.id.toString() ?? "" 
+  }, { 
+    skip: !booking?.property?.id,
+    refetchOnMountOrArgChange: true
+  });
+  
+  const availableNights = opportunityData?.data?.available_nights ?? 0;
 
   const handleCancel = useCallback(() => {
     Alert.alert(
