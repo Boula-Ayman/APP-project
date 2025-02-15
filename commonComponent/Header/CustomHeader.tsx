@@ -26,7 +26,7 @@ export const CustomHeader = ({ title, showBackButton = true, contentStyle }: Cus
           contentStyle
         ],
         headerLeft: showBackButton ? () => (
-          <TouchableOpacity style={styles.iconButton} onPress={() => router.back()}>
+          <TouchableOpacity style={styles.iconButton} onPressOut={() => router.back()}>
             <Ionicons name="chevron-back" size={16} color="black" />
           </TouchableOpacity>
         ) : undefined,
