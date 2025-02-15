@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, TouchableOpacity, View, StyleSheet, Dimensions } from 'react-native';
+import { Modal, TouchableOpacity, View, StyleSheet, Dimensions, Platform, KeyboardAvoidingView } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 
 interface CustomModalProps {
@@ -43,11 +43,7 @@ const { height: screenHeight } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   modalContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.8)",
     justifyContent: "flex-end",
   },
@@ -65,12 +61,12 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   middleSection: {
-    minHeight: screenHeight * 0.3,
     maxHeight: screenHeight * 0.9,
     backgroundColor: "white",
     borderTopStartRadius: 50,
     borderTopEndRadius: 50,
     padding: 10,
+    overflow: 'hidden',
   },
 });
 
