@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#8BC24033",
     borderRadius: 30,
     marginVertical: 10,
-    height: 105,
+    minHeight: 105,
     width: "100%",
   },
   sectionTitle: {

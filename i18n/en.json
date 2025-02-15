@@ -116,6 +116,7 @@
   "availableNights": "Available Nights",
   "estimatedSalesRange": "Estimated sales range",
   "inverstors": "{{investors}} Inverstors",
+  "filterResult": "Filter Result",
   "signIn": {
     "title": "Sign In",
     "email": "Email",
