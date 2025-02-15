@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Modal,
   Button as RNButton,
+  Linking,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { usePostSignUpMutation } from "../../../src/auth/signup/signuupApiSlice";
@@ -495,9 +496,27 @@ const SignUpPage: React.FC = () => {
               <View style={styles.TextContainer}>
                 <Text style={styles.MainText}>
                   {t("signUp.agreeToTermsPrefix")}{" "}
-                  <Text style={styles.Text}>{t("signUp.terms")}</Text>{" "}
+                  <Text
+                    style={styles.Text}
+                    onPress={() => {
+                      Linking.openURL(
+                        "https://propcut.lightbyte.me/privacy-policy"
+                      );
+                    }}
+                  >
+                    {t("signUp.terms")}
+                  </Text>{" "}
                   {t("signUp.and")}{" "}
-                  <Text style={styles.Text}>{t("signUp.privacyPolicy")}</Text>
+                  <Text
+                    style={styles.Text}
+                    onPress={() => {
+                      Linking.openURL(
+                        "https://propcut.lightbyte.me/privacy-policy"
+                      );
+                    }}
+                  >
+                    {t("signUp.privacyPolicy")}
+                  </Text>
                 </Text>
               </View>
               <View style={styles.signUpButton}>
