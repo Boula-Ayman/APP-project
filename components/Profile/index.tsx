@@ -10,7 +10,7 @@ import React from "react";
 import { useLogoutMutation } from "../../src/auth/logout/logoutApiSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import Ai from "../../assets/icons/Ai.svg";
+import UserPicPlaceholder from "../../assets/icons/user-pic-placeholder.svg";
 import Settings from "../../assets/icons/setting.svg";
 import Share from "../../assets/icons/share.svg";
 import Logout from "../../assets/icons/LogoutIcon.svg";
@@ -66,7 +66,7 @@ const Profile = () => {
             style={styles.profileImage}
           />
         ) : (
-          <Ai style={styles.Ai} />
+          <UserPicPlaceholder style={styles.Ai} />
         )}
         <Text style={styles.AiText}>{user.name || "Loading..."}</Text>
       </View>
@@ -168,8 +168,9 @@ const styles = StyleSheet.create({
   Ai: {
     alignItems: "center",
     justifyContent: "center",
-    width: 83,
-    height: 31,
+    width: 183,
+    height: 183,
+    borderRadius: 41.5,
   },
   AiText: {
     fontFamily: "Inter_600SemiBold",
