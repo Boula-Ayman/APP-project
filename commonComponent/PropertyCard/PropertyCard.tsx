@@ -10,6 +10,8 @@ import HeartFilledIcon from "@/assets/icons/filledHeart.svg";
 import i18n from "@/i18n/i18n";
 import Tag from "@/commonComponent/Tag/Tag";
 import { noImagePlaceHolder } from "@/utils/noImagePlaceHolder";
+import { t } from "i18next";
+import { localizeNumber } from "@/utils/numbers";
 
 export interface Opportunity {
   id: string;
@@ -20,13 +22,11 @@ export interface Opportunity {
   currency?: string;
   available_shares?: number;
   number_of_shares?: number;
-  title_ar?: string;
-  title_en?: string;
-  location_ar?: string;
-  location_en?: string;
+  title: string;
+  location: string;
   number_of_bedrooms?: number;
   number_of_bathrooms?: number;
-  area?: number;
+  area: number;
   status?: string;
 }
 
@@ -57,12 +57,12 @@ const PropertyCard: React.FC<CardProps> = ({
     if (!showPriceSection) return null;
 
     return (
-      <View style={styles.priceSection}>
+      <View style={{...styles.priceSection, flexDirection: i18n.language === "ar" ? "row-reverse" : "row"}}>
         <Text style={styles.cardPrice}>
-          {formatPrice(item.share_price || 0)} {item.currency}
+          {formatPrice(item.share_price || 0)} {t(`${item.currency}`)}
         </Text>
         <Text style={styles.ownerShip}>
-          {item.available_shares}/{item.number_of_shares} Ownership
+          {localizeNumber(item.available_shares || 0, i18n.language)}/{localizeNumber(item.number_of_shares || 0, i18n.language)} {t("home.ownerShip")}
         </Text>
         <TouchableOpacity style={styles.HeartOverlay} onPress={onLoveIconPress}>
           {isLiked ? (
@@ -88,7 +88,7 @@ const PropertyCard: React.FC<CardProps> = ({
   const renderPropertyInfo = () => {
     return (
       <>
-        <Text style={styles.cardTitle}>{item.title_en}</Text>
+        <Text style={styles.cardTitle}>{item.title}</Text>
         <View style={styles.locationSection}>
           <AntDesign
             name="enviromento"
@@ -96,7 +96,7 @@ const PropertyCard: React.FC<CardProps> = ({
             color="black"
             style={styles.location}
           />
-          <Text style={styles.cardLocation}>{item.location_en}</Text>
+          <Text style={styles.cardLocation}>{item.location}</Text>
         </View>
       </>
     );
@@ -112,7 +112,7 @@ const PropertyCard: React.FC<CardProps> = ({
             <Area />
           </View>
           <Text style={styles.featureText}>
-            {i18n.t("area", { count: item.area })}
+            {i18n.t("home.area", { area: `${localizeNumber(item.area, i18n.language)}` })}
           </Text>
         </View>
         <View style={styles.featureItem}>
@@ -151,7 +151,7 @@ const PropertyCard: React.FC<CardProps> = ({
         />
         <View style={styles.overlay}>
           <Tag
-            text={showStatus ? item.status || "" : item.opportunity_type || ""}
+            text={showStatus ? t(`${item.status}`) || "" : t(`${item.opportunity_type}`) || ""}
             type={showStatus ? "status" : "property_type"}
             status={
               showStatus

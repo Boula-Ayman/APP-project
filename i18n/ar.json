@@ -9,6 +9,11 @@
   "bathroom": "الحمامات: {{count}}",
   "soldOut": "نفذ",
   "invalidSignin": "البريد الالكتروني او كلمة المرور غير صحيحة",
+  "property": "عقار",
+  "project": "مشروع",
+  "canceled": "ملغي",
+  "pending": "قيد الانتظار",
+  "confirmed": "مؤكد",
   "home": {
     "all": "الكل",
     "available": "متاح",
@@ -23,7 +28,7 @@
     },
     "bedrooms": "غرف النوم: {{count}}",
     "bathroom": "الحمامات: {{count}}",
-    "area": "{{count}} قدم مربع",
+    "area": "{{area}} قدم مربع",
     "ownerShip": "الملكية",
 
     "location": "النهدة، الشارقة، دبي، الإمارات العربية المتحدة",

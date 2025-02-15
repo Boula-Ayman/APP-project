@@ -1,9 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet, Platform } from "react-native";
 import { SvgProps } from "react-native-svg";
+import i18n from "@/i18n/i18n";
+import { t } from "i18next";
 
 interface SummaryCardProps {
-  amount: number;
+  amount: string;
   currency: string;
   subtitle: string;
   backgroundColor: string;
@@ -17,11 +19,11 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
   backgroundColor,
   Icon,
 }) => (
-  <View style={[styles.summaryCard, { backgroundColor }]}>
-    <Icon style={styles.summaryIcon} />
+  <View style={[styles.summaryCard, { backgroundColor, direction: i18n.language === "ar" ? "rtl" : "ltr" }]}>
+    <Icon />
     <View style={styles.summaryTitleContainer}>
-      <Text style={styles.summaryTitle}>
-        {amount.toLocaleString()} <Text style={styles.summaryDetails}>{currency}</Text>
+      <Text style={{...styles.summaryTitle, borderColor: backgroundColor}}>
+        {amount.toLocaleString()} <Text style={styles.summaryDetails}>{t(currency)}</Text>
       </Text>
       <Text style={styles.summarySubtitle}>{subtitle}</Text>
     </View>
@@ -33,16 +35,13 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 100,
     borderRadius: 30,
-    padding: 16,
     marginHorizontal: 8,
-    justifyContent: "center",
+    display: "flex",
+    flexDirection: "row",
     alignItems: "center",
-  },
-  summaryIcon: {
-    position: "absolute",
-    top: '50%',
-    left: 25,
-    transform: [{ translateY: -8 }],
+    justifyContent: "flex-start",
+    padding: 16,
+    gap: 10,
   },
   summaryTitleContainer: {
     alignSelf: "center",
@@ -51,7 +50,7 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_600SemiBold",
     fontSize: 24,
     color: "#14161C",
-    alignSelf: "flex-start",
+    borderWidth: 1
   },
   summaryDetails: {
     fontFamily: "Inter_600SemiBold",

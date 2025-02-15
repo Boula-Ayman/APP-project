@@ -14,12 +14,21 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onChangeText }) => {
     <View style={styles.searchContainer}>
       <View style={styles.searchBar}>
         <TextInput
-          style={styles.searchInput}
+          style={{
+            ...styles.searchInput
+          }}
           placeholder={i18n.t("home.searchPlaceholder")}
           value={searchTerm}
           onChangeText={onChangeText}
         />
-        <MagnifyingGlass style={styles.searchIcon} />
+        <MagnifyingGlass 
+            style={{
+                ...styles.searchIcon, 
+                left: i18n.language === "ar" ? "auto" : 16,
+                right: i18n.language === "ar" ? 16 : "auto"
+            }}
+            
+        />
       </View>
     </View>
   );

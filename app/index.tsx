@@ -17,10 +17,8 @@ import { router, useRootNavigationState } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import {
   useFonts,
-  Inter_400Regular,
-  Inter_600SemiBold,
 } from "@expo-google-fonts/inter";
-import Toast from "react-native-toast-message";
+import i18n from "../i18n/i18n";
 
 const Tab = createBottomTabNavigator();
 
@@ -94,6 +92,7 @@ const App: React.FC = () => {
           marginBottom: "3%",
           alignSelf: "center",
           display: isKeyboardVisible ? "none" : "flex",
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
         },
         tabBarItemStyle: {
           paddingVertical: 10,

@@ -19,7 +19,7 @@ const TotalReturnCard = ({ data }) => {
             i18n.language === "en"
               ? data?.data?.share_price.toLocaleString()
               : data?.data?.share_price.toLocaleString("ar-EG")
-          } ${data?.data?.currency}`}
+          } ${t(data?.data?.currency)}`}
           style={styles.largeText}
         />
         <AppText text={t("purchasePrice")} style={styles.purchaseText} />
