@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { Calendar, DateData } from 'react-native-calendars';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { format, addDays, addMonths, subMonths } from 'date-fns';
@@ -184,93 +184,95 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights }: Calen
   );
 
   const renderCalendarView = () => (
-    <View style={styles.modalContent}>
-      <Text style={styles.modalTitle}>{t('bookings.calendar.bookNights')}</Text>
-      
-      <View style={styles.mainContainer}>
-        <View style={styles.availableNightsContainer}>
-          <Text style={styles.availableNightsText}>
-            <Text style={styles.highlightedText}>{availableNights}</Text> {t('bookings.calendar.availableNights')}
-          </Text>
-          
-          <View style={styles.dateRangeContainer}>
-            <View style={styles.calendarIcon}>
-              <FontAwesome5 name="calendar-alt" size={20} color="#333" />
-            </View>
-            <Text style={styles.dateRangeText}>
-              {startDate ? format(new Date(startDate), 'dd MMM yyyy') : '05'} - {endDate ? format(new Date(endDate), 'dd MMM yyyy') : '08 Jan 2025'}
+    <ScrollView>
+      <View style={styles.modalContent}>
+        <Text style={styles.modalTitle}>{t('bookings.calendar.bookNights')}</Text>
+        
+        <View style={styles.mainContainer}>
+          <View style={styles.availableNightsContainer}>
+            <Text style={styles.availableNightsText}>
+              <Text style={styles.highlightedText}>{availableNights}</Text> {t('bookings.calendar.availableNights')}
             </Text>
+            
+            <View style={styles.dateRangeContainer}>
+              <View style={styles.calendarIcon}>
+                <FontAwesome5 name="calendar-alt" size={20} color="#333" />
+              </View>
+              <Text style={styles.dateRangeText}>
+                {startDate ? format(new Date(startDate), 'dd MMM yyyy') : '05'} - {endDate ? format(new Date(endDate), 'dd MMM yyyy') : '08 Jan 2025'}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.separator} />
+
+          <View style={styles.calendarWrapper}>
+            <TouchableOpacity 
+              style={styles.arrowButton}
+              onPress={handlePrevMonth}
+            >
+              {renderArrow('left')}
+            </TouchableOpacity>
+            
+            <View style={styles.calendarContainer}>
+              <Calendar
+                ref={calendarRef}
+                key={format(currentMonth, 'yyyy-MM')}
+                current={format(currentMonth, 'yyyy-MM-dd')}
+                minDate={format(new Date(), 'yyyy-MM-dd')}
+                markingType={'period'}
+                markedDates={selectedDates}
+                onDayPress={onDayPress}
+                theme={{
+                  calendarBackground: 'white',
+                  textSectionTitleColor: '#333',
+                  selectedDayBackgroundColor: '#8BC240',
+                  selectedDayTextColor: '#ffffff',
+                  todayTextColor: '#8BC240',
+                  dayTextColor: '#333',
+                  textDisabledColor: '#d9e1e8',
+                  dotColor: '#8BC240',
+                  monthTextColor: '#333',
+                  textDayFontFamily: 'Inter_400Regular',
+                  textMonthFontFamily: 'Inter_600SemiBold',
+                  textDayHeaderFontFamily: 'Inter_500Medium',
+                  textDayFontSize: 14,
+                  textMonthFontSize: 16,
+                  textDayHeaderFontSize: 14,
+                }}
+                hideArrows={true}
+                renderArrow={renderArrow}
+              />
+            </View>
+
+            <TouchableOpacity 
+              style={styles.arrowButton}
+              onPress={handleNextMonth}
+            >
+              {renderArrow('right')}
+            </TouchableOpacity>
           </View>
         </View>
 
-        <View style={styles.separator} />
-
-        <View style={styles.calendarWrapper}>
-          <TouchableOpacity 
-            style={styles.arrowButton}
-            onPress={handlePrevMonth}
-          >
-            {renderArrow('left')}
-          </TouchableOpacity>
-          
-          <View style={styles.calendarContainer}>
-            <Calendar
-              ref={calendarRef}
-              key={format(currentMonth, 'yyyy-MM')}
-              current={format(currentMonth, 'yyyy-MM-dd')}
-              minDate={format(new Date(), 'yyyy-MM-dd')}
-              markingType={'period'}
-              markedDates={selectedDates}
-              onDayPress={onDayPress}
-              theme={{
-                calendarBackground: 'white',
-                textSectionTitleColor: '#333',
-                selectedDayBackgroundColor: '#8BC240',
-                selectedDayTextColor: '#ffffff',
-                todayTextColor: '#8BC240',
-                dayTextColor: '#333',
-                textDisabledColor: '#d9e1e8',
-                dotColor: '#8BC240',
-                monthTextColor: '#333',
-                textDayFontFamily: 'Inter_400Regular',
-                textMonthFontFamily: 'Inter_600SemiBold',
-                textDayHeaderFontFamily: 'Inter_500Medium',
-                textDayFontSize: 14,
-                textMonthFontSize: 16,
-                textDayHeaderFontSize: 14,
-              }}
-              hideArrows={true}
-              renderArrow={renderArrow}
-            />
-          </View>
-
-          <TouchableOpacity 
-            style={styles.arrowButton}
-            onPress={handleNextMonth}
-          >
-            {renderArrow('right')}
-          </TouchableOpacity>
+        <View style={styles.nightsContainer}>
+          <Text style={styles.nightsText}>
+            {endDate && startDate 
+              ? <><Text style={styles.greenText}>{Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24))}</Text>{` ${t('bookings.nights')}`}</>
+              : <><Text style={styles.greenText}>0</Text>{` ${t('bookings.nights')}`}</>}
+          </Text>
+          <Text style={styles.termsText}>
+            {t('bookings.calendar.termsAgreement')}
+          </Text>
         </View>
-      </View>
 
-      <View style={styles.nightsContainer}>
-        <Text style={styles.nightsText}>
-          {endDate && startDate 
-            ? <><Text style={styles.greenText}>{Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24))}</Text>{` ${t('bookings.nights')}`}</>
-            : <><Text style={styles.greenText}>0</Text>{` ${t('bookings.nights')}`}</>}
-        </Text>
-        <Text style={styles.termsText}>
-          {t('bookings.calendar.termsAgreement')}
-        </Text>
+        <TouchableOpacity 
+          style={styles.bookNowButton}
+          onPress={handleConfirm}
+        >
+          <Text style={styles.bookNowButtonText}>{t('bookings.calendar.bookNow')}</Text>
+        </TouchableOpacity>
       </View>
-
-      <TouchableOpacity 
-        style={styles.bookNowButton}
-        onPress={handleConfirm}
-      >
-        <Text style={styles.bookNowButtonText}>{t('bookings.calendar.bookNow')}</Text>
-      </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 
   return (
