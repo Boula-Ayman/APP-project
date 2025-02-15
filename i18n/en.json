@@ -153,6 +153,15 @@
     "signUpButton": "Sign Up",
     "invalidCountryNumber": "Please enter a valid country number."
   },
+  "user": {
+    "validation": {
+      "dob": {
+        "required": "Date of birth is required",
+        "future": "Date of birth cannot be in the future",
+        "age": "You must be at least 18 years old"
+      }
+    }
+  },
   "verify": {
     "title": "Verify",
     "verify_email_title": "Verify your email address",
@@ -217,7 +226,8 @@
     "updateProfileError": "Failed to update profile. Please try again",
     "selectLanguage": "Select Language",
     "english": "English",
-    "arabic": "Arabic"
+    "arabic": "Arabic",
+    "invalidPhoneNumber": "Please enter a valid phone number."
   },
   "sliderSignIn": "Sign In",
   "sliderSignUp": "Sign Up",
