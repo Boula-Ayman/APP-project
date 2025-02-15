@@ -3,7 +3,9 @@ import {
   Text,
   TextInput,
   ActivityIndicator,
-  StyleSheet, KeyboardAvoidingView, ScrollView,
+  StyleSheet,
+  KeyboardAvoidingView,
+  ScrollView,
   TouchableOpacity,
   Platform,
   Modal,
@@ -19,15 +21,32 @@ import { ProfileImagePicker } from "./components/ProfileImagePicker";
 import { useAccountForm } from "./hooks/useAccountForm";
 import * as Yup from "yup";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { formatDateForDisplay } from "@/utils/dateUtils";
+import {
+  convertDateToStandardFormat,
+  formatDateForDisplay,
+} from "@/utils/dateUtils";
 
 const accountInfoValidationSchema = Yup.object().shape({
   firstName: Yup.string().required(i18n.t("signUp.firstNameRequired")).trim(),
   lastName: Yup.string().required(i18n.t("signUp.lastNameRequired")).trim(),
   gender: Yup.string().oneOf(["male", "female"]).required(),
   dateOfBirth: Yup.string()
-    .matches(/^\d{2}\/\d{2}\/\d{4}$/, i18n.t("settings.useDateFormat"))
-    .nullable(),
+    .nullable()
+    .test(
+      "is-valid-past-date",
+      i18n.t("user.validation.dob.future"),
+      (value) => {
+        return (
+          !!value && new Date(convertDateToStandardFormat(value)) <= new Date()
+        );
+      }
+    )
+    .test("is-valid-age-18", i18n.t("user.validation.dob.age"), (value) => {
+      const birthDate = new Date(convertDateToStandardFormat(value!));
+      const currentDate = new Date();
+      const age = currentDate.getFullYear() - birthDate.getFullYear();
+      return age >= 18;
+    }),
   mobileNumber: Yup.string()
     .matches(/^\d*$/, i18n.t("settings.invalidPhoneNumber"))
     .nullable(),
@@ -124,7 +143,10 @@ const AccountInfoScreen = () => {
   }) => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showDatePickerModal, setShowDatePickerModal] = useState(false);
-    const [selectedDate, setSelectedDate] = useState<any>(new Date());
+    const [selectedDate, setSelectedDate] = useState<any>(
+      new Date(convertDateToStandardFormat(values.dateOfBirth))
+    );
+
     const handleDateChange = (event, selectedDate, setFieldValue) => {
       setShowDatePicker(false);
 
@@ -173,8 +195,11 @@ const AccountInfoScreen = () => {
         {showDatePicker && Platform.OS === "android" && (
           <DateTimePicker
             value={
-              values.dateOfBirth ? new Date(values.dateOfBirth) : new Date()
+              values.dateOfBirth
+                ? new Date(convertDateToStandardFormat(values.dateOfBirth))
+                : new Date()
             }
+            themeVariant="light"
             mode="date"
             display={"default"}
             onChange={(event, selectedDate) =>
@@ -195,6 +220,7 @@ const AccountInfoScreen = () => {
               <DateTimePicker
                 value={selectedDate}
                 mode="date"
+                themeVariant="light"
                 display="spinner"
                 onChange={handleDateChangeIos}
               />
@@ -245,7 +271,7 @@ const AccountInfoScreen = () => {
 
   return (
     <View style={styles.container}>
-      <CustomHeader title={i18n.t('settings.accountInfo')} />
+      <CustomHeader title={i18n.t("settings.accountInfo")} />
 
       <Formik
         initialValues={getInitialValues()}
@@ -254,9 +280,9 @@ const AccountInfoScreen = () => {
       >
         {(formikProps) => (
           <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 88 : -20}
+            keyboardVerticalOffset={Platform.OS === "ios" ? 88 : -20}
           >
             <ScrollView
               style={styles.content}
@@ -267,7 +293,7 @@ const AccountInfoScreen = () => {
             >
               <ProfileImagePicker
                 value={formikProps.values.photo}
-                onChange={(value) => formikProps.setFieldValue('photo', value)}
+                onChange={(value) => formikProps.setFieldValue("photo", value)}
               />
 
               <View style={styles.form}>
@@ -283,7 +309,7 @@ const AccountInfoScreen = () => {
                 disabled={isUpdating}
                 isLoading={isUpdating}
               >
-                {i18n.t('settings.update')}
+                {i18n.t("settings.update")}
               </Button>
             </ScrollView>
           </KeyboardAvoidingView>
@@ -405,5 +431,4 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
   },
-
 } as const);

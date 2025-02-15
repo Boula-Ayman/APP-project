@@ -44,8 +44,18 @@ const SignUpSchema = Yup.object().shape({
     .required(i18n.t("signUp.phoneNumberRequired"))
     .matches(/^\d+$/, i18n.t("signUp.invalidPhoneNumber")),
   birthDate: Yup.string()
-    .matches(/^\d{4}-\d{2}-\d{2}$/, i18n.t("signUp.invalidDate"))
-    .required(i18n.t("signUp.birthDateRequired")),
+    .nullable()
+    .test(
+      "is-valid-past-date",
+      i18n.t("user.validation.dob.future"),
+      (value) => !!value && new Date(value) <= new Date()
+    )
+    .test("is-valid-age-18", i18n.t("user.validation.dob.age"), (value) => {
+      const birthDate = new Date(value!);
+      const currentDate = new Date();
+      const age = currentDate.getFullYear() - birthDate.getFullYear();
+      return age >= 18;
+    }),
 });
 
 const SignUpPage: React.FC = () => {
@@ -463,6 +473,7 @@ const SignUpPage: React.FC = () => {
                     }
                     mode="date"
                     display={"default"}
+                    themeVariant="light"
                     onChange={(event, selectedDate) =>
                       handleDateChange(event, selectedDate, setFieldValue)
                     }
@@ -484,6 +495,7 @@ const SignUpPage: React.FC = () => {
                         value={selectedDate}
                         mode="date"
                         display="spinner"
+                        themeVariant="light"
                         onChange={handleDateChangeIos}
                       />
                       <RNButton
