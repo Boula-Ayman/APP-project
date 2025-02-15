@@ -609,7 +609,7 @@ const CardDetails = () => {
   const [isCalendarModalVisible, setIsCalendarModalVisible] = useState(false);
   const [createBooking] = useCreateBookingMutation();
 
-  const { data, isLoading, isError, error } = useGetOpportunityQuery(
+  const { data, isLoading, isError, error, refetch: queryRefetch } = useGetOpportunityQuery(
     { id },
     {
       skip: !id,
@@ -618,6 +618,13 @@ const CardDetails = () => {
       refetchOnFocus: true,
     }
   );
+
+  useEffect(() => {
+    if (!isCalendarModalVisible) {
+      queryRefetch();
+    }
+  }, [isCalendarModalVisible]);
+
   const handleGoogleClick = () => {
     Linking.openURL("https://www.google.com");
   };
