@@ -218,6 +218,7 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights }: Calen
               ref={calendarRef}
               key={format(currentMonth, 'yyyy-MM')}
               current={format(currentMonth, 'yyyy-MM-dd')}
+              minDate={format(new Date(), 'yyyy-MM-dd')}
               markingType={'period'}
               markedDates={selectedDates}
               onDayPress={onDayPress}

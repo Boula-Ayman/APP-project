@@ -1,7 +1,6 @@
-import { useMemo } from 'react';
 import { useGetBookingQuery, useCancelBookingMutation, useRescheduleBookingMutation } from '@/src/api/bookingsApiSlice';
 import type { TransformedBookingData, Booking } from '@/src/api/bookingsApiSlice';
-import { isPast } from 'date-fns';
+import { isWithinInterval, addDays } from 'date-fns';
 
 const useBooking = (id: string) => {
   const { data: bookingResponse, isLoading, error } = useGetBookingQuery(id, {
@@ -13,12 +12,12 @@ const useBooking = (id: string) => {
   const transformedBookingResponse = bookingResponse?.data as TransformedBookingData | undefined;
   const booking = transformedBookingResponse?.booking;
 
-  const isBookingPast = useMemo(() => {
-    if (!booking?.to) return false;
-    return isPast(new Date(booking.to));
-  }, [booking?.to]);
+  const isWithin72HoursBeforeBooking = booking?.from && isWithinInterval(new Date(), {
+    start: addDays(new Date(booking.from), -3),
+    end: addDays(new Date(booking.from), 1) // The 1 is used to extend the end date to include the full day of the end booking date
+  });
 
-  const shouldShowDirections = booking?.status === 'cancelled' || isBookingPast;
+  const shouldShowDirections : boolean = booking?.status === 'cancelled' || isWithin72HoursBeforeBooking || false;
 
   return {
     booking,
@@ -28,7 +27,6 @@ const useBooking = (id: string) => {
     isRescheduling,
     cancelBooking,
     rescheduleBooking,
-    isBookingPast,
     shouldShowDirections
   };
 };

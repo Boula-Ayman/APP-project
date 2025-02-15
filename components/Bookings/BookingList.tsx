@@ -39,8 +39,8 @@ const BookingList: React.FC<BookingListProps> = ({ activeTab }) => {
   const allBookings = bookingsResponse?.data || [];
 
   const filteredBookings = allBookings.filter((bookingData) => {
-    const toDate = new Date(bookingData.booking.to);
-    return activeTab === 'upcoming' ? !isPast(toDate) : isPast(toDate);
+    const fromDate = new Date(bookingData.booking.from);
+    return activeTab === 'upcoming' ? !isPast(fromDate) : isPast(fromDate);
   });
 
   const renderBookingCard = ({ item }) => (
