@@ -5,6 +5,7 @@ import { RootState } from "../../src/store";
 import CardList from "@/components/cardlistContainer/CardList";
 import { useGetWishListQuery } from "@/src/wishList/wishListApiSlice";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { t } from "i18next";
 
 const TestWishListComponent = () => {
   const { data, error, isLoading, refetch } = useGetWishListQuery({
@@ -25,7 +26,7 @@ const TestWishListComponent = () => {
           ))}
         </ScrollView>
       ) : (
-        <Text>No items in the wishlist.</Text>
+        <Text style={styles.dangerText}>{t("emptyLList")}</Text>
       )}
     </SafeAreaView>
   );
@@ -44,6 +45,13 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     // Add appropriate styles for the card container
+  },
+  dangerText: {
+    color: "red",
+    fontSize: 14,
+
+    fontFamily: "InterMedium",
+    fontWeight: "500",
   },
 });
 
