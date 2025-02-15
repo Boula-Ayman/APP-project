@@ -426,7 +426,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   tabContainer: {
-    backgroundColor: "white",
+    backgroundColor: "transparent",
     position: "absolute",
     bottom: 0,
     left: 0,
