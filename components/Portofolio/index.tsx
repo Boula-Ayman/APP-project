@@ -15,6 +15,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import PortfolioStats from "./components/PortfolioStats";
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
+import i18n from "../../i18n/i18n";
+import { localizeNumber } from "@/utils/numbers";
 
 const PortfolioPage: React.FC = () => {
   const { t } = useTranslation();
@@ -60,7 +62,7 @@ const PortfolioPage: React.FC = () => {
         start={{ x: 0, y: 1 }}
         end={{ x: 0, y: 0 }}
       />
-      <ScrollView style={styles.scrollContainer}>
+      <ScrollView style={{...styles.scrollContainer, direction: i18n.language === "ar" ? "rtl" : "ltr" }}>
         <Text style={styles.title}>{t("portfolio.title")}</Text>
 
         <PortfolioStats
@@ -76,7 +78,7 @@ const PortfolioPage: React.FC = () => {
         />
 
         <Text style={styles.sectionTitle}>
-          {t("portfolio.myUnits")} ({investmentsData?.data.length || 0})
+          {t("portfolio.myUnits")} ({localizeNumber(investmentsData?.data.length || 0, i18n.language) || 0})
         </Text>
         <Text style={styles.sectionSubtitle}>
           {t("portfolio.exploreDescription")}

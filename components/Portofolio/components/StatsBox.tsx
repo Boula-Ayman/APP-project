@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-start",
     marginTop: 10,
-    paddingLeft: 20,
+    paddingInline: 16,
   },
   statsValue: {
     fontSize: 26,

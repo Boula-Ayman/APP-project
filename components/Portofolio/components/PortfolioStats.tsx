@@ -5,6 +5,8 @@ import MoneyRecive from "../../../assets/icons/money-recive.svg";
 import { useTranslation } from "react-i18next";
 import SummaryCard from "./SummaryCard";
 import StatsBox from "./StatsBox";
+import i18n from "@/i18n/i18n";
+import { localizeNumber } from "@/utils/numbers";
 
 interface PortfolioStatsProps {
   totalInvestment: number;
@@ -25,9 +27,9 @@ const PortfolioStats: React.FC<PortfolioStatsProps> = ({
   
   return (
     <>
-      <View style={styles.summaryContainer}>
+      <View style={{...styles.summaryContainer, direction: i18n.language === "ar" ? "rtl" : "ltr" }}>
         <SummaryCard
-          amount={totalInvestment}
+          amount={new Intl.NumberFormat(i18n.language).format(totalInvestment)}
           currency={currency}
           subtitle={t('portfolio.totalInvestment')}
           backgroundColor="#8BC240"
@@ -36,7 +38,7 @@ const PortfolioStats: React.FC<PortfolioStatsProps> = ({
       </View>
 
       <SummaryCard
-        amount={totalRentalIncome}
+        amount={new Intl.NumberFormat(i18n.language).format(totalRentalIncome)}
         currency={currency}
         subtitle={t('portfolio.totalRentalIncome')}
         backgroundColor="#9BC2C7"
@@ -45,11 +47,11 @@ const PortfolioStats: React.FC<PortfolioStatsProps> = ({
 
       <View style={styles.statsContainer}>
         <StatsBox
-          value={totalUsableNights}
+          value={localizeNumber(totalUsableNights, i18n.language)}
           label={t('portfolio.totalUsableNights')}
         />
         <StatsBox
-          value={`${yieldValue}%`}
+          value={`${localizeNumber(yieldValue, i18n.language)}%`}
           label={t('portfolio.yieldLastYear', { year: new Date().getFullYear() - 1 })}
         />
       </View>
