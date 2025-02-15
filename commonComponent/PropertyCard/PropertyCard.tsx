@@ -11,6 +11,7 @@ import i18n from "@/i18n/i18n";
 import Tag from "@/commonComponent/Tag/Tag";
 import { noImagePlaceHolder } from "@/utils/noImagePlaceHolder";
 import { t } from "i18next";
+import { localizeNumber } from "@/utils/numbers";
 
 export interface Opportunity {
   id: string;
@@ -25,7 +26,7 @@ export interface Opportunity {
   location: string;
   number_of_bedrooms?: number;
   number_of_bathrooms?: number;
-  area?: number;
+  area: number;
   status?: string;
 }
 
@@ -111,7 +112,7 @@ const PropertyCard: React.FC<CardProps> = ({
             <Area />
           </View>
           <Text style={styles.featureText}>
-            {i18n.t("area", { count: item.area })}
+            {i18n.t("home.area", { area: `${localizeNumber(item.area, i18n.language)}` })}
           </Text>
         </View>
         <View style={styles.featureItem}>
