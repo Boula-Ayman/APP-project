@@ -10,6 +10,7 @@ import HeartFilledIcon from "@/assets/icons/filledHeart.svg";
 import i18n from "@/i18n/i18n";
 import Tag from "@/commonComponent/Tag/Tag";
 import { noImagePlaceHolder } from "@/utils/noImagePlaceHolder";
+import { t } from "i18next";
 
 export interface Opportunity {
   id: string;
@@ -20,10 +21,8 @@ export interface Opportunity {
   currency?: string;
   available_shares?: number;
   number_of_shares?: number;
-  title_ar?: string;
-  title_en?: string;
-  location_ar?: string;
-  location_en?: string;
+  title: string;
+  location: string;
   number_of_bedrooms?: number;
   number_of_bathrooms?: number;
   area?: number;
@@ -59,7 +58,7 @@ const PropertyCard: React.FC<CardProps> = ({
     return (
       <View style={styles.priceSection}>
         <Text style={styles.cardPrice}>
-          {formatPrice(item.share_price || 0)} {item.currency}
+          {formatPrice(item.share_price || 0)} {t(`${item.currency}`)}
         </Text>
         <Text style={styles.ownerShip}>
           {item.available_shares}/{item.number_of_shares} Ownership
@@ -88,7 +87,7 @@ const PropertyCard: React.FC<CardProps> = ({
   const renderPropertyInfo = () => {
     return (
       <>
-        <Text style={styles.cardTitle}>{item.title_en}</Text>
+        <Text style={styles.cardTitle}>{item.title}</Text>
         <View style={styles.locationSection}>
           <AntDesign
             name="enviromento"
@@ -96,7 +95,7 @@ const PropertyCard: React.FC<CardProps> = ({
             color="black"
             style={styles.location}
           />
-          <Text style={styles.cardLocation}>{item.location_en}</Text>
+          <Text style={styles.cardLocation}>{item.location}</Text>
         </View>
       </>
     );
