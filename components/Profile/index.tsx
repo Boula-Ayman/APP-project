@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React from "react";
 import { useLogoutMutation } from "../../src/auth/logout/logoutApiSlice";
+import { useGetCurrentUserProfileQuery } from "../../src/api/userApiSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import UserPicPlaceholder from "../../assets/icons/user-pic-placeholder.svg";
@@ -18,16 +19,22 @@ import i18n from "../../i18n/i18n";
 import CardCoin from "../../assets/icons/cardCoin.svg";
 import { LinearGradient } from "expo-linear-gradient";
 import SettingButton from "@/commonComponent/button/SettingButton";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { clearUser } from "@/src/auth/signin/userSlice";
 import Constants from "expo-constants";
 
 const Profile = () => {
   const [postLogout, { isLoading, isSuccess, isError, error }] =
     useLogoutMutation();
+  
+  const { data: userData, isLoading: isLoadingProfile } = useGetCurrentUserProfileQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+  });
 
   const dispatch = useDispatch();
-  const user = useSelector((state: any) => state?.user.user);
+  const user = userData?.data;
+  
   const handleLogout = async () => {
     try {
       const token = await AsyncStorage.getItem("access_token");
@@ -60,7 +67,9 @@ const Profile = () => {
       />
       <Text style={styles.text}>{i18n.t("profile.profile")}</Text>
       <View style={styles.ImageContainer}>
-        {user.image_url ? (
+        {isLoadingProfile ? (
+          <UserPicPlaceholder style={styles.Ai} />
+        ) : user?.image_url ? (
           <Image
             source={{ uri: user.image_url }}
             style={styles.profileImage}
@@ -68,7 +77,7 @@ const Profile = () => {
         ) : (
           <UserPicPlaceholder style={styles.Ai} />
         )}
-        <Text style={styles.AiText}>{user.name || "Loading..."}</Text>
+        <Text style={styles.AiText}>{user?.name || "Loading..."}</Text>
       </View>
 
       <View style={styles.ProfileContainer}>
