@@ -87,7 +87,7 @@ const Card: React.FC<CardProps> = ({ item, isLiked }) => {
             <UaeFlag style={styles.overlayIcon} />
           )}
           <View style={styles.textContainer}>
-            <Text style={styles.overlayText}>{item.opportunity_type}</Text>
+            <Text style={styles.overlayText}>{t(item.opportunity_type)}</Text>
           </View>
         </View>
       </View>
