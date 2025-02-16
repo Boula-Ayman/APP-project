@@ -20,11 +20,12 @@
     "filterBy": "Filter By",
     "loading": "Loading...",
     "area": "{{area}} sqft",
-    "ownerShip": "Owner Ship"
+    "ownerShip": "Ownership"
   },
   "allProperties": {
     "title": "All Properties"
   },
+  "emptyList": "Empty list",
   "filter": "Filter By",
   "bedrooms": "{{count}} Bedroom",
   "bathroom": "{{count}} Bathroom",

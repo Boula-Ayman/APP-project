@@ -26,7 +26,7 @@ const TestWishListComponent = () => {
           ))}
         </ScrollView>
       ) : (
-        <Text style={styles.dangerText}>{t("emptyLList")}</Text>
+        <Text style={styles.dangerText}>{t("emptyList")}</Text>
       )}
     </SafeAreaView>
   );

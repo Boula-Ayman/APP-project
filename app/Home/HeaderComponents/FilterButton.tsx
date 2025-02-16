@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal, TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useGetOpportunitiesQuery } from "../../../src/api/opportunitiesApiSlice";
 import i18n from "../../../i18n/i18n";
 import IMark from "../../../assets/icons/iMark.svg";
 import FilterIcon from "../../../assets/icons/Tuning2.svg";
@@ -29,23 +28,29 @@ type FilterButtonProps = {
       status: (typeof PROPERTIES_STATUS)[PropertiesStatusKeys];
     }>
   ) => void;
+  filters: Partial<{
+    type: string | null;
+    country: string | null;
+    status: (typeof PROPERTIES_STATUS)[PropertiesStatusKeys];
+  }> | null;
+  clearFilters: () => void;
 };
 
-const FilterButton: React.FC<FilterButtonProps> = ({ onFilterChange }) => {
+const FilterButton: React.FC<FilterButtonProps> = ({
+  onFilterChange,
+  filters,
+  clearFilters,
+}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedType, setSelectedType] = useState(null);
-  const [selectedLocation, setSelectedLocation] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [selectedType, setSelectedType] = useState(filters?.type);
+  const [selectedLocation, setSelectedLocation] = useState(filters?.country);
   const [isTypeOpen, setIsTypeOpen] = useState(false);
   const [isLocationOpen, setIsLocationOpen] = useState(false);
+  useEffect(() => {
+    setSelectedLocation(filters?.country);
+    setSelectedType(filters?.type);
+  }, [filters]);
 
-  const [filters, setFilters] = useState<
-    Partial<{
-      type: string | null;
-      country: string | null;
-      status: string | null;
-    }>
-  >({});
   const handleFilterResults = () => {
     let newFilters = {};
 
@@ -63,23 +68,13 @@ const FilterButton: React.FC<FilterButtonProps> = ({ onFilterChange }) => {
     }
 
     setIsModalVisible(false);
-    setFilters(newFilters);
     onFilterChange(newFilters);
   };
 
   return (
     <View>
       {selectedLocation || selectedType ? (
-        <TouchableOpacity
-          style={styles.barIcon}
-          onPress={() => {
-            setSelectedType(null);
-            setSelectedLocation(null);
-            setSelectedStatus(null);
-            setFilters({});
-            onFilterChange({});
-          }}
-        >
+        <TouchableOpacity style={styles.barIcon} onPress={clearFilters}>
           <Ionicons name="close" size={20} color="black" />
         </TouchableOpacity>
       ) : (
@@ -122,7 +117,7 @@ const FilterButton: React.FC<FilterButtonProps> = ({ onFilterChange }) => {
                 <View style={{ zIndex: 2 }}>
                   <DropDownPicker
                     open={isTypeOpen}
-                    value={selectedType}
+                    value={selectedType ?? null}
                     items={staticData.types.map((item) => ({
                       label: item.label,
                       value: item.value,
@@ -161,7 +156,7 @@ const FilterButton: React.FC<FilterButtonProps> = ({ onFilterChange }) => {
                 <View style={{ zIndex: 1 }}>
                   <DropDownPicker
                     open={isLocationOpen}
-                    value={selectedLocation}
+                    value={selectedLocation ?? null}
                     items={staticData.locations.map((item) => ({
                       label: item.label,
                       value: item.value,
