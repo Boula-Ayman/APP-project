@@ -11,8 +11,8 @@ import { t } from "i18next";
 
 const staticData = {
   types: [
-    { id: 1, label: "Project", value: "project" },
-    { id: 2, label: "Property", value: "property" },
+    { id: 1, label: t("project"), value: "project" },
+    { id: 2, label: t("property"), value: "property" },
   ],
   locations: [
     { id: 1, label: t("UAE"), value: "UAE" },
@@ -106,8 +106,8 @@ const FilterButton: React.FC<FilterButtonProps> = ({
             <View style={styles.contentSection}>
               <Text style={styles.sectionTitle}>{i18n.t("filter")}</Text>
               <View style={styles.dropdownContainer}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Text style={[styles.label, { marginRight: 7 }]}>
+                <View style={styles.dropdownTitle}>
+                  <Text style={styles.label}>
                     {t("type")}
                   </Text>
                   <View style={styles.cirlce}>
@@ -145,8 +145,8 @@ const FilterButton: React.FC<FilterButtonProps> = ({
               </View>
 
               <View style={styles.dropdownContainer}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Text style={[styles.label, { marginRight: 7 }]}>
+                <View style={styles.dropdownTitle}>
+                  <Text style={styles.label}>
                     {t("location")}
                   </Text>
                   <View style={styles.cirlce}>

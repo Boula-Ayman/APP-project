@@ -24,7 +24,8 @@
     "ownerShip": "Ownership"
   },
   "allProperties": {
-    "title": "All Properties"
+    "title": "All Properties",
+    "noOpportunitiesFound": "No opportunities found"
   },
   "emptyList": "Empty list",
   "filter": "Filter By",
@@ -127,7 +128,10 @@
     "passwordPlaceholder": "Password",
     "buttonText": "Sign In",
     "signUpText": "Don't have an account?",
-    "signUp": "Sign Up"
+    "signUp": "Sign Up",
+    "emailRequired": "Email is required.",
+    "invalidEmail": "Please enter a valid email address.",
+    "passwordRequired": "Password is required."
   },
   "signUp": {
     "title": "Sign Up",

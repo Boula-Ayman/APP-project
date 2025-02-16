@@ -113,6 +113,7 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
             }}
             contentContainerStyle={{
               gap: 20,
+              alignItems: "center",
             }}
             data={opportunities}
             renderItem={({ item }) => (
@@ -136,7 +137,7 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
               alignItems: "center",
             }}
           >
-            <Text>No opportunities found</Text>
+            <Text>{t("allProperties.noOpportunitiesFound")}</Text>
           </View>
         )}
       </View>

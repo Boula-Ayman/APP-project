@@ -165,6 +165,7 @@ const styles = StyleSheet.create({
     color: "#1A1A1A",
     marginTop: 24,
     marginBottom: 8,
+    textAlign: i18n.language === "ar" ? "right" : "left"
   },
   modalContainer: {
     flex: 1,

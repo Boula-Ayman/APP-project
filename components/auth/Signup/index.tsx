@@ -18,7 +18,7 @@ import { router } from "expo-router";
 import i18n from "../../../i18n/i18n";
 import styles from "./signupStyle";
 import Button from "@/commonComponent/button/Button";
-import Arrow from "../../../assets/icons/arrow.svg";
+import Arrow from "../../../assets/icons/Arrow.svg";
 import { Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
@@ -494,9 +494,11 @@ const SignUpPage: React.FC = () => {
                       <DateTimePicker
                         value={selectedDate}
                         mode="date"
-                        display="spinner"
+                        display="inline"
                         themeVariant="light"
                         onChange={handleDateChangeIos}
+                        locale={i18n.language}
+                        i18nIsDynamicList
                       />
                       <RNButton
                         title="Done"

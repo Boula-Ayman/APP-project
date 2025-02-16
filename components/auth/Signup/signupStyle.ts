@@ -40,12 +40,14 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontFamily: "Inter_600SemiBold",
     marginTop: 12,
+    textAlign: "left"
   },
   Name: {
     fontSize: 14,
     fontWeight: "600",
     fontFamily: "Inter_600SemiBold",
     marginBottom: 10,
+    textAlign: "left"
   },
   row: {
     flexDirection: "column",
@@ -184,8 +186,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    backgroundColor: "white",
-    padding: 20,
+    backgroundColor: "#8CC141",
+    padding: 20
   },
 });
 

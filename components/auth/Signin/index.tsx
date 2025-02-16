@@ -18,17 +18,18 @@ import i18n from "../../../i18n/i18n";
 import styles from "./signInStyle";
 import User1 from "../../../assets/icons/User1.svg";
 import Lock from "../../../assets/icons/Lock.svg";
-import Arrow from "../../../assets/icons/arrow.svg";
+import Arrow from "../../../assets/icons/Arrow.svg";
 import { useFonts } from "expo-font";
 import Checkbox from "expo-checkbox";
 import { setUser } from "@/src/auth/signin/userSlice";
 import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 const SignInSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string().required("Password is required"),
+  email: Yup.string().email(t("signIn.invalidEmail")).required(t("signIn.emailRequired")),
+  password: Yup.string().required(t("signIn.passwordRequired")),
 });
 
 const SigninPage: React.FC = () => {
@@ -93,7 +94,7 @@ const SigninPage: React.FC = () => {
             <Arrow style={{ transform: [{ rotate: "180deg" }] }} />
           )}
         </TouchableOpacity>
-        <ScrollView style={styles.scrollContent}>
+        <ScrollView style={styles.scrollContent} contentContainerStyle={{ alignItems: "center" }}>
           <View style={styles.innerContainer}>
             <Text style={styles.title}>{t("signIn.title")}</Text>
             <Formik

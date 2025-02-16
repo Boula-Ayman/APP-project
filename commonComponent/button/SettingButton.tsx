@@ -1,6 +1,7 @@
 import { StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 import React from 'react';
 import ProfileArrow from '../../assets/icons/ProfileArrow.svg';
+import i18n from '@/i18n/i18n';
 
 interface SettingButtonProps {
   icon: React.FC<any>;
@@ -29,7 +30,7 @@ const SettingButton = ({
         <Icon style={[styles.icon, iconColor && { color: iconColor }]} />
         <Text style={[styles.text, { color: textColor }]}>{title}</Text>
       </View>
-      {showArrow && <ProfileArrow style={styles.arrow} />}
+      {showArrow && <ProfileArrow style={{...styles.arrow, transform: i18n.language === 'ar' ? [{ rotate: '180deg' }] : []}} />}
     </TouchableOpacity>
   );
 };
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 16,
+    direction: i18n.language === "ar" ? "rtl" : "ltr"
   },
   withBorder: {
     borderBottomWidth: 1,

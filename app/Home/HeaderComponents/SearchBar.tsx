@@ -14,7 +14,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onChangeText }) => {
     <View style={styles.searchContainer}>
       <View style={styles.searchBar}>
         <TextInput
-          style={styles.searchInput}
+          style={{
+            ...styles.searchInput,
+            paddingRight: i18n.language === "ar" ? 45 : 10,
+            paddingLeft: i18n.language === "ar" ? 10 : 45,
+          }}
           placeholder={i18n.t("home.searchPlaceholder")}
           value={searchTerm}
           onChangeText={onChangeText}

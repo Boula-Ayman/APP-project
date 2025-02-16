@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#777",
     fontFamily: "Inter_500Medium",
+    textAlign: "left"
   },
 });
 

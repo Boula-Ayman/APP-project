@@ -80,7 +80,7 @@ const Profile = () => {
         <Text style={styles.AiText}>{user?.name || "Loading..."}</Text>
       </View>
 
-      <View style={styles.ProfileContainer}>
+      <View style={{...styles.ProfileContainer, direction: i18n.language === 'ar' ? 'rtl' : 'ltr'}}>
         <SettingButton
           icon={CardCoin}
           title={i18n.t("profile.myBookings")}
