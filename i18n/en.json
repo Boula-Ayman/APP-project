@@ -8,6 +8,7 @@
   "property": "Property",
   "project": "Project",
   "canceled": "Canceled",
+  "cancelled": "Canceled",
   "pending": "Pending",
   "confirmed": "Confirmed",
   "home": {
