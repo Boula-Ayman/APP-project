@@ -94,8 +94,10 @@ const HomeScreen: React.FC = ({}) => {
   ) => {
     try {
       const updatedFilters = { ...filters, ...newFilters };
+      if (updatedFilters.status === "all") {
+        updatedFilters.status = undefined;
+      }
       setFilters(updatedFilters);
-
       const response = await getFilteredOpportunities({
         ...updatedFilters,
       });
