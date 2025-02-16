@@ -94,7 +94,7 @@ const SigninPage: React.FC = () => {
             <Arrow style={{ transform: [{ rotate: "180deg" }] }} />
           )}
         </TouchableOpacity>
-        <ScrollView style={styles.scrollContent}>
+        <ScrollView style={styles.scrollContent} contentContainerStyle={{ alignItems: "center" }}>
           <View style={styles.innerContainer}>
             <Text style={styles.title}>{t("signIn.title")}</Text>
             <Formik

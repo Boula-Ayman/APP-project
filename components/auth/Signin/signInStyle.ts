@@ -12,8 +12,6 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-
-    padding: 17,
   },
   innerContainer: {
     flex: 1,
@@ -26,8 +24,8 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",
-    marginInline: 10,
     marginVertical: 40,
+    marginInline: 10,
   },
   title: {
     fontFamily: "Inter_600SemiBold",
@@ -45,6 +43,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     letterSpacing: 0.5,
     color: "#3A3D46",
+    textAlign: 'left'
   },
   input: {
     height: 56,
@@ -57,6 +56,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "Inter_500Medium",
     fontWeight: "500",
+    width: '100%',
   },
   iconContainer1: {},
   icon: {
