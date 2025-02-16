@@ -163,7 +163,10 @@
     "passwordPlaceholder": "كلمة المرور",
     "buttonText": "تسجيل الدخول",
     "signUpText": "ليس لديك حساب؟",
-    "signUp": "سجل"
+    "signUp": "سجل",
+    "emailRequired": "البريد الإلكتروني مطلوب.",
+    "invalidEmail": "الرجاء إدخال عنوان بريد إلكتروني صحيح.",
+    "passwordRequired": "كلمة المرور مطلوبة."
   },
   "verify": {
     "title": "تحقق",
