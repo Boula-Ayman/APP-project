@@ -12,6 +12,7 @@
   "property": "عقار",
   "project": "مشروع",
   "canceled": "ملغي",
+  "cancelled": "ملغي",
   "pending": "قيد الانتظار",
   "confirmed": "مؤكد",
   "home": {
@@ -116,7 +117,7 @@
   "shares": "اسهم",
   "commercial": "تجاري",
   "close": "اغلق",
-  "emptyLList": "قائمة فارغة",
+  "emptyList": "قائمة فارغة",
   "ownerShip": "ملكية",
   "filterResult": "نتيجة الفلتر",
 
@@ -191,6 +192,15 @@
     "appVersion": "إصدار التطبيق 100.2.1",
     "myBookings": "حجوزاتي"
   },
+  "user": {
+    "validation": {
+      "dob": {
+        "required": "تاريخ الميلاد مطلوب",
+        "future": "لا يمكن أن يكون تاريخ الميلاد في المستقبل",
+        "age": "يجب أن يكون عمرك على الأقل 18 عامًا"
+      }
+    }
+  },
   "settings": {
     "title": "الإعدادات",
     "soundEffects": "المؤثرات الصوتية",
@@ -231,7 +241,8 @@
     "enterMobileNumber": "أدخل رقم هاتفك المحمول",
     "english": "الانجليزية",
     "arabic": "العربية",
-    "selectLanguage": "اختر اللغة"
+    "selectLanguage": "اختر اللغة",
+    "invalidPhoneNumber": "Please enter a valid phone number."
   },
   "sliderSignIn": "تسجيل الدخول",
   "sliderSignUp": "إنشاء حساب",

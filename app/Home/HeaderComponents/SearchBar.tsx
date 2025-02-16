@@ -22,14 +22,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onChangeText }) => {
           placeholder={i18n.t("home.searchPlaceholder")}
           value={searchTerm}
           onChangeText={onChangeText}
+          placeholderTextColor={"#00000091"}
         />
-        <MagnifyingGlass 
-            style={{
-                ...styles.searchIcon, 
-                left: i18n.language === "ar" ? "auto" : 16,
-                right: i18n.language === "ar" ? 16 : "auto"
-            }}
-            
+        <MagnifyingGlass
+          style={{
+            ...styles.searchIcon,
+            left: i18n.language === "ar" ? "auto" : 16,
+            right: i18n.language === "ar" ? 16 : "auto",
+          }}
         />
       </View>
     </View>

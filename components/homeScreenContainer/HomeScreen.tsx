@@ -16,6 +16,7 @@ import i18n from "@/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 import { StatusBar } from "expo-status-bar";
 import { PROPERTIES_STATUS, PropertiesStatusKeys } from "@/constants/Enums";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeScreen: React.FC = ({}) => {
   const notifications = 0;
@@ -44,6 +45,31 @@ const HomeScreen: React.FC = ({}) => {
     }
   }, [data]);
 
+  useEffect(() => {
+    const loadFilters = async () => {
+      try {
+        const savedFilters = await AsyncStorage.getItem("filters");
+        if (savedFilters) {
+          setFilters(JSON.parse(savedFilters));
+        }
+      } catch (error) {
+        console.error("Failed to load filters", error);
+      }
+    };
+    loadFilters();
+  }, []);
+
+  useEffect(() => {
+    const saveFilters = async () => {
+      try {
+        await AsyncStorage.setItem("filters", JSON.stringify(filters));
+      } catch (error) {
+        console.error("Failed to save filters", error);
+      }
+    };
+    saveFilters();
+  }, [filters]);
+
   const handleSearch = (newSearchTerm: string) => {
     setSearchTerm(newSearchTerm);
     const filteredOpportunities = data.data.filter((item: Opportunity) => {
@@ -67,16 +93,13 @@ const HomeScreen: React.FC = ({}) => {
     }>
   ) => {
     try {
-      setFilters(newFilters);
-      let checkedFilters = newFilters;
-      if (checkedFilters.status === "all") {
-        checkedFilters = {
-          country: checkedFilters.country,
-          type: checkedFilters.type,
-        };
+      const updatedFilters = { ...filters, ...newFilters };
+      if (updatedFilters.status === "all") {
+        updatedFilters.status = undefined;
       }
+      setFilters(updatedFilters);
       const response = await getFilteredOpportunities({
-        ...checkedFilters,
+        ...updatedFilters,
       });
 
       setOpportunities(response.data.data);
@@ -125,7 +148,11 @@ const HomeScreen: React.FC = ({}) => {
               }}
             >
               <SearchBar searchTerm={searchTerm} onChangeText={handleSearch} />
-              <FilterButton onFilterChange={handleFilterChange} />
+              <FilterButton
+                onFilterChange={handleFilterChange}
+                filters={filters}
+                clearFilters={() => setFilters({})}
+              />
             </View>
 
             <FilterButtons
@@ -134,7 +161,6 @@ const HomeScreen: React.FC = ({}) => {
                 newStatus: (typeof PROPERTIES_STATUS)[PropertiesStatusKeys]
               ) =>
                 handleFilterChange({
-                  ...filters,
                   status: newStatus,
                 })
               }
