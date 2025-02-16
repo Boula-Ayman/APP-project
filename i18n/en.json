@@ -23,7 +23,8 @@
     "ownerShip": "Owner Ship"
   },
   "allProperties": {
-    "title": "All Properties"
+    "title": "All Properties",
+    "noOpportunitiesFound": "No opportunities found"
   },
   "filter": "Filter By",
   "bedrooms": "{{count}} Bedroom",

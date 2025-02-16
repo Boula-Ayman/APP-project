@@ -36,7 +36,8 @@
     "opportunity_type": "مشروع"
   },
   "allProperties": {
-    "title": "جميع العقارات"
+    "title": "جميع العقارات",
+    "noOpportunitiesFound": "لا يوجد عقارات متاحة"
   },
   "filter": "الفلتر",
   "bedroomsam": "غرف النوم",
