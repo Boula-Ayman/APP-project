@@ -62,7 +62,7 @@ const PortfolioPage: React.FC = () => {
         start={{ x: 0, y: 1 }}
         end={{ x: 0, y: 0 }}
       />
-      <ScrollView style={{...styles.scrollContainer, direction: i18n.language === "ar" ? "rtl" : "ltr" }}>
+      <ScrollView style={{...styles.scrollContainer, direction: i18n.language === "ar" ? "rtl" : "ltr" }} contentContainerStyle={{paddingHorizontal: 16, paddingVertical: 24}}>
         <Text style={styles.title}>{t("portfolio.title")}</Text>
 
         <PortfolioStats
@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F5F5F5",
+    alignItems: "center"
   },
   gradient: {
     height: 305,
@@ -129,8 +130,8 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 20,
+    marginHorizontal: "auto",
+    width: "100%",
   },
   title: {
     fontSize: 26,
@@ -139,12 +140,14 @@ const styles = StyleSheet.create({
     color: "#000000",
     marginBottom: 20,
     paddingTop: 35,
+    textAlign: "left"
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 8,
     marginLeft: 10,
+    textAlign: "left"
   },
   sectionSubtitle: {
     fontFamily: "Inter",
