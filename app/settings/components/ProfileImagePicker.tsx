@@ -1,8 +1,9 @@
-import React from 'react';
-import { TouchableOpacity, View, Text, Image, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { TouchableOpacity, View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import i18n from '../../../i18n/i18n';
 import Toast from 'react-native-toast-message';
+import { useImageUpload } from '../hooks/useImageUpload';
 
 interface ProfileImagePickerProps {
   value: string | null;
@@ -10,6 +11,9 @@ interface ProfileImagePickerProps {
 }
 
 export const ProfileImagePicker: React.FC<ProfileImagePickerProps> = ({ value, onChange }) => {
+  const [isUploading, setIsUploading] = useState(false);
+  const { compressAndUpload } = useImageUpload();
+
   const handleImagePick = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -20,20 +24,24 @@ export const ProfileImagePicker: React.FC<ProfileImagePickerProps> = ({ value, o
       });
 
       if (!result.canceled) {
-        onChange(result.assets[0].uri);
+        setIsUploading(true);
+        const imageUrl = await compressAndUpload(result.assets[0].uri);
+        onChange(imageUrl);
       }
     } catch (error) {
-      console.error('Error picking image:', error);
+      console.error('Error picking/uploading image:', error);
       Toast.show({
         type: 'error',
         text1: i18n.t('common.error'),
         text2: i18n.t('settings.photoSelectError'),
       });
+    } finally {
+      setIsUploading(false);
     }
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={handleImagePick}>
+    <TouchableOpacity style={styles.container} onPress={handleImagePick} disabled={isUploading}>
       <View>
         <View style={[styles.placeholder, value && { display: 'none' }]}>
           <Text style={styles.placeholderText}>{i18n.t('settings.selectPhoto')}</Text>
@@ -43,7 +51,11 @@ export const ProfileImagePicker: React.FC<ProfileImagePickerProps> = ({ value, o
           style={[styles.photo, !value && { display: 'none' }]} 
         />
         <View style={styles.overlay}>
-          <Text style={styles.placeholderText}>{i18n.t('settings.selectPhoto')}</Text>
+          {isUploading ? (
+            <ActivityIndicator color="#FFFFFF" size="large" />
+          ) : (
+            <Text style={styles.placeholderText}>{i18n.t('settings.selectPhoto')}</Text>
+          )}
         </View>
       </View>
       
