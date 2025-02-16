@@ -9,7 +9,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useLocalSearchParams, router } from "expo-router";
-import type { TransformedBookingData } from "@/src/api/bookingsApiSlice";
 import CustomHeader from "@/commonComponent/Header/CustomHeader";
 import { format } from "date-fns";
 import Tag from "@/commonComponent/Tag/Tag";
