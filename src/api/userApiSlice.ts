@@ -17,6 +17,16 @@ export interface UpdatePasswordData {
   new_password: string;
 }
 
+interface GetSignedUrlRequest {
+  original_name: string;
+  size: number;
+  mime_type: string;
+}
+
+interface GetSignedUrlResponse {
+  data: string;
+}
+
 const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getCurrentUserProfile: builder.query<ResponseData<User>, void>({
@@ -44,11 +54,19 @@ const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getSignedUrl: builder.mutation<GetSignedUrlResponse, GetSignedUrlRequest>({
+      query: (body) => ({
+        url: "/users/signed-urls",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
 export const { 
   useGetCurrentUserProfileQuery,
   useUpdateUserProfileMutation,
-  useUpdatePasswordMutation
+  useUpdatePasswordMutation,
+  useGetSignedUrlMutation
 } = userApiSlice; 
