@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 16,
+    direction: i18n.language === "ar" ? "rtl" : "ltr"
   },
   withBorder: {
     borderBottomWidth: 1,
