@@ -1,20 +1,13 @@
 import React, { useRef } from "react";
-import { Animated, View, Dimensions, Pressable, Text } from "react-native";
+import { Animated, View, Pressable, Text } from "react-native";
 import styles from "./CardListStyle";
 import Card from "../../app/Home/CardListoportunity/Card";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 import { Link } from "expo-router";
-import {
-  useGetWishListQuery,
-  usePostWishListMutation,
-  useRemoveWishListMutation,
-} from "@/src/wishList/wishListApiSlice";
-
-import { useSelector, useDispatch } from "react-redux";
+import { useGetWishListQuery } from "@/src/wishList/wishListApiSlice";
 
 import i18n from "@/i18n/i18n";
 
-const { width } = Dimensions.get("window");
 const CARD_WIDTH = 284;
 const SPACING = 25;
 
@@ -25,32 +18,7 @@ interface CardListProps {
 const CardList: React.FC<CardListProps> = ({ opportunities }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
 
-  const { data: wishList, refetch } = useGetWishListQuery({});
-
-  const [postWishList] = usePostWishListMutation();
-  const [removeWishList] = useRemoveWishListMutation();
-
-  const handleLoveIconPress = async (id: number, item: Opportunity) => {
-    const isLiked = wishList?.data?.some(
-      (likedItem: Opportunity) => likedItem.id === id
-    );
-
-    try {
-      if (isLiked) {
-        await removeWishList({ id }).unwrap();
-      } else {
-        await postWishList({ id }).unwrap();
-      }
-    } catch (error) {
-      console.error("Failed to update wishlist:", error);
-      if (error instanceof Error) {
-        console.error("Error message:", error.message);
-        console.error("Error stack:", error.stack);
-      }
-    } finally {
-      refetch();
-    }
-  };
+  const { data: wishList } = useGetWishListQuery({});
 
   return (
     <View style={styles.container}>
@@ -60,7 +28,7 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
           keyExtractor={(item) => item.id.toString()}
           horizontal
           showsHorizontalScrollIndicator={false}
-          snapToInterval={CARD_WIDTH + SPACING}
+          snapToInterval={CARD_WIDTH}
           decelerationRate="fast"
           style={{
             direction: "ltr",
