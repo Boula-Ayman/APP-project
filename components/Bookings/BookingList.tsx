@@ -5,6 +5,7 @@ import type { Booking } from '@/src/api/bookingsApiSlice';
 import PropertyCard from '@/commonComponent/PropertyCard/PropertyCard';
 import { router } from 'expo-router';
 import { isPast } from 'date-fns';
+import i18n from '@/i18n/i18n';
 
 interface BookingListProps {
   activeTab: 'upcoming' | 'past';
@@ -43,17 +44,22 @@ const BookingList: React.FC<BookingListProps> = ({ activeTab }) => {
     return activeTab === 'upcoming' ? !isPast(fromDate) : isPast(fromDate);
   });
 
-  const renderBookingCard = ({ item }) => (
-    <PropertyCard
-      item={item.propertyCardData}
-      isLiked={false}
-      onLoveIconPress={() => {}}
-      showPriceSection={false}
-      showFeatures={false}
-      showStatus={true}
-      onPress={() => handleBookingPress(item.booking)}
-    />
-  );
+  const renderBookingCard = ({ item }) => {
+      return (
+        <PropertyCard
+          item={{
+            ...item.propertyCardData, 
+            location: i18n.language === "ar" ? item.propertyCardData.location_ar : item.propertyCardData.location_en,
+            title: i18n.language === "ar" ? item.propertyCardData.title_ar : item.propertyCardData.title_en
+          }}
+          isLiked={false}
+          onLoveIconPress={() => {}}
+          showPriceSection={false}
+          showFeatures={false}
+          showStatus={true}
+          onPress={() => handleBookingPress(item.booking)}
+      />)
+  }
 
   return (
     <FlatList

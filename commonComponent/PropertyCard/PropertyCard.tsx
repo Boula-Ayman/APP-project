@@ -87,7 +87,7 @@ const PropertyCard: React.FC<CardProps> = ({
 
   const renderPropertyInfo = () => {
     return (
-      <>
+      <View style={{display: 'flex', flexDirection: "column", alignItems: i18n.language === "ar" ? 'flex-end' : 'flex-start'}}>
         <Text style={styles.cardTitle}>{item.title}</Text>
         <View style={styles.locationSection}>
           <AntDesign
@@ -98,7 +98,7 @@ const PropertyCard: React.FC<CardProps> = ({
           />
           <Text style={styles.cardLocation}>{item.location}</Text>
         </View>
-      </>
+      </View>
     );
   };
 
@@ -149,7 +149,7 @@ const PropertyCard: React.FC<CardProps> = ({
           }}
           style={styles.cardImage}
         />
-        <View style={styles.overlay}>
+        <View style={{...styles.overlay, left: i18n.language === "ar" ? 'auto' : 15, right: i18n.language === "ar" ? 15 : 'auto'}}>
           <Tag
             text={showStatus ? t(`${item.status}`) || "" : t(`${item.opportunity_type}`) || ""}
             type={showStatus ? "status" : "property_type"}
@@ -196,7 +196,6 @@ const styles = StyleSheet.create({
   overlay: {
     position: "absolute",
     top: 25,
-    left: 15,
     paddingHorizontal: 15,
     flexDirection: "row",
     alignItems: "center",
@@ -241,7 +240,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   locationSection: {
-    flexDirection: "row",
+    flexDirection: i18n.language === "ar" ? "row-reverse" : "row",
     alignItems: "center",
     marginBottom: 12,
   },

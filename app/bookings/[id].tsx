@@ -9,9 +9,9 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useLocalSearchParams, router } from "expo-router";
-import type { TransformedBookingData } from "@/src/api/bookingsApiSlice";
 import CustomHeader from "@/commonComponent/Header/CustomHeader";
 import { format } from "date-fns";
+import { ar, enUS } from "date-fns/locale";
 import Tag from "@/commonComponent/Tag/Tag";
 import CalendarModal from "@/components/Bookings/CalendarModal";
 import BookingActions from "@/components/Bookings/BookingActions";
@@ -19,6 +19,8 @@ import useBooking from "@/components/Bookings/useBooking";
 import { useTranslation } from "react-i18next";
 import { noImagePlaceHolder } from "@/utils/noImagePlaceHolder";
 import { useGetOpportunityQuery } from "@/src/api/opportunitiesApiSlice";
+import i18n from "@/i18n/i18n";
+import { localizeNumber } from "@/utils/numbers";
 
 const BookingDetailsScreen = () => {
   const { t } = useTranslation();
@@ -107,7 +109,13 @@ const BookingDetailsScreen = () => {
       if (isNaN(date.getTime())) {
         throw new Error("Invalid date");
       }
-      return format(date, "dd MMMM yyyy");
+      return format(
+        date, 
+        "dd MMMM yyyy", 
+        {
+            locale: i18n.language === "ar" ? ar : enUS
+        }
+        );
     } catch (error) {
       console.error("Error formatting date:", dateString, error);
       return "Invalid date";
@@ -140,16 +148,14 @@ const BookingDetailsScreen = () => {
               <Text style={styles.dateRange}>
                 {formatDate(booking.from)} - {formatDate(booking.to)}
               </Text>
-
-              <Tag
-                text={
-                  booking.status.charAt(0).toUpperCase() +
-                  booking.status.slice(1)
-                }
-                type="status"
-                status={booking.status as "confirmed" | "pending" | "cancelled"}
-                containerStyle={styles.statusContainer}
-              />
+              <View style={{alignSelf: i18n.language === "ar" ? 'flex-end' : 'flex-start'}}>
+                <Tag
+                  text={t(booking.status)}
+                  type="status"
+                  status={booking.status as "confirmed" | "pending" | "cancelled"}
+                  containerStyle={styles.statusContainer}
+                />
+              </View>
             </View>
 
             <View style={styles.propertyCard}>
@@ -163,14 +169,14 @@ const BookingDetailsScreen = () => {
               />
               <View style={styles.propertyDetails}>
                 <Text style={styles.propertyName}>
-                  {booking.property.title_en}
+                  {i18n.language === "ar" ? booking.property.title_ar : booking.property.title_en}
                 </Text>
                 <Text style={styles.location}>
-                  {booking.property.location_en}
+                  {i18n.language === "ar" ? booking.property.location_ar : booking.property.location_en}
                 </Text>
                 <Text style={styles.bookingRef}>
                   {t("bookings.bookingId", { id: "" }).split("#")[0]}
-                  <Text style={{ color: "#8BC240" }}>#{booking.id}</Text>
+                  <Text style={{ color: "#8BC240" }}>#{localizeNumber(booking.id, i18n.language)}</Text>
                 </Text>
               </View>
             </View>
@@ -186,7 +192,7 @@ const BookingDetailsScreen = () => {
             <View style={styles.nightsContainer}>
               <Text style={styles.nightsText}>
                 <Text style={{ color: "#8BC240" }}>
-                  {booking.number_of_days}
+                  {localizeNumber(booking.number_of_days, i18n.language)}
                 </Text>{" "}
                 {t("bookings.nights", { count: 1 })}
               </Text>
@@ -243,14 +249,16 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_600SemiBold",
     color: "#333",
     marginBottom: 12,
+    textAlign: i18n.language === "ar" ? "right" : "left",
   },
   statusContainer: {
     alignSelf: "flex-start",
   },
   propertyCard: {
     paddingHorizontal: 4,
-    flexDirection: "row",
+    flexDirection: i18n.language === "ar" ? "row-reverse" : "row",
     marginBottom: 24,
+    gap: 12,
   },
   propertyImage: {
     width: 100,
@@ -261,6 +269,7 @@ const styles = StyleSheet.create({
   propertyDetails: {
     flex: 1,
     justifyContent: "center",
+    alignItems: i18n.language === "ar" ? "flex-end" : "flex-start",
   },
   propertyName: {
     fontSize: 16,
@@ -292,6 +301,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Inter_500Medium",
     color: "#333",
+    textAlign: i18n.language === "ar" ? "right" : "left",
   },
   policyContainer: {
     backgroundColor: "#fff",
@@ -304,12 +314,14 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_600SemiBold",
     color: "#333",
     marginBottom: 8,
+    textAlign: i18n.language === "ar" ? "right" : "left",
   },
   policyText: {
     fontSize: 14,
     fontFamily: "Inter_400Regular",
     color: "#666",
     lineHeight: 20,
+    textAlign: i18n.language === "ar" ? "right" : "left",
   },
 });
 
