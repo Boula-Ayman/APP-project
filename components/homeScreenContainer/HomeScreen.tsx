@@ -61,7 +61,6 @@ const HomeScreen: React.FC = ({}) => {
 
   useEffect(() => {
     const saveFilters = async () => {
-      console.log(filters);
       try {
         await AsyncStorage.setItem("filters", JSON.stringify(filters));
       } catch (error) {
@@ -94,16 +93,11 @@ const HomeScreen: React.FC = ({}) => {
     }>
   ) => {
     try {
-      setFilters(newFilters);
-      let checkedFilters = newFilters;
-      if (checkedFilters.status === "all") {
-        checkedFilters = {
-          country: checkedFilters.country,
-          type: checkedFilters.type,
-        };
-      }
+      const updatedFilters = { ...filters, ...newFilters };
+      setFilters(updatedFilters);
+
       const response = await getFilteredOpportunities({
-        ...checkedFilters,
+        ...updatedFilters,
       });
 
       setOpportunities(response.data.data);
@@ -152,7 +146,11 @@ const HomeScreen: React.FC = ({}) => {
               }}
             >
               <SearchBar searchTerm={searchTerm} onChangeText={handleSearch} />
-              <FilterButton onFilterChange={handleFilterChange} />
+              <FilterButton
+                onFilterChange={handleFilterChange}
+                filters={filters}
+                clearFilters={() => setFilters({})}
+              />
             </View>
 
             <FilterButtons
@@ -161,7 +159,6 @@ const HomeScreen: React.FC = ({}) => {
                 newStatus: (typeof PROPERTIES_STATUS)[PropertiesStatusKeys]
               ) =>
                 handleFilterChange({
-                  ...filters,
                   status: newStatus,
                 })
               }
