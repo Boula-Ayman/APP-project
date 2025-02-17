@@ -11,7 +11,7 @@ import {
   Modal,
   Button as RNButton,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomHeader from "../../commonComponent/Header/CustomHeader";
 import DropDownPicker from "react-native-dropdown-picker";
 import i18n from "../../i18n/i18n";
@@ -55,13 +55,22 @@ const accountInfoValidationSchema = Yup.object().shape({
 });
 
 const AccountInfoScreen = () => {
-  const { isLoadingProfile, isUpdating, getInitialValues, handleSubmit } =
-    useAccountForm();
+  const {
+    isLoadingProfile,
+    isUpdating,
+    getInitialValues,
+    handleSubmit,
+    refetch,
+  } = useAccountForm();
   const [genderOpen, setGenderOpen] = useState(false);
   const genderItems = [
     { label: i18n.t("settings.male"), value: "male" },
     { label: i18n.t("settings.female"), value: "female" },
   ];
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   if (isLoadingProfile) {
     return (
