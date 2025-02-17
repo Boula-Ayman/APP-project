@@ -159,7 +159,14 @@ const PriceSection = ({
         style={styles.price}
       />
 
-      <View style={{ display: "flex", flexDirection: i18n.language === "ar" ? "row-reverse" : "row", gap: 3, alignItems: "center"}}>
+      <View
+        style={{
+          display: "flex",
+          flexDirection: i18n.language === "ar" ? "row-reverse" : "row",
+          gap: 3,
+          alignItems: "center",
+        }}
+      >
         <AppText text={i18n.t("shares") + " "} style={styles.shares} />
         <AppText
           text={`${
@@ -580,13 +587,13 @@ const NightsPerYearSection = ({ data, sliderValue }) => {
       ) : (
         <>
           <TotalReturnCard data={data} />
-          {data?.data?.number_of_nights ?
+          {data?.data?.number_of_nights ? (
             data?.data?.opportunity_type === "project" ? (
               <TotalRentIncome data={data} />
             ) : data?.data?.opportunity_type === "property" ? (
               <HaveNightsCard data={data} />
             ) : null
-          : null}
+          ) : null}
           <EstimatedSalesRangeCard data={data} />
         </>
       )}
@@ -614,7 +621,6 @@ const CardDetails = () => {
     data,
     isLoading,
     isError,
-    error,
     refetch: queryRefetch,
   } = useGetOpportunityQuery(
     { id },
@@ -631,6 +637,10 @@ const CardDetails = () => {
       queryRefetch();
     }
   }, [isCalendarModalVisible]);
+
+  useEffect(() => {
+    queryRefetch();
+  }, []);
 
   const handleGoogleClick = () => {
     Linking.openURL("https://www.google.com");
@@ -1096,7 +1106,7 @@ const CardDetails = () => {
                       borderRadius: 10,
                       backgroundColor: "white",
                       borderColor: "#E7EAE9",
-                      borderWidth: 1
+                      borderWidth: 1,
                     },
                   ]}
                   onPress={() => setIsWantToSellModal(false)}
