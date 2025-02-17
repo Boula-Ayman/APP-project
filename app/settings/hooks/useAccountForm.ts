@@ -128,7 +128,7 @@ export const useAccountForm = () => {
           let serverValue = updatedProfile[key];
 
           if (key === "birth_date" && typeof serverValue === "string") {
-            serverValue = new Date(serverValue).toISOString().split("T")[0];
+            serverValue = new Date(serverValue)?.toISOString()?.split("T")[0];
             value = String(value);
           }
 
@@ -151,5 +151,6 @@ export const useAccountForm = () => {
     isUpdating,
     getInitialValues,
     handleSubmit,
+    refetch,
   };
 };

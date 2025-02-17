@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Linking,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { useLogoutMutation } from "../../src/auth/logout/logoutApiSlice";
 import { useGetCurrentUserProfileQuery } from "../../src/api/userApiSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -24,17 +24,23 @@ import { clearUser } from "@/src/auth/signin/userSlice";
 import Constants from "expo-constants";
 
 const Profile = () => {
-  const [postLogout, { isLoading, isSuccess, isError, error }] =
-    useLogoutMutation();
-  
-  const { data: userData, isLoading: isLoadingProfile } = useGetCurrentUserProfileQuery(undefined, {
+  const [postLogout] = useLogoutMutation();
+
+  const {
+    data: userData,
+    isLoading: isLoadingProfile,
+    refetch,
+  } = useGetCurrentUserProfileQuery(undefined, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,
   });
+  useEffect(() => {
+    refetch();
+  }, []);
 
   const dispatch = useDispatch();
   const user = userData?.data;
-  
+
   const handleLogout = async () => {
     try {
       const token = await AsyncStorage.getItem("access_token");
@@ -44,7 +50,6 @@ const Profile = () => {
 
       router.push("/Welcome");
       dispatch(clearUser());
-
     } catch (err) {
       console.error("Failed to logout:", err);
       if (err && typeof err === "object" && "data" in err) {
@@ -70,17 +75,19 @@ const Profile = () => {
         {isLoadingProfile ? (
           <UserPicPlaceholder style={styles.Ai} />
         ) : user?.image_url ? (
-          <Image
-            source={{ uri: user.image_url }}
-            style={styles.profileImage}
-          />
+          <Image source={{ uri: user.image_url }} style={styles.profileImage} />
         ) : (
           <UserPicPlaceholder style={styles.Ai} />
         )}
         <Text style={styles.AiText}>{user?.name || "Loading..."}</Text>
       </View>
 
-      <View style={{...styles.ProfileContainer, direction: i18n.language === 'ar' ? 'rtl' : 'ltr'}}>
+      <View
+        style={{
+          ...styles.ProfileContainer,
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
+        }}
+      >
         <SettingButton
           icon={CardCoin}
           title={i18n.t("profile.myBookings")}
