@@ -17,6 +17,7 @@ export interface Property {
   title_ar: string;
   location_en: string;
   location_ar: string;
+  area: number;
 }
 
 export interface Customer {
@@ -81,6 +82,7 @@ const transformBookingToPropertyCard = (booking: Booking): TransformedBookingDat
       title_en: booking.property.title_en,
       location_ar: booking.property.location_ar,
       location_en: booking.property.location_en,
+      area: booking.property.area,
       status: booking.status
     }
   };

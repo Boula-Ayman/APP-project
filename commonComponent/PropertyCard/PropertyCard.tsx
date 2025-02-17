@@ -22,8 +22,10 @@ export interface Opportunity {
   currency?: string;
   available_shares?: number;
   number_of_shares?: number;
-  title: string;
-  location: string;
+  title_en: string;
+  title_ar: string;
+  location_en: string;
+  location_ar: string;
   number_of_bedrooms?: number;
   number_of_bathrooms?: number;
   area: number;
@@ -88,7 +90,7 @@ const PropertyCard: React.FC<CardProps> = ({
   const renderPropertyInfo = () => {
     return (
       <View style={{display: 'flex', flexDirection: "column", alignItems: i18n.language === "ar" ? 'flex-end' : 'flex-start'}}>
-        <Text style={styles.cardTitle}>{item.title}</Text>
+        <Text style={styles.cardTitle}>{i18n.language === "ar" ? item.title_ar : item.title_en}</Text>
         <View style={styles.locationSection}>
           <AntDesign
             name="enviromento"
@@ -96,7 +98,7 @@ const PropertyCard: React.FC<CardProps> = ({
             color="black"
             style={styles.location}
           />
-          <Text style={styles.cardLocation}>{item.location}</Text>
+          <Text style={styles.cardLocation}>{i18n.language === "ar" ? item.location_ar : item.location_en}</Text>
         </View>
       </View>
     );
