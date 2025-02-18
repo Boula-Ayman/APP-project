@@ -450,6 +450,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     width: "100%",
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#061C27",
   },
   buttonText: {
     color: "#FFFFFF",
