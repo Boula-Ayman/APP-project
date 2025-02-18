@@ -2,15 +2,18 @@ import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, SafeAreaView } from "react-native";
 import SearchBar from "../Home/HeaderComponents/SearchBar";
 import FilterButton from "../Home/HeaderComponents/FilterButton";
-import { useGetOpportunitiesQuery, useLazyGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
+import {
+  useGetOpportunitiesQuery,
+  useLazyGetOpportunitiesQuery,
+} from "@/src/api/opportunitiesApiSlice";
 import Card from "../Home/CardListoportunity/Card";
-
 import styles from "./indexStyle";
 import PageHeader from "@/components/page/header";
 import { useTranslation } from "react-i18next";
 import { PROPERTIES_STATUS, PropertiesStatusKeys } from "@/constants/Enums";
 import i18n from "@/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
+import { useGetWishListQuery } from "@/src/wishList/wishListApiSlice";
 
 interface FilterScreenProps {
   searchTerm: string;
@@ -18,22 +21,23 @@ interface FilterScreenProps {
 }
 
 const ViewAll: React.FC<FilterScreenProps> = ({}) => {
-    const [likedItems, setLikedItems] = useState<number[]>([]);
-    const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
-    const [filters, setFilters] = useState<Partial<{
-      type: string | null;
-      country: string | null;
-      status: typeof PROPERTIES_STATUS[PropertiesStatusKeys];
-    }> | null>(null);
-    const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+  const { data: wishList, refetch } = useGetWishListQuery({});
 
-    const { data, error, isLoading } = useGetOpportunitiesQuery(
-        { ...filters },
-        {
-            refetchOnMountOrArgChange: true,
-        }
-    );
+  const [filters, setFilters] = useState<Partial<{
+    type: string | null;
+    country: string | null;
+    status: (typeof PROPERTIES_STATUS)[PropertiesStatusKeys];
+  }> | null>(null);
+  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+
+  const { data, error, isLoading } = useGetOpportunitiesQuery(
+    { ...filters },
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
   const [getFilteredOpportunities] = useLazyGetOpportunitiesQuery();
 
@@ -45,61 +49,54 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
 
   const { t } = useTranslation();
 
-  const handleLoveIconPress = (id: number) => {
-    setLikedItems((prev) => {
-      const newLikedItems = prev.includes(id)
-        ? prev.filter((item) => item !== id)
-        : [...prev, id];
-      return newLikedItems;
-    });
-  };
-
   const handleSearch = (newSearchTerm: string) => {
     setSearchTerm(newSearchTerm);
     const filteredOpportunities = data.data.filter((item: Opportunity) => {
-        const title = i18n.language === "ar" ? item.title_ar : item.title_en;
-        const location =
-            i18n.language === "ar" ? item.location_ar : item.location_en;
-        return (
-            title.toLowerCase().includes(newSearchTerm.toLowerCase()) ||
-            location.toLowerCase().includes(newSearchTerm.toLowerCase())
-        );
+      const title = i18n.language === "ar" ? item.title_ar : item.title_en;
+      const location =
+        i18n.language === "ar" ? item.location_ar : item.location_en;
+      return (
+        title.toLowerCase().includes(newSearchTerm.toLowerCase()) ||
+        location.toLowerCase().includes(newSearchTerm.toLowerCase())
+      );
     });
 
     setOpportunities(filteredOpportunities);
-  }
+  };
 
-  const handleFilterChange = async (newFilters: Partial<{
-    type: string | null;
-    country: string | null;
-    status: typeof PROPERTIES_STATUS[PropertiesStatusKeys];
-  }>) => {
-        try {
-            setFilters(newFilters)
-            let checkedFilters = newFilters;
-            if(checkedFilters.status === 'all') {
-                checkedFilters = {
-                    country: checkedFilters.country,
-                    type: checkedFilters.type,
-                }
-            }
-            const response = await getFilteredOpportunities({
-               ...checkedFilters
-            });
-    
-            setOpportunities(response.data.data);
-        } catch (error) {
-            // TODO: show error messages
-        }
+  const handleFilterChange = async (
+    newFilters: Partial<{
+      type: string | null;
+      country: string | null;
+      status: (typeof PROPERTIES_STATUS)[PropertiesStatusKeys];
+    }>
+  ) => {
+    try {
+      setFilters(newFilters);
+      let checkedFilters = newFilters;
+      if (checkedFilters.status === "all") {
+        checkedFilters = {
+          country: checkedFilters.country,
+          type: checkedFilters.type,
+        };
+      }
+      const response = await getFilteredOpportunities({
+        ...checkedFilters,
+      });
+
+      setOpportunities(response.data.data);
+    } catch (error) {
+      // TODO: show error messages
+    }
   };
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-        <PageHeader title={t("allProperties.title")} />
-        <View style={styles.searchContainer}>
-            <SearchBar searchTerm={searchTerm} onChangeText={handleSearch} />
-            <FilterButton onFilterChange={handleFilterChange} />
-        </View>
+      <PageHeader title={t("allProperties.title")} />
+      <View style={styles.searchContainer}>
+        <SearchBar searchTerm={searchTerm} onChangeText={handleSearch} />
+        <FilterButton onFilterChange={handleFilterChange} />
+      </View>
 
       <View style={styles.container}>
         {isLoading ? (
@@ -109,20 +106,22 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
         ) : opportunities.length > 0 ? (
           <FlatList
             style={{
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                height: 'auto'
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              height: "auto",
             }}
             contentContainerStyle={{
-                gap: 20,
+              gap: 20,
+              alignItems: "center",
             }}
             data={opportunities}
             renderItem={({ item }) => (
               <Card
                 item={item}
-                isLiked={likedItems.includes(item.id)}
-                onLoveIconPress={() => handleLoveIconPress(item.id)}
+                isLiked={wishList?.data?.some(
+                  (likedItem: Opportunity) => likedItem.id === item.id
+                )}
               />
             )}
             keyExtractor={(item) => item.id.toString()}
@@ -130,14 +129,16 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
             showsVerticalScrollIndicator={false}
           />
         ) : (
-            <View style={{
-                marginTop: '10%',
-                marginInline: 'auto',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-                <Text>No opportunities found</Text>
-            </View>
+          <View
+            style={{
+              marginTop: "10%",
+              marginInline: "auto",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text>{t("allProperties.noOpportunitiesFound")}</Text>
+          </View>
         )}
       </View>
     </SafeAreaView>

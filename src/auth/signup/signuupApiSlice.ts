@@ -3,10 +3,10 @@ import apiSlice from "../../api/apiSlice";
 const signuupApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     postSignUp: builder.mutation({
-      query: (formData) => ({
+      query: (body) => ({
         url: "/auth/signup",
         method: "POST",
-        body: formData,
+        body: body,
       }),
     }),
   }),

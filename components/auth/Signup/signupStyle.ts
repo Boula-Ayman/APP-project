@@ -13,13 +13,13 @@ const styles = StyleSheet.create({
   backContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
+    marginTop: 40,
   },
   backButton: {
     width: 48,
     height: 48,
-    top: 25,
-    right: 58,
+
     backgroundColor: "#F6F6F6",
     borderRadius: 100,
     justifyContent: "center",
@@ -29,8 +29,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     fontFamily: "Inter_600SemiBold",
-    top: 40,
-    left: 15,
+
     color: "gray",
   },
   one: {
@@ -41,12 +40,14 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontFamily: "Inter_600SemiBold",
     marginTop: 12,
+    textAlign: "left"
   },
   Name: {
     fontSize: 14,
     fontWeight: "600",
     fontFamily: "Inter_600SemiBold",
     marginBottom: 10,
+    textAlign: "left"
   },
   row: {
     flexDirection: "column",
@@ -79,18 +80,19 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#3A3D46",
     borderRadius: 8,
+
     padding: 10,
     marginBottom: 10,
-    fontSize: 16,
+    fontSize: 14,
     height: 50,
   },
   passwordContainer: {
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#EFEFEF",
     borderRadius: 8,
     paddingHorizontal: 12,
     marginBottom: 15,
@@ -129,7 +131,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     fontSize: 14,
-    textAlign: "center",
+    textAlign: "left",
     marginTop: -10,
   },
 
@@ -166,6 +168,7 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_400Regular",
     justifyContent: "center",
     textAlign: "center",
+    color: "#404040",
   },
   Text: {
     color: "#8BC240",
@@ -173,8 +176,18 @@ const styles = StyleSheet.create({
   errorTextPhone: {
     color: "red",
     fontSize: 14,
-    textAlign: "center",
+    textAlign: "left",
     marginTop: 5,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: "#8CC141",
+    padding: 20
   },
 });
 

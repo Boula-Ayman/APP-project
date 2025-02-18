@@ -3,24 +3,18 @@ import { useSelector } from "react-redux";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { RootState } from "../../src/store";
 import CardList from "@/components/cardlistContainer/CardList";
-import { useGetOpportunitiesQuery } from "@/src/api/opportunitiesApiSlice";
-import { useGetWishListQuery } from "@/src/wishList/AdWishList/wishListApiSliceAdd";
-import { ref } from "yup";
+import { useGetWishListQuery } from "@/src/wishList/wishListApiSlice";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { t } from "i18next";
+
 const TestWishListComponent = () => {
-  const likedItems = useSelector(
-    (state: RootState) => state.wishlist.likedItems
-  );
-  console.log("Liked Items:", likedItems);
   const { data, error, isLoading, refetch } = useGetWishListQuery({
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,
     refetchOnReconnect: true,
     refetchOnUnmount: true,
   });
-  const user = useSelector((state: RootState) => state.user);
-  console.log("user", user);
-  console.log(data, "data");
+
   return (
     <SafeAreaView style={styles.container}>
       {data?.data.length > 0 ? (
@@ -32,7 +26,7 @@ const TestWishListComponent = () => {
           ))}
         </ScrollView>
       ) : (
-        <Text>No items in the wishlist.</Text>
+        <Text style={styles.dangerText}>{t("emptyList")}</Text>
       )}
     </SafeAreaView>
   );
@@ -51,6 +45,13 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     // Add appropriate styles for the card container
+  },
+  dangerText: {
+    color: "red",
+    fontSize: 14,
+
+    fontFamily: "InterMedium",
+    fontWeight: "500",
   },
 });
 

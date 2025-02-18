@@ -1,28 +1,35 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   Text,
   TextInput,
-  StyleSheet,
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  ActivityIndicator,
+  Modal,
+  Button as RNButton,
+  Linking,
 } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { usePostSignUpMutation } from "../../../src/auth/signup/signuupApiSlice";
 import { router } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18n from "../../../i18n/i18n";
 import styles from "./signupStyle";
 import Button from "@/commonComponent/button/Button";
-import Arrow from "../../../assets/icons/Arrow.svg";
+import Arrow from "../../../assets/icons/arrow.svg";
 import { Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
-import DropDownPicker from "react-native-dropdown-picker";
+import { useDispatch } from "react-redux";
+import { Ionicons } from "@expo/vector-icons";
+import PhoneInput from "react-native-phone-number-input";
+import { setAccessToken } from "@/src/auth/signin/userSlice";
+import { formatDateForDisplay } from "@/utils/dateUtils";
 
 const SignUpSchema = Yup.object().shape({
-  firstName: Yup.string().required(i18n.t("signUp.firstNameRequired")),
-  lastName: Yup.string().required(i18n.t("signUp.lastNameRequired")),
+  firstName: Yup.string().trim().required(i18n.t("signUp.firstNameRequired")),
+  lastName: Yup.string().trim().required(i18n.t("signUp.lastNameRequired")),
   email: Yup.string()
     .email(i18n.t("signUp.invalidEmail"))
     .required(i18n.t("signUp.emailRequired")),
@@ -36,18 +43,34 @@ const SignUpSchema = Yup.object().shape({
   phoneNumber: Yup.string()
     .required(i18n.t("signUp.phoneNumberRequired"))
     .matches(/^\d+$/, i18n.t("signUp.invalidPhoneNumber")),
-  birthDate: Yup.date()
-    .required(i18n.t("signUp.birthDateRequired"))
-    .typeError(i18n.t("signUp.invalidDate")),
+  birthDate: Yup.string()
+    .nullable()
+    .test(
+      "is-valid-past-date",
+      i18n.t("user.validation.dob.future"),
+      (value) => !!value && new Date(value) <= new Date()
+    )
+    .test("is-valid-age-18", i18n.t("user.validation.dob.age"), (value) => {
+      const birthDate = new Date(value!);
+      const currentDate = new Date();
+      const age = currentDate.getFullYear() - birthDate.getFullYear();
+      return age >= 18;
+    }),
 });
 
 const SignUpPage: React.FC = () => {
   const { t } = { t: i18n.t.bind(i18n) };
   const [postSignUp] = usePostSignUpMutation();
-  const [generalError, setGeneralError] = useState<string | null>(null);
-  const [countryCode, setCountryCode] = useState("+20");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const phoneInput = useRef<any>(null);
+  const [showMessage, setShowMessage] = useState(false);
+  const [error, setError] = useState("");
+  const [formattedPhoneNumber, setFormattedPhoneNumber] = useState("");
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const dispatch = useDispatch();
+  const [showDatePickerModal, setShowDatePickerModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleSignUp = async (
     values: {
@@ -60,49 +83,35 @@ const SignUpPage: React.FC = () => {
     },
     actions: FormikHelpers<any>
   ) => {
-    try {
-      const fullPhoneNumber = `${countryCode}${values.phoneNumber}`;
+    setShowMessage(false);
+    setError("");
 
-      const response = await postSignUp({
+    try {
+      if (!phoneInput.current?.isValidNumber(values.phoneNumber)) {
+        actions.setFieldError("phoneNumber", "Invalid phone number");
+        return setShowMessage(true);
+      }
+
+      const body = {
         name: `${values.firstName} ${values.lastName}`,
         email: values.email,
         password: values.password,
-        phone_number: fullPhoneNumber,
-        birth_date: new Date(values.birthDate).toISOString(),
-      }).unwrap();
+        phone_number: formattedPhoneNumber,
+        birth_date: values.birthDate,
+      };
 
-      console.log("Signup response:", response);
-
+      const response = await postSignUp(body).unwrap();
       const accessToken = response?.data?.access_token;
-      if (accessToken) {
-        await AsyncStorage.setItem("access_token", accessToken);
-        console.log("Access token stored:", accessToken);
-      } else {
-        console.error("Access token is undefined");
-      }
 
-      router.push("/(auth)/verify");
+      dispatch(setAccessToken(accessToken));
+
+      router.push(
+        `/(auth)/verify?email=${values.email}&password=${values.password}`
+      );
     } catch (error: any) {
-      console.error("signUp error:", error);
+      const errorData = error.data.message;
 
-      if (error.status === "FETCH_ERROR") {
-        console.error(
-          "Network error: Failed to fetch. Please check your connection and try again."
-        );
-      } else {
-        console.error("An unexpected error occurred:", error);
-      }
-
-      if (error?.status === 409) {
-        actions.setErrors({ email: t("signUp.emailExists") });
-      } else if (
-        error?.status === 400 &&
-        error?.message?.includes("phone_number")
-      ) {
-        actions.setErrors({ phoneNumber: t("signUp.invalidPhoneNumber") });
-      } else {
-        setGeneralError(t("signUp.signupFailed"));
-      }
+      setError(errorData || "An unknown error occurred");
     } finally {
       actions.setSubmitting(false);
     }
@@ -116,12 +125,44 @@ const SignUpPage: React.FC = () => {
     setFocusedInput(null);
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleDateChange = (
+    event: any,
+    selectedDate: Date | undefined,
+    setFieldValue: any
+  ) => {
+    if (selectedDate) {
+      const formattedDate = selectedDate.toISOString().split("T")[0];
+      setFieldValue("birthDate", formattedDate);
+      setShowDatePickerModal(false);
+    }
+
+    setShowDatePicker(false);
+  };
+  const handleDateChangeIos = (event: any, date?: Date) => {
+    if (date) {
+      setSelectedDate(date);
+    }
+  };
+  const handleDateConfirmIos = (setFieldValue: any) => {
+    const formattedDate = selectedDate.toISOString().split("T")[0];
+    setFieldValue("birthDate", formattedDate);
+    setShowDatePickerModal(false);
+  };
+  const openPrivacyAndPolicy = () =>
+    Linking.openURL("https://propcut.lightbyte.me/terms-and-conditions");
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : undefined}
-      style={styles.container}
+      style={[
+        styles.container,
+        { direction: i18n.language === "ar" ? "rtl" : "ltr" },
+      ]}
     >
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView contentContainerStyle={{ ...styles.scrollContent }}>
         <Formik
           initialValues={{
             firstName: "",
@@ -133,6 +174,7 @@ const SignUpPage: React.FC = () => {
           }}
           validationSchema={SignUpSchema}
           onSubmit={handleSignUp}
+          validateOnBlur
         >
           {({
             handleChange,
@@ -150,14 +192,31 @@ const SignUpPage: React.FC = () => {
                   style={styles.backButton}
                   onPress={() => router.push("/Welcome")}
                 >
-                  <Arrow />
+                  {i18n.language === "en" ? (
+                    <Arrow />
+                  ) : (
+                    <Arrow style={{ transform: [{ rotate: "180deg" }] }} />
+                  )}
                 </TouchableOpacity>
                 <Text style={styles.backText}>
-                  <Text style={styles.one}>1</Text> / 2
+                  <Text style={styles.one}>
+                    {i18n.language === "en" ? "1" : (1).toLocaleString("ar-EG")}
+                  </Text>{" "}
+                  / {i18n.language === "en" ? "2" : (2).toLocaleString("ar-EG")}
                 </Text>
               </View>
               <Text style={styles.title}>{t("signUp.title")}</Text>
-
+              {error && (
+                <Text
+                  style={{
+                    color: "red",
+                    fontSize: 14,
+                    textAlign: "center",
+                  }}
+                >
+                  {error}
+                </Text>
+              )}
               <View style={styles.row}>
                 <View style={styles.inputContainer}>
                   <View style={{ flex: 1 }}>
@@ -171,7 +230,9 @@ const SignUpPage: React.FC = () => {
                               ? "red"
                               : focusedInput === "firstName" || values.firstName
                               ? "#8BC240"
-                              : "#ccc",
+                              : "#EFEFEF",
+                          direction: i18n.language === "ar" ? "rtl" : "ltr",
+                          textAlign: i18n.language === "ar" ? "right" : "left",
                         },
                       ]}
                       onChangeText={handleChange("firstName")}
@@ -180,6 +241,8 @@ const SignUpPage: React.FC = () => {
                         handleBlur("firstName");
                         handleBlurInput();
                       }}
+                      placeholder={t("signUp.firstName")}
+                      placeholderTextColor="#68677799"
                       value={values.firstName}
                     />
                     {touched.firstName && errors.firstName && (
@@ -197,11 +260,15 @@ const SignUpPage: React.FC = () => {
                               ? "red"
                               : focusedInput === "lastName" || values.lastName
                               ? "#8BC240"
-                              : "#ccc",
+                              : "#EFEFEF",
+                          direction: i18n.language === "ar" ? "rtl" : "ltr",
+                          textAlign: i18n.language === "ar" ? "right" : "left",
                         },
                       ]}
                       onChangeText={handleChange("lastName")}
                       onFocus={() => handleFocus("lastName")}
+                      placeholderTextColor="#68677799"
+                      placeholder={t("signUp.lastName")}
                       onBlur={() => {
                         handleBlur("lastName");
                         handleBlurInput();
@@ -225,7 +292,9 @@ const SignUpPage: React.FC = () => {
                           ? "red"
                           : focusedInput === "email" || values.email
                           ? "#8BC240"
-                          : "#ccc",
+                          : "#EFEFEF",
+                      direction: i18n.language === "ar" ? "rtl" : "ltr",
+                      textAlign: i18n.language === "ar" ? "right" : "left",
                     },
                   ]}
                   keyboardType="email-address"
@@ -235,13 +304,15 @@ const SignUpPage: React.FC = () => {
                     handleBlur("email");
                     handleBlurInput();
                   }}
+                  placeholderTextColor="#68677799"
+                  placeholder={t("signUp.email")}
                   value={values.email}
                 />
                 {touched.email && errors.email && (
                   <Text style={styles.errorText}>{errors.email}</Text>
                 )}
               </View>
-              <View>
+              <View style={{ position: "relative" }}>
                 <Text style={styles.Name}>{t("signUp.password")}</Text>
                 <TextInput
                   style={[
@@ -252,10 +323,11 @@ const SignUpPage: React.FC = () => {
                           ? "red"
                           : focusedInput === "password" || values.password
                           ? "#8BC240"
-                          : "#ccc",
+                          : "#EFEFEF",
+                      direction: i18n.language === "ar" ? "rtl" : "ltr",
+                      textAlign: i18n.language === "ar" ? "right" : "left",
                     },
                   ]}
-                  secureTextEntry
                   onChangeText={handleChange("password")}
                   onFocus={() => handleFocus("password")}
                   onBlur={() => {
@@ -263,106 +335,199 @@ const SignUpPage: React.FC = () => {
                     handleBlurInput();
                   }}
                   value={values.password}
+                  secureTextEntry={!showPassword}
+                  placeholderTextColor="#68677799"
+                  placeholder="******"
                 />
-                {touched.password && errors.password && (
-                  <Text style={styles.errorText}>{errors.password}</Text>
+
+                {values.password.length > 0 && (
+                  <TouchableOpacity onPress={togglePasswordVisibility}>
+                    <Ionicons
+                      name={showPassword ? "eye" : "eye-off"}
+                      size={24}
+                      style={[
+                        {
+                          position: "absolute",
+
+                          top: -47,
+                        },
+                        i18n.language === "ar" ? { left: 10 } : { right: 10 },
+                      ]}
+                    />
+                  </TouchableOpacity>
                 )}
               </View>
-              <View>
+              {touched.password && errors.password && (
+                <Text style={styles.errorText}>{errors.password}</Text>
+              )}
+              <TouchableOpacity>
                 <Text style={styles.Name}>{t("signUp.phoneNumber")}</Text>
-                <View style={styles.phoneInputContainer}>
-                  <DropDownPicker
-                    open={isDropdownOpen}
-                    value={countryCode}
-                    items={[
-                      { label: "+20", value: "+20" },
-                      { label: "+1", value: "+1" },
-                    ]}
-                    setOpen={setIsDropdownOpen}
-                    setValue={setCountryCode}
-                    style={[styles.dropdown, { width: 80 }]}
-                    dropDownContainerStyle={{
-                      width: 80,
-                      maxHeight: 100,
-                    }}
-                    containerStyle={{ width: 100 }}
-                    listMode="SCROLLVIEW"
-                    arrowIconContainerStyle={{
-                      marginRight: 5,
-                    }}
-                  />
-                  <TextInput
-                    style={[
-                      styles.phoneNumberInput,
-                      {
-                        borderColor:
-                          errors.phoneNumber && touched.phoneNumber
-                            ? "red"
-                            : focusedInput === "phoneNumber" ||
-                              values.phoneNumber
-                            ? "#8BC240"
-                            : "#ccc",
-                      },
-                    ]}
-                    keyboardType="phone-pad"
-                    onChangeText={handleChange("phoneNumber")}
-                    onFocus={() => handleFocus("phoneNumber")}
-                    onBlur={() => {
+                <PhoneInput
+                  ref={phoneInput}
+                  defaultCode="EG"
+                  defaultValue={values.phoneNumber}
+                  placeholder=" "
+                  onChangeFormattedText={(text) =>
+                    setFormattedPhoneNumber(text)
+                  }
+                  onChangeText={(text) => {
+                    setFieldValue("phoneNumber", text);
+                  }}
+                  containerStyle={{
+                    width: "100%",
+                    backgroundColor: "white",
+                    borderWidth: 1,
+                    borderColor:
+                      touched.phoneNumber && errors.phoneNumber
+                        ? "#FF4D4D"
+                        : focusedInput === "phoneNumber" || values.phoneNumber
+                        ? "#8BC240"
+                        : "#EFEFEF",
+                    borderRadius: 8,
+                    padding: 2,
+                    direction: "ltr",
+                  }}
+                  textContainerStyle={{
+                    backgroundColor: "white",
+                    borderLeftWidth: 1,
+                    borderLeftColor: "#EFEFEF",
+                    height: 52,
+                    width: "100%",
+                  }}
+                  textInputProps={{
+                    placeholderTextColor: "#68677799",
+                    keyboardType: "numeric",
+                    onFocus: () => {
+                      handleFocus("phoneNumber");
+                    },
+                    onBlur: () => {
                       handleBlur("phoneNumber");
                       handleBlurInput();
-                    }}
-                    value={values.phoneNumber}
-                  />
-                </View>
+                    },
+                  }}
+                  textInputStyle={{
+                    padding: 0,
+                    fontSize: 14,
+                    fontFamily: "Inter500Medium",
+                    color: "black",
+                    width: "100%",
+                    height: 56,
+                    backgroundColor: "white",
+                    fontWeight: "500",
+                  }}
+                  codeTextStyle={{
+                    color: "black",
+                    fontSize: 14,
+                  }}
+                />
 
                 {touched.phoneNumber && errors.phoneNumber && (
                   <Text style={styles.errorTextPhone}>
                     {errors.phoneNumber}
                   </Text>
                 )}
-              </View>
+                {showMessage && (
+                  <Text style={styles.errorTextPhone}>
+                    {t("signUp.invalidCountryNumber")}
+                  </Text>
+                )}
+              </TouchableOpacity>
               <View>
-                <Text style={styles.Name}>Birth Date</Text>
-                <TextInput
-                  style={[
-                    styles.input,
-                    {
-                      borderColor:
-                        errors.birthDate && touched.birthDate
-                          ? "red"
-                          : focusedInput === "birthDate" || values.birthDate
-                          ? "#8BC240"
-                          : "#ccc",
-                    },
-                  ]}
-                  // placeholder={t("signUp.birthDatePlaceholder")}
-                  onChangeText={handleChange("birthDate")}
-                  onFocus={() => handleFocus("birthDate")}
-                  onBlur={() => {
-                    handleBlur("birthDate");
-                    handleBlurInput();
-                  }}
-                  value={values.birthDate}
-                />
+                <Text style={styles.Name}>{t("signUp.birthDate")}</Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    Platform.OS === "android"
+                      ? setShowDatePicker(true)
+                      : setShowDatePickerModal(true)
+                  }
+                >
+                  <TextInput
+                    style={[
+                      styles.input,
+                      {
+                        borderColor:
+                          errors.birthDate && touched.birthDate
+                            ? "red"
+                            : focusedInput === "birthDate" || values.birthDate
+                            ? "#8BC240"
+                            : "#EFEFEF",
+                        direction: i18n.language === "ar" ? "rtl" : "ltr",
+                        textAlign: i18n.language === "ar" ? "right" : "left",
+                      },
+                    ]}
+                    onPress={() =>
+                      Platform.OS === "android"
+                        ? setShowDatePicker(true)
+                        : setShowDatePickerModal(true)
+                    }
+                    placeholder="DD/MM/YYYY"
+                    placeholderTextColor="#68677799"
+                    value={formatDateForDisplay(values.birthDate)}
+                    editable={false}
+                  />
+                </TouchableOpacity>
+                {showDatePicker && Platform.OS === "android" && (
+                  <DateTimePicker
+                    value={
+                      values.birthDate ? new Date(values.birthDate) : new Date()
+                    }
+                    mode="date"
+                    display={"default"}
+                    themeVariant="light"
+                    onChange={(event, selectedDate) =>
+                      handleDateChange(event, selectedDate, setFieldValue)
+                    }
+                  />
+                )}
                 {touched.birthDate && errors.birthDate && (
                   <Text style={styles.errorText}>{errors.birthDate}</Text>
                 )}
               </View>
-
-              {generalError && (
-                <Text style={styles.errorText}>{generalError}</Text>
+              {Platform.OS === "ios" && (
+                <Modal
+                  visible={showDatePickerModal}
+                  transparent={true}
+                  animationType="slide"
+                >
+                  <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                      <DateTimePicker
+                        value={selectedDate}
+                        mode="date"
+                        display="inline"
+                        themeVariant="light"
+                        onChange={handleDateChangeIos}
+                        locale={i18n.language}
+                        i18nIsDynamicList
+                      />
+                      <RNButton
+                        title="Done"
+                        onPress={() => handleDateConfirmIos(setFieldValue)}
+                      />
+                    </View>
+                  </View>
+                </Modal>
               )}
+
               <View style={styles.TextContainer}>
                 <Text style={styles.MainText}>
-                  {t("signUp.agreeToTermsPrefix")}
-                  <Text style={styles.Text}>{t("signUp.terms")}</Text>
-                  {t("signUp.and")}
-                  <Text style={styles.Text}>{t("signUp.privacyPolicy")}</Text>
+                  {t("signUp.agreeToTermsPrefix")}{" "}
+                  <Text style={styles.Text} onPress={openPrivacyAndPolicy}>
+                    {t("signUp.terms")}
+                  </Text>{" "}
+                  {t("signUp.and")}{" "}
+                  <Text style={styles.Text} onPress={openPrivacyAndPolicy}>
+                    {t("signUp.privacyPolicy")}
+                  </Text>
                 </Text>
               </View>
               <View style={styles.signUpButton}>
                 <Button onPress={() => handleSubmit()} disabled={isSubmitting}>
-                  <Text>{t("signUp.signUpButton")}</Text>
+                  {isSubmitting ? (
+                    <ActivityIndicator color="white" />
+                  ) : (
+                    <Text>{t("signUp.signUpButton")}</Text>
+                  )}
                 </Button>
               </View>
             </>

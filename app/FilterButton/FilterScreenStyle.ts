@@ -79,18 +79,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   sectionTitle: {
-    width: 100,
-    height: 22,
     fontSize: 18,
     fontWeight: "bold",
     marginTop: 20,
     fontFamily: "Inter",
-    left: 122,
+    textAlign: "center",
   },
   dropdownContainer: {
     flexDirection: "column",
-    marginBottom: 15,
-    marginTop: 35,
+    marginVertical: 10,
   },
   label: {
     fontSize: 14,
@@ -139,6 +136,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: "70%",
     marginTop: 30,
+  },
+  dropdownTitle: { 
+    display: "flex", 
+    alignItems: "center",
+    gap: 5,
+    flexDirection: "row"
   },
 });
 

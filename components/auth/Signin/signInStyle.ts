@@ -12,23 +12,20 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    marginTop: 100,
-    padding: 17,
   },
   innerContainer: {
     flex: 1,
     position: "relative",
   },
   backButton: {
-    position: "absolute",
     width: 48,
     height: 48,
     backgroundColor: "#F6F6F6",
     borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",
-    top: 50,
-    left: 18,
+    marginVertical: 40,
+    marginInline: 10,
   },
   title: {
     fontFamily: "Inter_600SemiBold",
@@ -46,6 +43,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     letterSpacing: 0.5,
     color: "#3A3D46",
+    textAlign: 'left'
   },
   input: {
     height: 56,
@@ -58,14 +56,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "Inter_500Medium",
     fontWeight: "500",
+    width: '100%',
   },
   iconContainer1: {},
   icon: {
     position: "relative",
-    left: 15,
+
     top: 39,
   },
-  iconContainer2: {},
+  iconContainer2: {
+    position: "relative",
+  },
   icon2: {
     position: "relative",
     left: 15,
@@ -94,14 +95,14 @@ const styles = StyleSheet.create({
     color: "red",
     fontSize: 14,
     fontWeight: "bold",
-    textAlign: "left",
+    textAlign: "center",
     borderRadius: 5,
-    marginTop: -15,
+    marginBottom: 10,
   },
   signUpText: {
     color: "#3A3D46",
     position: "relative",
-    top: 150,
+    top: 0,
     left: 0,
     fontFamily: "Inter_400Regular",
     fontSize: 14,
@@ -119,11 +120,10 @@ const styles = StyleSheet.create({
   },
   rememberMeContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
     marginTop: 12,
     marginBottom: 20,
-    right: 10,
     borderColor: "#EFEFEF",
     borderRadius: 4,
   },
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     lineHeight: 22.4,
-    right: 23,
+
     color: "#3A3D46",
   },
   forgotPassword: {
@@ -148,8 +148,13 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "400",
     lineHeight: 22.4,
-    left: 15,
+
     color: "#3A3D46",
+  },
+  rememberMe: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
   },
 });
 

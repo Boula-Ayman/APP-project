@@ -3,40 +3,49 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
-import { usePostVerifyMutation } from "../../../src/auth/veirfy/verify";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  usePostVerifyMutation,
+  useResendVerifyMutation,
+} from "../../../src/auth/veirfy/verify";
 import { OtpInput } from "react-native-otp-entry";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import i18n from "../../../i18n/i18n";
 import { useFonts } from "expo-font";
-import Arrow from "../../../assets/icons/Arrow.svg";
+import Arrow from "../../../assets/icons/arrow.svg";
+import Toast from "react-native-toast-message";
+import { usePostSignInMutation } from "@/src/auth/signin/signinApiSlice";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/src/auth/signin/userSlice";
+import { localizeNumber } from "@/utils/numbers";
 
 const VerificationScreen: React.FC = () => {
-  const [timer, setTimer] = useState<number>(90); // 1 minute and 30 seconds
-
+  const [timer, setTimer] = useState<number>(90);
+  const { email, password } = useLocalSearchParams();
+  const [postSignIn] = usePostSignInMutation();
+  const [loading, setLoading] = useState(false);
   const { t } = { t: i18n.t.bind(i18n) };
 
   useEffect(() => {
     const interval = setInterval(() => {
       setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
     }, 1000);
-
     return () => clearInterval(interval);
   }, []);
 
   const [otp, setOtp] = useState<string>();
 
   const [PostVerify] = usePostVerifyMutation();
+  const [resendVerify] = useResendVerifyMutation();
   const [errorMessage, setErrorMessage] = useState("");
-
+  const dispatch = useDispatch();
   const handleVerify = async () => {
-    console.log("OTP entered:", otp);
+    setErrorMessage("");
     if (!otp || otp.length !== 4) {
-      setErrorMessage("OTP must be exactly 4 digits");
+      setErrorMessage(t("otpValidation"));
       return;
     }
 
@@ -45,32 +54,53 @@ const VerificationScreen: React.FC = () => {
     };
 
     try {
-      console.log("Access Token:", await AsyncStorage.getItem("access_token"));
-      const verify = await PostVerify(formData).unwrap();
-      setErrorMessage("");
-      console.log("Success verify", verify);
-      await AsyncStorage.removeItem("access_token");
+      setLoading(true);
+      await PostVerify(formData).unwrap();
+      const response = await postSignIn({ body: { email, password } }).unwrap();
+      dispatch(
+        setUser({
+          user: response?.data?.user,
+          token: response?.data?.access_token,
+        })
+      );
       router.push("/" as any);
-    } catch (error) {
-      if (typeof error === "object" && error !== null && "data" in error) {
-        setErrorMessage("The OTP is incorrect. Please try again");
-      } else {
-        setErrorMessage("The OTP is incorrect. Please try again");
-      }
+      setLoading(false);
+    } catch (error: any) {
+      setLoading(false);
+      setErrorMessage(t("otpError"));
     }
   };
 
-  const handleResendCode = () => {
-    console.log("Resend Code");
-    setTimer(90);
-
-    //  resend code logic here
+  const handleResendCode = async () => {
+    setErrorMessage("");
+    try {
+      await resendVerify({}).unwrap();
+      Toast.show({
+        type: "success",
+        text1: "Verification code sent successfully",
+      });
+      setTimer(90);
+    } catch (error: any) {
+      setErrorMessage(error.data.message);
+    }
   };
 
   const formatTime = (time: number): string => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
-    return `${minutes}:${seconds < 10 ? seconds : seconds}`;
+
+    const localizedSeconds = localizeNumber(seconds, i18n.language);
+    const localizedMinutes = localizeNumber(minutes, i18n.language);
+
+    return `${
+      minutes < 10
+        ? `${localizeNumber(0, i18n.language)}${localizedMinutes}`
+        : localizedMinutes
+    }:${
+      seconds < 10
+        ? `${localizeNumber(0, i18n.language)}${localizedSeconds}`
+        : localizedSeconds
+    }`;
   };
 
   const [fontsLoaded] = useFonts({
@@ -86,9 +116,18 @@ const VerificationScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { direction: i18n.language === "ar" ? "rtl" : "ltr" },
+      ]}
+    >
       <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-        <Arrow />
+        {i18n.language === "ar" ? (
+          <Arrow style={{ transform: [{ rotate: "180deg" }] }} />
+        ) : (
+          <Arrow />
+        )}
       </TouchableOpacity>
       <ScrollView style={styles.scrollContent}>
         <Text style={[styles.title, { fontFamily: "Inter_600SemiBold" }]}>
@@ -97,7 +136,7 @@ const VerificationScreen: React.FC = () => {
         <Text style={[styles.subtitle, { fontFamily: "Inter_400Regular" }]}>
           {t("verify.enter_otp_message")}
         </Text>
-        <View style={styles.otpInputContainer}>
+        <View style={[styles.otpInputContainer, { direction: "ltr" }]}>
           <OtpInput
             numberOfDigits={4}
             onTextChange={(text) => setOtp(text)}
@@ -116,14 +155,23 @@ const VerificationScreen: React.FC = () => {
         <TouchableOpacity
           style={styles.resendButton}
           onPress={handleResendCode}
+          disabled={timer > 0 ? true : false}
         >
-          <Text style={styles.resendText}>
-            Resend code in:
-            <Text style={styles.counter}> {formatTime(timer)} </Text>
-          </Text>
+          {timer > 0 ? (
+            <Text style={styles.resendText}>
+              {`${t("verify.resend_code_in")}: `}
+              <Text style={styles.counter}> {formatTime(timer)} </Text>
+            </Text>
+          ) : (
+            <Text style={styles.resendText}>{t("verify.resend_code")}</Text>
+          )}
         </TouchableOpacity>
         <TouchableOpacity style={styles.verifyButton} onPress={handleVerify}>
-          <Text style={styles.verifyButtonText}>Verify</Text>
+          {loading ? (
+            <ActivityIndicator size="small" color="white" />
+          ) : (
+            <Text style={styles.verifyButtonText}>{t("verify.title")}</Text>
+          )}
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -135,7 +183,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 16,
-    marginTop: 20,
+
     backgroundColor: "white",
   },
   backButton: {
@@ -146,14 +194,13 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 20,
   },
   scrollContent: {
     flexGrow: 1,
     marginTop: 40,
   },
   title: {
-    width: 327,
-    height: 78,
     marginBottom: 16,
     fontFamily: "Inter",
     fontSize: 32,
@@ -189,13 +236,12 @@ const styles = StyleSheet.create({
   activePinCodeContainer: {
     borderWidth: 1,
     borderColor: "#8BC240",
-    borderStyle: "solid",
-
     borderRadius: 8,
   },
   filledPinCodeContainer: {
     width: 55,
     height: 55,
+    borderColor: "#8BC240",
   },
 
   pinCodeText: {
@@ -216,7 +262,7 @@ const styles = StyleSheet.create({
   },
   resendText: {
     fontSize: 16,
-    color: "#666",
+    color: "#8BC240",
   },
   counter: {
     color: "#8BC240",

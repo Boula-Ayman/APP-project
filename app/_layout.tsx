@@ -1,6 +1,6 @@
-import React, { useEffect, useCallback } from "react";
-import { StyleSheet, ActivityIndicator, View } from "react-native";
-import { router, Stack } from "expo-router";
+import React from "react";
+import { StyleSheet, ActivityIndicator } from "react-native";
+import { Stack } from "expo-router";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import store, { Persistor } from "../src/store/index";
@@ -10,58 +10,32 @@ import {
   useFonts,
   Inter_400Regular,
   Inter_600SemiBold,
+  Inter_700Bold,
 } from "@expo-google-fonts/inter";
+import Toast from "react-native-toast-message";
 
 SplashScreen.preventAutoHideAsync();
-// SplashScreen.setOptions({
-//   duration: 200,
-//   fade: true,
-// });
-// const [fontsLoaded] = useFonts({
-//   // Inter_400Regular: require("../../../assets/fonts/Inter/Inter_24pt-Regular.ttf"),
-//   // Inter_600SemiBold: require("../../../assets/fonts/Inter/Inter_24pt-SemiBold.ttf"),
-// });
+
 export default function Layout() {
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
     Inter_600SemiBold,
+    Inter_700Bold,
   });
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  useEffect(() => {
-    const timer = setTimeout(async () => {
-      await SplashScreen.hideAsync();
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!fontsLoaded) {
-    return null;
-  }
-
-  const logout = async () => {
-    await AsyncStorage.removeItem("access_token");
-    router.push("/Welcome" as any);
-  };
-  logout();
   return (
     <Provider store={store}>
       <PersistGate
         loading={<ActivityIndicator size="large" color="#0000ff" />}
         persistor={Persistor}
       >
+        <Toast />
         <Stack
           screenOptions={{
             headerShown: false,
           }}
         >
-          <Stack.Screen name="Home/index" />
+          <Stack.Screen name="index" />
           <Stack.Screen
             name="AllProperties/index"
             options={{

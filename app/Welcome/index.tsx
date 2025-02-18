@@ -23,8 +23,6 @@ const TabLayout = () => {
   };
   const handleSignUp = () => {
     router.push("/(auth)/Signup" as any);
-    // router.push("/" as any);
-    // router.push("/(auth)/verify" as any);
   };
   return (
     <>
@@ -51,10 +49,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     padding: 2,
-    backgroundColor: "#fff",
-    height: 132,
     borderTopColor: "#ccc",
-    paddingBottom: 10,
   },
   buttonDark: {
     backgroundColor: "#1A1A1A",

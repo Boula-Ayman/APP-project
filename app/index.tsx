@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, KeyboardAvoidingView, Platform, Keyboard } from "react-native";
+import { View, Keyboard } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./Home";
 import PortfolioPage from "./PortfolioSreen/index";
@@ -8,14 +8,50 @@ import HomeIcon from "../assets/icons/home-wifi.svg";
 import FavouriteIcon from "../assets/icons/fav.svg";
 import Building from "../assets/icons/building.svg";
 import ProfileIcon from "../assets/icons/profile.svg";
-import Profile from "./profile/Profile";
+import Profile from "./profile";
 import styles from "./indexStyle";
 import "../i18n/i18n";
+import { useSelector } from "react-redux";
+import { RootState } from "@/src/store/rootReducer";
+import { router, useRootNavigationState } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import {
+  useFonts,
+} from "@expo-google-fonts/inter";
+import i18n from "../i18n/i18n";
 
 const Tab = createBottomTabNavigator();
 
 const App: React.FC = () => {
+  const [fontsLoaded] = useFonts({
+    InterRegular: require("@/assets/fonts/Inter/Inter_24pt-Regular.ttf"),
+    InterSemiBold: require("@/assets/fonts/Inter/Inter_24pt-SemiBold.ttf"),
+    InterBold: require("@/assets/fonts/Inter/Inter_24pt-Bold.ttf"),
+    InterMedium: require("@/assets/fonts/Inter/Inter_24pt-Medium.ttf"),
+    PoppinsRegular: require("@/assets/fonts/Poppins/Poppins-Regular.ttf"),
+    PoppinsMedium: require("@/assets/fonts/Poppins/Poppins-Medium.ttf"),
+    PoppinsSemiBold: require("@/assets/fonts/Poppins/Poppins-SemiBold.ttf"),
+    PoppinsBold: require("@/assets/fonts/Poppins/Poppins-Bold.ttf"),
+    PlusJakartaSansSemiBold: require("@/assets/fonts/PlusJakartaSans/PlusJakartaSans-SemiBold.ttf"),
+    PlusJakartaSansMedium: require("@/assets/fonts/PlusJakartaSans/PlusJakartaSans-Medium.ttf"),
+    NunitoSansRegular: require("@/assets/fonts/NunitoSans/NunitoSans_7pt-Regular.ttf"),
+  });
+
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  const user = useSelector((state: RootState) => state?.user);
+
+  const rootNavigationState = useRootNavigationState();
+
+  useEffect(() => {
+    const initializeApp = async () => {
+      if (fontsLoaded) {
+        await SplashScreen.hideAsync();
+      }
+    };
+
+    initializeApp();
+  }, [fontsLoaded]);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
@@ -30,27 +66,34 @@ const App: React.FC = () => {
       hideSubscription.remove();
     };
   }, []);
+
+  useEffect(() => {
+    if (!user.accessToken && rootNavigationState?.key) {
+      router.push("/Welcome");
+    }
+  }, [user.accessToken, rootNavigationState?.key]);
+
+  useEffect(() => {
+    if (!user.accessToken && rootNavigationState?.key) {
+      router.push("/Welcome");
+    }
+  }, [user.accessToken, rootNavigationState?.key]);
+
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-
         tabBarStyle: {
-          width: "96%",
+          width: "93%",
           height: 74,
           backgroundColor: "#061C27",
-          borderTopWidth: 0,
           borderRadius: 40,
           elevation: 0,
-          gap: 10,
-          flex: 1,
-          marginBottom: 6,
-          position: "absolute",
-          bottom: 0,
-          transform: [{ translateX: "2%" }],
+          marginBottom: "3%",
+          alignSelf: "center",
           display: isKeyboardVisible ? "none" : "flex",
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
         },
-
         tabBarItemStyle: {
           paddingVertical: 10,
         },
@@ -128,4 +171,5 @@ const App: React.FC = () => {
     </Tab.Navigator>
   );
 };
+
 export default App;

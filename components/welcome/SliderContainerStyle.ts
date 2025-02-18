@@ -14,19 +14,15 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
-  House: {
-    top: 10,
-  },
+
   phoneContainer: {
     position: "relative",
     justifyContent: "center",
     alignItems: "center",
-    top: 18,
   },
   screenContainer: {
     position: "absolute",
-    top: 30,
-    left: 21,
+
     borderRadius: 50,
     overflow: "hidden",
   },
@@ -34,7 +30,6 @@ export const styles = StyleSheet.create({
     position: "absolute",
     width: "100%",
     height: "20%",
-    top: "43%",
     zIndex: 1,
   },
   gradient: {
@@ -48,6 +43,7 @@ export const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "600",
     color: "#0E0C20",
+    marginTop: 10,
   },
   description: {
     fontFamily: "Inter_400Regular",

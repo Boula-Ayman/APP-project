@@ -4,7 +4,6 @@ import * as Localization from "expo-localization";
 import en from "./en.json";
 import ar from "./ar.json";
 
-// Get the device's language code
 const deviceLanguage = Localization.locale.split("-")[0];
 
 i18n.use(initReactI18next).init({
