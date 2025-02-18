@@ -147,7 +147,18 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
       
       if (end < start) {
         setStartDate(day.dateString);
-        setEndDate(startDate);
+        setEndDate(null);
+        setSelectedDates(prev => (
+            {...prev, 
+                [day.dateString]: {
+                    startingDay: true,
+                    color: '#8BC240',
+                    textColor: 'white'
+                },
+                [startDate]: {}
+            }
+        ));
+        return;
       } else {
         setEndDate(day.dateString);
       }
