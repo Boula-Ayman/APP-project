@@ -135,7 +135,6 @@ const Header = ({
 const PriceSection = ({
   share_price,
   currency,
-  available_shares,
   owned_shares,
   number_of_shares,
   status,
@@ -823,7 +822,6 @@ const CardDetails = () => {
             <PriceSection
               share_price={data?.data?.share_price}
               currency={data?.data?.currency}
-              available_shares={data?.data?.available_shares}
               number_of_shares={data?.data?.number_of_shares}
               status={data?.data?.status}
               owned_shares={data?.data?.owned_shares}
@@ -869,9 +867,15 @@ const CardDetails = () => {
                     fontWeight: "500",
                   }}
                 >
-                  {data?.data?.owned_shares}
+                  {i18n.language === "en"
+                    ? data?.data?.owned_shares.toLocaleString()
+                    : data?.data?.owned_shares.toLocaleString("ar-EG")}
                 </Text>
-                /{data?.data?.number_of_shares} Shares on this property
+                /
+                {i18n.language === "en"
+                  ? data?.data?.number_of_shares.toLocaleString()
+                  : data?.data?.number_of_shares.toLocaleString("ar-EG")}{" "}
+                {t("ownedSharesText")}
               </Text>
             )}
 
