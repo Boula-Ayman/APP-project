@@ -162,8 +162,6 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
         const isOverlapping = disabledStart >= start && disabledStart <= end
         || disabledEnd >= start && disabledEnd <= end;
 
-        console.log(isOverlapping)
-
         return isOverlapping;
       })) {
           setEndDate(null);
