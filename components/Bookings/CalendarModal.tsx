@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { Calendar, DateData } from 'react-native-calendars';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
@@ -8,15 +8,19 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Button from '@/commonComponent/button/Button';
 import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import i18n from '@/i18n/i18n';
+import { ar, enUS } from 'date-fns/locale';
+import { localizeNumber } from '@/utils/numbers';
 
 interface CalendarModalProps {
   isVisible: boolean;
   onClose: () => void;
   onConfirm: (startDate: string | null, endDate: string | null) => Promise<boolean>;
   availableNights: number;
+  disabledDates?: {from: string, to: string}[];
 }
 
-const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights }: CalendarModalProps) => {
+const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disabledDates }: CalendarModalProps) => {
   const { t } = useTranslation();
   const [startDate, setStartDate] = React.useState<string | null>(null);
   const [endDate, setEndDate] = React.useState<string | null>(null);
@@ -29,11 +33,58 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights }: Calen
   const resetState = React.useCallback(() => {
     setStartDate(null);
     setEndDate(null);
-    setSelectedDates({});
+    setSelectedDates(prevDates => {
+      const newDates = { ...prevDates };
+      Object.keys(newDates).forEach(date => {
+        if (!newDates[date].disabled) {
+          delete newDates[date];
+        }
+      });
+      return newDates;
+    });
     setCurrentMonth(new Date());
     setIsSuccess(false);
     setIsError(false);
   }, []);
+
+  useEffect(() => {
+    if (disabledDates?.length) {
+      setSelectedDates(() => {
+        const disabledRanges = disabledDates.reduce((acc, { from, to }) => {
+          let currentDate = new Date(from);
+          const endDate = new Date(to);
+
+          while (currentDate <= endDate) {
+            const dateString = format(currentDate, 'yyyy-MM-dd');
+            if (dateString === from) {
+              acc[dateString] = {
+                startingDay: true,
+                disabled: true,
+                disableTouchEvent: true
+              };
+            } else if (dateString === to) {
+              acc[dateString] = {
+                endingDay: true,
+                disabled: true,
+                disableTouchEvent: true
+              };
+            } else {
+              acc[dateString] = {
+                disabled: true,
+                disableTouchEvent: true,
+              };
+            }
+            currentDate = addDays(currentDate, 1);
+          }
+          return acc;
+        }, {} as {[key: string]: any});
+
+        return {
+          ...disabledRanges
+        };
+      });
+    }
+  }, [disabledDates]);
 
   React.useEffect(() => {
     if (!isVisible) {
@@ -48,15 +99,48 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights }: Calen
 
   const onDayPress = (day: DateData) => {
     if (!startDate || (startDate && endDate)) {
-      setStartDate(day.dateString);
-      setEndDate(null);
-      setSelectedDates({
-        [day.dateString]: {
-          startingDay: true,
-          color: '#8BC240',
-          textColor: 'white'
-        }
-      });
+        setStartDate(day.dateString);
+        setEndDate(null);
+        setSelectedDates(() => {
+            const disabledDatesObj = disabledDates?.reduce((acc, { from, to }) => {
+                let currentDate = new Date(from);
+                const endDate = new Date(to);
+    
+                while (currentDate <= endDate) {
+                const dateString = format(currentDate, 'yyyy-MM-dd');
+                if (dateString === from) {
+                    acc[dateString] = {
+                        startingDay: true,
+                        disabled: true,
+                        disableTouchEvent: true
+                    };
+                } else if (dateString === to) {
+                    acc[dateString] = {
+                        endingDay: true,
+                        disabled: true,
+                        disableTouchEvent: true
+                    };
+                } else {
+                    acc[dateString] = {
+                        disabled: true,
+                        disableTouchEvent: true,
+                    };
+                }
+                currentDate = addDays(currentDate, 1);
+                }
+                return acc;
+            }, {} as {[key: string]: any});
+
+            return {
+                ...disabledDatesObj,
+                [day.dateString]: {
+                    startingDay: true,
+                    disabled: true,
+                    color: '#8BC240',
+                    textColor: 'white'
+                }
+            };
+        });
     } else {
       const start = new Date(startDate);
       const end = new Date(day.dateString);
@@ -70,9 +154,32 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights }: Calen
 
       const range: {[key: string]: any} = {};
       let currentDate = new Date(startDate);
-      const endDateObj = new Date(day.dateString);
 
-      while (currentDate <= endDateObj) {
+      if(disabledDates?.some((disabledDate, index) => {
+        const disabledStart = new Date(disabledDate.from);
+        const disabledEnd = new Date(disabledDate.to);
+
+        const isOverlapping = disabledStart >= start && disabledStart <= end
+        || disabledEnd >= start && disabledEnd <= end;
+
+        console.log(isOverlapping)
+
+        return isOverlapping;
+      })) {
+          setEndDate(null);
+          setSelectedDates(prevDates => {
+            const newDates = { ...prevDates };
+            Object.keys(newDates).forEach(date => {
+              if (!newDates[date].disabled) {
+                delete newDates[date];
+              }
+            });
+            return newDates;
+          });
+        return;
+      }
+
+      while (currentDate <= end) {
         const dateString = format(currentDate, 'yyyy-MM-dd');
         if (dateString === startDate) {
           range[dateString] = {
@@ -94,7 +201,7 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights }: Calen
         }
         currentDate = addDays(currentDate, 1);
       }
-      setSelectedDates(range);
+      setSelectedDates(prev => ({...prev, ...range}));
     }
   };
 
@@ -120,6 +227,9 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights }: Calen
         name={`chevron-${direction}`} 
         size={20} 
         color="#6E7491" 
+        style={{
+          transform: [{ rotate: i18n.language === "ar" ? '180deg' : '0deg' }]
+        }}
       />
     );
   };
@@ -191,15 +301,30 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights }: Calen
         <View style={styles.mainContainer}>
           <View style={styles.availableNightsContainer}>
             <Text style={styles.availableNightsText}>
-              <Text style={styles.highlightedText}>{availableNights}</Text> {t('bookings.calendar.availableNights')}
+              <Text style={styles.highlightedText}>{localizeNumber(availableNights, i18n.language)}</Text> {t('bookings.calendar.availableNights')}
             </Text>
-            
             <View style={styles.dateRangeContainer}>
-              <View style={styles.calendarIcon}>
+              <View>
                 <FontAwesome5 name="calendar-alt" size={20} color="#333" />
               </View>
               <Text style={styles.dateRangeText}>
-                {startDate ? format(new Date(startDate), 'dd MMM yyyy') : '05'} - {endDate ? format(new Date(endDate), 'dd MMM yyyy') : '08 Jan 2025'}
+                {startDate ? 
+                    format(
+                        new Date(startDate), 
+                        'dd MMM yyyy',
+                        {
+                            locale: i18n.language === "ar" ? ar : enUS
+                        }
+                    ) : '--'} 
+                    - 
+                    {endDate ? 
+                        format(
+                            new Date(endDate), 
+                            'dd MMM yyyy',
+                            {
+                                locale: i18n.language === "ar" ? ar : enUS
+                            }
+                        ) : '--'}
               </Text>
             </View>
           </View>
@@ -242,6 +367,7 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights }: Calen
                 }}
                 hideArrows={true}
                 renderArrow={renderArrow}
+                allowSelectionOutOfRange={false}
               />
             </View>
 
@@ -336,11 +462,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#8BC240',
     padding: 15,
+    gap: 10,
     borderRadius: 12,
     marginBottom: 20,
-  },
-  calendarIcon: {
-    marginRight: 10,
   },
   dateRangeText: {
     fontSize: 16,

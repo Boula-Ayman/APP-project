@@ -139,6 +139,12 @@ export const bookingsApi = createApi({
       }),
       invalidatesTags: ['Bookings'],
     }),
+    getPropertyBookings: builder.query<{ data: Booking[] }, {id: string}>({
+      query: ({ id }) => ({
+        url: `/bookings/property/${id}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -148,4 +154,5 @@ export const {
   useCancelBookingMutation,
   useRescheduleBookingMutation,
   useCreateBookingMutation,
+  useLazyGetPropertyBookingsQuery
 } = bookingsApi; 
