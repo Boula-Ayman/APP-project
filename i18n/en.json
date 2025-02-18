@@ -248,6 +248,8 @@
     "upcoming": "Upcoming",
     "past": "Past",
     "bookingId": "Booking ID: #{{id}}",
+    "night": "Night",
+    "twoNights": "2 Nights",
     "nights": "Nights",
     "calendar": {
       "bookNights": "Book Nights",

@@ -259,6 +259,8 @@
     "past": "السابقة",
     "bookingId": "رقم الحجز: #{{id}}",
     "nights": "ليالي",
+    "night": "ليلة",
+    "twoNights": "ليلتان",
     "calendar": {
       "bookNights": "حجز الليالي",
       "availableNights": "الليالي المتاحة",

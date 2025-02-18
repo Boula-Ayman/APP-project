@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Calendar, DateData } from 'react-native-calendars';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import { format, addDays, addMonths, subMonths } from 'date-fns';
+import { format, addDays, addMonths, subMonths, differenceInDays } from 'date-fns';
 import CustomModal from '../../commonComponent/Modal/CustomModal';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Button from '@/commonComponent/button/Button';
@@ -10,7 +10,7 @@ import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n/i18n';
 import { ar, enUS } from 'date-fns/locale';
-import { localizeNumber } from '@/utils/numbers';
+import { isPluralCount, localizeNumber } from '@/utils/numbers';
 
 interface CalendarModalProps {
   isVisible: boolean;
@@ -29,6 +29,14 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
   const calendarRef = React.useRef<any>(null);
+
+  const readableNights = React.useMemo(() => {
+    if (!endDate || !startDate) {
+      return 0;
+    }
+    const nights = differenceInDays(new Date(endDate), new Date(startDate));
+    return nights === 0 ? 1 : nights;
+  }, [endDate, startDate]);
 
   const resetState = React.useCallback(() => {
     setStartDate(null);
@@ -196,12 +204,14 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
             color: '#8BC240',
             textColor: 'white'
           };
-        } else if (dateString === day.dateString) {
+        } else if (dateString === day.dateString || differenceInDays(currentDate, new Date(startDate)) === availableNights) {
           range[dateString] = {
             endingDay: true,
             color: '#8BC240',
             textColor: 'white'
           };
+          setEndDate(dateString);
+          break;
         } else {
           range[dateString] = {
             color: '#E8F3DC',
@@ -391,9 +401,20 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
 
         <View style={styles.nightsContainer}>
           <Text style={styles.nightsText}>
-            {endDate && startDate 
-              ? <><Text style={styles.greenText}>{Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24))}</Text>{` ${t('bookings.nights')}`}</>
-              : <><Text style={styles.greenText}>0</Text>{` ${t('bookings.nights')}`}</>}
+            {readableNights === 2 ? 
+                <Text style={styles.greenText}>
+                    {t('bookings.twoNights')}
+                </Text>
+                : 
+                <>
+                    <Text style={styles.greenText}>
+                        {localizeNumber(readableNights, i18n.language)}
+                    </Text>
+                    <>
+                        {` ${isPluralCount(readableNights, i18n.language) ? t('bookings.nights') : t('bookings.night')}`}
+                    </>
+                </>
+            }
           </Text>
           <Text style={styles.termsText}>
             {t('bookings.calendar.termsAgreement')}
