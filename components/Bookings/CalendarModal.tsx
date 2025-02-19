@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Platform } from 'react-native';
-import { Calendar, DateData } from 'react-native-calendars';
+import { Calendar, DateData, LocaleConfig } from 'react-native-calendars';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { format, addDays, addMonths, subMonths } from 'date-fns';
 import CustomModal from '../../commonComponent/Modal/CustomModal';
@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n/i18n';
 import { ar, enUS } from 'date-fns/locale';
 import { localizeNumber } from '@/utils/numbers';
+import { ARABIC_DAYS, ARABIC_MONTHS } from '@/constants/Enums';
 
 interface CalendarModalProps {
   isVisible: boolean;
@@ -19,6 +20,14 @@ interface CalendarModalProps {
   availableNights: number;
   disabledDates?: {from: string, to: string}[];
 }
+
+LocaleConfig.locales['ar'] = {
+    monthNames: Object.values(ARABIC_MONTHS),
+    dayNames: Object.values(ARABIC_DAYS),
+    dayNamesShort: Object.values(ARABIC_DAYS),
+};
+
+LocaleConfig.defaultLocale = i18n.language;
 
 const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disabledDates }: CalendarModalProps) => {
   const { t } = useTranslation();
@@ -340,8 +349,12 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
             <View style={styles.calendarContainer}>
               <Calendar
                 ref={calendarRef}
-                key={format(currentMonth, 'yyyy-MM')}
-                current={format(currentMonth, 'yyyy-MM-dd')}
+                key={format(currentMonth, 'yyyy-MM', {
+                    locale: i18n.language === "ar" ? ar : enUS
+                })}
+                current={format(currentMonth, 'yyyy-MM-dd', {
+                    locale: i18n.language === "ar" ? ar : enUS
+                })}
                 minDate={format(new Date(), 'yyyy-MM-dd')}
                 markingType={'period'}
                 markedDates={selectedDates}
