@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Calendar, DateData } from 'react-native-calendars';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import { format, addDays, addMonths, subMonths, differenceInDays } from 'date-fns';
+import { format, addDays, addMonths, subMonths, differenceInDays, subDays } from 'date-fns';
 import CustomModal from '../../commonComponent/Modal/CustomModal';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Button from '@/commonComponent/button/Button';
@@ -161,7 +161,7 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
             || disabledEnd >= start && disabledEnd <= end;
 
             if(isOverlapping) {
-                end = addDays(disabledStart, -1);
+                end = subDays(disabledStart, 1);
                 return;
             }
         })
