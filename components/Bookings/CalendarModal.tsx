@@ -438,6 +438,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   calendarWrapper: {
+    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -445,6 +446,10 @@ const styles = StyleSheet.create({
   calendarContainer: {
     flex: 1,
     paddingHorizontal: 15,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   modalTitle: {
     fontSize: 18,
