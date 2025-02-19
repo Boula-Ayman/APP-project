@@ -405,6 +405,7 @@ const styles = StyleSheet.create({
     color: "white",
     marginBottom: 8,
     fontFamily: "InterMedium",
+    textAlign: "left"
   },
   fromToText: {
     fontSize: 24,
@@ -412,6 +413,7 @@ const styles = StyleSheet.create({
     color: "white",
     marginBottom: 8,
     fontFamily: "InterMedium",
+    textAlign: "left"
   },
   bar: {
     width: 283,
