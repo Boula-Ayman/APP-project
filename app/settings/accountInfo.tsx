@@ -360,6 +360,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 8,
     fontFamily: "Inter_500Medium",
+    textAlign: i18n.language === "ar" ? "right" : "left"
   },
   input: {
     height: 48,
