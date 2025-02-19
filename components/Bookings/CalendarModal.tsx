@@ -470,6 +470,7 @@ const styles = StyleSheet.create({
   highlightedText: {
     color: '#8BC240',
     fontFamily: 'Inter_600SemiBold',
+    textAlign: "left"
   },
   dateRangeContainer: {
     flexDirection: 'row',
@@ -545,11 +546,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Inter_600SemiBold',
     color: '#333333',
+    textAlign: "left"
   },
   termsText: {
     fontSize: 13,
     fontFamily: 'Inter_400Regular',
     color: '#666666',
+    textAlign: "left"
     
   },
   termsLink: {
