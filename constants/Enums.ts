@@ -16,6 +16,16 @@ export const ARABIC_DAYS = Object.freeze({
     SATURDAY: 'سبت'
 })
 
+export const SHORT_ARABIC_DAYS = Object.freeze({
+    SUNDAY: 'أح',
+    MONDAY: 'أث',
+    TUESDAY: 'ث',
+    WEDNESDAY: 'أر',
+    THURSDAY: 'خ',
+    FRIDAY: 'ج',
+    SATURDAY: 'س'
+})
+
 export const ARABIC_MONTHS = Object.freeze({
     JANUARY: 'يناير',
     FEBRUARY: 'فبراير',

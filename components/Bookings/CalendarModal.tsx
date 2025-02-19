@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n/i18n';
 import { ar, enUS } from 'date-fns/locale';
 import { localizeNumber } from '@/utils/numbers';
-import { ARABIC_DAYS, ARABIC_MONTHS } from '@/constants/Enums';
+import { ARABIC_DAYS, ARABIC_MONTHS, SHORT_ARABIC_DAYS } from '@/constants/Enums';
 
 interface CalendarModalProps {
   isVisible: boolean;
@@ -24,7 +24,7 @@ interface CalendarModalProps {
 LocaleConfig.locales['ar'] = {
     monthNames: Object.values(ARABIC_MONTHS),
     dayNames: Object.values(ARABIC_DAYS),
-    dayNamesShort: Object.values(ARABIC_DAYS),
+    dayNamesShort: Object.values(SHORT_ARABIC_DAYS),
 };
 
 LocaleConfig.defaultLocale = i18n.language;
