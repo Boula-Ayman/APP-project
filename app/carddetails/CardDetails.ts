@@ -344,6 +344,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.48,
     color: "white",
     marginBottom: 8,
+    textAlign: "left"
   },
   priceInfo: {
     flexDirection: "row",
@@ -356,6 +357,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "white",
     marginTop: 15,
+    textAlign: "left"
   },
   cashPriceInfo: {
     fontFamily: "InterSemiBold",
@@ -363,6 +365,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: "white",
     marginBottom: 10,
+    textAlign: "left"
   },
   priceLabel: {
     fontFamily: "InterMedium",
