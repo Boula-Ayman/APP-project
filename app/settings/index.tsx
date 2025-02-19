@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   settingItem: {
-    flexDirection: "row",
+    flexDirection: i18n.language === 'ar' ? "row-reverse" : 'row',
     alignItems: "center",
     justifyContent: "space-between",
     paddingVertical: 16,
