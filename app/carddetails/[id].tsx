@@ -19,7 +19,7 @@ import {
   useGetOpportunityQuery,
   useSellSharesOpportunityMutation,
 } from "@/src/api/opportunitiesApiSlice";
-import { useCreateBookingMutation } from "@/src/api/bookingsApiSlice";
+import { useCreateBookingMutation, useLazyGetPropertyBookingsQuery } from "@/src/api/bookingsApiSlice";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import i18n from "@/i18n/i18n";
@@ -34,7 +34,7 @@ import { Slider } from "@miblanchard/react-native-slider";
 import AppText from "@/commonComponent/appText/AppText";
 import Button from "@/commonComponent/button/Button";
 import CalendarModal from "@/components/Bookings/CalendarModal";
-import { format } from "date-fns";
+import { addDays, format } from "date-fns";
 
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 import {
@@ -606,7 +606,6 @@ const CardDetails = () => {
   const { id, type } = useLocalSearchParams();
   const { data: wishList, refetch } = useGetWishListQuery({});
 
-  const dispatch = useDispatch();
   const [handleRegisterInterest] = useOpportunityRegisterInterestMutation();
   const [isRegistered, setIsRegistered] = React.useState(false);
   const user = useSelector((state: any) => state?.user.user);
@@ -614,6 +613,7 @@ const CardDetails = () => {
   const [removeWishList] = useRemoveWishListMutation();
   const [isWantToSellModal, setIsWantToSellModal] = useState(false);
   const [isCalendarModalVisible, setIsCalendarModalVisible] = useState(false);
+  const [disabledDates, setDisabledDates] = useState<{from: string, to: string}[]>([]);
   const [createBooking] = useCreateBookingMutation();
 
   const {
@@ -630,6 +630,8 @@ const CardDetails = () => {
       refetchOnFocus: true,
     }
   );
+
+  const [getBookings] = useLazyGetPropertyBookingsQuery();
 
   useEffect(() => {
     if (!isCalendarModalVisible) {
@@ -720,8 +722,14 @@ const CardDetails = () => {
     }
   };
 
-  const handleBookNow = () => {
+  const handleBookNow = async() => {
     setIsCalendarModalVisible(true);
+    const res = await getBookings({ id: id as string }).unwrap();
+    const disabledDates = res.data.map((booking) => ({
+      from: format(addDays(new Date(booking.from), 1), 'yyyy-MM-dd'),
+      to: format(addDays(new Date(booking.to), -1), 'yyyy-MM-dd'),
+    }));
+    setDisabledDates(disabledDates);
   };
 
   const handleConfirmBooking = async (
@@ -1126,6 +1134,7 @@ const CardDetails = () => {
           onClose={() => setIsCalendarModalVisible(false)}
           onConfirm={handleConfirmBooking}
           availableNights={data?.data?.available_nights || 0}
+          disabledDates={disabledDates}
         />
       </SafeAreaView>
     );
