@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontFamily: "PoppinsSemiBold",
     color: "#2B2B2B",
+    textAlign: "left",
   },
   locationContainer: {
     flexDirection: "row",
@@ -166,14 +167,15 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     fontFamily: "InterSemiBold",
     color: "black",
+    textAlign: "left"
   },
   description: {
     fontSize: 16,
     color: "#464851",
     fontWeight: "400",
     fontFamily: "InterRegular",
-    textAlign: "justify",
-    width: "96%",
+    textAlign: "left",
+    width: "96%"
   },
 
   amenitiesFeatures: {
