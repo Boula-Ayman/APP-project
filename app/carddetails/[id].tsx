@@ -899,7 +899,7 @@ const CardDetails = () => {
                         investors:
                           i18n.language === "en"
                             ? data?.data?.investors
-                            : data?.data?.investors.toLocaleString("ar-EG"),
+                            : data?.data?.investors?.toLocaleString("ar-EG"),
                       })
                 }
                 style={styles.badgeText}
