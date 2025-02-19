@@ -263,7 +263,9 @@
     "twoNights": "ليلتان",
     "calendar": {
       "bookNights": "حجز الليالي",
-      "availableNights": "الليالي المتاحة",
+      "availableNight": "ليلة متاحة",
+      "twoAvailableNights": "ليلتان متاحتان",
+      "availableNights": "ليلة متاحة",
       "selectDates": "اختر التواريخ",
       "bookNow": "احجز الآن",
       "termsAgreement": "بتأكيد حجزك، أنت توافق على شروط الخدمة",

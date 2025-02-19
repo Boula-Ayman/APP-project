@@ -253,6 +253,8 @@
     "nights": "Nights",
     "calendar": {
       "bookNights": "Book Nights",
+      "availableNight": "Available Night",
+      "twoAvailableNights": "2 Available Nights",
       "availableNights": "Available Nights",
       "selectDates": "Select Dates",
       "bookNow": "Book Now",

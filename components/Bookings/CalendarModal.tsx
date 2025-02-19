@@ -30,7 +30,7 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
   const [isError, setIsError] = React.useState(false);
   const calendarRef = React.useRef<any>(null);
 
-  const readableNights = React.useMemo(() => {
+  const readableBookedNights = React.useMemo(() => {
     if (!endDate || !startDate) {
       return 0;
     }
@@ -320,7 +320,18 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
         <View style={styles.mainContainer}>
           <View style={styles.availableNightsContainer}>
             <Text style={styles.availableNightsText}>
-              <Text style={styles.highlightedText}>{localizeNumber(availableNights, i18n.language)}</Text> {t('bookings.calendar.availableNights')}
+                {availableNights - readableBookedNights === 2 ? 
+                    t('bookings.calendar.twoAvailableNights')
+                    :
+                    <View style={{flexDirection: 'row', alignItems: 'center', gap: 4}}>
+                        <Text style={styles.highlightedText}>
+                            {localizeNumber(availableNights - readableBookedNights, i18n.language)}
+                        </Text>
+                        <Text>
+                            {t('bookings.calendar.availableNights')}
+                        </Text>
+                    </View>
+                }
             </Text>
             <View style={styles.dateRangeContainer}>
               <View>
@@ -401,18 +412,16 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
 
         <View style={styles.nightsContainer}>
           <Text style={styles.nightsText}>
-            {readableNights === 2 ? 
+            {readableBookedNights === 2 ?
                 <Text style={styles.greenText}>
                     {t('bookings.twoNights')}
                 </Text>
                 : 
                 <>
                     <Text style={styles.greenText}>
-                        {localizeNumber(readableNights, i18n.language)}
+                        {localizeNumber(readableBookedNights, i18n.language)}
                     </Text>
-                    <>
-                        {` ${isPluralCount(readableNights, i18n.language) ? t('bookings.nights') : t('bookings.night')}`}
-                    </>
+                    {` ${isPluralCount(readableBookedNights, i18n.language) ? t('bookings.nights') : t('bookings.night')}`}
                 </>
             }
           </Text>
