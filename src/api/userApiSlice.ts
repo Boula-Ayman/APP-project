@@ -37,11 +37,14 @@ const userApiSlice = apiSlice.injectEndpoints({
       providesTags: ["User"],
       keepUnusedDataFor: 0,
     }),
-    updateUserProfile: builder.mutation<ResponseData<User>, UpdateUserProfileData>({
+    updateUserProfile: builder.mutation<
+      ResponseData<User>,
+      UpdateUserProfileData
+    >({
       query: (data) => {
         return {
           url: "/users/me",
-          method: "PATCH", 
+          method: "PATCH",
           body: data,
         };
       },
@@ -64,9 +67,9 @@ const userApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { 
+export const {
   useGetCurrentUserProfileQuery,
   useUpdateUserProfileMutation,
   useUpdatePasswordMutation,
-  useGetSignedUrlMutation
-} = userApiSlice; 
+  useGetSignedUrlMutation,
+} = userApiSlice;
