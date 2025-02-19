@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: "700",
     lineHeight: 31.47,
-    textAlign: "left",
+    textAlign: i18n.language === 'ar' ? 'right' : 'left'
   },
   ImageContainer: {
     display: "flex",
