@@ -27,7 +27,7 @@ LocaleConfig.locales['ar'] = {
     dayNamesShort: Object.values(SHORT_ARABIC_DAYS),
 };
 
-LocaleConfig.defaultLocale = i18n.language;
+LocaleConfig.defaultLocale = i18n.language === "ar" ? "ar" : "";
 
 const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disabledDates }: CalendarModalProps) => {
   const { t } = useTranslation();
