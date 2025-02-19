@@ -327,7 +327,7 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
                         <Text style={styles.highlightedText}>
                             {localizeNumber(availableNights - readableBookedNights, i18n.language)}
                         </Text>
-                        <Text>
+                        <Text style={{fontSize: 20}}>
                             {t('bookings.calendar.availableNights')}
                         </Text>
                     </View>
@@ -417,12 +417,14 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
                     {t('bookings.twoNights')}
                 </Text>
                 : 
-                <>
+                <View style={{flexDirection: 'row', alignItems: 'center', gap: 4}}>
                     <Text style={styles.greenText}>
                         {localizeNumber(readableBookedNights, i18n.language)}
                     </Text>
-                    {` ${isPluralCount(readableBookedNights, i18n.language) ? t('bookings.nights') : t('bookings.night')}`}
-                </>
+                    <Text style={{fontSize: 20}}>
+                        {isPluralCount(readableBookedNights, i18n.language) ? t('bookings.nights') : t('bookings.night')}
+                    </Text>
+                </View>
             }
           </Text>
           <Text style={styles.termsText}>
@@ -493,6 +495,8 @@ const styles = StyleSheet.create({
   highlightedText: {
     color: '#8BC240',
     fontFamily: 'Inter_600SemiBold',
+    fontSize: 20,
+    fontWeight: '700'
   },
   dateRangeContainer: {
     flexDirection: 'row',
@@ -589,6 +593,8 @@ const styles = StyleSheet.create({
   greenText: {
     color: '#8BC240',
     fontFamily: 'Inter_600SemiBold',
+    fontSize: 20,
+    fontWeight: '700'
   },
 });
 
