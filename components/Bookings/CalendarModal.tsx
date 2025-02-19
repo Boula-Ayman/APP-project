@@ -151,7 +151,20 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
         });
     } else {
       const start = new Date(startDate);
-      const end = new Date(day.dateString);
+      let end = new Date(day.dateString);
+
+        disabledDates?.map(disabledDate => {
+            const disabledStart = new Date(disabledDate.from);
+            const disabledEnd = new Date(disabledDate.to);
+
+            const isOverlapping = disabledStart >= start && disabledStart <= end
+            || disabledEnd >= start && disabledEnd <= end;
+
+            if(isOverlapping) {
+                end = addDays(disabledStart, -1);
+                return;
+            }
+        })
       
       if (end < start) {
         setStartDate(day.dateString);
@@ -174,28 +187,6 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
       const range: {[key: string]: any} = {};
       let currentDate = new Date(startDate);
 
-      if(disabledDates?.some((disabledDate, index) => {
-        const disabledStart = new Date(disabledDate.from);
-        const disabledEnd = new Date(disabledDate.to);
-
-        const isOverlapping = disabledStart >= start && disabledStart <= end
-        || disabledEnd >= start && disabledEnd <= end;
-
-        return isOverlapping;
-      })) {
-          setEndDate(null);
-          setSelectedDates(prevDates => {
-            const newDates = { ...prevDates };
-            Object.keys(newDates).forEach(date => {
-              if (!newDates[date].disabled) {
-                delete newDates[date];
-              }
-            });
-            return newDates;
-          });
-        return;
-      }
-
       while (currentDate <= end) {
         const dateString = format(currentDate, 'yyyy-MM-dd');
         if (dateString === startDate) {
@@ -204,7 +195,7 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
             color: '#8BC240',
             textColor: 'white'
           };
-        } else if (dateString === day.dateString || differenceInDays(currentDate, new Date(startDate)) === availableNights) {
+        } else if (dateString === format(end, 'yyyy-MM-dd') || differenceInDays(currentDate, new Date(startDate)) === availableNights) {
           range[dateString] = {
             endingDay: true,
             color: '#8BC240',
