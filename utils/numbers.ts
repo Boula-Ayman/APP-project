@@ -21,3 +21,10 @@ export const localizeNumber = (number: number, language = "en") => {
   });
   return localizedNumberWithoutPoint.join(".");
 };
+
+export const isPluralCount = (number: number, language = "en") => {
+  if (language === "en") {
+    return number >= 2;
+  }
+  return number > 2 && number <= 10;
+};

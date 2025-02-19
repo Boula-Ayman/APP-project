@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Calendar, DateData } from 'react-native-calendars';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import { format, addDays, addMonths, subMonths } from 'date-fns';
+import { format, addDays, addMonths, subMonths, differenceInDays, subDays } from 'date-fns';
 import CustomModal from '../../commonComponent/Modal/CustomModal';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Button from '@/commonComponent/button/Button';
@@ -10,7 +10,7 @@ import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n/i18n';
 import { ar, enUS } from 'date-fns/locale';
-import { localizeNumber } from '@/utils/numbers';
+import { isPluralCount, localizeNumber } from '@/utils/numbers';
 
 interface CalendarModalProps {
   isVisible: boolean;
@@ -29,6 +29,14 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
   const calendarRef = React.useRef<any>(null);
+
+  const readableBookedNights = React.useMemo(() => {
+    if (!endDate || !startDate) {
+      return 0;
+    }
+    const nights = differenceInDays(new Date(endDate), new Date(startDate));
+    return nights === 0 ? 1 : nights;
+  }, [endDate, startDate]);
 
   const resetState = React.useCallback(() => {
     setStartDate(null);
@@ -143,39 +151,41 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
         });
     } else {
       const start = new Date(startDate);
-      const end = new Date(day.dateString);
+      let end = new Date(day.dateString);
+
+        disabledDates?.map(disabledDate => {
+            const disabledStart = new Date(disabledDate.from);
+            const disabledEnd = new Date(disabledDate.to);
+
+            const isOverlapping = disabledStart >= start && disabledStart <= end
+            || disabledEnd >= start && disabledEnd <= end;
+
+            if(isOverlapping) {
+                end = subDays(disabledStart, 1);
+                return;
+            }
+        })
       
       if (end < start) {
         setStartDate(day.dateString);
-        setEndDate(startDate);
+        setEndDate(null);
+        setSelectedDates(prev => (
+            {...prev, 
+                [day.dateString]: {
+                    startingDay: true,
+                    color: '#8BC240',
+                    textColor: 'white'
+                },
+                [startDate]: {}
+            }
+        ));
+        return;
       } else {
         setEndDate(day.dateString);
       }
 
       const range: {[key: string]: any} = {};
       let currentDate = new Date(startDate);
-
-      if(disabledDates?.some((disabledDate, index) => {
-        const disabledStart = new Date(disabledDate.from);
-        const disabledEnd = new Date(disabledDate.to);
-
-        const isOverlapping = disabledStart >= start && disabledStart <= end
-        || disabledEnd >= start && disabledEnd <= end;
-
-        return isOverlapping;
-      })) {
-          setEndDate(null);
-          setSelectedDates(prevDates => {
-            const newDates = { ...prevDates };
-            Object.keys(newDates).forEach(date => {
-              if (!newDates[date].disabled) {
-                delete newDates[date];
-              }
-            });
-            return newDates;
-          });
-        return;
-      }
 
       while (currentDate <= end) {
         const dateString = format(currentDate, 'yyyy-MM-dd');
@@ -185,12 +195,14 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
             color: '#8BC240',
             textColor: 'white'
           };
-        } else if (dateString === day.dateString) {
+        } else if (dateString === format(end, 'yyyy-MM-dd') || differenceInDays(currentDate, new Date(startDate)) === availableNights) {
           range[dateString] = {
             endingDay: true,
             color: '#8BC240',
             textColor: 'white'
           };
+          setEndDate(dateString);
+          break;
         } else {
           range[dateString] = {
             color: '#E8F3DC',
@@ -299,7 +311,18 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
         <View style={styles.mainContainer}>
           <View style={styles.availableNightsContainer}>
             <Text style={styles.availableNightsText}>
-              <Text style={styles.highlightedText}>{localizeNumber(availableNights, i18n.language)}</Text> {t('bookings.calendar.availableNights')}
+                {availableNights - readableBookedNights === 2 ? 
+                    t('bookings.calendar.twoAvailableNights')
+                    :
+                    <View style={{flexDirection: 'row', alignItems: 'center', gap: 4}}>
+                        <Text style={styles.highlightedText}>
+                            {localizeNumber(availableNights - readableBookedNights, i18n.language)}
+                        </Text>
+                        <Text style={{fontSize: 20}}>
+                            {t('bookings.calendar.availableNights')}
+                        </Text>
+                    </View>
+                }
             </Text>
             <View style={styles.dateRangeContainer}>
               <View>
@@ -380,9 +403,20 @@ const CalendarModal = ({ isVisible, onClose, onConfirm, availableNights, disable
 
         <View style={styles.nightsContainer}>
           <Text style={styles.nightsText}>
-            {endDate && startDate 
-              ? <><Text style={styles.greenText}>{Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24))}</Text>{` ${t('bookings.nights')}`}</>
-              : <><Text style={styles.greenText}>0</Text>{` ${t('bookings.nights')}`}</>}
+            {readableBookedNights === 2 ?
+                <Text style={styles.greenText}>
+                    {t('bookings.twoNights')}
+                </Text>
+                : 
+                <View style={{flexDirection: 'row', alignItems: 'center', gap: 4}}>
+                    <Text style={styles.greenText}>
+                        {localizeNumber(readableBookedNights, i18n.language)}
+                    </Text>
+                    <Text style={{fontSize: 20}}>
+                        {isPluralCount(readableBookedNights, i18n.language) ? t('bookings.nights') : t('bookings.night')}
+                    </Text>
+                </View>
+            }
           </Text>
           <Text style={styles.termsText}>
             {t('bookings.calendar.termsAgreement')}
@@ -452,6 +486,8 @@ const styles = StyleSheet.create({
   highlightedText: {
     color: '#8BC240',
     fontFamily: 'Inter_600SemiBold',
+    fontSize: 20,
+    fontWeight: '700'
   },
   dateRangeContainer: {
     flexDirection: 'row',
@@ -548,6 +584,8 @@ const styles = StyleSheet.create({
   greenText: {
     color: '#8BC240',
     fontFamily: 'Inter_600SemiBold',
+    fontSize: 20,
+    fontWeight: '700'
   },
 });
 
