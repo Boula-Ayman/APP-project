@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#2B2B2B",
     marginBottom: 8,
+    textAlign: "left",
   },
   locationSection: {
     flexDirection: "row",
