@@ -498,11 +498,13 @@ const SignUpPage: React.FC = () => {
                         themeVariant="light"
                         onChange={handleDateChangeIos}
                         locale={i18n.language}
+                        accentColor="#8BC240"
                         i18nIsDynamicList
                       />
                       <RNButton
                         title="Done"
                         onPress={() => handleDateConfirmIos(setFieldValue)}
+                        color="#8BC240"
                       />
                     </View>
                   </View>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, SafeAreaView } from "react-native";
+import { View, Text, FlatList, SafeAreaView, Pressable } from "react-native";
 import SearchBar from "../Home/HeaderComponents/SearchBar";
 import FilterButton from "../Home/HeaderComponents/FilterButton";
 import {
@@ -14,6 +14,7 @@ import { PROPERTIES_STATUS, PropertiesStatusKeys } from "@/constants/Enums";
 import i18n from "@/i18n/i18n";
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 import { useGetWishListQuery } from "@/src/wishList/wishListApiSlice";
+import { Link } from "expo-router";
 
 interface FilterScreenProps {
   searchTerm: string;
@@ -124,16 +125,25 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
             }}
             data={opportunities}
             renderItem={({ item }) => (
-              <Card
-                item={item}
-                isLiked={wishList?.data?.some(
-                  (likedItem: Opportunity) => likedItem.id === item.id
-                )}
-              />
-            )}
-            keyExtractor={(item) => item.id.toString()}
-            ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
-            showsVerticalScrollIndicator={false}
+                <Link
+                href={`/carddetails/${item.id}?type=${
+                  item.opportunity_type
+                }&likedItems=${JSON.stringify(wishList)}`}
+                asChild
+              >
+                  <Pressable>
+                    <Card
+                      item={item}
+                      isLiked={wishList?.data?.some(
+                        (likedItem: Opportunity) => likedItem.id === item.id
+                      )}
+                    />
+                  </Pressable>
+                </Link>
+              )}
+              keyExtractor={(item) => item.id.toString()}
+              ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
+              showsVerticalScrollIndicator={false}
           />
         ) : (
           <View

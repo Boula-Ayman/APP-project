@@ -423,6 +423,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 4,
     fontFamily: "Inter_400Regular",
+    textAlign: i18n.language === "ar" ? "right" : "left",
   },
   updateButton: {
     marginVertical: 20,

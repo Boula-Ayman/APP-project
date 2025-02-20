@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     headerContainer: {
-        marginTop: 50,
+        // marginTop: 50,
         marginBottom: 20,
         height: 48,
         display: "flex",
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     },
     backButton: { 
         position: "absolute",
-        left: 0,
+        left: 10,
         backgroundColor: "#F6F6F6",
         borderRadius: '50%',
         width: 48,

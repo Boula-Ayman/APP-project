@@ -361,23 +361,27 @@ const CalendarModal = ({
         <View style={styles.mainContainer}>
           <View style={styles.availableNightsContainer}>
             <Text style={styles.availableNightsText}>
-              {availableNights - readableBookedNights === 2 ? (
-                t("bookings.calendar.twoAvailableNights")
-              ) : (
                 <View
-                  style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+                  style={{ display: 'flex', width: '100%', flexDirection: "row", justifyContent: "flex-start", alignItems: "center", gap: 4 }}
                 >
-                  <Text style={styles.highlightedText}>
-                    {localizeNumber(
-                      availableNights - readableBookedNights,
-                      i18n.language
-                    )}
-                  </Text>
-                  <Text style={{ fontSize: 20 }}>
-                    {t("bookings.calendar.availableNights")}
-                  </Text>
+                    {availableNights - readableBookedNights === 2 ? 
+                    <Text style={styles.highlightedText}>
+                        {t("bookings.calendar.twoAvailableNights")}
+                    </Text>
+                    :
+                    <View style={{ display: 'flex', flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 4 }}>
+                        <Text style={styles.highlightedText}>
+                            {localizeNumber(
+                            availableNights - readableBookedNights,
+                            i18n.language
+                            )}
+                        </Text>
+                        <Text style={{ fontSize: 20 }}>
+                            {t("bookings.calendar.availableNights")}
+                        </Text>
+                  </View>
+                    }
                 </View>
-              )}
             </Text>
             <View style={styles.dateRangeContainer}>
               <View>
@@ -460,7 +464,7 @@ const CalendarModal = ({
               <Text style={styles.greenText}>{t("bookings.twoNights")}</Text>
             ) : (
               <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+                style={{ display: 'flex', width: '100%', flexDirection: "row", alignItems: "center", gap: 4, justifyContent: "flex-start" }}
               >
                 <Text style={styles.greenText}>
                   {localizeNumber(readableBookedNights, i18n.language)}
@@ -626,7 +630,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Inter_600SemiBold",
     color: "#333333",
-    textAlign: "left",
   },
   termsText: {
     fontSize: 13,
@@ -650,6 +653,7 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_600SemiBold",
     fontSize: 20,
     fontWeight: "700",
+    textAlign: "left",
   },
 });
 

@@ -641,7 +641,7 @@ const CardDetails = () => {
 
   useEffect(() => {
     queryRefetch();
-  }, []);
+  }, [id]);
 
   const handleGoogleClick = () => {
     Linking.openURL("https://www.google.com");
@@ -723,14 +723,14 @@ const CardDetails = () => {
   };
 
   const handleBookNow = async() => {
-    setIsCalendarModalVisible(true);
     const res = await getBookings({ id: id as string }).unwrap();
     const disabledDates = res.data.map((booking) => ({
-      from: format(addDays(new Date(booking.from), 1), 'yyyy-MM-dd'),
-      to: format(addDays(new Date(booking.to), -1), 'yyyy-MM-dd'),
+        from: format(addDays(new Date(booking.from), 1), 'yyyy-MM-dd'),
+        to: format(addDays(new Date(booking.to), -1), 'yyyy-MM-dd'),
     }));
     setDisabledDates(disabledDates);
-  };
+    setIsCalendarModalVisible(true);
+};
 
   const handleConfirmBooking = async (
     startDate: string | null,

@@ -218,6 +218,7 @@
     "enterNewPassword": "أدخل كلمة المرور الجديدة",
     "currentPasswordRequired": "كلمة المرور الحالية مطلوبة",
     "newPasswordRequired": "كلمة المرور الجديدة مطلوبة",
+    "confirmPasswordRequired": "تأكيد كلمة المرور الجديدة مطلوب",
     "passwordMismatch": "كلمات المرور الجديدة غير متطابقة",
     "passwordUpdateSuccess": "تم تحديث كلمة المرور بنجاح",
     "passwordUpdateError": "فشل تحديث كلمة المرور. يرجى المحاولة مرة أخرى",

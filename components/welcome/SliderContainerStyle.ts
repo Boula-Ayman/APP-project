@@ -44,6 +44,7 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#0E0C20",
     marginTop: 10,
+    zIndex: 1000,
   },
   description: {
     fontFamily: "Inter_400Regular",
