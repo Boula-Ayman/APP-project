@@ -70,8 +70,8 @@ const PropertyCard: React.FC<CardProps> = ({
           {formatPrice(item.share_price || 0)} {t(`${item.currency}`)}
         </Text>
         <Text style={styles.ownerShip}>
-          {localizeNumber(item.available_shares || 0, i18n.language)}/
-          {localizeNumber(item.owned_shares || 0, i18n.language)}{" "}
+          {localizeNumber(item.owned_shares || 0, i18n.language)}/
+          {localizeNumber(item.number_of_shares || 0, i18n.language)}{" "}
           {t("home.ownerShip")}
         </Text>
         <TouchableOpacity style={styles.HeartOverlay} onPress={onLoveIconPress}>

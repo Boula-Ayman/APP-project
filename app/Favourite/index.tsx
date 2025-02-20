@@ -13,6 +13,7 @@ import { t } from "i18next";
 import { LinearGradient } from "expo-linear-gradient";
 import Area from "../../assets/icons/area.svg";
 import PropertyCard from "@/commonComponent/PropertyCard/PropertyCard";
+import { router } from "expo-router";
 
 const TestWishListComponent = () => {
   const { data, error, isLoading, refetch } = useGetWishListQuery({
@@ -36,6 +37,12 @@ const TestWishListComponent = () => {
     } catch (error) {
       console.error("Error toggling wishlist:", error);
     }
+  };
+  const handlePropertyPress = (id: number) => {
+    router.push({
+      pathname: "/carddetails/[id]",
+      params: { id: id },
+    } as any);
   };
 
   return (
@@ -78,7 +85,9 @@ const TestWishListComponent = () => {
                 }}
                 isLiked={true}
                 onLoveIconPress={() => handleLikeToggle(opportunity.id)}
-                onPress={() => {}}
+                onPress={() => {
+                  handlePropertyPress(opportunity.id);
+                }}
               />
             </View>
           ))
