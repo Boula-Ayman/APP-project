@@ -1,6 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import apiSlice from "../../api/apiSlice";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const verifyApiSlice = apiSlice.injectEndpoints({
   overrideExisting: true,
