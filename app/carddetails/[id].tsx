@@ -641,7 +641,7 @@ const CardDetails = () => {
 
   useEffect(() => {
     queryRefetch();
-  }, []);
+  }, [id]);
 
   const handleGoogleClick = () => {
     Linking.openURL("https://www.google.com");
