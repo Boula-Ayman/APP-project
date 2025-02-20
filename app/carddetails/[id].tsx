@@ -19,7 +19,7 @@ import {
   useGetOpportunityQuery,
   useSellSharesOpportunityMutation,
 } from "@/src/api/opportunitiesApiSlice";
-import { useCreateBookingMutation } from "@/src/api/bookingsApiSlice";
+import { useCreateBookingMutation, useLazyGetPropertyBookingsQuery } from "@/src/api/bookingsApiSlice";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import i18n from "@/i18n/i18n";
@@ -34,7 +34,7 @@ import { Slider } from "@miblanchard/react-native-slider";
 import AppText from "@/commonComponent/appText/AppText";
 import Button from "@/commonComponent/button/Button";
 import CalendarModal from "@/components/Bookings/CalendarModal";
-import { format } from "date-fns";
+import { addDays, format } from "date-fns";
 
 import { Opportunity } from "@/src/interfaces/opportunity.interface";
 import {
@@ -135,7 +135,6 @@ const Header = ({
 const PriceSection = ({
   share_price,
   currency,
-  available_shares,
   owned_shares,
   number_of_shares,
   status,
@@ -607,7 +606,6 @@ const CardDetails = () => {
   const { id, type } = useLocalSearchParams();
   const { data: wishList, refetch } = useGetWishListQuery({});
 
-  const dispatch = useDispatch();
   const [handleRegisterInterest] = useOpportunityRegisterInterestMutation();
   const [isRegistered, setIsRegistered] = React.useState(false);
   const user = useSelector((state: any) => state?.user.user);
@@ -615,6 +613,7 @@ const CardDetails = () => {
   const [removeWishList] = useRemoveWishListMutation();
   const [isWantToSellModal, setIsWantToSellModal] = useState(false);
   const [isCalendarModalVisible, setIsCalendarModalVisible] = useState(false);
+  const [disabledDates, setDisabledDates] = useState<{from: string, to: string}[]>([]);
   const [createBooking] = useCreateBookingMutation();
 
   const {
@@ -631,6 +630,8 @@ const CardDetails = () => {
       refetchOnFocus: true,
     }
   );
+
+  const [getBookings] = useLazyGetPropertyBookingsQuery();
 
   useEffect(() => {
     if (!isCalendarModalVisible) {
@@ -721,8 +722,14 @@ const CardDetails = () => {
     }
   };
 
-  const handleBookNow = () => {
+  const handleBookNow = async() => {
     setIsCalendarModalVisible(true);
+    const res = await getBookings({ id: id as string }).unwrap();
+    const disabledDates = res.data.map((booking) => ({
+      from: format(addDays(new Date(booking.from), 1), 'yyyy-MM-dd'),
+      to: format(addDays(new Date(booking.to), -1), 'yyyy-MM-dd'),
+    }));
+    setDisabledDates(disabledDates);
   };
 
   const handleConfirmBooking = async (
@@ -823,7 +830,6 @@ const CardDetails = () => {
             <PriceSection
               share_price={data?.data?.share_price}
               currency={data?.data?.currency}
-              available_shares={data?.data?.available_shares}
               number_of_shares={data?.data?.number_of_shares}
               status={data?.data?.status}
               owned_shares={data?.data?.owned_shares}
@@ -869,9 +875,15 @@ const CardDetails = () => {
                     fontWeight: "500",
                   }}
                 >
-                  {data?.data?.owned_shares}
+                  {i18n.language === "en"
+                    ? data?.data?.owned_shares.toLocaleString()
+                    : data?.data?.owned_shares.toLocaleString("ar-EG")}
                 </Text>
-                /{data?.data?.number_of_shares} Shares on this property
+                /
+                {i18n.language === "en"
+                  ? data?.data?.number_of_shares.toLocaleString()
+                  : data?.data?.number_of_shares.toLocaleString("ar-EG")}{" "}
+                {t("ownedSharesText")}
               </Text>
             )}
 
@@ -887,7 +899,7 @@ const CardDetails = () => {
                         investors:
                           i18n.language === "en"
                             ? data?.data?.investors
-                            : data?.data?.investors.toLocaleString("ar-EG"),
+                            : data?.data?.investors?.toLocaleString("ar-EG"),
                       })
                 }
                 style={styles.badgeText}
@@ -1122,6 +1134,7 @@ const CardDetails = () => {
           onClose={() => setIsCalendarModalVisible(false)}
           onConfirm={handleConfirmBooking}
           availableNights={data?.data?.available_nights || 0}
+          disabledDates={disabledDates}
         />
       </SafeAreaView>
     );

@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontFamily: "PoppinsSemiBold",
     color: "#2B2B2B",
+    textAlign: "left",
   },
   locationContainer: {
     flexDirection: "row",
@@ -166,14 +167,15 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     fontFamily: "InterSemiBold",
     color: "black",
+    textAlign: "left"
   },
   description: {
     fontSize: 16,
     color: "#464851",
     fontWeight: "400",
     fontFamily: "InterRegular",
-    textAlign: "justify",
-    width: "96%",
+    textAlign: "left",
+    width: "96%"
   },
 
   amenitiesFeatures: {
@@ -342,6 +344,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.48,
     color: "white",
     marginBottom: 8,
+    textAlign: "left"
   },
   priceInfo: {
     flexDirection: "row",
@@ -354,6 +357,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "white",
     marginTop: 15,
+    textAlign: "left"
   },
   cashPriceInfo: {
     fontFamily: "InterSemiBold",
@@ -361,6 +365,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: "white",
     marginBottom: 10,
+    textAlign: "left"
   },
   priceLabel: {
     fontFamily: "InterMedium",
@@ -400,6 +405,7 @@ const styles = StyleSheet.create({
     color: "white",
     marginBottom: 8,
     fontFamily: "InterMedium",
+    textAlign: "left"
   },
   fromToText: {
     fontSize: 24,
@@ -407,6 +413,7 @@ const styles = StyleSheet.create({
     color: "white",
     marginBottom: 8,
     fontFamily: "InterMedium",
+    textAlign: "left"
   },
   bar: {
     width: 283,
@@ -450,6 +457,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     width: "100%",
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#061C27",
   },
   buttonText: {
     color: "#FFFFFF",
