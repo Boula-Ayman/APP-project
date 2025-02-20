@@ -52,15 +52,16 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   middleSection: {
-    height: 600,
+    height: "auto",
     backgroundColor: "white",
     borderTopStartRadius: 50,
     borderTopEndRadius: 50,
     padding: 10,
+    paddingBottom: 50,
     marginTop: 120,
   },
   contentSection: {
-    marginTop: 50,
+    marginTop: 20,
     alignContent: "center",
   },
   cirlce: {

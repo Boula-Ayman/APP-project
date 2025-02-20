@@ -71,7 +71,7 @@
   "Lockpad": "Lockpad",
   "Kids zone": "Kids Zone",
   "Garage": "Garage",
-  "sellDescription": "Hold on! Are you sure you want to submit a sales request regarding your own shares for this property to the PropCut Sales Representative team?",
+  "sellDescription": "Are you sure you want to submit a sales request regarding your own shares for this property to the PropCut Sales Representative team?",
   "errorOccurred": "Error occurred",
   "purchasePrice": "Purchase price",
   "yesConfirm": "Yes, confirm",
@@ -119,7 +119,7 @@
   "registrationSuccess2": "registration of interest has been successfully recorded.",
   "availableNights": "Available Nights",
   "estimatedSalesRange": "Estimated sales range",
-  "inverstors": "{{investors}} Inverstors",
+  "inverstors": "{{investors}} Investors",
   "filterResult": "Filter Result",
   "signIn": {
     "title": "Sign In",
