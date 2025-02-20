@@ -7,6 +7,7 @@ import {
   Image,
   Alert,
   ActivityIndicator,
+  Linking,
 } from "react-native";
 import { useLocalSearchParams, router } from "expo-router";
 import CustomHeader from "@/commonComponent/Header/CustomHeader";
@@ -49,6 +50,12 @@ const BookingDetailsScreen = () => {
   });
   
   const availableNights = opportunityData?.data?.available_nights ?? 0;
+
+  const handleDirections = useCallback(() => {
+    if(booking?.property.directions) {
+      Linking.openURL(booking?.property.directions);
+    }
+  }, [booking?.property.directions]);
 
   const handleCancel = useCallback(() => {
     Alert.alert(
@@ -195,6 +202,7 @@ const BookingDetailsScreen = () => {
 
             <BookingActions
               shouldShowDirections={shouldShowDirections}
+              handleDirections={handleDirections}
               handleReschedule={handleReschedule}
               handleCancel={handleCancel}
               isRescheduling={isRescheduling}

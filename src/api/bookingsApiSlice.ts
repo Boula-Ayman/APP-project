@@ -18,6 +18,7 @@ export interface Property {
   location_en: string;
   location_ar: string;
   area: number;
+  directions: string;
 }
 
 export interface Customer {
