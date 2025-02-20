@@ -3,12 +3,17 @@ import { useSelector } from "react-redux";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { RootState } from "../../src/store";
 import CardList from "@/components/cardlistContainer/CardList";
-import { useGetWishListQuery } from "@/src/wishList/wishListApiSlice";
+import {
+  useGetWishListQuery,
+  usePostWishListMutation,
+  useRemoveWishListMutation,
+} from "@/src/wishList/wishListApiSlice";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { t } from "i18next";
 import { LinearGradient } from "expo-linear-gradient";
 import Area from "../../assets/icons/area.svg";
 import PropertyCard from "@/commonComponent/PropertyCard/PropertyCard";
+
 const TestWishListComponent = () => {
   const { data, error, isLoading, refetch } = useGetWishListQuery({
     refetchOnMountOrArgChange: true,
@@ -16,6 +21,22 @@ const TestWishListComponent = () => {
     refetchOnReconnect: true,
     refetchOnUnmount: true,
   });
+  const [addToWishlist] = usePostWishListMutation();
+  const [removeFromWishlist] = useRemoveWishListMutation();
+
+  const handleLikeToggle = async (id: number) => {
+    try {
+      const isLiked = data?.data.some((item) => item.id === id);
+      if (isLiked) {
+        await removeFromWishlist({ id }).unwrap();
+      } else {
+        await addToWishlist({ id }).unwrap();
+      }
+      refetch();
+    } catch (error) {
+      console.error("Error toggling wishlist:", error);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -56,7 +77,7 @@ const TestWishListComponent = () => {
                   status: opportunity.status,
                 }}
                 isLiked={true}
-                onLoveIconPress={() => {}}
+                onLoveIconPress={() => handleLikeToggle(opportunity.id)}
                 onPress={() => {}}
               />
             </View>

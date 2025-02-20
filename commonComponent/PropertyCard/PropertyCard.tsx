@@ -21,6 +21,7 @@ export interface Opportunity {
   share_price?: number;
   currency?: string;
   available_shares?: number;
+  owned_shares?: number;
   number_of_shares?: number;
   title_en: string;
   title_ar: string;
@@ -70,7 +71,7 @@ const PropertyCard: React.FC<CardProps> = ({
         </Text>
         <Text style={styles.ownerShip}>
           {localizeNumber(item.available_shares || 0, i18n.language)}/
-          {localizeNumber(item.number_of_shares || 0, i18n.language)}{" "}
+          {localizeNumber(item.owned_shares || 0, i18n.language)}{" "}
           {t("home.ownerShip")}
         </Text>
         <TouchableOpacity style={styles.HeartOverlay} onPress={onLoveIconPress}>
