@@ -18,7 +18,7 @@ import i18n from "../../../i18n/i18n";
 import styles from "./signInStyle";
 import User1 from "../../../assets/icons/User1.svg";
 import Lock from "../../../assets/icons/Lock.svg";
-import Arrow from "../../../assets/icons/arrow.svg";
+import Arrow from "../../../assets/icons/Arrow.svg";
 import { useFonts } from "expo-font";
 import Checkbox from "expo-checkbox";
 import { setUser } from "@/src/auth/signin/userSlice";
