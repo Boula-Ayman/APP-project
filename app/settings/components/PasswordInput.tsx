@@ -1,5 +1,6 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import React from 'react';
+import i18n from '@/i18n/i18n';
 
 interface PasswordInputProps {
   label: string;
@@ -59,6 +60,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_500Medium',
     color: '#1A1A1A',
     marginBottom: 4,
+    textAlign: i18n.language === 'ar' ? 'right' : 'left',
   },
   input: {
     height: 48,
@@ -70,13 +72,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     backgroundColor: '#FFFFFF',
     width: '100%',
+    textAlign: i18n.language === 'ar' ? 'right' : 'left',
   },
   errorText: {
     color: '#FF4D4D',
     fontSize: 12,
     marginTop: 4,
     fontFamily: 'Inter_400Regular',
-    textAlign: 'left',
+    textAlign: i18n.language === 'ar' ? 'right' : 'left',
   },
   error: {
     color: '#FF4D4D',

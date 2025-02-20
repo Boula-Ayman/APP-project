@@ -7,6 +7,7 @@ import ActionButton from './ActionButton';
 import AntDesign from '@expo/vector-icons/AntDesign';
 interface BookingActionsProps {
   shouldShowDirections: boolean;
+  handleDirections?: () => void;
   handleReschedule?: () => void;
   handleCancel?: () => void;
   isRescheduling?: boolean;
@@ -14,7 +15,8 @@ interface BookingActionsProps {
 }
 
 export const BookingActions: React.FC<BookingActionsProps> = ({ 
-  shouldShowDirections, 
+  shouldShowDirections,
+  handleDirections,
   handleReschedule, 
   handleCancel, 
   isRescheduling, 
@@ -26,12 +28,13 @@ export const BookingActions: React.FC<BookingActionsProps> = ({
     {
       icon: <FontAwesome6 name="location-dot" size={24} color="#333" />,
       label: t('bookings.actions.directions'),
-      stretched: true
+      onPress: handleDirections,
     }
   ] : [
     {
       icon: <FontAwesome6 name="location-dot" size={24} color="#333" />,
-      label: t('bookings.actions.directions')
+      label: t('bookings.actions.directions'),
+      onPress: handleDirections,
     },
     {
       icon: <FontAwesome5 name="calendar-day" size={24} color="#333" />,
@@ -55,7 +58,6 @@ export const BookingActions: React.FC<BookingActionsProps> = ({
           icon={action.icon}
           label={action.label}
           onPress={action.onPress}
-          stretched={action.stretched}
           disabled={action.disabled}
         />
       ))}

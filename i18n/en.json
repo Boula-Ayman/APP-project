@@ -206,6 +206,7 @@
     "enterNewPassword": "New password",
     "currentPasswordRequired": "Current password is required",
     "newPasswordRequired": "New password is required",
+    "confirmPasswordRequired": "Confirm new password is required",
     "passwordMismatch": "New passwords do not match",
     "passwordUpdateSuccess": "Password updated successfully",
     "passwordUpdateError": "Failed to update password. Please try again",
