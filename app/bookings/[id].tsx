@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useLocalSearchParams, router } from "expo-router";
 import CustomHeader from "@/commonComponent/Header/CustomHeader";
-import { format } from "date-fns";
+import { addDays, format } from "date-fns";
 import { ar, enUS } from "date-fns/locale";
 import Tag from "@/commonComponent/Tag/Tag";
 import CalendarModal from "@/components/Bookings/CalendarModal";
@@ -21,6 +21,7 @@ import { noImagePlaceHolder } from "@/utils/noImagePlaceHolder";
 import { useGetOpportunityQuery } from "@/src/api/opportunitiesApiSlice";
 import i18n from "@/i18n/i18n";
 import { localizeNumber } from "@/utils/numbers";
+import { useLazyGetPropertyBookingsQuery } from "@/src/api/bookingsApiSlice";
 
 const BookingDetailsScreen = () => {
   const { t } = useTranslation();
@@ -36,6 +37,9 @@ const BookingDetailsScreen = () => {
     shouldShowDirections,
   } = useBooking(id as string);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [disabledDates, setDisabledDates] = useState<{ from: string; to: string }[]>([]);
+
+  const [getBookings] = useLazyGetPropertyBookingsQuery({});
   
   const { data: opportunityData } = useGetOpportunityQuery({ 
     id: booking?.property?.id.toString() ?? "" 
@@ -75,9 +79,17 @@ const BookingDetailsScreen = () => {
     );
   }, [cancelBooking, id, t]);
 
-  const handleReschedule = useCallback(() => {
+  const handleReschedule = useCallback(async () => {
+    if(booking?.property?.id) {
+        const res = await getBookings({ id: booking?.property?.id.toString() }).unwrap();
+        const disabledDates = res.data.map((booking) => ({
+            from: format(addDays(new Date(booking.from), 1), 'yyyy-MM-dd'),
+            to: format(addDays(new Date(booking.to), -1), 'yyyy-MM-dd'),
+        }));
+        setDisabledDates(disabledDates);
+    };
     setIsModalVisible(true);
-  }, []);
+  }, [booking?.property?.id]);
 
   const handleConfirmReschedule = useCallback(
     async (startDate: string | null, endDate: string | null) => {
@@ -215,6 +227,7 @@ const BookingDetailsScreen = () => {
         onClose={() => setIsModalVisible(false)}
         onConfirm={handleConfirmReschedule}
         availableNights={availableNights}
+        disabledDates={disabledDates}
       />
     </>
   );
