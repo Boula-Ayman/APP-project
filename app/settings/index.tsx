@@ -2,8 +2,6 @@ import {
   View,
   Text,
   Switch,
-  Modal,
-  TouchableOpacity,
   StyleSheet,
   Linking,
 } from "react-native";
@@ -12,19 +10,16 @@ import { router } from "expo-router";
 import CustomHeader from "../../commonComponent/Header/CustomHeader";
 import SoundEffect from "../../assets/icons/soundEffect.svg";
 import NotificationIcon from "../../assets/icons/notification.svg";
-import LanguageIcon from "../../assets/icons/language.svg";
 import AccountIcon from "../../assets/icons/account.svg";
 import PasswordIcon from "../../assets/icons/password.svg";
 import TermsIcon from "../../assets/icons/privacy.svg";
 import PolicyIcon from "../../assets/icons/privacy.svg";
 import i18n from "../../i18n/i18n";
 import SettingButton from "../../commonComponent/button/SettingButton";
-import { t } from "i18next";
 
 const SettingsScreen = () => {
   const [soundEffects, setSoundEffects] = useState(true);
   const [notifications, setNotifications] = useState(false);
-  const [isLanguageModalVisible, setLanguageModalVisible] = useState(false);
 
   const ToggleSettingItem = ({ icon: Icon, title, value, onPress }) => (
     <View style={styles.settingItem}>
@@ -41,11 +36,6 @@ const SettingsScreen = () => {
     </View>
   );
 
-  const changeLanguage = (language) => {
-    i18n.changeLanguage(language);
-    setLanguageModalVisible(false);
-  };
-
   return (
     <View style={styles.container}>
       <CustomHeader title={i18n.t("settings.title")} showBackButton />
@@ -61,11 +51,6 @@ const SettingsScreen = () => {
         title={i18n.t("settings.notifications")}
         value={notifications}
         onPress={() => setNotifications(!notifications)}
-      />
-      <SettingButton
-        icon={LanguageIcon}
-        title={i18n.t("settings.language")}
-        onPress={() => setLanguageModalVisible(true)}
       />
 
       <Text style={styles.sectionTitle}>{i18n.t("settings.moreSettings")}</Text>
@@ -97,39 +82,6 @@ const SettingsScreen = () => {
           Linking.openURL("https://propcut.lightbyte.me/privacy-policy");
         }}
       />
-
-      <Modal
-        visible={isLanguageModalVisible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={() => setLanguageModalVisible(false)}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>
-              {i18n.t("settings.selectLanguage")}
-            </Text>
-            <TouchableOpacity
-              style={styles.languageOption}
-              onPress={() => changeLanguage("en")}
-            >
-              <Text style={styles.languageText}>{t("settings.english")}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.languageOption}
-              onPress={() => changeLanguage("ar")}
-            >
-              <Text style={styles.languageText}>{t("settings.arabic")}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setLanguageModalVisible(false)}
-            >
-              <Text style={styles.closeButtonText}>{i18n.t("close")}</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 };
