@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TextInput } from "react-native";
+import { View, TextInput, TouchableOpacity, Text } from "react-native";
 import MagnifyingGlass from "../../../assets/icons/magnifying-glass.svg";
 import styles from "../../../components/homeScreenContainer/HomeScreenStyle";
 import i18n from "../../../i18n/i18n";
@@ -12,10 +12,18 @@ interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onChangeText }) => {
   return (
     <View style={styles.searchContainer}>
-      <View style={styles.searchBar}>
+      <View
+        style={{
+          ...styles.searchBar,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         <TextInput
           style={{
             ...styles.searchInput,
+            flex: 1,
             paddingRight: i18n.language === "ar" ? 45 : 10,
             paddingLeft: i18n.language === "ar" ? 10 : 45,
             textAlign: i18n.language === "ar" ? "right" : "left",
@@ -32,6 +40,16 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onChangeText }) => {
             right: i18n.language === "ar" ? 16 : "auto",
           }}
         />
+        {searchTerm && (
+          <TouchableOpacity
+            style={{
+              ...styles.clearButton,
+            }}
+            onPress={() => onChangeText("")}
+          >
+            <Text style={styles.clearButtonText}>X</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
