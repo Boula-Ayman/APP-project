@@ -73,8 +73,12 @@ const styles = StyleSheet.create({
     transform: [{ translateY: -1 }, { translateX: -1 }],
   },
   clearButtonText: {
-    fontSize: 16,
-    color: "#000",
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "gray",
+    textShadowColor: "#585858",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
   barIconPressed: {
     flexDirection: "row",
