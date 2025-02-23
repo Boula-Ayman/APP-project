@@ -10,6 +10,10 @@ interface SearchBarProps {
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onChangeText }) => {
+  const handleClearSearch = () => {
+    onChangeText("");
+  };
+
   return (
     <View style={styles.searchContainer}>
       <View
@@ -42,10 +46,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onChangeText }) => {
         />
         {searchTerm && (
           <TouchableOpacity
-            style={{
-              ...styles.clearButton,
-            }}
-            onPress={() => onChangeText("")}
+            style={styles.clearButton}
+            onPress={handleClearSearch}
+            accessibilityLabel="Clear search"
+            accessibilityRole="button"
           >
             <Text style={styles.clearButtonText}>X</Text>
           </TouchableOpacity>
