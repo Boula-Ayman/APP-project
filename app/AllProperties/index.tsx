@@ -96,10 +96,10 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
       <PageHeader title={t("allProperties.title")} />
       <View style={styles.searchContainer}>
         <SearchBar searchTerm={searchTerm} onChangeText={handleSearch} />
-        <FilterButton 
-            onFilterChange={handleFilterChange} 
-            filters={filters}
-            clearFilters={() => setFilters({})}
+        <FilterButton
+          onFilterChange={handleFilterChange}
+          filters={filters}
+          clearFilters={() => setFilters({})}
         />
       </View>
 
@@ -115,11 +115,13 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
               display: "flex",
               flexDirection: "column",
               height: "auto",
+              marginTop: 20,
+              transform: [{ scale: 1.1 }],
             }}
             contentContainerStyle={{
               gap: 20,
               alignItems: "center",
-              direction: i18n.language === "ar" ? "rtl" : "ltr"
+              direction: i18n.language === "ar" ? "rtl" : "ltr",
             }}
             data={opportunities}
             renderItem={({ item }) => (

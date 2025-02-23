@@ -27,6 +27,7 @@
     "title": "All Properties",
     "noOpportunitiesFound": "No opportunities found"
   },
+  "myWishList": "My WishList",
   "emptyList": "Empty list",
   "filter": "Filter By",
   "bedrooms": "{{count}} Bedroom",

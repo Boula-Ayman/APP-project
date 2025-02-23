@@ -21,6 +21,7 @@ export interface Opportunity {
   share_price?: number;
   currency?: string;
   available_shares?: number;
+  owned_shares?: number;
   number_of_shares?: number;
   title_en: string;
   title_ar: string;
@@ -59,12 +60,19 @@ const PropertyCard: React.FC<CardProps> = ({
     if (!showPriceSection) return null;
 
     return (
-      <View style={{...styles.priceSection, flexDirection: i18n.language === "ar" ? "row-reverse" : "row"}}>
+      <View
+        style={{
+          ...styles.priceSection,
+          flexDirection: i18n.language === "ar" ? "row-reverse" : "row",
+        }}
+      >
         <Text style={styles.cardPrice}>
           {formatPrice(item.share_price || 0)} {t(`${item.currency}`)}
         </Text>
         <Text style={styles.ownerShip}>
-          {localizeNumber(item.available_shares || 0, i18n.language)}/{localizeNumber(item.number_of_shares || 0, i18n.language)} {t("home.ownerShip")}
+          {localizeNumber(item.owned_shares || 0, i18n.language)}/
+          {localizeNumber(item.number_of_shares || 0, i18n.language)}{" "}
+          {t("home.ownerShip")}
         </Text>
         <TouchableOpacity style={styles.HeartOverlay} onPress={onLoveIconPress}>
           {isLiked ? (
@@ -89,8 +97,16 @@ const PropertyCard: React.FC<CardProps> = ({
 
   const renderPropertyInfo = () => {
     return (
-      <View style={{display: 'flex', flexDirection: "column", alignItems: i18n.language === "ar" ? 'flex-end' : 'flex-start'}}>
-        <Text style={styles.cardTitle}>{i18n.language === "ar" ? item.title_ar : item.title_en}</Text>
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: i18n.language === "ar" ? "flex-end" : "flex-start",
+        }}
+      >
+        <Text style={styles.cardTitle}>
+          {i18n.language === "ar" ? item.title_ar : item.title_en}
+        </Text>
         <View style={styles.locationSection}>
           <AntDesign
             name="enviromento"
@@ -98,7 +114,9 @@ const PropertyCard: React.FC<CardProps> = ({
             color="black"
             style={styles.location}
           />
-          <Text style={styles.cardLocation}>{i18n.language === "ar" ? item.location_ar : item.location_en}</Text>
+          <Text style={styles.cardLocation}>
+            {i18n.language === "ar" ? item.location_ar : item.location_en}
+          </Text>
         </View>
       </View>
     );
@@ -114,7 +132,9 @@ const PropertyCard: React.FC<CardProps> = ({
             <Area />
           </View>
           <Text style={styles.featureText}>
-            {i18n.t("home.area", { area: `${localizeNumber(item.area, i18n.language)}` })}
+            {i18n.t("home.area", {
+              area: `${localizeNumber(item.area, i18n.language)}`,
+            })}
           </Text>
         </View>
         <View style={styles.featureItem}>
@@ -151,9 +171,19 @@ const PropertyCard: React.FC<CardProps> = ({
           }}
           style={styles.cardImage}
         />
-        <View style={{...styles.overlay, left: i18n.language === "ar" ? 'auto' : 15, right: i18n.language === "ar" ? 15 : 'auto'}}>
+        <View
+          style={{
+            ...styles.overlay,
+            left: i18n.language === "ar" ? "auto" : 15,
+            right: i18n.language === "ar" ? 15 : "auto",
+          }}
+        >
           <Tag
-            text={showStatus ? t(`${item.status}`) || "" : t(`${item.opportunity_type}`) || ""}
+            text={
+              showStatus
+                ? t(`${item.status}`) || ""
+                : t(`${item.opportunity_type}`) || ""
+            }
             type={showStatus ? "status" : "property_type"}
             status={
               showStatus
@@ -264,17 +294,16 @@ const styles = StyleSheet.create({
   featureItem: {
     flexDirection: "row",
     alignItems: "center",
-    marginRight: 16,
     flex: 1,
+    justifyContent: "space-around",
   },
   featureText: {
-    marginLeft: 4,
     fontSize: 12,
     color: "#818181",
   },
   iconContainer: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
     borderRadius: 16,
     backgroundColor: "#F3F3F3",
     justifyContent: "center",
