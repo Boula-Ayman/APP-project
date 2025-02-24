@@ -163,6 +163,7 @@ const FilterButton: React.FC<FilterButtonProps> = ({
                     setOpen={setIsLocationOpen}
                     setValue={setSelectedLocation}
                     placeholder={t("all")}
+                    dropDownDirection="BOTTOM"
                     style={{
                       borderColor: "#ccc",
                       borderWidth: 1,

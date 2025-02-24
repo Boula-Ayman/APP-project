@@ -15,6 +15,7 @@
   "cancelled": "ملغي",
   "pending": "قيد الانتظار",
   "confirmed": "مؤكد",
+  "clearFilters": "مسح الفلاتر",
   "home": {
     "all": "الكل",
     "available": "متاح",

@@ -3,6 +3,7 @@ import { View, TextInput, TouchableOpacity, Text } from "react-native";
 import MagnifyingGlass from "../../../assets/icons/magnifying-glass.svg";
 import styles from "../../../components/homeScreenContainer/HomeScreenStyle";
 import i18n from "../../../i18n/i18n";
+import { Ionicons } from "@expo/vector-icons";
 
 interface SearchBarProps {
   searchTerm: string;
@@ -51,7 +52,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onChangeText }) => {
             accessibilityLabel="Clear search"
             accessibilityRole="button"
           >
-            <Text style={styles.clearButtonText}>X</Text>
+            <Ionicons name="close" size={20} color="#171513" />
           </TouchableOpacity>
         )}
       </View>

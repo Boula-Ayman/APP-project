@@ -11,6 +11,7 @@
   "cancelled": "Canceled",
   "pending": "Pending",
   "confirmed": "Confirmed",
+  "clearFilters": "Clear filters",
   "home": {
     "all": "All",
     "available": "Available",
