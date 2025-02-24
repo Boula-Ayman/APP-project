@@ -71,20 +71,21 @@ const FilterButton: React.FC<FilterButtonProps> = ({
     onFilterChange(newFilters);
   };
 
+  const handleClearFilters = () => {
+    setSelectedType(null);
+    setSelectedLocation(null);
+    clearFilters();
+    setIsModalVisible(false);
+  };
+
   return (
     <View>
-      {selectedLocation || selectedType ? (
-        <TouchableOpacity style={styles.barIcon} onPress={clearFilters}>
-          <Ionicons name="close" size={20} color="black" />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          style={styles.barIcon}
-          onPress={() => setIsModalVisible(true)}
-        >
-          <FilterIcon />
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity
+        style={styles.barIcon}
+        onPress={() => setIsModalVisible(true)}
+      >
+        <FilterIcon />
+      </TouchableOpacity>
       <Modal
         visible={isModalVisible}
         animationType="slide"
@@ -107,9 +108,7 @@ const FilterButton: React.FC<FilterButtonProps> = ({
               <Text style={styles.sectionTitle}>{i18n.t("filter")}</Text>
               <View style={styles.dropdownContainer}>
                 <View style={styles.dropdownTitle}>
-                  <Text style={styles.label}>
-                    {t("type")}
-                  </Text>
+                  <Text style={styles.label}>{t("type")}</Text>
                   <View style={styles.cirlce}>
                     <IMark />
                   </View>
@@ -146,9 +145,7 @@ const FilterButton: React.FC<FilterButtonProps> = ({
 
               <View style={styles.dropdownContainer}>
                 <View style={styles.dropdownTitle}>
-                  <Text style={styles.label}>
-                    {t("location")}
-                  </Text>
+                  <Text style={styles.label}>{t("location")}</Text>
                   <View style={styles.cirlce}>
                     <IMark />
                   </View>
@@ -166,6 +163,7 @@ const FilterButton: React.FC<FilterButtonProps> = ({
                     setOpen={setIsLocationOpen}
                     setValue={setSelectedLocation}
                     placeholder={t("all")}
+                    dropDownDirection="BOTTOM"
                     style={{
                       borderColor: "#ccc",
                       borderWidth: 1,
@@ -187,6 +185,17 @@ const FilterButton: React.FC<FilterButtonProps> = ({
               >
                 <Text style={styles.filterButtonLargeText}>
                   {t("filterResult")}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.filterButtonLarge,
+                  { marginTop: 10, backgroundColor: "#ccc" },
+                ]}
+                onPress={handleClearFilters}
+              >
+                <Text style={[styles.filterButtonLargeText, { color: "#000" }]}>
+                  {t("clearFilters")}
                 </Text>
               </TouchableOpacity>
             </View>

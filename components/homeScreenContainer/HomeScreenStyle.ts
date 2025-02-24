@@ -66,7 +66,20 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
-
+  clearButton: {
+    position: "absolute",
+    right: 10,
+    padding: 10,
+    transform: [{ translateY: -1 }, { translateX: -1 }],
+  },
+  clearButtonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "gray",
+    textShadowColor: "#585858",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
+  },
   barIconPressed: {
     flexDirection: "row",
     left: 290,

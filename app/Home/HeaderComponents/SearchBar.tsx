@@ -1,8 +1,9 @@
 import React from "react";
-import { View, TextInput } from "react-native";
+import { View, TextInput, TouchableOpacity, Text } from "react-native";
 import MagnifyingGlass from "../../../assets/icons/magnifying-glass.svg";
 import styles from "../../../components/homeScreenContainer/HomeScreenStyle";
 import i18n from "../../../i18n/i18n";
+import { Ionicons } from "@expo/vector-icons";
 
 interface SearchBarProps {
   searchTerm: string;
@@ -10,12 +11,24 @@ interface SearchBarProps {
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onChangeText }) => {
+  const handleClearSearch = () => {
+    onChangeText("");
+  };
+
   return (
     <View style={styles.searchContainer}>
-      <View style={styles.searchBar}>
+      <View
+        style={{
+          ...styles.searchBar,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         <TextInput
           style={{
             ...styles.searchInput,
+            flex: 1,
             paddingRight: i18n.language === "ar" ? 45 : 10,
             paddingLeft: i18n.language === "ar" ? 10 : 45,
             textAlign: i18n.language === "ar" ? "right" : "left",
@@ -32,6 +45,16 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onChangeText }) => {
             right: i18n.language === "ar" ? 16 : "auto",
           }}
         />
+        {searchTerm && (
+          <TouchableOpacity
+            style={styles.clearButton}
+            onPress={handleClearSearch}
+            accessibilityLabel="Clear search"
+            accessibilityRole="button"
+          >
+            <Ionicons name="close" size={20} color="#171513" />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
