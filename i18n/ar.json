@@ -310,5 +310,13 @@
     "totalRentalIncome": "إجمالي دخل الإيجار المدفوع",
     "totalUsableNights": "إجمالي الليالي القابلة للاستخدام",
     "yieldLastYear": "العائد في {{year}}"
+  },
+  "notification": {
+    "title": "الإشعارات",
+    "Desc": "مكان لعرض أنشطتك",
+    "empty": "لا يوجد إشعارات",
+    "stayTuned": "ترقبوا! ستظهر الإشعارات المتعلقة بنشاطك هنا.",
+    "haveNotification": "لديك  إشعار",
+    "notification": "إشعار"
   }
 }
