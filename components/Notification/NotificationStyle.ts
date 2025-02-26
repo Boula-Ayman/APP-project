@@ -39,10 +39,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   notificationContainer: {
-    width: "100%",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    transform: [{ translateY: -100 }, { translateX: 15 }],
+    alignSelf: "flex-start",
+    transform: [{ translateY: -100 }],
     marginTop: 20,
   },
   notificationDesc: {
@@ -106,7 +104,7 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   newNotificationTitleContainer: {
-    transform: [{ translateY: -50 }, { translateX: -50 }],
+    transform: [{ translateY: -55 }, { translateX: -25 }],
   },
   count: {
     color: "#8BC240",

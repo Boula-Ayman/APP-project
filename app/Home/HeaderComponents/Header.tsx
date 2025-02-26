@@ -9,7 +9,7 @@ import { router } from "expo-router";
 
 const Header: React.FC<{ notifications: number }> = ({ notifications }) => {
   const handleNotificationPress = () => {
-    router.push("/NotificationScreen");
+    router.push("/notificationPage");
   };
 
   return (

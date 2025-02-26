@@ -306,7 +306,7 @@
     "Desc": "A Place to see your activity",
     "empty": "No notifications yet",
     "stayTuned": "Stay tuned! Notifications about your activity will show up here.",
-    "haveNotification": "You have",
-    "notification": "Notification"
+    "haveNotification": "You have ",
+    "unreadNotifications": "{{count}} unread notifications"
   }
 }

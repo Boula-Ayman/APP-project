@@ -11,6 +11,7 @@ import { router } from "expo-router";
 import styles from "./NotificationStyle";
 import { useTranslation } from "react-i18next";
 import NotificationIcon from "../../assets/icons/notification-bing.svg";
+import NotificationsEmptyPage from "./NotificationsEmptyPage";
 
 interface NotificationItem {
   id: number;
@@ -77,33 +78,17 @@ const Notification: React.FC = () => {
           </View>
           <View style={styles.mainBody}>
             {notifications.length === 0 ? (
-              <View style={styles.notificationList}>
-                <View style={styles.notificationContainer}>
-                  <Text style={styles.notificationDesc}>
-                    {t("notification.Desc")}
-                  </Text>
-                </View>
-                <View style={styles.notificationItem}>
-                  <NotificationIcon />
-                </View>
-                <View style={styles.notificationTextContainer}>
-                  <Text style={styles.notificationTextEmpty}>
-                    {t("notification.empty")}
-                  </Text>
-                  <Text style={styles.notificationTextStayTuned}>
-                    {t("notification.stayTuned")}
-                  </Text>
-                </View>
-              </View>
+              <NotificationsEmptyPage />
             ) : (
               <View style={styles.newNotificationContainer}>
                 <View style={styles.newNotificationTitleContainer}>
                   <Text style={styles.newNotificationTitle}>
-                    {t("notification.haveNotification")}{" "}
-                    <Text style={styles.count}>{newNotificationsCount}</Text>{" "}
+                    {t("notification.haveNotification")}
                     <Text style={styles.count}>
-                      {t("notification.notification")}
-                    </Text>
+                      {t("notification.unreadNotifications", {
+                        count: newNotificationsCount,
+                      })}
+                    </Text>{" "}
                   </Text>
                 </View>
                 {notifications.map((notification) => (

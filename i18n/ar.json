@@ -317,6 +317,6 @@
     "empty": "لا يوجد إشعارات",
     "stayTuned": "ترقبوا! ستظهر الإشعارات المتعلقة بنشاطك هنا.",
     "haveNotification": "لديك  إشعار",
-    "notification": "إشعار"
+    "unreadNotifications": "{{count}} إشعارات غير مقروءة"
   }
 }
