@@ -308,5 +308,13 @@
     "stayTuned": "Stay tuned! Notifications about your activity will show up here.",
     "haveNotification": "You have ",
     "unreadNotifications": "{{count}} unread notifications"
+  },
+  "ForgotPassword": {
+    "title": "Forgot Password",
+    "email": "Email",
+    "resetButton": "Reset Password",
+    "successMessage": "Please check your email to reset your password",
+    "errorMessage": "We didn't find an account with that email address",
+    "genericError": "Failed to send reset link. Please try again later."
   }
 }

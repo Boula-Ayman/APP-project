@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   KeyboardAvoidingView,
   Pressable,
@@ -65,6 +65,17 @@ const Notification: React.FC = () => {
       )
     );
   };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setNotifications((prevNotifications) =>
+        prevNotifications.map((notification) => ({
+          ...notification,
+          isNew: false,
+        }))
+      );
+    }, 30000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
