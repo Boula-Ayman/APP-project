@@ -1,0 +1,161 @@
+import { Inter_500Medium } from "@expo-google-fonts/inter";
+import { StyleSheet } from "react-native";
+
+const styles = StyleSheet.create({
+  SaveAreaView: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  container: {
+    backgroundColor: "white",
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
+  innerContainer: {
+    flex: 1,
+    position: "relative",
+  },
+  backButton: {
+    width: 48,
+    height: 48,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 40,
+    marginInline: 10,
+  },
+  title: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 32,
+    fontWeight: "600",
+    letterSpacing: 0.5,
+    textAlign: "left",
+    marginBottom: 20,
+    color: "#3A3D46",
+  },
+  headerContainer: {},
+  header: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 14,
+    fontWeight: "600",
+    letterSpacing: 0.5,
+    color: "#3A3D46",
+    textAlign: "left",
+  },
+  input: {
+    height: 56,
+    marginBottom: 20,
+    paddingHorizontal: 39,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    color: "#3A3D46",
+    fontSize: 14,
+    fontFamily: "Inter_500Medium",
+    fontWeight: "500",
+    width: "100%",
+  },
+  iconContainer1: {},
+  icon: {
+    position: "relative",
+
+    top: 39,
+  },
+  iconContainer2: {
+    position: "relative",
+  },
+  icon2: {
+    position: "relative",
+    left: 15,
+    top: 38,
+  },
+  button: {
+    backgroundColor: "#8BC240",
+    padding: 10,
+    alignItems: "center",
+    marginBottom: 12,
+    minWidth: 335,
+    height: 60,
+    borderRadius: 40,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "600",
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    top: 10,
+    fontFamily: "Inter_600SemiBold",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 14,
+    fontWeight: "bold",
+    textAlign: "center",
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  signUpText: {
+    color: "#3A3D46",
+    position: "relative",
+    top: 0,
+    left: 0,
+    fontFamily: "Inter_400Regular",
+    fontSize: 14,
+    fontWeight: "400",
+    lineHeight: 25.6,
+    textAlign: "center",
+    zIndex: 100,
+  },
+  signUp: {
+    color: "#8BC240",
+    fontFamily: "Inter_400Regular",
+    fontSize: 16,
+    fontWeight: "400",
+    lineHeight: 25.6,
+  },
+  rememberMeContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 12,
+    marginBottom: 20,
+    borderColor: "#EFEFEF",
+    borderRadius: 4,
+  },
+  checkbox: {
+    width: 22,
+    height: 22,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: "#EFEFEF",
+    color: "#FFFFFF",
+  },
+  Remember: {
+    fontFamily: "Inter",
+    fontSize: 14,
+    fontWeight: "600",
+    lineHeight: 22.4,
+
+    color: "#3A3D46",
+  },
+  forgotPassword: {
+    fontFamily: "Inter",
+    fontSize: 13,
+    fontWeight: "400",
+    lineHeight: 22.4,
+
+    color: "#3A3D46",
+  },
+  rememberMe: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+});
+
+export default styles;

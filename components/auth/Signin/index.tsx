@@ -9,6 +9,7 @@ import {
   ScrollView,
   SafeAreaView,
   ActivityIndicator,
+  Pressable,
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -235,9 +236,15 @@ const SigninPage: React.FC = () => {
                       />
                       <Text style={styles.Remember}>{t("rememberMe")}</Text>
                     </View>
-                    <Text style={styles.forgotPassword}>
-                      {t("forgotPassword")}
-                    </Text>
+                    <Pressable
+                      onPress={() =>
+                        router.push("/(auth)/forgotPassword" as never)
+                      }
+                    >
+                      <Text style={styles.forgotPassword}>
+                        {t("forgotPassword")}
+                      </Text>
+                    </Pressable>
                   </View>
                   {errorMessage && (
                     <Text style={styles.errorText}>{errorMessage}</Text>
