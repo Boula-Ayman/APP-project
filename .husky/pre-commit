@@ -1,8 +1,1 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-echo "Running lint-staged..." # Log to see if it's triggered
-
 npx lint-staged
-
-echo "Finished running lint-staged" # Log completion
