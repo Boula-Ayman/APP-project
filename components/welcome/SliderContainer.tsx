@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,32 +7,32 @@ import {
   StyleSheet,
   FlatList,
   Platform,
-} from "react-native";
-import Phone from "../../assets/Images/iPhone.svg";
-import Screen from "../../assets/Images/Screentest.svg";
-import i18n from "@/i18n/i18n";
-import { LinearGradient } from "expo-linear-gradient";
-import Bathroom from "../../assets/icons/bathroom.svg";
-import Bedroom from "../../assets/icons/Bedroom.svg";
-import Parking from "../../assets/icons/parking.svg";
-import { useFonts } from "expo-font";
-import * as Font from "expo-font";
-import { styles } from "./SliderContainerStyle";
+} from 'react-native';
+import Phone from '../../assets/Images/iPhone.svg';
+import Screen from '../../assets/Images/Screentest.svg';
+import i18n from '@/i18n/i18n';
+import { LinearGradient } from 'expo-linear-gradient';
+import Bathroom from '../../assets/icons/bathroom.svg';
+import Bedroom from '../../assets/icons/Bedroom.svg';
+import Parking from '../../assets/icons/parking.svg';
+import { useFonts } from 'expo-font';
+import * as Font from 'expo-font';
+import { styles } from './SliderContainerStyle';
 
 const Welcome = () => {
-  const { width: screenWidth } = Dimensions.get("window");
+  const { width: screenWidth } = Dimensions.get('window');
   const [activeSlide, setActiveSlide] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const [fontsLoaded] = useFonts({
-    Inter_400Regular: require("../../assets/fonts/Inter/Inter_24pt-Regular.ttf"),
-    Inter_600SemiBold: require("../../assets/fonts/Inter/Inter_24pt-SemiBold.ttf"),
+    Inter_400Regular: require('../../assets/fonts/Inter/Inter_24pt-Regular.ttf'),
+    Inter_600SemiBold: require('../../assets/fonts/Inter/Inter_24pt-SemiBold.ttf'),
   });
 
   useEffect(() => {
     const loadFonts = async () => {
       await Font.loadAsync({
-        Inter_400Regular: require("../../assets/fonts/Inter/Inter_24pt-Regular.ttf"),
-        Inter_600SemiBold: require("../../assets/fonts/Inter/Inter_24pt-SemiBold.ttf"),
+        Inter_400Regular: require('../../assets/fonts/Inter/Inter_24pt-Regular.ttf'),
+        Inter_600SemiBold: require('../../assets/fonts/Inter/Inter_24pt-SemiBold.ttf'),
       });
     };
 
@@ -44,7 +44,7 @@ const Welcome = () => {
   }
   const slides = [
     {
-      id: "1",
+      id: '1',
       image: (
         <View style={styles.phoneContainer}>
           <Phone />
@@ -53,11 +53,11 @@ const Welcome = () => {
           </View>
         </View>
       ),
-      header: i18n.t("header1"),
-      desc: i18n.t("descr1"),
+      header: i18n.t('header1'),
+      desc: i18n.t('descr1'),
     },
     {
-      id: "2",
+      id: '2',
       image: (
         <View style={styles.phoneContainer}>
           <Phone width={300} height={350} />
@@ -66,11 +66,11 @@ const Welcome = () => {
           </View>
         </View>
       ),
-      header: i18n.t("header2"),
-      desc: i18n.t("descr2"),
+      header: i18n.t('header2'),
+      desc: i18n.t('descr2'),
     },
     {
-      id: "3",
+      id: '3',
       image: (
         <View style={styles.phoneContainer}>
           <Phone width={300} height={350} />
@@ -79,8 +79,8 @@ const Welcome = () => {
           </View>
         </View>
       ),
-      header: i18n.t("header3"),
-      desc: i18n.t("descr3"),
+      header: i18n.t('header3'),
+      desc: i18n.t('descr3'),
     },
   ];
 
@@ -89,7 +89,7 @@ const Welcome = () => {
       <View style={[styles.slideContainer, { width: screenWidth }]}>
         {item.image}
 
-        {item.id === "2" && (
+        {item.id === '2' && (
           <View style={styles.iconsContainer}>
             <View style={styles.iconItem1}>
               <Bathroom width={28} height={28} style={styles.Bathroom} />
@@ -109,11 +109,11 @@ const Welcome = () => {
         <View
           style={[
             styles.gradientOverlay,
-            { transform: [{ translateY: "30%" }] },
+            { transform: [{ translateY: '30%' }] },
           ]}
         >
           <LinearGradient
-            colors={["rgba(255, 255, 255, 0.0001)", "#FFFFFF"]}
+            colors={['rgba(255, 255, 255, 0.0001)', '#FFFFFF']}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
             style={styles.gradient}
@@ -129,7 +129,7 @@ const Welcome = () => {
     return (
       <TouchableOpacity onPress={() => handleDotPress(index)}>
         <LinearGradient
-          colors={["#8BC240", "#8BC240"]}
+          colors={['#8BC240', '#8BC240']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.gradientDot}
@@ -177,7 +177,7 @@ const Welcome = () => {
             <GradientDot key={index} index={index} />
           ) : (
             <InactiveDot key={index} index={index} />
-          )
+          ),
         )}
       </View>
     </View>

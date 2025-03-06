@@ -1,4 +1,4 @@
-import apiSlice from "./apiSlice";
+import apiSlice from './apiSlice';
 
 const opportunitiesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -6,26 +6,26 @@ const opportunitiesApiSlice = apiSlice.injectEndpoints({
       query: (params) => ({
         url: `/opportunities`,
         params,
-        method: "GET",
+        method: 'GET',
       }),
     }),
     getOpportunity: builder.query({
       query: ({ id }) => ({
         url: `/opportunities/${id}`,
-        method: "GET",
+        method: 'GET',
       }),
     }),
     opportunityRegisterInterest: builder.mutation({
       query: ({ id, body }) => ({
         url: `/opportunities/${id}/interest-requests`,
-        method: "POST",
+        method: 'POST',
         body,
       }),
     }),
     sellSharesOpportunity: builder.mutation({
       query: ({ id }) => ({
         url: `/opportunities/${id}/sell-requests`,
-        method: "POST",
+        method: 'POST',
       }),
     }),
   }),

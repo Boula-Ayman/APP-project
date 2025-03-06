@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, SafeAreaView, Pressable } from "react-native";
-import SearchBar from "../Home/HeaderComponents/SearchBar";
-import FilterButton from "../Home/HeaderComponents/FilterButton";
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, SafeAreaView, Pressable } from 'react-native';
+import SearchBar from '../Home/HeaderComponents/SearchBar';
+import FilterButton from '../Home/HeaderComponents/FilterButton';
 import {
   useGetOpportunitiesQuery,
   useLazyGetOpportunitiesQuery,
-} from "@/src/api/opportunitiesApiSlice";
-import Card from "../Home/CardListoportunity/Card";
-import styles from "./indexStyle";
-import PageHeader from "@/components/page/header";
-import { useTranslation } from "react-i18next";
-import { PROPERTIES_STATUS, PropertiesStatusKeys } from "@/constants/Enums";
-import i18n from "@/i18n/i18n";
-import { Opportunity } from "@/src/interfaces/opportunity.interface";
-import { useGetWishListQuery } from "@/src/wishList/wishListApiSlice";
-import { Link } from "expo-router";
+} from '@/src/api/opportunitiesApiSlice';
+import Card from '../Home/CardListoportunity/Card';
+import styles from './indexStyle';
+import PageHeader from '@/components/page/header';
+import { useTranslation } from 'react-i18next';
+import { PROPERTIES_STATUS, PropertiesStatusKeys } from '@/constants/Enums';
+import i18n from '@/i18n/i18n';
+import { Opportunity } from '@/src/interfaces/opportunity.interface';
+import { useGetWishListQuery } from '@/src/wishList/wishListApiSlice';
+import { Link } from 'expo-router';
 
 interface FilterScreenProps {
   searchTerm: string;
@@ -22,7 +22,7 @@ interface FilterScreenProps {
 }
 
 const ViewAll: React.FC<FilterScreenProps> = ({}) => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
   const { data: wishList, refetch } = useGetWishListQuery({});
 
@@ -37,7 +37,7 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
     { ...filters },
     {
       refetchOnMountOrArgChange: true,
-    }
+    },
   );
 
   const [getFilteredOpportunities] = useLazyGetOpportunitiesQuery();
@@ -53,9 +53,9 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
   const handleSearch = (newSearchTerm: string) => {
     setSearchTerm(newSearchTerm);
     const filteredOpportunities = data.data.filter((item: Opportunity) => {
-      const title = i18n.language === "ar" ? item.title_ar : item.title_en;
+      const title = i18n.language === 'ar' ? item.title_ar : item.title_en;
       const location =
-        i18n.language === "ar" ? item.location_ar : item.location_en;
+        i18n.language === 'ar' ? item.location_ar : item.location_en;
       return (
         title.toLowerCase().includes(newSearchTerm.toLowerCase()) ||
         location.toLowerCase().includes(newSearchTerm.toLowerCase())
@@ -70,12 +70,12 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
       type: string | null;
       country: string | null;
       status: (typeof PROPERTIES_STATUS)[PropertiesStatusKeys];
-    }>
+    }>,
   ) => {
     try {
       setFilters(newFilters);
       let checkedFilters = newFilters;
-      if (checkedFilters.status === "all") {
+      if (checkedFilters.status === 'all') {
         checkedFilters = {
           country: checkedFilters.country,
           type: checkedFilters.type,
@@ -93,7 +93,7 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <PageHeader title={t("allProperties.title")} />
+      <PageHeader title={t('allProperties.title')} />
       <View style={styles.searchContainer}>
         <SearchBar searchTerm={searchTerm} onChangeText={handleSearch} />
         <FilterButton
@@ -111,50 +111,50 @@ const ViewAll: React.FC<FilterScreenProps> = ({}) => {
         ) : opportunities.length > 0 ? (
           <FlatList
             style={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "column",
-              height: "auto",
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              height: 'auto',
               marginTop: 20,
               transform: [{ scale: 1.1 }],
             }}
             contentContainerStyle={{
               gap: 20,
-              alignItems: "center",
-              direction: i18n.language === "ar" ? "rtl" : "ltr",
+              alignItems: 'center',
+              direction: i18n.language === 'ar' ? 'rtl' : 'ltr',
             }}
             data={opportunities}
             renderItem={({ item }) => (
-                <Link
+              <Link
                 href={`/carddetails/${item.id}?type=${
                   item.opportunity_type
                 }&likedItems=${JSON.stringify(wishList)}`}
                 asChild
               >
-                  <Pressable>
-                    <Card
-                      item={item}
-                      isLiked={wishList?.data?.some(
-                        (likedItem: Opportunity) => likedItem.id === item.id
-                      )}
-                    />
-                  </Pressable>
-                </Link>
-              )}
-              keyExtractor={(item) => item.id.toString()}
-              ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
-              showsVerticalScrollIndicator={false}
+                <Pressable>
+                  <Card
+                    item={item}
+                    isLiked={wishList?.data?.some(
+                      (likedItem: Opportunity) => likedItem.id === item.id,
+                    )}
+                  />
+                </Pressable>
+              </Link>
+            )}
+            keyExtractor={(item) => item.id.toString()}
+            ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
+            showsVerticalScrollIndicator={false}
           />
         ) : (
           <View
             style={{
-              marginTop: "10%",
-              marginInline: "auto",
-              justifyContent: "center",
-              alignItems: "center",
+              marginTop: '10%',
+              marginInline: 'auto',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
-            <Text>{t("allProperties.noOpportunitiesFound")}</Text>
+            <Text>{t('allProperties.noOpportunitiesFound')}</Text>
           </View>
         )}
       </View>

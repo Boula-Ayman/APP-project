@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -8,21 +8,21 @@ import {
   Alert,
   ActivityIndicator,
   Linking,
-} from "react-native";
-import { useLocalSearchParams, router } from "expo-router";
-import CustomHeader from "@/commonComponent/Header/CustomHeader";
-import { addDays, format } from "date-fns";
-import { ar, enUS } from "date-fns/locale";
-import Tag from "@/commonComponent/Tag/Tag";
-import CalendarModal from "@/components/Bookings/CalendarModal";
-import BookingActions from "@/components/Bookings/BookingActions";
-import useBooking from "@/components/Bookings/useBooking";
-import { useTranslation } from "react-i18next";
-import { noImagePlaceHolder } from "@/utils/noImagePlaceHolder";
-import { useGetOpportunityQuery } from "@/src/api/opportunitiesApiSlice";
-import i18n from "@/i18n/i18n";
-import { localizeNumber } from "@/utils/numbers";
-import { useLazyGetPropertyBookingsQuery } from "@/src/api/bookingsApiSlice";
+} from 'react-native';
+import { useLocalSearchParams, router } from 'expo-router';
+import CustomHeader from '@/commonComponent/Header/CustomHeader';
+import { addDays, format } from 'date-fns';
+import { ar, enUS } from 'date-fns/locale';
+import Tag from '@/commonComponent/Tag/Tag';
+import CalendarModal from '@/components/Bookings/CalendarModal';
+import BookingActions from '@/components/Bookings/BookingActions';
+import useBooking from '@/components/Bookings/useBooking';
+import { useTranslation } from 'react-i18next';
+import { noImagePlaceHolder } from '@/utils/noImagePlaceHolder';
+import { useGetOpportunityQuery } from '@/src/api/opportunitiesApiSlice';
+import i18n from '@/i18n/i18n';
+import { localizeNumber } from '@/utils/numbers';
+import { useLazyGetPropertyBookingsQuery } from '@/src/api/bookingsApiSlice';
 
 const BookingDetailsScreen = () => {
   const { t } = useTranslation();
@@ -38,75 +38,82 @@ const BookingDetailsScreen = () => {
     shouldShowDirections,
   } = useBooking(id as string);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [disabledDates, setDisabledDates] = useState<{ from: string; to: string }[]>([]);
+  const [disabledDates, setDisabledDates] = useState<
+    { from: string; to: string }[]
+  >([]);
 
   const [getBookings] = useLazyGetPropertyBookingsQuery({});
-  
-  const { data: opportunityData } = useGetOpportunityQuery({ 
-    id: booking?.property?.id.toString() ?? "" 
-  }, { 
-    skip: !booking?.property?.id,
-    refetchOnMountOrArgChange: true
-  });
-  
+
+  const { data: opportunityData } = useGetOpportunityQuery(
+    {
+      id: booking?.property?.id.toString() ?? '',
+    },
+    {
+      skip: !booking?.property?.id,
+      refetchOnMountOrArgChange: true,
+    },
+  );
+
   const availableNights = opportunityData?.data?.available_nights ?? 0;
 
   const handleDirections = useCallback(() => {
-    if(booking?.property.directions) {
+    if (booking?.property.directions) {
       Linking.openURL(booking?.property.directions);
     }
   }, [booking?.property.directions]);
 
   const handleCancel = useCallback(() => {
     Alert.alert(
-      t("bookings.cancellation.title"),
-      t("bookings.cancellation.message"),
+      t('bookings.cancellation.title'),
+      t('bookings.cancellation.message'),
       [
         {
-          text: t("bookings.cancellation.cancel"),
-          style: "cancel",
+          text: t('bookings.cancellation.cancel'),
+          style: 'cancel',
         },
         {
-          text: t("bookings.cancellation.confirm"),
-          style: "destructive",
+          text: t('bookings.cancellation.confirm'),
+          style: 'destructive',
           onPress: async () => {
             try {
               await cancelBooking(id as string).unwrap();
               Alert.alert(
-                t("common.success"),
-                t("bookings.cancellation.success")
+                t('common.success'),
+                t('bookings.cancellation.success'),
               );
               router.back();
             } catch (error) {
-              Alert.alert(t("common.error"), t("bookings.cancellation.error"));
+              Alert.alert(t('common.error'), t('bookings.cancellation.error'));
             }
           },
         },
-      ]
+      ],
     );
   }, [cancelBooking, id, t]);
 
   const handleReschedule = useCallback(async () => {
-    if(booking?.property?.id) {
-        const res = await getBookings({ id: booking?.property?.id.toString() }).unwrap();
-        const disabledDates = res.data.map((booking) => ({
-            from: format(addDays(new Date(booking.from), 1), 'yyyy-MM-dd'),
-            to: format(addDays(new Date(booking.to), -1), 'yyyy-MM-dd'),
-        }));
-        setDisabledDates(disabledDates);
-    };
+    if (booking?.property?.id) {
+      const res = await getBookings({
+        id: booking?.property?.id.toString(),
+      }).unwrap();
+      const disabledDates = res.data.map((booking) => ({
+        from: format(addDays(new Date(booking.from), 1), 'yyyy-MM-dd'),
+        to: format(addDays(new Date(booking.to), -1), 'yyyy-MM-dd'),
+      }));
+      setDisabledDates(disabledDates);
+    }
     setIsModalVisible(true);
   }, [booking?.property?.id]);
 
   const handleConfirmReschedule = useCallback(
     async (startDate: string | null, endDate: string | null) => {
       if (!startDate || !endDate) {
-        Alert.alert(t("common.error"), t("bookings.calendar.selectDates"));
+        Alert.alert(t('common.error'), t('bookings.calendar.selectDates'));
         return false;
       }
 
-      const formattedStartDate = format(new Date(startDate), "yyyy-MM-dd");
-      const formattedEndDate = format(new Date(endDate), "yyyy-MM-dd");
+      const formattedStartDate = format(new Date(startDate), 'yyyy-MM-dd');
+      const formattedEndDate = format(new Date(endDate), 'yyyy-MM-dd');
 
       try {
         await rescheduleBooking({
@@ -119,25 +126,21 @@ const BookingDetailsScreen = () => {
         return false;
       }
     },
-    [id, rescheduleBooking, t]
+    [id, rescheduleBooking, t],
   );
 
   const formatDate = useCallback((dateString: string) => {
     try {
       const date = new Date(dateString);
       if (isNaN(date.getTime())) {
-        throw new Error("Invalid date");
+        throw new Error('Invalid date');
       }
-      return format(
-        date, 
-        "dd MMMM yyyy", 
-        {
-            locale: i18n.language === "ar" ? ar : enUS
-        }
-        );
+      return format(date, 'dd MMMM yyyy', {
+        locale: i18n.language === 'ar' ? ar : enUS,
+      });
     } catch (error) {
-      console.error("Error formatting date:", dateString, error);
-      return "Invalid date";
+      console.error('Error formatting date:', dateString, error);
+      return 'Invalid date';
     }
   }, []);
 
@@ -152,14 +155,14 @@ const BookingDetailsScreen = () => {
   if (error || !booking) {
     return (
       <View style={styles.container}>
-        <Text>{t("common.error")}</Text>
+        <Text>{t('common.error')}</Text>
       </View>
     );
   }
 
   return (
     <>
-      <CustomHeader title={t("bookings.title")} />
+      <CustomHeader title={t('bookings.title')} />
       <View style={styles.BookingDetailsContainer}>
         <ScrollView>
           <View style={styles.content}>
@@ -167,11 +170,17 @@ const BookingDetailsScreen = () => {
               <Text style={styles.dateRange}>
                 {formatDate(booking.from)} - {formatDate(booking.to)}
               </Text>
-              <View style={{alignSelf: i18n.language === "ar" ? 'flex-end' : 'flex-start'}}>
+              <View
+                style={{
+                  alignSelf: i18n.language === 'ar' ? 'flex-end' : 'flex-start',
+                }}
+              >
                 <Tag
                   text={t(booking.status)}
                   type="status"
-                  status={booking.status as "confirmed" | "pending" | "cancelled"}
+                  status={
+                    booking.status as 'confirmed' | 'pending' | 'cancelled'
+                  }
                   containerStyle={styles.statusContainer}
                 />
               </View>
@@ -188,14 +197,20 @@ const BookingDetailsScreen = () => {
               />
               <View style={styles.propertyDetails}>
                 <Text style={styles.propertyName}>
-                  {i18n.language === "ar" ? booking.property.title_ar : booking.property.title_en}
+                  {i18n.language === 'ar'
+                    ? booking.property.title_ar
+                    : booking.property.title_en}
                 </Text>
                 <Text style={styles.location}>
-                  {i18n.language === "ar" ? booking.property.location_ar : booking.property.location_en}
+                  {i18n.language === 'ar'
+                    ? booking.property.location_ar
+                    : booking.property.location_en}
                 </Text>
                 <Text style={styles.bookingRef}>
-                  {t("bookings.bookingId", { id: "" }).split("#")[0]}
-                  <Text style={{ color: "#8BC240" }}>#{localizeNumber(booking.id, i18n.language)}</Text>
+                  {t('bookings.bookingId', { id: '' }).split('#')[0]}
+                  <Text style={{ color: '#8BC240' }}>
+                    #{localizeNumber(booking.id, i18n.language)}
+                  </Text>
                 </Text>
               </View>
             </View>
@@ -211,19 +226,19 @@ const BookingDetailsScreen = () => {
 
             <View style={styles.nightsContainer}>
               <Text style={styles.nightsText}>
-                <Text style={{ color: "#8BC240" }}>
+                <Text style={{ color: '#8BC240' }}>
                   {localizeNumber(booking.number_of_days, i18n.language)}
-                </Text>{" "}
-                {t("bookings.nights", { count: 1 })}
+                </Text>{' '}
+                {t('bookings.nights', { count: 1 })}
               </Text>
             </View>
 
             <View style={styles.policyContainer}>
               <Text style={styles.policyTitle}>
-                {t("bookings.policy.title")}
+                {t('bookings.policy.title')}
               </Text>
               <Text style={styles.policyText}>
-                {t("bookings.policy.description")}
+                {t('bookings.policy.description')}
               </Text>
             </View>
           </View>
@@ -243,41 +258,41 @@ const BookingDetailsScreen = () => {
 
 const styles = StyleSheet.create({
   BookingDetailsContainer: {
-    marginTop: "5%",
-    width: "90%",
-    alignSelf: "center",
-    backgroundColor: "white",
-    height: "100%",
+    marginTop: '5%',
+    width: '90%',
+    alignSelf: 'center',
+    backgroundColor: 'white',
+    height: '100%',
     borderRadius: 20,
   },
   container: {
     flex: 1,
-    alignSelf: "center",
-    alignItems: "center",
-    justifyContent: "center",
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   content: {
     padding: 20,
-    width: "100%",
+    width: '100%',
   },
   header: {
     marginBottom: 20,
-    width: "95%",
-    alignSelf: "center",
+    width: '95%',
+    alignSelf: 'center',
   },
   dateRange: {
     fontSize: 22,
-    fontFamily: "Inter_600SemiBold",
-    color: "#333",
+    fontFamily: 'Inter_600SemiBold',
+    color: '#333',
     marginBottom: 12,
-    textAlign: i18n.language === "ar" ? "right" : "left",
+    textAlign: i18n.language === 'ar' ? 'right' : 'left',
   },
   statusContainer: {
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
   },
   propertyCard: {
     paddingHorizontal: 4,
-    flexDirection: i18n.language === "ar" ? "row-reverse" : "row",
+    flexDirection: i18n.language === 'ar' ? 'row-reverse' : 'row',
     marginBottom: 24,
     gap: 12,
   },
@@ -289,60 +304,60 @@ const styles = StyleSheet.create({
   },
   propertyDetails: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: i18n.language === "ar" ? "flex-end" : "flex-start",
+    justifyContent: 'center',
+    alignItems: i18n.language === 'ar' ? 'flex-end' : 'flex-start',
   },
   propertyName: {
     fontSize: 16,
-    fontFamily: "Inter_600SemiBold",
-    color: "#333",
+    fontFamily: 'Inter_600SemiBold',
+    color: '#333',
     marginBottom: 4,
   },
   location: {
     fontSize: 14,
-    fontFamily: "Inter_400Regular",
-    color: "#666",
+    fontFamily: 'Inter_400Regular',
+    color: '#666',
     marginBottom: 4,
   },
   bookingRef: {
     fontSize: 14,
-    fontFamily: "Inter_400Regular",
+    fontFamily: 'Inter_400Regular',
   },
   nightsContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     padding: 16,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: '#E5E7EB',
     borderRadius: 8,
     marginBottom: 16,
-    width: "95%",
-    alignSelf: "center",
+    width: '95%',
+    alignSelf: 'center',
   },
   nightsText: {
     fontSize: 16,
-    fontFamily: "Inter_500Medium",
-    color: "#333",
-    textAlign: i18n.language === "ar" ? "right" : "left",
+    fontFamily: 'Inter_500Medium',
+    color: '#333',
+    textAlign: i18n.language === 'ar' ? 'right' : 'left',
   },
   policyContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     padding: 8,
     borderRadius: 12,
-    width: "100%",
+    width: '100%',
   },
   policyTitle: {
     fontSize: 16,
-    fontFamily: "Inter_600SemiBold",
-    color: "#333",
+    fontFamily: 'Inter_600SemiBold',
+    color: '#333',
     marginBottom: 8,
-    textAlign: i18n.language === "ar" ? "right" : "left",
+    textAlign: i18n.language === 'ar' ? 'right' : 'left',
   },
   policyText: {
     fontSize: 14,
-    fontFamily: "Inter_400Regular",
-    color: "#666",
+    fontFamily: 'Inter_400Regular',
+    color: '#666',
     lineHeight: 20,
-    textAlign: i18n.language === "ar" ? "right" : "left",
+    textAlign: i18n.language === 'ar' ? 'right' : 'left',
   },
 });
 

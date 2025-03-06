@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Pressable,
   ScrollView,
   Text,
   View,
-} from "react-native";
-import BackArrow from "../../assets/icons/arrow.svg";
-import { router } from "expo-router";
-import styles from "./NotificationStyle";
-import { useTranslation } from "react-i18next";
-import NotificationIcon from "../../assets/icons/notification-bing.svg";
-import NotificationsEmptyPage from "./NotificationsEmptyPage";
+} from 'react-native';
+import BackArrow from '../../assets/icons/arrow.svg';
+import { router } from 'expo-router';
+import styles from './NotificationStyle';
+import { useTranslation } from 'react-i18next';
+import NotificationIcon from '../../assets/icons/notification-bing.svg';
+import NotificationsEmptyPage from './NotificationsEmptyPage';
 
 interface NotificationItem {
   id: number;
@@ -26,30 +26,30 @@ const Notification: React.FC = () => {
   const [notifications, setNotifications] = useState<NotificationItem[]>([
     {
       id: 1,
-      title: "New Property Available",
-      message: "A new property in Dubai is now available for investment.",
-      date: "2023-10-15",
+      title: 'New Property Available',
+      message: 'A new property in Dubai is now available for investment.',
+      date: '2023-10-15',
       isNew: true,
     },
     {
       id: 2,
-      title: "New Property Available",
-      message: " Property in Dubai is now available for investment.",
-      date: "2024-10-15",
+      title: 'New Property Available',
+      message: ' Property in Dubai is now available for investment.',
+      date: '2024-10-15',
       isNew: true,
     },
     {
       id: 3,
-      title: "New Property Available",
-      message: " Property in Dubai is now available for investment.",
-      date: "2024-10-15",
+      title: 'New Property Available',
+      message: ' Property in Dubai is now available for investment.',
+      date: '2024-10-15',
       isNew: true,
     },
     {
       id: 4,
-      title: "New Property Available",
-      message: " Property in Dubai is now available for investment.",
-      date: "2024-10-15",
+      title: 'New Property Available',
+      message: ' Property in Dubai is now available for investment.',
+      date: '2024-10-15',
       isNew: true,
     },
   ]);
@@ -61,8 +61,8 @@ const Notification: React.FC = () => {
       prevNotifications.map((notification) =>
         notification.id.toString() === id.toString()
           ? { ...notification, isNew: false }
-          : notification
-      )
+          : notification,
+      ),
     );
   };
   useEffect(() => {
@@ -71,7 +71,7 @@ const Notification: React.FC = () => {
         prevNotifications.map((notification) => ({
           ...notification,
           isNew: false,
-        }))
+        })),
       );
     }, 30000);
     return () => clearTimeout(timer);
@@ -85,7 +85,7 @@ const Notification: React.FC = () => {
             <Pressable onPress={() => router.back()} style={styles.backButton}>
               <BackArrow />
             </Pressable>
-            <Text style={styles.headerTitle}>{t("notification.title")}</Text>
+            <Text style={styles.headerTitle}>{t('notification.title')}</Text>
           </View>
           <View style={styles.mainBody}>
             {notifications.length === 0 ? (
@@ -94,12 +94,12 @@ const Notification: React.FC = () => {
               <View style={styles.newNotificationContainer}>
                 <View style={styles.newNotificationTitleContainer}>
                   <Text style={styles.newNotificationTitle}>
-                    {t("notification.haveNotification")}
+                    {t('notification.haveNotification')}
                     <Text style={styles.count}>
-                      {t("notification.unreadNotifications", {
+                      {t('notification.unreadNotifications', {
                         count: newNotificationsCount,
                       })}
-                    </Text>{" "}
+                    </Text>{' '}
                   </Text>
                 </View>
                 {notifications.map((notification) => (

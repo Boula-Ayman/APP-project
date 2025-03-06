@@ -1,7 +1,7 @@
-import { Pressable, Text, View } from "react-native";
-import BackArrow from "../../assets/icons/arrow.svg";
-import { router } from "expo-router";
-import styles from "./pageStyles";
+import { Pressable, Text, View } from 'react-native';
+import BackArrow from '../../assets/icons/arrow.svg';
+import { router } from 'expo-router';
+import styles from './pageStyles';
 
 const PageHeader = ({ title }: { title: string }) => {
   return (

@@ -1,5 +1,12 @@
-import React from "react";
-import { TouchableOpacity, Text, StyleSheet, StyleProp, ViewStyle, ActivityIndicator } from "react-native";
+import React from 'react';
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+  ActivityIndicator,
+} from 'react-native';
 
 interface ButtonProps {
   children: React.ReactNode;
@@ -9,7 +16,13 @@ interface ButtonProps {
   isLoading?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ children, onPress, disabled, style, isLoading = false }) => {
+const Button: React.FC<ButtonProps> = ({
+  children,
+  onPress,
+  disabled,
+  style,
+  isLoading = false,
+}) => {
   return (
     <TouchableOpacity
       style={[styles.button, style]}
@@ -27,24 +40,24 @@ const Button: React.FC<ButtonProps> = ({ children, onPress, disabled, style, isL
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#8BC240",
+    backgroundColor: '#8BC240',
     paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 20,
 
-    alignItems: "center",
-    width: "100%",
+    alignItems: 'center',
+    width: '100%',
     height: 56,
-    fontFamily: "Inter_500Medium",
+    fontFamily: 'Inter_500Medium',
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: '500',
     lineHeight: 25.6,
-    textAlign: "center",
+    textAlign: 'center',
   },
   buttonText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 16,
-    fontFamily: "Inter_500Medium",
+    fontFamily: 'Inter_500Medium',
     lineHeight: 25.6,
   },
 });

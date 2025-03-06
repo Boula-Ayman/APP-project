@@ -1,4 +1,11 @@
-import { StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 import React from 'react';
 import ProfileArrow from '../../assets/icons/ProfileArrow.svg';
 import i18n from '@/i18n/i18n';
@@ -25,12 +32,22 @@ const SettingButton = ({
   style,
 }: SettingButtonProps) => {
   return (
-    <TouchableOpacity style={[styles.container, withBorder && styles.withBorder, style]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.container, withBorder && styles.withBorder, style]}
+      onPress={onPress}
+    >
       <View style={styles.contentContainer}>
         <Icon style={[styles.icon, iconColor && { color: iconColor }]} />
         <Text style={[styles.text, { color: textColor }]}>{title}</Text>
       </View>
-      {showArrow && <ProfileArrow style={{...styles.arrow, transform: i18n.language === 'ar' ? [{ rotate: '180deg' }] : []}} />}
+      {showArrow && (
+        <ProfileArrow
+          style={{
+            ...styles.arrow,
+            transform: i18n.language === 'ar' ? [{ rotate: '180deg' }] : [],
+          }}
+        />
+      )}
     </TouchableOpacity>
   );
 };
@@ -41,7 +58,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 16,
-    direction: i18n.language === "ar" ? "rtl" : "ltr"
+    direction: i18n.language === 'ar' ? 'rtl' : 'ltr',
   },
   withBorder: {
     borderBottomWidth: 1,
@@ -66,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SettingButton; 
+export default SettingButton;

@@ -1,6 +1,6 @@
-import * as ImageManipulator from "expo-image-manipulator";
-import { useGetSignedUrlMutation } from "@/src/api/userApiSlice";
-import * as FileSystem from "expo-file-system";
+import * as ImageManipulator from 'expo-image-manipulator';
+import { useGetSignedUrlMutation } from '@/src/api/userApiSlice';
+import * as FileSystem from 'expo-file-system';
 
 export const useImageUpload = () => {
   const [getSignedUrl] = useGetSignedUrlMutation();
@@ -10,17 +10,17 @@ export const useImageUpload = () => {
       const compressedImage = await ImageManipulator.manipulateAsync(
         imageUri,
         [{ resize: { width: 800 } }],
-        { compress: 0.7 }
+        { compress: 0.7 },
       );
 
-      const fileExtension = compressedImage.uri.split(".").pop() || "jpg";
+      const fileExtension = compressedImage.uri.split('.').pop() || 'jpg';
       const mimeType = `image/${fileExtension}`;
 
       const fileInfo = await FileSystem.getInfoAsync(compressedImage.uri, {
         size: true,
       });
       if (!fileInfo.exists) {
-        throw new Error("Compressed file does not exist");
+        throw new Error('Compressed file does not exist');
       }
 
       const signedUrlResponse = await getSignedUrl({
@@ -30,15 +30,15 @@ export const useImageUpload = () => {
       }).unwrap();
       // Upload compressed image to signed URL
       await fetch(signedUrlResponse.data, {
-        method: "PUT",
+        method: 'PUT',
         body: compressedImage,
         headers: {
-          "Content-Type": mimeType,
+          'Content-Type': mimeType,
         },
       });
-      return signedUrlResponse.data.split("?")[0];
+      return signedUrlResponse.data.split('?')[0];
     } catch (error) {
-      console.error("Error in compressAndUpload:", error);
+      console.error('Error in compressAndUpload:', error);
       throw error;
     }
   };

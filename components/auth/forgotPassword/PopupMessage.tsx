@@ -1,9 +1,9 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 interface PopupMessageProps {
   message: string;
-  type: "success" | "error";
+  type: 'success' | 'error';
   onClose: () => void;
 }
 
@@ -16,7 +16,7 @@ const PopupMessage: React.FC<PopupMessageProps> = ({
     <View
       style={[
         styles.container,
-        type === "success" ? styles.success : styles.error,
+        type === 'success' ? styles.success : styles.error,
       ]}
     >
       <Text style={styles.message}>{message}</Text>
@@ -29,24 +29,24 @@ const PopupMessage: React.FC<PopupMessageProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 20,
     left: 20,
     right: 20,
     padding: 16,
     borderRadius: 8,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   success: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: '#4CAF50',
   },
   error: {
-    backgroundColor: "#F44336",
+    backgroundColor: '#F44336',
   },
   message: {
-    color: "white",
+    color: 'white',
     fontSize: 14,
     flex: 1,
   },
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   closeText: {
-    color: "white",
+    color: 'white',
     fontSize: 20,
   },
 });

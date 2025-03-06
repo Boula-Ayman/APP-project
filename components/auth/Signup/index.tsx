@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -11,46 +11,46 @@ import {
   Modal,
   Button as RNButton,
   Linking,
-} from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { usePostSignUpMutation } from "../../../src/auth/signup/signuupApiSlice";
-import { router } from "expo-router";
-import i18n from "../../../i18n/i18n";
-import styles from "./signupStyle";
-import Button from "@/commonComponent/button/Button";
-import Arrow from "../../../assets/icons/arrow.svg";
-import { Formik, FormikHelpers } from "formik";
-import * as Yup from "yup";
-import { useDispatch } from "react-redux";
-import { Ionicons } from "@expo/vector-icons";
-import PhoneInput from "react-native-phone-number-input";
-import { setAccessToken } from "@/src/auth/signin/userSlice";
-import { formatDateForDisplay } from "@/utils/dateUtils";
+} from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { usePostSignUpMutation } from '../../../src/auth/signup/signuupApiSlice';
+import { router } from 'expo-router';
+import i18n from '../../../i18n/i18n';
+import styles from './signupStyle';
+import Button from '@/commonComponent/button/Button';
+import Arrow from '../../../assets/icons/arrow.svg';
+import { Formik, FormikHelpers } from 'formik';
+import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { Ionicons } from '@expo/vector-icons';
+import PhoneInput from 'react-native-phone-number-input';
+import { setAccessToken } from '@/src/auth/signin/userSlice';
+import { formatDateForDisplay } from '@/utils/dateUtils';
 
 const SignUpSchema = Yup.object().shape({
-  firstName: Yup.string().trim().required(i18n.t("signUp.firstNameRequired")),
-  lastName: Yup.string().trim().required(i18n.t("signUp.lastNameRequired")),
+  firstName: Yup.string().trim().required(i18n.t('signUp.firstNameRequired')),
+  lastName: Yup.string().trim().required(i18n.t('signUp.lastNameRequired')),
   email: Yup.string()
-    .email(i18n.t("signUp.invalidEmail"))
-    .required(i18n.t("signUp.emailRequired")),
+    .email(i18n.t('signUp.invalidEmail'))
+    .required(i18n.t('signUp.emailRequired')),
   password: Yup.string()
-    .min(8, i18n.t("signUp.passwordTooShort"))
+    .min(8, i18n.t('signUp.passwordTooShort'))
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\[\]{};':"\\|,.<>\/?`~\-]).{8,}$/,
-      i18n.t("signUp.invalidPassword")
+      i18n.t('signUp.invalidPassword'),
     )
-    .required(i18n.t("signUp.passwordRequired")),
+    .required(i18n.t('signUp.passwordRequired')),
   phoneNumber: Yup.string()
-    .required(i18n.t("signUp.phoneNumberRequired"))
-    .matches(/^\d+$/, i18n.t("signUp.invalidPhoneNumber")),
+    .required(i18n.t('signUp.phoneNumberRequired'))
+    .matches(/^\d+$/, i18n.t('signUp.invalidPhoneNumber')),
   birthDate: Yup.string()
     .nullable()
     .test(
-      "is-valid-past-date",
-      i18n.t("user.validation.dob.future"),
-      (value) => !!value && new Date(value) <= new Date()
+      'is-valid-past-date',
+      i18n.t('user.validation.dob.future'),
+      (value) => !!value && new Date(value) <= new Date(),
     )
-    .test("is-valid-age-18", i18n.t("user.validation.dob.age"), (value) => {
+    .test('is-valid-age-18', i18n.t('user.validation.dob.age'), (value) => {
       const birthDate = new Date(value!);
       const currentDate = new Date();
       const age = currentDate.getFullYear() - birthDate.getFullYear();
@@ -65,8 +65,8 @@ const SignUpPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const phoneInput = useRef<any>(null);
   const [showMessage, setShowMessage] = useState(false);
-  const [error, setError] = useState("");
-  const [formattedPhoneNumber, setFormattedPhoneNumber] = useState("");
+  const [error, setError] = useState('');
+  const [formattedPhoneNumber, setFormattedPhoneNumber] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
   const dispatch = useDispatch();
   const [showDatePickerModal, setShowDatePickerModal] = useState(false);
@@ -81,14 +81,14 @@ const SignUpPage: React.FC = () => {
       phoneNumber: string;
       birthDate: string;
     },
-    actions: FormikHelpers<any>
+    actions: FormikHelpers<any>,
   ) => {
     setShowMessage(false);
-    setError("");
+    setError('');
 
     try {
       if (!phoneInput.current?.isValidNumber(values.phoneNumber)) {
-        actions.setFieldError("phoneNumber", "Invalid phone number");
+        actions.setFieldError('phoneNumber', 'Invalid phone number');
         return setShowMessage(true);
       }
 
@@ -106,12 +106,12 @@ const SignUpPage: React.FC = () => {
       dispatch(setAccessToken(accessToken));
 
       router.push(
-        `/(auth)/verify?email=${values.email}&password=${values.password}`
+        `/(auth)/verify?email=${values.email}&password=${values.password}`,
       );
     } catch (error: any) {
       const errorData = error.data.message;
 
-      setError(errorData || "An unknown error occurred");
+      setError(errorData || 'An unknown error occurred');
     } finally {
       actions.setSubmitting(false);
     }
@@ -132,11 +132,11 @@ const SignUpPage: React.FC = () => {
   const handleDateChange = (
     event: any,
     selectedDate: Date | undefined,
-    setFieldValue: any
+    setFieldValue: any,
   ) => {
     if (selectedDate) {
-      const formattedDate = selectedDate.toISOString().split("T")[0];
-      setFieldValue("birthDate", formattedDate);
+      const formattedDate = selectedDate.toISOString().split('T')[0];
+      setFieldValue('birthDate', formattedDate);
       setShowDatePickerModal(false);
     }
 
@@ -148,29 +148,29 @@ const SignUpPage: React.FC = () => {
     }
   };
   const handleDateConfirmIos = (setFieldValue: any) => {
-    const formattedDate = selectedDate.toISOString().split("T")[0];
-    setFieldValue("birthDate", formattedDate);
+    const formattedDate = selectedDate.toISOString().split('T')[0];
+    setFieldValue('birthDate', formattedDate);
     setShowDatePickerModal(false);
   };
   const openPrivacyAndPolicy = () =>
-    Linking.openURL("https://propcut.lightbyte.me/terms-and-conditions");
+    Linking.openURL('https://propcut.lightbyte.me/terms-and-conditions');
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={[
         styles.container,
-        { direction: i18n.language === "ar" ? "rtl" : "ltr" },
+        { direction: i18n.language === 'ar' ? 'rtl' : 'ltr' },
       ]}
     >
       <ScrollView contentContainerStyle={{ ...styles.scrollContent }}>
         <Formik
           initialValues={{
-            firstName: "",
-            lastName: "",
-            email: "",
-            password: "",
-            phoneNumber: "",
-            birthDate: "",
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            phoneNumber: '',
+            birthDate: '',
           }}
           validationSchema={SignUpSchema}
           onSubmit={handleSignUp}
@@ -190,28 +190,28 @@ const SignUpPage: React.FC = () => {
               <View style={styles.backContainer}>
                 <TouchableOpacity
                   style={styles.backButton}
-                  onPress={() => router.push("/Welcome")}
+                  onPress={() => router.push('/Welcome')}
                 >
-                  {i18n.language === "en" ? (
+                  {i18n.language === 'en' ? (
                     <Arrow />
                   ) : (
-                    <Arrow style={{ transform: [{ rotate: "180deg" }] }} />
+                    <Arrow style={{ transform: [{ rotate: '180deg' }] }} />
                   )}
                 </TouchableOpacity>
                 <Text style={styles.backText}>
                   <Text style={styles.one}>
-                    {i18n.language === "en" ? "1" : (1).toLocaleString("ar-EG")}
-                  </Text>{" "}
-                  / {i18n.language === "en" ? "2" : (2).toLocaleString("ar-EG")}
+                    {i18n.language === 'en' ? '1' : (1).toLocaleString('ar-EG')}
+                  </Text>{' '}
+                  / {i18n.language === 'en' ? '2' : (2).toLocaleString('ar-EG')}
                 </Text>
               </View>
-              <Text style={styles.title}>{t("signUp.title")}</Text>
+              <Text style={styles.title}>{t('signUp.title')}</Text>
               {error && (
                 <Text
                   style={{
-                    color: "red",
+                    color: 'red',
                     fontSize: 14,
-                    textAlign: "center",
+                    textAlign: 'center',
                   }}
                 >
                   {error}
@@ -220,28 +220,28 @@ const SignUpPage: React.FC = () => {
               <View style={styles.row}>
                 <View style={styles.inputContainer}>
                   <View style={{ flex: 1 }}>
-                    <Text style={styles.Name}>{t("signUp.firstName")}</Text>
+                    <Text style={styles.Name}>{t('signUp.firstName')}</Text>
                     <TextInput
                       style={[
                         styles.input,
                         {
                           borderColor:
                             errors.firstName && touched.firstName
-                              ? "red"
-                              : focusedInput === "firstName" || values.firstName
-                              ? "#8BC240"
-                              : "#EFEFEF",
-                          direction: i18n.language === "ar" ? "rtl" : "ltr",
-                          textAlign: i18n.language === "ar" ? "right" : "left",
+                              ? 'red'
+                              : focusedInput === 'firstName' || values.firstName
+                                ? '#8BC240'
+                                : '#EFEFEF',
+                          direction: i18n.language === 'ar' ? 'rtl' : 'ltr',
+                          textAlign: i18n.language === 'ar' ? 'right' : 'left',
                         },
                       ]}
-                      onChangeText={handleChange("firstName")}
-                      onFocus={() => handleFocus("firstName")}
+                      onChangeText={handleChange('firstName')}
+                      onFocus={() => handleFocus('firstName')}
                       onBlur={() => {
-                        handleBlur("firstName");
+                        handleBlur('firstName');
                         handleBlurInput();
                       }}
-                      placeholder={t("signUp.firstName")}
+                      placeholder={t('signUp.firstName')}
                       placeholderTextColor="#68677799"
                       value={values.firstName}
                     />
@@ -250,27 +250,27 @@ const SignUpPage: React.FC = () => {
                     )}
                   </View>
                   <View style={{ flex: 1 }}>
-                    <Text style={styles.Name}>{t("signUp.lastName")}</Text>
+                    <Text style={styles.Name}>{t('signUp.lastName')}</Text>
                     <TextInput
                       style={[
                         styles.input,
                         {
                           borderColor:
                             errors.lastName && touched.lastName
-                              ? "red"
-                              : focusedInput === "lastName" || values.lastName
-                              ? "#8BC240"
-                              : "#EFEFEF",
-                          direction: i18n.language === "ar" ? "rtl" : "ltr",
-                          textAlign: i18n.language === "ar" ? "right" : "left",
+                              ? 'red'
+                              : focusedInput === 'lastName' || values.lastName
+                                ? '#8BC240'
+                                : '#EFEFEF',
+                          direction: i18n.language === 'ar' ? 'rtl' : 'ltr',
+                          textAlign: i18n.language === 'ar' ? 'right' : 'left',
                         },
                       ]}
-                      onChangeText={handleChange("lastName")}
-                      onFocus={() => handleFocus("lastName")}
+                      onChangeText={handleChange('lastName')}
+                      onFocus={() => handleFocus('lastName')}
                       placeholderTextColor="#68677799"
-                      placeholder={t("signUp.lastName")}
+                      placeholder={t('signUp.lastName')}
                       onBlur={() => {
-                        handleBlur("lastName");
+                        handleBlur('lastName');
                         handleBlurInput();
                       }}
                       value={values.lastName}
@@ -282,56 +282,56 @@ const SignUpPage: React.FC = () => {
                 </View>
               </View>
               <View style={styles.emailContainer}>
-                <Text style={styles.Name}>{t("signUp.email")}</Text>
+                <Text style={styles.Name}>{t('signUp.email')}</Text>
                 <TextInput
                   style={[
                     styles.input,
                     {
                       borderColor:
                         errors.email && touched.email
-                          ? "red"
-                          : focusedInput === "email" || values.email
-                          ? "#8BC240"
-                          : "#EFEFEF",
-                      direction: i18n.language === "ar" ? "rtl" : "ltr",
-                      textAlign: i18n.language === "ar" ? "right" : "left",
+                          ? 'red'
+                          : focusedInput === 'email' || values.email
+                            ? '#8BC240'
+                            : '#EFEFEF',
+                      direction: i18n.language === 'ar' ? 'rtl' : 'ltr',
+                      textAlign: i18n.language === 'ar' ? 'right' : 'left',
                     },
                   ]}
                   keyboardType="email-address"
-                  onChangeText={handleChange("email")}
-                  onFocus={() => handleFocus("email")}
+                  onChangeText={handleChange('email')}
+                  onFocus={() => handleFocus('email')}
                   onBlur={() => {
-                    handleBlur("email");
+                    handleBlur('email');
                     handleBlurInput();
                   }}
                   placeholderTextColor="#68677799"
-                  placeholder={t("signUp.email")}
+                  placeholder={t('signUp.email')}
                   value={values.email}
                 />
                 {touched.email && errors.email && (
                   <Text style={styles.errorText}>{errors.email}</Text>
                 )}
               </View>
-              <View style={{ position: "relative" }}>
-                <Text style={styles.Name}>{t("signUp.password")}</Text>
+              <View style={{ position: 'relative' }}>
+                <Text style={styles.Name}>{t('signUp.password')}</Text>
                 <TextInput
                   style={[
                     styles.input,
                     {
                       borderColor:
                         errors.password && touched.password
-                          ? "red"
-                          : focusedInput === "password" || values.password
-                          ? "#8BC240"
-                          : "#EFEFEF",
-                      direction: i18n.language === "ar" ? "rtl" : "ltr",
-                      textAlign: i18n.language === "ar" ? "right" : "left",
+                          ? 'red'
+                          : focusedInput === 'password' || values.password
+                            ? '#8BC240'
+                            : '#EFEFEF',
+                      direction: i18n.language === 'ar' ? 'rtl' : 'ltr',
+                      textAlign: i18n.language === 'ar' ? 'right' : 'left',
                     },
                   ]}
-                  onChangeText={handleChange("password")}
-                  onFocus={() => handleFocus("password")}
+                  onChangeText={handleChange('password')}
+                  onFocus={() => handleFocus('password')}
                   onBlur={() => {
-                    handleBlur("password");
+                    handleBlur('password');
                     handleBlurInput();
                   }}
                   value={values.password}
@@ -343,15 +343,15 @@ const SignUpPage: React.FC = () => {
                 {values.password.length > 0 && (
                   <TouchableOpacity onPress={togglePasswordVisibility}>
                     <Ionicons
-                      name={showPassword ? "eye" : "eye-off"}
+                      name={showPassword ? 'eye' : 'eye-off'}
                       size={24}
                       style={[
                         {
-                          position: "absolute",
+                          position: 'absolute',
 
                           top: -47,
                         },
-                        i18n.language === "ar" ? { left: 10 } : { right: 10 },
+                        i18n.language === 'ar' ? { left: 10 } : { right: 10 },
                       ]}
                     />
                   </TouchableOpacity>
@@ -361,7 +361,7 @@ const SignUpPage: React.FC = () => {
                 <Text style={styles.errorText}>{errors.password}</Text>
               )}
               <TouchableOpacity>
-                <Text style={styles.Name}>{t("signUp.phoneNumber")}</Text>
+                <Text style={styles.Name}>{t('signUp.phoneNumber')}</Text>
                 <PhoneInput
                   ref={phoneInput}
                   defaultCode="EG"
@@ -371,52 +371,52 @@ const SignUpPage: React.FC = () => {
                     setFormattedPhoneNumber(text)
                   }
                   onChangeText={(text) => {
-                    setFieldValue("phoneNumber", text);
+                    setFieldValue('phoneNumber', text);
                   }}
                   containerStyle={{
-                    width: "100%",
-                    backgroundColor: "white",
+                    width: '100%',
+                    backgroundColor: 'white',
                     borderWidth: 1,
                     borderColor:
                       touched.phoneNumber && errors.phoneNumber
-                        ? "#FF4D4D"
-                        : focusedInput === "phoneNumber" || values.phoneNumber
-                        ? "#8BC240"
-                        : "#EFEFEF",
+                        ? '#FF4D4D'
+                        : focusedInput === 'phoneNumber' || values.phoneNumber
+                          ? '#8BC240'
+                          : '#EFEFEF',
                     borderRadius: 8,
                     padding: 2,
-                    direction: "ltr",
+                    direction: 'ltr',
                   }}
                   textContainerStyle={{
-                    backgroundColor: "white",
+                    backgroundColor: 'white',
                     borderLeftWidth: 1,
-                    borderLeftColor: "#EFEFEF",
+                    borderLeftColor: '#EFEFEF',
                     height: 52,
-                    width: "100%",
+                    width: '100%',
                   }}
                   textInputProps={{
-                    placeholderTextColor: "#68677799",
-                    keyboardType: "numeric",
+                    placeholderTextColor: '#68677799',
+                    keyboardType: 'numeric',
                     onFocus: () => {
-                      handleFocus("phoneNumber");
+                      handleFocus('phoneNumber');
                     },
                     onBlur: () => {
-                      handleBlur("phoneNumber");
+                      handleBlur('phoneNumber');
                       handleBlurInput();
                     },
                   }}
                   textInputStyle={{
                     padding: 0,
                     fontSize: 14,
-                    fontFamily: "Inter500Medium",
-                    color: "black",
-                    width: "100%",
+                    fontFamily: 'Inter500Medium',
+                    color: 'black',
+                    width: '100%',
                     height: 56,
-                    backgroundColor: "white",
-                    fontWeight: "500",
+                    backgroundColor: 'white',
+                    fontWeight: '500',
                   }}
                   codeTextStyle={{
-                    color: "black",
+                    color: 'black',
                     fontSize: 14,
                   }}
                 />
@@ -428,15 +428,15 @@ const SignUpPage: React.FC = () => {
                 )}
                 {showMessage && (
                   <Text style={styles.errorTextPhone}>
-                    {t("signUp.invalidCountryNumber")}
+                    {t('signUp.invalidCountryNumber')}
                   </Text>
                 )}
               </TouchableOpacity>
               <View>
-                <Text style={styles.Name}>{t("signUp.birthDate")}</Text>
+                <Text style={styles.Name}>{t('signUp.birthDate')}</Text>
                 <TouchableOpacity
                   onPress={() =>
-                    Platform.OS === "android"
+                    Platform.OS === 'android'
                       ? setShowDatePicker(true)
                       : setShowDatePickerModal(true)
                   }
@@ -447,16 +447,16 @@ const SignUpPage: React.FC = () => {
                       {
                         borderColor:
                           errors.birthDate && touched.birthDate
-                            ? "red"
-                            : focusedInput === "birthDate" || values.birthDate
-                            ? "#8BC240"
-                            : "#EFEFEF",
-                        direction: i18n.language === "ar" ? "rtl" : "ltr",
-                        textAlign: i18n.language === "ar" ? "right" : "left",
+                            ? 'red'
+                            : focusedInput === 'birthDate' || values.birthDate
+                              ? '#8BC240'
+                              : '#EFEFEF',
+                        direction: i18n.language === 'ar' ? 'rtl' : 'ltr',
+                        textAlign: i18n.language === 'ar' ? 'right' : 'left',
                       },
                     ]}
                     onPress={() =>
-                      Platform.OS === "android"
+                      Platform.OS === 'android'
                         ? setShowDatePicker(true)
                         : setShowDatePickerModal(true)
                     }
@@ -466,13 +466,13 @@ const SignUpPage: React.FC = () => {
                     editable={false}
                   />
                 </TouchableOpacity>
-                {showDatePicker && Platform.OS === "android" && (
+                {showDatePicker && Platform.OS === 'android' && (
                   <DateTimePicker
                     value={
                       values.birthDate ? new Date(values.birthDate) : new Date()
                     }
                     mode="date"
-                    display={"default"}
+                    display={'default'}
                     themeVariant="light"
                     onChange={(event, selectedDate) =>
                       handleDateChange(event, selectedDate, setFieldValue)
@@ -483,7 +483,7 @@ const SignUpPage: React.FC = () => {
                   <Text style={styles.errorText}>{errors.birthDate}</Text>
                 )}
               </View>
-              {Platform.OS === "ios" && (
+              {Platform.OS === 'ios' && (
                 <Modal
                   visible={showDatePickerModal}
                   transparent={true}
@@ -513,13 +513,13 @@ const SignUpPage: React.FC = () => {
 
               <View style={styles.TextContainer}>
                 <Text style={styles.MainText}>
-                  {t("signUp.agreeToTermsPrefix")}{" "}
+                  {t('signUp.agreeToTermsPrefix')}{' '}
                   <Text style={styles.Text} onPress={openPrivacyAndPolicy}>
-                    {t("signUp.terms")}
-                  </Text>{" "}
-                  {t("signUp.and")}{" "}
+                    {t('signUp.terms')}
+                  </Text>{' '}
+                  {t('signUp.and')}{' '}
                   <Text style={styles.Text} onPress={openPrivacyAndPolicy}>
-                    {t("signUp.privacyPolicy")}
+                    {t('signUp.privacyPolicy')}
                   </Text>
                 </Text>
               </View>
@@ -528,7 +528,7 @@ const SignUpPage: React.FC = () => {
                   {isSubmitting ? (
                     <ActivityIndicator color="white" />
                   ) : (
-                    <Text>{t("signUp.signUpButton")}</Text>
+                    <Text>{t('signUp.signUpButton')}</Text>
                   )}
                 </Button>
               </View>

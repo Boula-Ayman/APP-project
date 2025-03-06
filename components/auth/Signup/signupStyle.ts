@@ -1,8 +1,8 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
 
   scrollContent: {
@@ -11,76 +11,76 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   backContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginTop: 40,
   },
   backButton: {
     width: 48,
     height: 48,
 
-    backgroundColor: "#F6F6F6",
+    backgroundColor: '#F6F6F6',
     borderRadius: 100,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   backText: {
     fontSize: 14,
-    fontWeight: "600",
-    fontFamily: "Inter_600SemiBold",
+    fontWeight: '600',
+    fontFamily: 'Inter_600SemiBold',
 
-    color: "gray",
+    color: 'gray',
   },
   one: {
-    color: "#8BC240",
+    color: '#8BC240',
   },
   title: {
     fontSize: 32,
-    fontWeight: "600",
-    fontFamily: "Inter_600SemiBold",
+    fontWeight: '600',
+    fontFamily: 'Inter_600SemiBold',
     marginTop: 12,
-    textAlign: "left"
+    textAlign: 'left',
   },
   Name: {
     fontSize: 14,
-    fontWeight: "600",
-    fontFamily: "Inter_600SemiBold",
+    fontWeight: '600',
+    fontFamily: 'Inter_600SemiBold',
     marginBottom: 10,
-    textAlign: "left"
+    textAlign: 'left',
   },
   row: {
-    flexDirection: "column",
+    flexDirection: 'column',
   },
   inputContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 15,
   },
   errorContainer: {
-    flexDirection: "column",
-    justifyContent: "space-between",
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
 
   firstName: {
     fontSize: 14,
-    fontWeight: "600",
-    fontFamily: "Inter_600SemiBold",
+    fontWeight: '600',
+    fontFamily: 'Inter_600SemiBold',
   },
   lastName: {
     fontSize: 14,
-    fontWeight: "600",
-    fontFamily: "Inter_600SemiBold",
+    fontWeight: '600',
+    fontFamily: 'Inter_600SemiBold',
   },
   emailContainer: {},
   email: {
     marginBottom: -10,
     fontSize: 14,
-    fontWeight: "600",
-    fontFamily: "Inter_600SemiBold",
+    fontWeight: '600',
+    fontFamily: 'Inter_600SemiBold',
   },
   input: {
     borderWidth: 1,
-    borderColor: "#3A3D46",
+    borderColor: '#3A3D46',
     borderRadius: 8,
 
     padding: 10,
@@ -89,18 +89,18 @@ const styles = StyleSheet.create({
     height: 50,
   },
   passwordContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
-    borderColor: "#EFEFEF",
+    borderColor: '#EFEFEF',
     borderRadius: 8,
     paddingHorizontal: 12,
     marginBottom: 15,
   },
   password: {
     fontSize: 14,
-    fontWeight: "600",
-    fontFamily: "Inter_600SemiBold",
+    fontWeight: '600',
+    fontFamily: 'Inter_600SemiBold',
     top: -53,
     right: 9,
   },
@@ -112,34 +112,34 @@ const styles = StyleSheet.create({
   },
   termsText: {
     fontSize: 14,
-    color: "gray",
-    textAlign: "center",
+    color: 'gray',
+    textAlign: 'center',
     marginVertical: 20,
     top: -30,
   },
   linkText: {
-    color: "#8BC240",
+    color: '#8BC240',
   },
   signUpButton: {
     marginTop: 20,
   },
   signUpButtonText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   errorText: {
-    color: "red",
+    color: 'red',
     fontSize: 14,
-    textAlign: "left",
+    textAlign: 'left',
     marginTop: -10,
   },
 
   phoneInputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderRadius: 5,
     padding: 10,
   },
@@ -157,37 +157,37 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   TextContainer: {
-    justifyContent: "center",
-    textAlign: "center",
-    width: "100%",
+    justifyContent: 'center',
+    textAlign: 'center',
+    width: '100%',
     marginTop: 10,
   },
   MainText: {
     fontSize: 14,
-    fontWeight: "400",
-    fontFamily: "Inter_400Regular",
-    justifyContent: "center",
-    textAlign: "center",
-    color: "#404040",
+    fontWeight: '400',
+    fontFamily: 'Inter_400Regular',
+    justifyContent: 'center',
+    textAlign: 'center',
+    color: '#404040',
   },
   Text: {
-    color: "#8BC240",
+    color: '#8BC240',
   },
   errorTextPhone: {
-    color: "red",
+    color: 'red',
     fontSize: 14,
-    textAlign: "left",
+    textAlign: 'left',
     marginTop: 5,
   },
   modalContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    backgroundColor: "#FFF",
-    padding: 20
+    backgroundColor: '#FFF',
+    padding: 20,
   },
 });
 

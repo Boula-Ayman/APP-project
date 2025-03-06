@@ -1,12 +1,12 @@
-import React, { useRef } from "react";
-import { Animated, View, Pressable, Text } from "react-native";
-import styles from "./CardListStyle";
-import Card from "../../app/Home/CardListoportunity/Card";
-import { Opportunity } from "@/src/interfaces/opportunity.interface";
-import { Link } from "expo-router";
-import { useGetWishListQuery } from "@/src/wishList/wishListApiSlice";
+import React, { useRef } from 'react';
+import { Animated, View, Pressable, Text } from 'react-native';
+import styles from './CardListStyle';
+import Card from '../../app/Home/CardListoportunity/Card';
+import { Opportunity } from '@/src/interfaces/opportunity.interface';
+import { Link } from 'expo-router';
+import { useGetWishListQuery } from '@/src/wishList/wishListApiSlice';
 
-import i18n from "@/i18n/i18n";
+import i18n from '@/i18n/i18n';
 
 const CARD_WIDTH = 284;
 const SPACING = 25;
@@ -31,16 +31,16 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
           snapToInterval={CARD_WIDTH}
           decelerationRate="fast"
           style={{
-            direction: "ltr",
+            direction: 'ltr',
           }}
           contentContainerStyle={[
             styles.flatListContent,
-            { direction: i18n.language === "ar" ? "rtl" : "ltr" },
+            { direction: i18n.language === 'ar' ? 'rtl' : 'ltr' },
           ]}
-          inverted={i18n.language === "ar" ? true : false}
+          inverted={i18n.language === 'ar' ? true : false}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            { useNativeDriver: true }
+            { useNativeDriver: true },
           )}
           scrollEventThrottle={16}
           renderItem={({ item, index }) => {
@@ -52,7 +52,7 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
             const scale = scrollX.interpolate({
               inputRange,
               outputRange: [0.9, 1, 0.9],
-              extrapolate: "clamp",
+              extrapolate: 'clamp',
             });
 
             return (
@@ -67,7 +67,7 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
                     <Card
                       item={item}
                       isLiked={wishList?.data?.some(
-                        (likedItem: Opportunity) => likedItem.id === item.id
+                        (likedItem: Opportunity) => likedItem.id === item.id,
                       )}
                     />
                   </Animated.View>
@@ -80,10 +80,10 @@ const CardList: React.FC<CardListProps> = ({ opportunities }) => {
         <View
           style={{
             flex: 1,
-            marginTop: "25%",
-            marginInline: "auto",
-            justifyContent: "center",
-            alignItems: "center",
+            marginTop: '25%',
+            marginInline: 'auto',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <Text>No opportunities found</Text>

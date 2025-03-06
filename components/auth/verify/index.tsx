@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,21 +6,21 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
-} from "react-native";
+} from 'react-native';
 import {
   usePostVerifyMutation,
   useResendVerifyMutation,
-} from "../../../src/auth/veirfy/verify";
-import { OtpInput } from "react-native-otp-entry";
-import { router, useLocalSearchParams } from "expo-router";
-import i18n from "../../../i18n/i18n";
-import { useFonts } from "expo-font";
-import Arrow from "../../../assets/icons/arrow.svg";
-import Toast from "react-native-toast-message";
-import { usePostSignInMutation } from "@/src/auth/signin/signinApiSlice";
-import { useDispatch } from "react-redux";
-import { setUser } from "@/src/auth/signin/userSlice";
-import { localizeNumber } from "@/utils/numbers";
+} from '../../../src/auth/veirfy/verify';
+import { OtpInput } from 'react-native-otp-entry';
+import { router, useLocalSearchParams } from 'expo-router';
+import i18n from '../../../i18n/i18n';
+import { useFonts } from 'expo-font';
+import Arrow from '../../../assets/icons/arrow.svg';
+import Toast from 'react-native-toast-message';
+import { usePostSignInMutation } from '@/src/auth/signin/signinApiSlice';
+import { useDispatch } from 'react-redux';
+import { setUser } from '@/src/auth/signin/userSlice';
+import { localizeNumber } from '@/utils/numbers';
 
 const VerificationScreen: React.FC = () => {
   const [timer, setTimer] = useState<number>(90);
@@ -40,12 +40,12 @@ const VerificationScreen: React.FC = () => {
 
   const [PostVerify] = usePostVerifyMutation();
   const [resendVerify] = useResendVerifyMutation();
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useDispatch();
   const handleVerify = async () => {
-    setErrorMessage("");
+    setErrorMessage('');
     if (!otp || otp.length !== 4) {
-      setErrorMessage(t("otpValidation"));
+      setErrorMessage(t('otpValidation'));
       return;
     }
 
@@ -61,23 +61,23 @@ const VerificationScreen: React.FC = () => {
         setUser({
           user: response?.data?.user,
           token: response?.data?.access_token,
-        })
+        }),
       );
-      router.push("/" as any);
+      router.push('/' as any);
       setLoading(false);
     } catch (error: any) {
       setLoading(false);
-      setErrorMessage(t("otpError"));
+      setErrorMessage(t('otpError'));
     }
   };
 
   const handleResendCode = async () => {
-    setErrorMessage("");
+    setErrorMessage('');
     try {
       await resendVerify({}).unwrap();
       Toast.show({
-        type: "success",
-        text1: "Verification code sent successfully",
+        type: 'success',
+        text1: 'Verification code sent successfully',
       });
       setTimer(90);
     } catch (error: any) {
@@ -104,39 +104,39 @@ const VerificationScreen: React.FC = () => {
   };
 
   const [fontsLoaded] = useFonts({
-    Inter_400Regular: require("../../../assets/fonts/Inter/Inter_24pt-Regular.ttf"),
-    Inter_600SemiBold: require("../../../assets/fonts/Inter/Inter_24pt-SemiBold.ttf"),
+    Inter_400Regular: require('../../../assets/fonts/Inter/Inter_24pt-Regular.ttf'),
+    Inter_600SemiBold: require('../../../assets/fonts/Inter/Inter_24pt-SemiBold.ttf'),
   });
 
   if (!fontsLoaded) {
     return null;
   }
   const handleBackPress = () => {
-    router.push("/Welcome" as any);
+    router.push('/Welcome' as any);
   };
 
   return (
     <View
       style={[
         styles.container,
-        { direction: i18n.language === "ar" ? "rtl" : "ltr" },
+        { direction: i18n.language === 'ar' ? 'rtl' : 'ltr' },
       ]}
     >
       <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-        {i18n.language === "ar" ? (
-          <Arrow style={{ transform: [{ rotate: "180deg" }] }} />
+        {i18n.language === 'ar' ? (
+          <Arrow style={{ transform: [{ rotate: '180deg' }] }} />
         ) : (
           <Arrow />
         )}
       </TouchableOpacity>
       <ScrollView style={styles.scrollContent}>
-        <Text style={[styles.title, { fontFamily: "Inter_600SemiBold" }]}>
-          {t("verify.verify_email_title")}
+        <Text style={[styles.title, { fontFamily: 'Inter_600SemiBold' }]}>
+          {t('verify.verify_email_title')}
         </Text>
-        <Text style={[styles.subtitle, { fontFamily: "Inter_400Regular" }]}>
-          {t("verify.enter_otp_message")}
+        <Text style={[styles.subtitle, { fontFamily: 'Inter_400Regular' }]}>
+          {t('verify.enter_otp_message')}
         </Text>
-        <View style={[styles.otpInputContainer, { direction: "ltr" }]}>
+        <View style={[styles.otpInputContainer, { direction: 'ltr' }]}>
           <OtpInput
             numberOfDigits={4}
             onTextChange={(text) => setOtp(text)}
@@ -159,18 +159,18 @@ const VerificationScreen: React.FC = () => {
         >
           {timer > 0 ? (
             <Text style={styles.resendText}>
-              {`${t("verify.resend_code_in")}: `}
+              {`${t('verify.resend_code_in')}: `}
               <Text style={styles.counter}> {formatTime(timer)} </Text>
             </Text>
           ) : (
-            <Text style={styles.resendText}>{t("verify.resend_code")}</Text>
+            <Text style={styles.resendText}>{t('verify.resend_code')}</Text>
           )}
         </TouchableOpacity>
         <TouchableOpacity style={styles.verifyButton} onPress={handleVerify}>
           {loading ? (
             <ActivityIndicator size="small" color="white" />
           ) : (
-            <Text style={styles.verifyButtonText}>{t("verify.title")}</Text>
+            <Text style={styles.verifyButtonText}>{t('verify.title')}</Text>
           )}
         </TouchableOpacity>
       </ScrollView>
@@ -181,19 +181,19 @@ const VerificationScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     padding: 16,
 
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   backButton: {
     width: 48,
     height: 48,
     top: 10,
-    backgroundColor: "#F6F6F6",
+    backgroundColor: '#F6F6F6',
     borderRadius: 100,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 20,
   },
   scrollContent: {
@@ -202,52 +202,52 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: 16,
-    fontFamily: "Inter",
+    fontFamily: 'Inter',
     fontSize: 32,
-    fontWeight: "600",
+    fontWeight: '600',
     lineHeight: 39,
-    textAlign: "left",
+    textAlign: 'left',
   },
   subtitle: {
     width: 327,
     height: 38,
-    fontFamily: "Inter",
+    fontFamily: 'Inter',
     fontSize: 16,
-    fontWeight: "400",
+    fontWeight: '400',
     lineHeight: 19,
-    textAlign: "left",
+    textAlign: 'left',
     marginBottom: 32,
-    color: "#9B9B9B",
+    color: '#9B9B9B',
   },
   codeContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 32,
   },
   codeInput: {
     width: 60,
     height: 60,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderRadius: 8,
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 24,
   },
   activePinCodeContainer: {
     borderWidth: 1,
-    borderColor: "#8BC240",
+    borderColor: '#8BC240',
     borderRadius: 8,
   },
   filledPinCodeContainer: {
     width: 55,
     height: 55,
-    borderColor: "#8BC240",
+    borderColor: '#8BC240',
   },
 
   pinCodeText: {
-    color: "#04021DCC",
+    color: '#04021DCC',
     fontSize: 15,
-    fontWeight: "500",
+    fontWeight: '500',
     lineHeight: 22.5,
   },
   pinCodeContainer: {
@@ -255,32 +255,32 @@ const styles = StyleSheet.create({
     height: 55,
   },
   resendButton: {
-    alignSelf: "center",
+    alignSelf: 'center',
     marginBottom: 40,
     marginTop: 20,
     top: 20,
   },
   resendText: {
     fontSize: 16,
-    color: "#8BC240",
+    color: '#8BC240',
   },
   counter: {
-    color: "#8BC240",
+    color: '#8BC240',
   },
   verifyButton: {
-    backgroundColor: "#8BC240",
+    backgroundColor: '#8BC240',
     padding: 16,
     borderRadius: 20,
-    alignItems: "center",
+    alignItems: 'center',
   },
   verifyButtonText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   errorText: {
-    color: "red",
-    textAlign: "center",
+    color: 'red',
+    textAlign: 'center',
     marginBottom: 16,
   },
   otpInputContainer: {

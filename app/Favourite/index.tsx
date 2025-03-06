@@ -1,19 +1,19 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { View, Text, ScrollView, StyleSheet } from "react-native";
-import { RootState } from "../../src/store";
-import CardList from "@/components/cardlistContainer/CardList";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { RootState } from '../../src/store';
+import CardList from '@/components/cardlistContainer/CardList';
 import {
   useGetWishListQuery,
   usePostWishListMutation,
   useRemoveWishListMutation,
-} from "@/src/wishList/wishListApiSlice";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { t } from "i18next";
-import { LinearGradient } from "expo-linear-gradient";
-import Area from "../../assets/icons/area.svg";
-import PropertyCard from "@/commonComponent/PropertyCard/PropertyCard";
-import { router } from "expo-router";
+} from '@/src/wishList/wishListApiSlice';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { t } from 'i18next';
+import { LinearGradient } from 'expo-linear-gradient';
+import Area from '../../assets/icons/area.svg';
+import PropertyCard from '@/commonComponent/PropertyCard/PropertyCard';
+import { router } from 'expo-router';
 
 const TestWishListComponent = () => {
   const { data, error, isLoading, refetch } = useGetWishListQuery({
@@ -35,12 +35,12 @@ const TestWishListComponent = () => {
       }
       refetch();
     } catch (error) {
-      console.error("Error toggling wishlist:", error);
+      console.error('Error toggling wishlist:', error);
     }
   };
   const handlePropertyPress = (id: number) => {
     router.push({
-      pathname: "/carddetails/[id]",
+      pathname: '/carddetails/[id]',
       params: { id: id },
     } as any);
   };
@@ -49,9 +49,9 @@ const TestWishListComponent = () => {
     <SafeAreaView style={styles.container}>
       <LinearGradient
         colors={[
-          "rgba(139, 194, 64, 0)",
-          "rgba(139, 194, 64, 0.03)",
-          "rgba(139, 194, 64, 0.16)",
+          'rgba(139, 194, 64, 0)',
+          'rgba(139, 194, 64, 0.03)',
+          'rgba(139, 194, 64, 0.16)',
         ]}
         style={styles.gradient}
         start={{ x: 0, y: 1 }}
@@ -59,7 +59,7 @@ const TestWishListComponent = () => {
       />
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.header}>
-          <Text style={styles.title}>{t("myWishList")}</Text>
+          <Text style={styles.title}>{t('myWishList')}</Text>
         </View>
         {data?.data.length > 0 ? (
           data.data.map((opportunity) => (
@@ -92,7 +92,7 @@ const TestWishListComponent = () => {
             </View>
           ))
         ) : (
-          <Text style={styles.dangerText}>{t("emptyList")}</Text>
+          <Text style={styles.dangerText}>{t('emptyList')}</Text>
         )}
       </ScrollView>
     </SafeAreaView>
@@ -102,15 +102,15 @@ const TestWishListComponent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-start",
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
 
-    alignItems: "center",
+    alignItems: 'center',
   },
   scrollView: {
     flexGrow: 1,
-    flexDirection: "column",
-    justifyContent: "flex-start",
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
   },
   cardContainer: {
     transform: [{ scale: 1.12 }],
@@ -119,30 +119,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
   },
   header: {
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    width: "100%",
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    width: '100%',
   },
   title: {
-    fontFamily: "Inter_700Bold",
-    fontWeight: "700",
+    fontFamily: 'Inter_700Bold',
+    fontWeight: '700',
     fontSize: 26,
     lineHeight: 31.47,
-    color: "#000000",
+    color: '#000000',
     marginBottom: 30,
     marginTop: 20,
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   },
   dangerText: {
-    color: "red",
+    color: 'red',
     fontSize: 14,
 
-    fontFamily: "InterMedium",
-    fontWeight: "500",
+    fontFamily: 'InterMedium',
+    fontWeight: '500',
   },
   gradient: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,

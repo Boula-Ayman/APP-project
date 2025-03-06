@@ -1,4 +1,4 @@
-import PortfolioScreen from "@/components/Portofolio";
+import PortfolioScreen from '@/components/Portofolio';
 
 const PortfolioPage = () => {
   return <PortfolioScreen />;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,12 +9,12 @@ import {
   Alert,
   Image,
   Share,
-} from "react-native";
-import * as Contacts from "expo-contacts";
-import { Ionicons } from "@expo/vector-icons";
-import CustomHeader from "../../commonComponent/Header/CustomHeader";
-import { noImagePlaceHolder } from "@/utils/noImagePlaceHolder";
-import { useTranslation } from "react-i18next";
+} from 'react-native';
+import * as Contacts from 'expo-contacts';
+import { Ionicons } from '@expo/vector-icons';
+import CustomHeader from '../../commonComponent/Header/CustomHeader';
+import { noImagePlaceHolder } from '@/utils/noImagePlaceHolder';
+import { useTranslation } from 'react-i18next';
 
 const TellYourFriends = () => {
   const [contacts, setContacts] = useState<Contacts.Contact[]>([]);
@@ -24,7 +24,7 @@ const TellYourFriends = () => {
   useEffect(() => {
     (async () => {
       const { status } = await Contacts.requestPermissionsAsync();
-      if (status === "granted") {
+      if (status === 'granted') {
         const { data } = await Contacts.getContactsAsync({
           fields: [Contacts.Fields.Name, Contacts.Fields.PhoneNumbers],
         });
@@ -32,7 +32,7 @@ const TellYourFriends = () => {
         if (data.length > 0) {
           setContacts(data);
         } else {
-          Alert.alert(t("profile.noContactsFound"));
+          Alert.alert(t('profile.noContactsFound'));
         }
       }
     })();
@@ -45,17 +45,17 @@ const TellYourFriends = () => {
       });
 
       if (result.action === Share.sharedAction) {
-        Alert.alert("Link Shared");
+        Alert.alert('Link Shared');
       }
     } catch (error) {
-      Alert.alert("Error", "Failed to share the link.");
+      Alert.alert('Error', 'Failed to share the link.');
     }
   };
 
   return (
     <View style={styles.container}>
       <CustomHeader
-        title={t("profile.tell_your_friends.title")}
+        title={t('profile.tell_your_friends.title')}
         showBackButton
       />
 
@@ -66,13 +66,13 @@ const TellYourFriends = () => {
             <View
               style={{
                 marginVertical: 30,
-                alignItems: "center",
-                flexDirection: "row",
+                alignItems: 'center',
+                flexDirection: 'row',
                 gap: 10,
               }}
             >
               <Text style={styles.contactName}>
-                {t("profile.tell_your_friends.share_link")}
+                {t('profile.tell_your_friends.share_link')}
               </Text>
               <Ionicons name="share-social" size={24} color="black" />
             </View>
@@ -115,19 +115,19 @@ export default TellYourFriends;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "85%",
-    alignSelf: "center",
+    width: '85%',
+    alignSelf: 'center',
   },
   contactItem: {
     padding: 12,
     marginVertical: 6,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: '#f9f9f9',
     borderRadius: 8,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   rtl: {
-    flexDirection: "row-reverse",
+    flexDirection: 'row-reverse',
   },
   contactImage: {
     width: 40,
@@ -140,10 +140,10 @@ const styles = StyleSheet.create({
   },
   contactName: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   phoneNumber: {
     fontSize: 14,
-    color: "gray",
+    color: 'gray',
   },
 });

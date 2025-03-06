@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Text,
   TextInput,
@@ -9,19 +9,19 @@ import {
   ScrollView,
   SafeAreaView,
   ActivityIndicator,
-} from "react-native";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import { useRouter } from "expo-router";
-import i18n from "../../../i18n/i18n";
-import styles from "./frogotpasswordStyle";
-import { useTranslation } from "react-i18next";
-import Arrow from "../../../assets/icons/arrow.svg";
-import { useRequestPasswordResetMutation } from "../../../src/auth/forgotPassword/forgotPasswordApiSlice";
-import PopupMessage from "./PopupMessage";
+} from 'react-native';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import { useRouter } from 'expo-router';
+import i18n from '../../../i18n/i18n';
+import styles from './frogotpasswordStyle';
+import { useTranslation } from 'react-i18next';
+import Arrow from '../../../assets/icons/arrow.svg';
+import { useRequestPasswordResetMutation } from '../../../src/auth/forgotPassword/forgotPasswordApiSlice';
+import PopupMessage from './PopupMessage';
 
 const ForgotPasswordSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email is required"),
+  email: Yup.string().email('Invalid email').required('Email is required'),
 });
 
 const ForgotPasswordPage: React.FC = () => {
@@ -37,21 +37,21 @@ const ForgotPasswordPage: React.FC = () => {
     try {
       await requestPasswordReset({
         email: values.email,
-        reset_password_page_pathname: "/reset-password",
+        reset_password_page_pathname: '/reset-password',
       }).unwrap();
 
       setErrorMessage(null);
-      setSuccessMessage(t("ForgotPassword.successMessage"));
+      setSuccessMessage(t('ForgotPassword.successMessage'));
 
       // 3 seconds before redirecting
       setTimeout(() => {
-        router.push("/(auth)/signIn" as any);
+        router.push('/(auth)/signIn' as any);
       }, 3000);
     } catch (error: any) {
       if (error.status === 404) {
-        setErrorMessage(t("ForgotPassword.errorMessage"));
+        setErrorMessage(t('ForgotPassword.errorMessage'));
       } else {
-        setErrorMessage(t("ForgotPassword.genericError"));
+        setErrorMessage(t('ForgotPassword.genericError'));
       }
     } finally {
       actions.setSubmitting(false);
@@ -70,7 +70,7 @@ const ForgotPasswordPage: React.FC = () => {
     <SafeAreaView style={styles.SaveAreaView}>
       <KeyboardAvoidingView
         style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <TouchableOpacity
           style={styles.backButton}
@@ -81,13 +81,13 @@ const ForgotPasswordPage: React.FC = () => {
 
         <ScrollView
           style={styles.scrollContent}
-          contentContainerStyle={{ alignItems: "center" }}
+          contentContainerStyle={{ alignItems: 'center' }}
         >
           <View style={styles.innerContainer}>
-            <Text style={styles.title}>{t("ForgotPassword.title")}</Text>
+            <Text style={styles.title}>{t('ForgotPassword.title')}</Text>
 
             <Formik
-              initialValues={{ email: "" }}
+              initialValues={{ email: '' }}
               validationSchema={ForgotPasswordSchema}
               onSubmit={handleSubmit}
             >
@@ -104,12 +104,12 @@ const ForgotPasswordPage: React.FC = () => {
                   {/* Email Input */}
                   <View style={styles.headerContainer}>
                     <Text style={styles.header}>
-                      {t("ForgotPassword.email")}
+                      {t('ForgotPassword.email')}
                     </Text>
                     <TextInput
                       style={styles.input}
-                      onChangeText={handleChange("email")}
-                      onFocus={() => handleFocus("email")}
+                      onChangeText={handleChange('email')}
+                      onFocus={() => handleFocus('email')}
                       onBlur={handleBlurInput}
                       value={values.email}
                       keyboardType="email-address"
@@ -125,7 +125,7 @@ const ForgotPasswordPage: React.FC = () => {
                       {isLoading ? (
                         <ActivityIndicator color="white" />
                       ) : (
-                        t("ForgotPassword.resetButton")
+                        t('ForgotPassword.resetButton')
                       )}
                     </Text>
                   </TouchableOpacity>

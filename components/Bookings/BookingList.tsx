@@ -17,7 +17,7 @@ const BookingList: React.FC<BookingListProps> = ({ activeTab }) => {
   const handleBookingPress = (booking: Booking) => {
     router.push({
       pathname: '/bookings/[id]',
-      params: { id: booking.id }
+      params: { id: booking.id },
     } as any);
   };
 
@@ -45,21 +45,28 @@ const BookingList: React.FC<BookingListProps> = ({ activeTab }) => {
   });
 
   const renderBookingCard = ({ item }) => {
-      return (
-        <PropertyCard
-          item={{
-            ...item.propertyCardData, 
-            location: i18n.language === "ar" ? item.propertyCardData.location_ar : item.propertyCardData.location_en,
-            title: i18n.language === "ar" ? item.propertyCardData.title_ar : item.propertyCardData.title_en
-          }}
-          isLiked={false}
-          onLoveIconPress={() => {}}
-          showPriceSection={false}
-          showFeatures={false}
-          showStatus={true}
-          onPress={() => handleBookingPress(item.booking)}
-      />)
-  }
+    return (
+      <PropertyCard
+        item={{
+          ...item.propertyCardData,
+          location:
+            i18n.language === 'ar'
+              ? item.propertyCardData.location_ar
+              : item.propertyCardData.location_en,
+          title:
+            i18n.language === 'ar'
+              ? item.propertyCardData.title_ar
+              : item.propertyCardData.title_en,
+        }}
+        isLiked={false}
+        onLoveIconPress={() => {}}
+        showPriceSection={false}
+        showFeatures={false}
+        showStatus={true}
+        onPress={() => handleBookingPress(item.booking)}
+      />
+    );
+  };
 
   return (
     <FlatList
@@ -72,4 +79,4 @@ const BookingList: React.FC<BookingListProps> = ({ activeTab }) => {
   );
 };
 
-export default BookingList; 
+export default BookingList;

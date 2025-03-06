@@ -1,22 +1,22 @@
-import React from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import {
   useGetMyInvestmentsQuery,
   useGetMyInvestmentStatsQuery,
-} from "../../src/api/investmentsApiSlice";
-import { useGetMyRentsQuery } from "../../src/api/rentsApiSlice";
+} from '../../src/api/investmentsApiSlice';
+import { useGetMyRentsQuery } from '../../src/api/rentsApiSlice';
 import {
   useGetWishListQuery,
   usePostWishListMutation,
   useRemoveWishListMutation,
-} from "../../src/wishList/wishListApiSlice";
-import PropertyCard from "@/commonComponent/PropertyCard/PropertyCard";
-import { LinearGradient } from "expo-linear-gradient";
-import PortfolioStats from "./components/PortfolioStats";
-import { useTranslation } from "react-i18next";
-import { router } from "expo-router";
-import i18n from "../../i18n/i18n";
-import { localizeNumber } from "@/utils/numbers";
+} from '../../src/wishList/wishListApiSlice';
+import PropertyCard from '@/commonComponent/PropertyCard/PropertyCard';
+import { LinearGradient } from 'expo-linear-gradient';
+import PortfolioStats from './components/PortfolioStats';
+import { useTranslation } from 'react-i18next';
+import { router } from 'expo-router';
+import i18n from '../../i18n/i18n';
+import { localizeNumber } from '@/utils/numbers';
 
 const PortfolioPage: React.FC = () => {
   const { t } = useTranslation();
@@ -38,32 +38,37 @@ const PortfolioPage: React.FC = () => {
       }
       await refetch();
     } catch (error) {
-      console.error("Error toggling wishlist:", error);
+      console.error('Error toggling wishlist:', error);
     }
   };
 
   const handlePropertyPress = (id: number) => {
     router.push({
       pathname: '/carddetails/[id]',
-      params: { id: id }
+      params: { id: id },
     } as any);
   };
-
 
   return (
     <View style={styles.container}>
       <LinearGradient
         colors={[
-          "rgba(139, 194, 64, 0)",
-          "rgba(139, 194, 64, 0.03)",
-          "rgba(139, 194, 64, 0.16)",
+          'rgba(139, 194, 64, 0)',
+          'rgba(139, 194, 64, 0.03)',
+          'rgba(139, 194, 64, 0.16)',
         ]}
         style={styles.gradient}
         start={{ x: 0, y: 1 }}
         end={{ x: 0, y: 0 }}
       />
-      <ScrollView style={{...styles.scrollContainer, direction: i18n.language === "ar" ? "rtl" : "ltr" }} contentContainerStyle={{paddingHorizontal: 16, paddingVertical: 24}}>
-        <Text style={styles.title}>{t("portfolio.title")}</Text>
+      <ScrollView
+        style={{
+          ...styles.scrollContainer,
+          direction: i18n.language === 'ar' ? 'rtl' : 'ltr',
+        }}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 24 }}
+      >
+        <Text style={styles.title}>{t('portfolio.title')}</Text>
 
         <PortfolioStats
           totalInvestment={investmentStatsData?.data.total_amount || 0}
@@ -73,15 +78,18 @@ const PortfolioPage: React.FC = () => {
           }
           yield={Number((rentsData?.data.total_yield || 0).toFixed(2))}
           currency={
-            investmentStatsData?.data.currency || rentsData?.data.currency || ""
+            investmentStatsData?.data.currency || rentsData?.data.currency || ''
           }
         />
 
         <Text style={styles.sectionTitle}>
-          {t("portfolio.myUnits")} ({localizeNumber(investmentsData?.data.length || 0, i18n.language) || 0})
+          {t('portfolio.myUnits')} (
+          {localizeNumber(investmentsData?.data.length || 0, i18n.language) ||
+            0}
+          )
         </Text>
         <Text style={styles.sectionSubtitle}>
-          {t("portfolio.exploreDescription")}
+          {t('portfolio.exploreDescription')}
         </Text>
 
         {investmentsData?.data.map((investment) => (
@@ -90,7 +98,7 @@ const PortfolioPage: React.FC = () => {
             item={{
               id: investment.id.toString(),
               media: investment.media,
-              country: investment.country as "UAE" | "Egypt",
+              country: investment.country as 'UAE' | 'Egypt',
               opportunity_type: investment.opportunity_type,
               share_price: investment.share_price,
               currency: investment.currency,
@@ -106,7 +114,7 @@ const PortfolioPage: React.FC = () => {
               status: investment.status,
             }}
             isLiked={wishlistData?.data.some(
-              (item) => item.id === investment.id
+              (item) => item.id === investment.id,
             )}
             onLoveIconPress={() => handleLikeToggle(investment.id)}
             onPress={() => handlePropertyPress(investment.id)}
@@ -120,45 +128,45 @@ const PortfolioPage: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5F5F5",
-    alignItems: "center"
+    backgroundColor: '#F5F5F5',
+    alignItems: 'center',
   },
   gradient: {
     height: 305,
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
   },
   scrollContainer: {
     flex: 1,
-    marginHorizontal: "auto",
-    width: "100%",
+    marginHorizontal: 'auto',
+    width: '100%',
   },
   title: {
     fontSize: 26,
-    fontFamily: "Inter_700Bold",
-    fontWeight: "700",
-    color: "#000000",
+    fontFamily: 'Inter_700Bold',
+    fontWeight: '700',
+    color: '#000000',
     marginBottom: 20,
     paddingTop: 35,
-    textAlign: "left"
+    textAlign: 'left',
   },
   sectionTitle: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 8,
     marginLeft: 10,
-    textAlign: "left"
+    textAlign: 'left',
   },
   sectionSubtitle: {
-    fontFamily: "Inter",
+    fontFamily: 'Inter',
     fontSize: 16,
-    fontWeight: "400",
+    fontWeight: '400',
     lineHeight: 24,
     letterSpacing: -0.48,
-    textAlign: "left",
-    color: "#464851",
+    textAlign: 'left',
+    color: '#464851',
     marginBottom: 15,
     marginLeft: 10,
   },

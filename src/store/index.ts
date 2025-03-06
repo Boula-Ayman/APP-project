@@ -1,5 +1,5 @@
 // src/store/store.ts
-import { Store, configureStore } from "@reduxjs/toolkit";
+import { Store, configureStore } from '@reduxjs/toolkit';
 import {
   persistReducer,
   FLUSH,
@@ -9,14 +9,14 @@ import {
   PURGE,
   REGISTER,
   persistStore,
-} from "redux-persist";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { rootReducer } from "./rootReducer";
-import apiSlice from "../api/apiSlice";
-import { bookingsApi } from "../api/bookingsApiSlice";
+} from 'redux-persist';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { rootReducer } from './rootReducer';
+import apiSlice from '../api/apiSlice';
+import { bookingsApi } from '../api/bookingsApiSlice';
 
 const persistConfig = {
-  key: "root",
+  key: 'root',
   version: 1,
   storage: AsyncStorage,
   blacklist: [apiSlice.reducerPath, bookingsApi.reducerPath],

@@ -1,8 +1,8 @@
-import React from "react";
-import { View, Text } from "react-native";
-import NotificationIcon from "../../assets/icons/notification-bing.svg";
-import styles from "./NotificationStyle";
-import { useTranslation } from "react-i18next";
+import React from 'react';
+import { View, Text } from 'react-native';
+import NotificationIcon from '../../assets/icons/notification-bing.svg';
+import styles from './NotificationStyle';
+import { useTranslation } from 'react-i18next';
 
 const EmptyNotifications: React.FC = () => {
   const { t } = useTranslation();
@@ -10,17 +10,17 @@ const EmptyNotifications: React.FC = () => {
   return (
     <View style={styles.notificationList}>
       <View style={styles.notificationContainer}>
-        <Text style={styles.notificationDesc}>{t("notification.Desc")}</Text>
+        <Text style={styles.notificationDesc}>{t('notification.Desc')}</Text>
       </View>
       <View style={styles.notificationItem}>
         <NotificationIcon />
       </View>
       <View style={styles.notificationTextContainer}>
         <Text style={styles.notificationTextEmpty}>
-          {t("notification.empty")}
+          {t('notification.empty')}
         </Text>
         <Text style={styles.notificationTextStayTuned}>
-          {t("notification.stayTuned")}
+          {t('notification.stayTuned')}
         </Text>
       </View>
     </View>

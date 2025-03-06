@@ -67,16 +67,18 @@ export interface CreateBookingRequest {
   customer_id: number;
 }
 
-const transformBookingToPropertyCard = (booking: Booking): TransformedBookingData => {
+const transformBookingToPropertyCard = (
+  booking: Booking,
+): TransformedBookingData => {
   return {
     booking,
     propertyCardData: {
       id: booking.property.id.toString(),
       media: booking.property.media,
-      country: "Egypt",
-      opportunity_type: "booking",
+      country: 'Egypt',
+      opportunity_type: 'booking',
       share_price: 0,
-      currency: "USD",
+      currency: 'USD',
       available_shares: 0,
       number_of_shares: 0,
       title_ar: booking.property.title_ar,
@@ -84,8 +86,8 @@ const transformBookingToPropertyCard = (booking: Booking): TransformedBookingDat
       location_ar: booking.property.location_ar,
       location_en: booking.property.location_en,
       area: booking.property.area,
-      status: booking.status
-    }
+      status: booking.status,
+    },
   };
 };
 
@@ -99,8 +101,10 @@ export const bookingsApi = createApi({
         url: '/bookings/customer/me',
         method: 'GET',
       }),
-      transformResponse: (response: BookingsResponse): TransformedBookingsResponse => ({
-        data: response.data.map(transformBookingToPropertyCard)
+      transformResponse: (
+        response: BookingsResponse,
+      ): TransformedBookingsResponse => ({
+        data: response.data.map(transformBookingToPropertyCard),
       }),
       providesTags: ['Bookings'],
     }),
@@ -109,8 +113,10 @@ export const bookingsApi = createApi({
         url: `/bookings/${id}`,
         method: 'GET',
       }),
-      transformResponse: (response: { data: Booking }): { data: TransformedBookingData } => ({
-        data: transformBookingToPropertyCard(response.data)
+      transformResponse: (response: {
+        data: Booking;
+      }): { data: TransformedBookingData } => ({
+        data: transformBookingToPropertyCard(response.data),
       }),
       providesTags: ['Bookings'],
     }),
@@ -121,7 +127,10 @@ export const bookingsApi = createApi({
       }),
       invalidatesTags: ['Bookings'],
     }),
-    rescheduleBooking: builder.mutation<void, { id: string; from: string; to: string }>({
+    rescheduleBooking: builder.mutation<
+      void,
+      { id: string; from: string; to: string }
+    >({
       query: ({ id, from, to }) => ({
         url: `/bookings/${id}/reschedule`,
         method: 'PATCH',
@@ -129,18 +138,23 @@ export const bookingsApi = createApi({
       }),
       invalidatesTags: ['Bookings'],
     }),
-    createBooking: builder.mutation<{ data: TransformedBookingData }, CreateBookingRequest>({
+    createBooking: builder.mutation<
+      { data: TransformedBookingData },
+      CreateBookingRequest
+    >({
       query: (body) => ({
         url: '/bookings',
         method: 'POST',
         body,
       }),
-      transformResponse: (response: { data: Booking }): { data: TransformedBookingData } => ({
-        data: transformBookingToPropertyCard(response.data)
+      transformResponse: (response: {
+        data: Booking;
+      }): { data: TransformedBookingData } => ({
+        data: transformBookingToPropertyCard(response.data),
       }),
       invalidatesTags: ['Bookings'],
     }),
-    getPropertyBookings: builder.query<{ data: Booking[] }, {id: string}>({
+    getPropertyBookings: builder.query<{ data: Booking[] }, { id: string }>({
       query: ({ id }) => ({
         url: `/bookings/property/${id}`,
         method: 'GET',
@@ -155,5 +169,5 @@ export const {
   useCancelBookingMutation,
   useRescheduleBookingMutation,
   useCreateBookingMutation,
-  useLazyGetPropertyBookingsQuery
-} = bookingsApi; 
+  useLazyGetPropertyBookingsQuery,
+} = bookingsApi;

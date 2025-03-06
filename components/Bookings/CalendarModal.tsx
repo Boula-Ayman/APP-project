@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-} from "react-native";
-import { Calendar, DateData, LocaleConfig } from "react-native-calendars";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+} from 'react-native';
+import { Calendar, DateData, LocaleConfig } from 'react-native-calendars';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import {
   format,
   addDays,
@@ -15,39 +15,39 @@ import {
   subMonths,
   differenceInDays,
   subDays,
-} from "date-fns";
-import CustomModal from "../../commonComponent/Modal/CustomModal";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import Button from "@/commonComponent/button/Button";
-import { router } from "expo-router";
-import { useTranslation } from "react-i18next";
-import i18n from "@/i18n/i18n";
-import { ar, enUS } from "date-fns/locale";
-import { isPluralCount, localizeNumber } from "@/utils/numbers";
+} from 'date-fns';
+import CustomModal from '../../commonComponent/Modal/CustomModal';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Button from '@/commonComponent/button/Button';
+import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import i18n from '@/i18n/i18n';
+import { ar, enUS } from 'date-fns/locale';
+import { isPluralCount, localizeNumber } from '@/utils/numbers';
 import {
   ARABIC_DAYS,
   ARABIC_MONTHS,
   SHORT_ARABIC_DAYS,
-} from "@/constants/Enums";
+} from '@/constants/Enums';
 
 interface CalendarModalProps {
   isVisible: boolean;
   onClose: () => void;
   onConfirm: (
     startDate: string | null,
-    endDate: string | null
+    endDate: string | null,
   ) => Promise<boolean>;
   availableNights: number;
   disabledDates?: { from: string; to: string }[];
 }
 
-LocaleConfig.locales["ar"] = {
+LocaleConfig.locales['ar'] = {
   monthNames: Object.values(ARABIC_MONTHS),
   dayNames: Object.values(ARABIC_DAYS),
   dayNamesShort: Object.values(SHORT_ARABIC_DAYS),
 };
 
-LocaleConfig.defaultLocale = i18n.language === "ar" ? "ar" : "";
+LocaleConfig.defaultLocale = i18n.language === 'ar' ? 'ar' : '';
 
 const CalendarModal = ({
   isVisible,
@@ -95,34 +95,37 @@ const CalendarModal = ({
   useEffect(() => {
     if (disabledDates?.length) {
       setSelectedDates(() => {
-        const disabledRanges = disabledDates.reduce((acc, { from, to }) => {
-          let currentDate = new Date(from);
-          const endDate = new Date(to);
+        const disabledRanges = disabledDates.reduce(
+          (acc, { from, to }) => {
+            let currentDate = new Date(from);
+            const endDate = new Date(to);
 
-          while (currentDate <= endDate) {
-            const dateString = format(currentDate, "yyyy-MM-dd");
-            if (dateString === from) {
-              acc[dateString] = {
-                startingDay: true,
-                disabled: true,
-                disableTouchEvent: true,
-              };
-            } else if (dateString === to) {
-              acc[dateString] = {
-                endingDay: true,
-                disabled: true,
-                disableTouchEvent: true,
-              };
-            } else {
-              acc[dateString] = {
-                disabled: true,
-                disableTouchEvent: true,
-              };
+            while (currentDate <= endDate) {
+              const dateString = format(currentDate, 'yyyy-MM-dd');
+              if (dateString === from) {
+                acc[dateString] = {
+                  startingDay: true,
+                  disabled: true,
+                  disableTouchEvent: true,
+                };
+              } else if (dateString === to) {
+                acc[dateString] = {
+                  endingDay: true,
+                  disabled: true,
+                  disableTouchEvent: true,
+                };
+              } else {
+                acc[dateString] = {
+                  disabled: true,
+                  disableTouchEvent: true,
+                };
+              }
+              currentDate = addDays(currentDate, 1);
             }
-            currentDate = addDays(currentDate, 1);
-          }
-          return acc;
-        }, {} as { [key: string]: any });
+            return acc;
+          },
+          {} as { [key: string]: any },
+        );
 
         return {
           ...disabledRanges,
@@ -147,42 +150,45 @@ const CalendarModal = ({
       setStartDate(day.dateString);
       setEndDate(null);
       setSelectedDates(() => {
-        const disabledDatesObj = disabledDates?.reduce((acc, { from, to }) => {
-          let currentDate = new Date(from);
-          const endDate = new Date(to);
+        const disabledDatesObj = disabledDates?.reduce(
+          (acc, { from, to }) => {
+            let currentDate = new Date(from);
+            const endDate = new Date(to);
 
-          while (currentDate <= endDate) {
-            const dateString = format(currentDate, "yyyy-MM-dd");
-            if (dateString === from) {
-              acc[dateString] = {
-                startingDay: true,
-                disabled: true,
-                disableTouchEvent: true,
-              };
-            } else if (dateString === to) {
-              acc[dateString] = {
-                endingDay: true,
-                disabled: true,
-                disableTouchEvent: true,
-              };
-            } else {
-              acc[dateString] = {
-                disabled: true,
-                disableTouchEvent: true,
-              };
+            while (currentDate <= endDate) {
+              const dateString = format(currentDate, 'yyyy-MM-dd');
+              if (dateString === from) {
+                acc[dateString] = {
+                  startingDay: true,
+                  disabled: true,
+                  disableTouchEvent: true,
+                };
+              } else if (dateString === to) {
+                acc[dateString] = {
+                  endingDay: true,
+                  disabled: true,
+                  disableTouchEvent: true,
+                };
+              } else {
+                acc[dateString] = {
+                  disabled: true,
+                  disableTouchEvent: true,
+                };
+              }
+              currentDate = addDays(currentDate, 1);
             }
-            currentDate = addDays(currentDate, 1);
-          }
-          return acc;
-        }, {} as { [key: string]: any });
+            return acc;
+          },
+          {} as { [key: string]: any },
+        );
 
         return {
           ...disabledDatesObj,
           [day.dateString]: {
             startingDay: true,
             disabled: true,
-            color: "#8BC240",
-            textColor: "white",
+            color: '#8BC240',
+            textColor: 'white',
           },
         };
       });
@@ -211,8 +217,8 @@ const CalendarModal = ({
           ...prev,
           [day.dateString]: {
             startingDay: true,
-            color: "#8BC240",
-            textColor: "white",
+            color: '#8BC240',
+            textColor: 'white',
           },
           [startDate]: {},
         }));
@@ -225,28 +231,28 @@ const CalendarModal = ({
       let currentDate = new Date(startDate);
 
       while (currentDate <= end) {
-        const dateString = format(currentDate, "yyyy-MM-dd");
+        const dateString = format(currentDate, 'yyyy-MM-dd');
         if (dateString === startDate) {
           range[dateString] = {
             startingDay: true,
-            color: "#8BC240",
-            textColor: "white",
+            color: '#8BC240',
+            textColor: 'white',
           };
         } else if (
-          dateString === format(end, "yyyy-MM-dd") ||
+          dateString === format(end, 'yyyy-MM-dd') ||
           differenceInDays(currentDate, new Date(startDate)) === availableNights
         ) {
           range[dateString] = {
             endingDay: true,
-            color: "#8BC240",
-            textColor: "white",
+            color: '#8BC240',
+            textColor: 'white',
           };
           setEndDate(dateString);
           break;
         } else {
           range[dateString] = {
-            color: "#E8F3DC",
-            textColor: "#333333",
+            color: '#E8F3DC',
+            textColor: '#333333',
           };
         }
         currentDate = addDays(currentDate, 1);
@@ -271,14 +277,14 @@ const CalendarModal = ({
     }
   };
 
-  const renderArrow = (direction: "left" | "right") => {
+  const renderArrow = (direction: 'left' | 'right') => {
     return (
       <FontAwesome5
         name={`chevron-${direction}`}
         size={20}
         color="#6E7491"
         style={{
-          transform: [{ rotate: i18n.language === "ar" ? "180deg" : "0deg" }],
+          transform: [{ rotate: i18n.language === 'ar' ? '180deg' : '0deg' }],
         }}
       />
     );
@@ -308,19 +314,19 @@ const CalendarModal = ({
         </View>
       </View>
       <Text style={styles.successTitle}>
-        {t("bookings.calendar.success.title")}
+        {t('bookings.calendar.success.title')}
       </Text>
       <Text style={styles.successText}>
-        {t("bookings.calendar.success.description")}
+        {t('bookings.calendar.success.description')}
       </Text>
       <View style={styles.buttonContainer}>
         <Button
           onPress={() => {
             handleClose();
-            router.push("/bookings");
+            router.push('/bookings');
           }}
         >
-          {t("bookings.calendar.success.viewBookings")}
+          {t('bookings.calendar.success.viewBookings')}
         </Button>
       </View>
     </View>
@@ -334,10 +340,10 @@ const CalendarModal = ({
         </View>
       </View>
       <Text style={styles.successTitle}>
-        {t("bookings.calendar.error.title")}
+        {t('bookings.calendar.error.title')}
       </Text>
       <Text style={styles.successText}>
-        {t("bookings.calendar.error.description")}
+        {t('bookings.calendar.error.description')}
       </Text>
       <View style={styles.buttonContainer}>
         <Button
@@ -345,7 +351,7 @@ const CalendarModal = ({
             resetState();
           }}
         >
-          {t("bookings.calendar.error.tryAgain")}
+          {t('bookings.calendar.error.tryAgain')}
         </Button>
       </View>
     </View>
@@ -355,33 +361,48 @@ const CalendarModal = ({
     <ScrollView>
       <View style={styles.modalContent}>
         <Text style={styles.modalTitle}>
-          {t("bookings.calendar.bookNights")}
+          {t('bookings.calendar.bookNights')}
         </Text>
 
         <View style={styles.mainContainer}>
           <View style={styles.availableNightsContainer}>
             <Text style={styles.availableNightsText}>
-                <View
-                  style={{ display: 'flex', width: '100%', flexDirection: "row", justifyContent: "flex-start", alignItems: "center", gap: 4 }}
-                >
-                    {availableNights - readableBookedNights === 2 ? 
+              <View
+                style={{
+                  display: 'flex',
+                  width: '100%',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  alignItems: 'center',
+                  gap: 4,
+                }}
+              >
+                {availableNights - readableBookedNights === 2 ? (
+                  <Text style={styles.highlightedText}>
+                    {t('bookings.calendar.twoAvailableNights')}
+                  </Text>
+                ) : (
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      gap: 4,
+                    }}
+                  >
                     <Text style={styles.highlightedText}>
-                        {t("bookings.calendar.twoAvailableNights")}
+                      {localizeNumber(
+                        availableNights - readableBookedNights,
+                        i18n.language,
+                      )}
                     </Text>
-                    :
-                    <View style={{ display: 'flex', flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 4 }}>
-                        <Text style={styles.highlightedText}>
-                            {localizeNumber(
-                            availableNights - readableBookedNights,
-                            i18n.language
-                            )}
-                        </Text>
-                        <Text style={{ fontSize: 20 }}>
-                            {t("bookings.calendar.availableNights")}
-                        </Text>
+                    <Text style={{ fontSize: 20 }}>
+                      {t('bookings.calendar.availableNights')}
+                    </Text>
                   </View>
-                    }
-                </View>
+                )}
+              </View>
             </Text>
             <View style={styles.dateRangeContainer}>
               <View>
@@ -389,16 +410,16 @@ const CalendarModal = ({
               </View>
               <Text style={styles.dateRangeText}>
                 {startDate
-                  ? format(new Date(startDate), "dd MMM yyyy", {
-                      locale: i18n.language === "ar" ? ar : enUS,
+                  ? format(new Date(startDate), 'dd MMM yyyy', {
+                      locale: i18n.language === 'ar' ? ar : enUS,
                     })
-                  : "--"}
+                  : '--'}
                 -
                 {endDate
-                  ? format(new Date(endDate), "dd MMM yyyy", {
-                      locale: i18n.language === "ar" ? ar : enUS,
+                  ? format(new Date(endDate), 'dd MMM yyyy', {
+                      locale: i18n.language === 'ar' ? ar : enUS,
                     })
-                  : "--"}
+                  : '--'}
               </Text>
             </View>
           </View>
@@ -410,35 +431,35 @@ const CalendarModal = ({
               style={styles.arrowButton}
               onPress={handlePrevMonth}
             >
-              {renderArrow("left")}
+              {renderArrow('left')}
             </TouchableOpacity>
 
             <View style={styles.calendarContainer}>
               <Calendar
                 ref={calendarRef}
-                key={format(currentMonth, "yyyy-MM", {
-                  locale: i18n.language === "ar" ? ar : enUS,
+                key={format(currentMonth, 'yyyy-MM', {
+                  locale: i18n.language === 'ar' ? ar : enUS,
                 })}
-                current={format(currentMonth, "yyyy-MM-dd", {
-                  locale: i18n.language === "ar" ? ar : enUS,
+                current={format(currentMonth, 'yyyy-MM-dd', {
+                  locale: i18n.language === 'ar' ? ar : enUS,
                 })}
-                minDate={format(new Date(), "yyyy-MM-dd")}
-                markingType={"period"}
+                minDate={format(new Date(), 'yyyy-MM-dd')}
+                markingType={'period'}
                 markedDates={selectedDates}
                 onDayPress={onDayPress}
                 theme={{
-                  calendarBackground: "white",
-                  textSectionTitleColor: "#333",
-                  selectedDayBackgroundColor: "#8BC240",
-                  selectedDayTextColor: "#ffffff",
-                  todayTextColor: "#8BC240",
-                  dayTextColor: "#333",
-                  textDisabledColor: "#d9e1e8",
-                  dotColor: "#8BC240",
-                  monthTextColor: "#333",
-                  textDayFontFamily: "Inter_400Regular",
-                  textMonthFontFamily: "Inter_600SemiBold",
-                  textDayHeaderFontFamily: "Inter_500Medium",
+                  calendarBackground: 'white',
+                  textSectionTitleColor: '#333',
+                  selectedDayBackgroundColor: '#8BC240',
+                  selectedDayTextColor: '#ffffff',
+                  todayTextColor: '#8BC240',
+                  dayTextColor: '#333',
+                  textDisabledColor: '#d9e1e8',
+                  dotColor: '#8BC240',
+                  monthTextColor: '#333',
+                  textDayFontFamily: 'Inter_400Regular',
+                  textMonthFontFamily: 'Inter_600SemiBold',
+                  textDayHeaderFontFamily: 'Inter_500Medium',
                   textDayFontSize: 14,
                   textMonthFontSize: 16,
                   textDayHeaderFontSize: 14,
@@ -453,7 +474,7 @@ const CalendarModal = ({
               style={styles.arrowButton}
               onPress={handleNextMonth}
             >
-              {renderArrow("right")}
+              {renderArrow('right')}
             </TouchableOpacity>
           </View>
         </View>
@@ -461,30 +482,37 @@ const CalendarModal = ({
         <View style={styles.nightsContainer}>
           <Text style={styles.nightsText}>
             {readableBookedNights === 2 ? (
-              <Text style={styles.greenText}>{t("bookings.twoNights")}</Text>
+              <Text style={styles.greenText}>{t('bookings.twoNights')}</Text>
             ) : (
               <View
-                style={{ display: 'flex', width: '100%', flexDirection: "row", alignItems: "center", gap: 4, justifyContent: "flex-start" }}
+                style={{
+                  display: 'flex',
+                  width: '100%',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 4,
+                  justifyContent: 'flex-start',
+                }}
               >
                 <Text style={styles.greenText}>
                   {localizeNumber(readableBookedNights, i18n.language)}
                 </Text>
                 <Text style={{ fontSize: 20 }}>
                   {isPluralCount(readableBookedNights, i18n.language)
-                    ? t("bookings.nights")
-                    : t("bookings.night")}
+                    ? t('bookings.nights')
+                    : t('bookings.night')}
                 </Text>
               </View>
             )}
           </Text>
           <Text style={styles.termsText}>
-            {t("bookings.calendar.termsAgreement")}
+            {t('bookings.calendar.termsAgreement')}
           </Text>
         </View>
 
         <TouchableOpacity style={styles.bookNowButton} onPress={handleConfirm}>
           <Text style={styles.bookNowButtonText}>
-            {t("bookings.calendar.bookNow")}
+            {t('bookings.calendar.bookNow')}
           </Text>
         </TouchableOpacity>
       </View>
@@ -496,73 +524,73 @@ const CalendarModal = ({
       {isSuccess
         ? renderSuccessView()
         : isError
-        ? renderErrorView()
-        : renderCalendarView()}
+          ? renderErrorView()
+          : renderCalendarView()}
     </CustomModal>
   );
 };
 
 const styles = StyleSheet.create({
   modalContent: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 20,
     padding: 20,
-    width: "100%",
+    width: '100%',
   },
   separator: {
     height: 1,
-    backgroundColor: "#E8E8E8",
+    backgroundColor: '#E8E8E8',
   },
   mainContainer: {
     borderWidth: 1,
-    borderColor: "#E8E8E8",
+    borderColor: '#E8E8E8',
     borderRadius: 12,
     padding: 15,
     marginBottom: 20,
   },
   calendarWrapper: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   calendarContainer: {
     flex: 1,
     paddingHorizontal: 15,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   modalTitle: {
     fontSize: 18,
-    fontFamily: "Inter_600SemiBold",
-    color: "#333",
+    fontFamily: 'Inter_600SemiBold',
+    color: '#333',
     marginBottom: 20,
-    textAlign: "center",
+    textAlign: 'center',
   },
   availableNightsContainer: {
     marginBottom: 0,
   },
   availableNightsText: {
     fontSize: 16,
-    fontFamily: "Inter_400Regular",
-    color: "#333",
+    fontFamily: 'Inter_400Regular',
+    color: '#333',
     marginBottom: 10,
   },
   highlightedText: {
-    color: "#8BC240",
-    fontFamily: "Inter_600SemiBold",
+    color: '#8BC240',
+    fontFamily: 'Inter_600SemiBold',
     fontSize: 20,
-    fontWeight: "700",
-    textAlign: "left",
+    fontWeight: '700',
+    textAlign: 'left',
   },
   dateRangeContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "transparent",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: "#8BC240",
+    borderColor: '#8BC240',
     padding: 15,
     gap: 10,
     borderRadius: 12,
@@ -570,33 +598,33 @@ const styles = StyleSheet.create({
   },
   dateRangeText: {
     fontSize: 16,
-    fontFamily: "Inter_500Medium",
-    color: "#333",
+    fontFamily: 'Inter_500Medium',
+    color: '#333',
   },
   bookNowButton: {
-    backgroundColor: "#8BC240",
+    backgroundColor: '#8BC240',
     padding: 16,
     borderRadius: 12,
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: 20,
   },
   bookNowButtonText: {
-    color: "white",
+    color: 'white',
     fontSize: 16,
-    fontFamily: "Inter_600SemiBold",
+    fontFamily: 'Inter_600SemiBold',
   },
   arrowButton: {
     padding: 10,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   successModalContent: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 20,
     paddingHorizontal: 30,
     paddingVertical: 60,
-    alignItems: "center",
-    width: "100%",
+    alignItems: 'center',
+    width: '100%',
   },
   successIconContainer: {
     marginBottom: 20,
@@ -605,55 +633,55 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 50,
-    backgroundColor: "#8BC24033",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#8BC24033',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   successTitle: {
     fontSize: 20,
-    fontFamily: "Inter_600SemiBold",
-    color: "#333",
+    fontFamily: 'Inter_600SemiBold',
+    color: '#333',
     marginBottom: 10,
   },
   successText: {
     fontSize: 14,
-    fontFamily: "Inter_400Regular",
-    color: "#666",
-    textAlign: "center",
-    width: "90%",
+    fontFamily: 'Inter_400Regular',
+    color: '#666',
+    textAlign: 'center',
+    width: '90%',
   },
   nightsContainer: {
     gap: 8,
-    width: "90%",
+    width: '90%',
   },
   nightsText: {
     fontSize: 16,
-    fontFamily: "Inter_600SemiBold",
-    color: "#333333",
+    fontFamily: 'Inter_600SemiBold',
+    color: '#333333',
   },
   termsText: {
     fontSize: 13,
-    fontFamily: "Inter_400Regular",
-    color: "#666666",
-    textAlign: "left",
+    fontFamily: 'Inter_400Regular',
+    color: '#666666',
+    textAlign: 'left',
   },
   termsLink: {
-    color: "#8BC240",
-    textDecorationLine: "underline",
+    color: '#8BC240',
+    textDecorationLine: 'underline',
   },
   buttonContainer: {
-    width: "100%",
+    width: '100%',
     marginTop: 24,
   },
   errorIconBackground: {
-    backgroundColor: "#FF000033",
+    backgroundColor: '#FF000033',
   },
   greenText: {
-    color: "#8BC240",
-    fontFamily: "Inter_600SemiBold",
+    color: '#8BC240',
+    fontFamily: 'Inter_600SemiBold',
     fontSize: 20,
-    fontWeight: "700",
-    textAlign: "left",
+    fontWeight: '700',
+    textAlign: 'left',
   },
 });
 
