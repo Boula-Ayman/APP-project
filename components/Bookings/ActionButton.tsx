@@ -9,25 +9,21 @@ export interface ActionButtonProps {
   disabled?: boolean;
 }
 
-export const ActionButton: React.FC<ActionButtonProps> = ({ 
-  icon, 
-  label, 
-  onPress, 
-  stretched = false, 
-  disabled = false 
+export const ActionButton: React.FC<ActionButtonProps> = ({
+  icon,
+  label,
+  onPress,
+  stretched = false,
+  disabled = false,
 }) => (
-  <TouchableOpacity 
-    style={[
-      styles.actionItem,
-      stretched && styles.stretchedActionItem
-    ]}
+  <TouchableOpacity
+    style={[styles.actionItem, stretched && styles.stretchedActionItem]}
     onPress={onPress}
     disabled={disabled}
   >
-    <View style={[
-      styles.actionButton,
-      stretched && styles.stretchedActionButton
-    ]}>
+    <View
+      style={[styles.actionButton, stretched && styles.stretchedActionButton]}
+    >
       {icon}
     </View>
     <Text style={styles.actionText}>{label}</Text>
@@ -69,4 +65,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ActionButton; 
+export default ActionButton;

@@ -1,40 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { View, Keyboard } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "./Home";
-import PortfolioPage from "./PortfolioSreen/index";
-import Favorite from "./Favourite";
-import HomeIcon from "../assets/icons/home-wifi.svg";
-import FavouriteIcon from "../assets/icons/fav.svg";
-import Building from "../assets/icons/building.svg";
-import ProfileIcon from "../assets/icons/profile.svg";
-import Profile from "./profile";
-import styles from "./indexStyle";
-import "../i18n/i18n";
-import { useSelector } from "react-redux";
-import { RootState } from "@/src/store/rootReducer";
-import { router, useRootNavigationState } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import {
-  useFonts,
-} from "@expo-google-fonts/inter";
-import i18n from "../i18n/i18n";
+import React, { useEffect, useState } from 'react';
+import { View, Keyboard } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import HomeScreen from './Home';
+import PortfolioPage from './PortfolioSreen/index';
+import Favorite from './Favourite';
+import HomeIcon from '../assets/icons/home-wifi.svg';
+import FavouriteIcon from '../assets/icons/fav.svg';
+import Building from '../assets/icons/building.svg';
+import ProfileIcon from '../assets/icons/profile.svg';
+import Profile from './profile';
+import styles from './indexStyle';
+import '../i18n/i18n';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/src/store/rootReducer';
+import { router, useRootNavigationState } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { useFonts } from '@expo-google-fonts/inter';
+import i18n from '../i18n/i18n';
 
 const Tab = createBottomTabNavigator();
 
 const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
-    InterRegular: require("@/assets/fonts/Inter/Inter_24pt-Regular.ttf"),
-    InterSemiBold: require("@/assets/fonts/Inter/Inter_24pt-SemiBold.ttf"),
-    InterBold: require("@/assets/fonts/Inter/Inter_24pt-Bold.ttf"),
-    InterMedium: require("@/assets/fonts/Inter/Inter_24pt-Medium.ttf"),
-    PoppinsRegular: require("@/assets/fonts/Poppins/Poppins-Regular.ttf"),
-    PoppinsMedium: require("@/assets/fonts/Poppins/Poppins-Medium.ttf"),
-    PoppinsSemiBold: require("@/assets/fonts/Poppins/Poppins-SemiBold.ttf"),
-    PoppinsBold: require("@/assets/fonts/Poppins/Poppins-Bold.ttf"),
-    PlusJakartaSansSemiBold: require("@/assets/fonts/PlusJakartaSans/PlusJakartaSans-SemiBold.ttf"),
-    PlusJakartaSansMedium: require("@/assets/fonts/PlusJakartaSans/PlusJakartaSans-Medium.ttf"),
-    NunitoSansRegular: require("@/assets/fonts/NunitoSans/NunitoSans_7pt-Regular.ttf"),
+    InterRegular: require('@/assets/fonts/Inter/Inter_24pt-Regular.ttf'),
+    InterSemiBold: require('@/assets/fonts/Inter/Inter_24pt-SemiBold.ttf'),
+    InterBold: require('@/assets/fonts/Inter/Inter_24pt-Bold.ttf'),
+    InterMedium: require('@/assets/fonts/Inter/Inter_24pt-Medium.ttf'),
+    PoppinsRegular: require('@/assets/fonts/Poppins/Poppins-Regular.ttf'),
+    PoppinsMedium: require('@/assets/fonts/Poppins/Poppins-Medium.ttf'),
+    PoppinsSemiBold: require('@/assets/fonts/Poppins/Poppins-SemiBold.ttf'),
+    PoppinsBold: require('@/assets/fonts/Poppins/Poppins-Bold.ttf'),
+    PlusJakartaSansSemiBold: require('@/assets/fonts/PlusJakartaSans/PlusJakartaSans-SemiBold.ttf'),
+    PlusJakartaSansMedium: require('@/assets/fonts/PlusJakartaSans/PlusJakartaSans-Medium.ttf'),
+    NunitoSansRegular: require('@/assets/fonts/NunitoSans/NunitoSans_7pt-Regular.ttf'),
   });
 
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
@@ -54,10 +52,10 @@ const App: React.FC = () => {
   }, [fontsLoaded]);
 
   useEffect(() => {
-    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       setKeyboardVisible(true);
     });
-    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
       setKeyboardVisible(false);
     });
 
@@ -69,13 +67,13 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (!user.accessToken && rootNavigationState?.key) {
-      router.push("/Welcome");
+      router.push('/Welcome');
     }
   }, [user.accessToken, rootNavigationState?.key]);
 
   useEffect(() => {
     if (!user.accessToken && rootNavigationState?.key) {
-      router.push("/Welcome");
+      router.push('/Welcome');
     }
   }, [user.accessToken, rootNavigationState?.key]);
 
@@ -84,15 +82,15 @@ const App: React.FC = () => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          width: "93%",
+          width: '93%',
           height: 74,
-          backgroundColor: "#061C27",
+          backgroundColor: '#061C27',
           borderRadius: 40,
           elevation: 0,
-          marginBottom: "3%",
-          alignSelf: "center",
-          display: isKeyboardVisible ? "none" : "flex",
-          direction: i18n.language === "ar" ? "rtl" : "ltr",
+          marginBottom: '3%',
+          alignSelf: 'center',
+          display: isKeyboardVisible ? 'none' : 'flex',
+          direction: i18n.language === 'ar' ? 'rtl' : 'ltr',
         },
         tabBarItemStyle: {
           paddingVertical: 10,
@@ -104,7 +102,7 @@ const App: React.FC = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarLabel: "",
+          tabBarLabel: '',
           tabBarIcon: ({ focused }) => (
             <View
               style={[
@@ -121,7 +119,7 @@ const App: React.FC = () => {
         name="Favorite"
         component={Favorite}
         options={{
-          tabBarLabel: "",
+          tabBarLabel: '',
           tabBarIcon: ({ focused }) => (
             <View
               style={[
@@ -138,7 +136,7 @@ const App: React.FC = () => {
         name="PortfolioPage"
         component={PortfolioPage}
         options={{
-          tabBarLabel: "",
+          tabBarLabel: '',
           tabBarIcon: ({ focused }) => (
             <View
               style={[
@@ -155,7 +153,7 @@ const App: React.FC = () => {
         name="Profile"
         component={Profile}
         options={{
-          tabBarLabel: "",
+          tabBarLabel: '',
           tabBarIcon: ({ focused }) => (
             <View
               style={[

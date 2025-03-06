@@ -11,10 +11,15 @@ export interface TagProps {
   containerStyle?: object;
 }
 
-const Tag: React.FC<TagProps> = ({ text, type = 'property_type', status, containerStyle }) => {
+const Tag: React.FC<TagProps> = ({
+  text,
+  type = 'property_type',
+  status,
+  containerStyle,
+}) => {
   const getStatusColor = () => {
     if (type === 'property_type' || !status) return '#FFFFFF';
-    
+
     switch (status) {
       case 'confirmed':
         return '#8BC240';
@@ -32,27 +37,47 @@ const Tag: React.FC<TagProps> = ({ text, type = 'property_type', status, contain
 
     switch (status) {
       case 'confirmed':
-        return <FontAwesome name="check-circle" size={16} color="#fff" style={styles.statusIcon} />;
+        return (
+          <FontAwesome
+            name="check-circle"
+            size={16}
+            color="#fff"
+            style={styles.statusIcon}
+          />
+        );
       case 'pending':
-        return <MaterialCommunityIcons name="clock-time-eight" size={16} color="#fff" style={styles.statusIcon}/>;
+        return (
+          <MaterialCommunityIcons
+            name="clock-time-eight"
+            size={16}
+            color="#fff"
+            style={styles.statusIcon}
+          />
+        );
       case 'cancelled':
-        return <MaterialIcons name="cancel" size={16} color="#fff" style={styles.statusIcon} />;
+        return (
+          <MaterialIcons
+            name="cancel"
+            size={16}
+            color="#fff"
+            style={styles.statusIcon}
+          />
+        );
       default:
         return null;
     }
   };
 
   return (
-    <View style={[
-      styles.container,
-      type === 'status' && { backgroundColor: getStatusColor() },
-      containerStyle
-    ]}>
+    <View
+      style={[
+        styles.container,
+        type === 'status' && { backgroundColor: getStatusColor() },
+        containerStyle,
+      ]}
+    >
       {getStatusIcon()}
-      <Text style={[
-        styles.text,
-        type === 'status' && { color: '#FFFFFF' }
-      ]}>
+      <Text style={[styles.text, type === 'status' && { color: '#FFFFFF' }]}>
         {text}
       </Text>
     </View>
@@ -61,7 +86,7 @@ const Tag: React.FC<TagProps> = ({ text, type = 'property_type', status, contain
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
     borderRadius: 20,
     paddingHorizontal: 12,
     paddingVertical: 6,
@@ -72,12 +97,12 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 12,
-    fontFamily: "Inter_600SemiBold",
-    color: "#000",
+    fontFamily: 'Inter_600SemiBold',
+    color: '#000',
   },
   statusIcon: {
     marginRight: 4,
   },
 });
 
-export default Tag; 
+export default Tag;

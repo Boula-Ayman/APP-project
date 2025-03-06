@@ -1,4 +1,4 @@
-import SignUpPage from "../../../components/auth/Signup/index";
+import SignUpPage from '../../../components/auth/Signup/index';
 
 const Signup = () => {
   return <SignUpPage />;

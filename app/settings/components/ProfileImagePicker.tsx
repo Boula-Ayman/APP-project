@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   TouchableOpacity,
   View,
@@ -6,11 +6,11 @@ import {
   Image,
   StyleSheet,
   ActivityIndicator,
-} from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import i18n from "../../../i18n/i18n";
-import Toast from "react-native-toast-message";
-import { useImageUpload } from "../hooks/useImageUpload";
+} from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import i18n from '../../../i18n/i18n';
+import Toast from 'react-native-toast-message';
+import { useImageUpload } from '../hooks/useImageUpload';
 
 interface ProfileImagePickerProps {
   value: string | null;
@@ -39,11 +39,11 @@ export const ProfileImagePicker: React.FC<ProfileImagePickerProps> = ({
         onChange(imageUrl);
       }
     } catch (error) {
-      console.error("Error picking/uploading image:", error);
+      console.error('Error picking/uploading image:', error);
       Toast.show({
-        type: "error",
-        text1: i18n.t("common.error"),
-        text2: i18n.t("settings.photoSelectError"),
+        type: 'error',
+        text1: i18n.t('common.error'),
+        text2: i18n.t('settings.photoSelectError'),
       });
     } finally {
       setIsUploading(false);
@@ -57,21 +57,21 @@ export const ProfileImagePicker: React.FC<ProfileImagePickerProps> = ({
       disabled={isUploading}
     >
       <View>
-        <View style={[styles.placeholder, value && { display: "none" }]}>
+        <View style={[styles.placeholder, value && { display: 'none' }]}>
           <Text style={styles.placeholderText}>
-            {i18n.t("settings.selectPhoto")}
+            {i18n.t('settings.selectPhoto')}
           </Text>
         </View>
         <Image
           source={value ? { uri: value } : undefined}
-          style={[styles.photo, !value && { display: "none" }]}
+          style={[styles.photo, !value && { display: 'none' }]}
         />
         <View style={styles.overlay}>
           {isUploading ? (
             <ActivityIndicator color="#FFFFFF" size="large" />
           ) : (
             <Text style={styles.placeholderText}>
-              {i18n.t("settings.selectPhoto")}
+              {i18n.t('settings.selectPhoto')}
             </Text>
           )}
         </View>
@@ -86,25 +86,25 @@ export const ProfileImagePicker: React.FC<ProfileImagePickerProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    alignSelf: "center",
+    alignSelf: 'center',
     marginBottom: 32,
-    position: "relative",
+    position: 'relative',
     borderRadius: 100,
-    borderColor: "#00000033",
+    borderColor: '#00000033',
     borderWidth: 5,
   },
   placeholder: {
     width: 100,
     height: 100,
     borderRadius: 100,
-    backgroundColor: "#F5F5F5",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#F5F5F5',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   placeholderText: {
     fontSize: 14,
-    color: "#FFFFFF",
-    textAlign: "center",
+    color: '#FFFFFF',
+    textAlign: 'center',
   },
   photo: {
     width: 100,
@@ -112,32 +112,32 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   overlay: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     borderRadius: 50,
     borderWidth: 2,
-    borderColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
+    borderColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   addButton: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     right: 0,
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: "#8BC240",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#8BC240',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   addButtonText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 } as const);

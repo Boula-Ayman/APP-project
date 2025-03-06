@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   accessToken: null,
@@ -13,7 +13,7 @@ const initialState = {
 };
 
 const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {
     setUser: (state, action) => {
@@ -21,8 +21,8 @@ const userSlice = createSlice({
       state.user = action.payload.user;
     },
     clearUser: (state) => {
-        state.accessToken = null;
-        state.user = initialState.user;
+      state.accessToken = null;
+      state.user = initialState.user;
     },
     setAccessToken: (state, action) => {
       state.accessToken = action.payload;

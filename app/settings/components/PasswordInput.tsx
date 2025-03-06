@@ -14,16 +14,16 @@ interface PasswordInputProps {
   isFocused: boolean;
 }
 
-const PasswordInput: React.FC<PasswordInputProps> = ({ 
-  label, 
-  value, 
-  onChangeText, 
-  onBlur, 
-  error, 
+const PasswordInput: React.FC<PasswordInputProps> = ({
+  label,
+  value,
+  onChangeText,
+  onBlur,
+  error,
   touched,
   placeholder,
   onFocus,
-  isFocused
+  isFocused,
 }) => (
   <View style={styles.inputContainer}>
     <Text style={styles.label}>{label}</Text>
@@ -31,9 +31,12 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
       style={[
         styles.input,
         {
-          borderColor: touched && error ? styles.error.color 
-            : isFocused || value ? styles.success.color 
-            : styles.border.color
+          borderColor:
+            touched && error
+              ? styles.error.color
+              : isFocused || value
+                ? styles.success.color
+                : styles.border.color,
         },
       ]}
       value={value}
@@ -44,9 +47,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
       placeholder={placeholder}
       placeholderTextColor={styles.placeholderText.color}
     />
-    {touched && error && (
-      <Text style={styles.errorText}>{error}</Text>
-    )}
+    {touched && error && <Text style={styles.errorText}>{error}</Text>}
   </View>
 );
 
@@ -95,4 +96,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PasswordInput; 
+export default PasswordInput;

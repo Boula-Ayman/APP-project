@@ -1,5 +1,5 @@
-import React from "react";
-import { Text } from "react-native";
+import React from 'react';
+import { Text } from 'react-native';
 
 type AppTextProps = {
   text: string;
@@ -23,9 +23,9 @@ const AppText = ({
       style={[
         {
           fontSize: fontSize || 14,
-          color: color || "white",
-          fontFamily: fontFamily || "InterRegular",
-          fontWeight: fontWeight || "400",
+          color: color || 'white',
+          fontFamily: fontFamily || 'InterRegular',
+          fontWeight: fontWeight || '400',
         },
         style,
       ]}

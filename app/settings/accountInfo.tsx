@@ -10,45 +10,45 @@ import {
   Platform,
   Modal,
   Button as RNButton,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import CustomHeader from "../../commonComponent/Header/CustomHeader";
-import DropDownPicker from "react-native-dropdown-picker";
-import i18n from "../../i18n/i18n";
-import Button from "@/commonComponent/button/Button";
-import { Formik } from "formik";
-import { ProfileImagePicker } from "./components/ProfileImagePicker";
-import { useAccountForm } from "./hooks/useAccountForm";
-import * as Yup from "yup";
-import DateTimePicker from "@react-native-community/datetimepicker";
+} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import CustomHeader from '../../commonComponent/Header/CustomHeader';
+import DropDownPicker from 'react-native-dropdown-picker';
+import i18n from '../../i18n/i18n';
+import Button from '@/commonComponent/button/Button';
+import { Formik } from 'formik';
+import { ProfileImagePicker } from './components/ProfileImagePicker';
+import { useAccountForm } from './hooks/useAccountForm';
+import * as Yup from 'yup';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import {
   convertDateToStandardFormat,
   formatDateForDisplay,
-} from "@/utils/dateUtils";
+} from '@/utils/dateUtils';
 
 const accountInfoValidationSchema = Yup.object().shape({
-  firstName: Yup.string().required(i18n.t("signUp.firstNameRequired")).trim(),
-  lastName: Yup.string().required(i18n.t("signUp.lastNameRequired")).trim(),
-  gender: Yup.string().oneOf(["male", "female"]).required(),
+  firstName: Yup.string().required(i18n.t('signUp.firstNameRequired')).trim(),
+  lastName: Yup.string().required(i18n.t('signUp.lastNameRequired')).trim(),
+  gender: Yup.string().oneOf(['male', 'female']).required(),
   dateOfBirth: Yup.string()
     .nullable()
     .test(
-      "is-valid-past-date",
-      i18n.t("user.validation.dob.future"),
+      'is-valid-past-date',
+      i18n.t('user.validation.dob.future'),
       (value) => {
         return (
           !!value && new Date(convertDateToStandardFormat(value)) <= new Date()
         );
-      }
+      },
     )
-    .test("is-valid-age-18", i18n.t("user.validation.dob.age"), (value) => {
+    .test('is-valid-age-18', i18n.t('user.validation.dob.age'), (value) => {
       const birthDate = new Date(convertDateToStandardFormat(value!));
       const currentDate = new Date();
       const age = currentDate.getFullYear() - birthDate.getFullYear();
       return age >= 18;
     }),
   mobileNumber: Yup.string()
-    .matches(/^\d*$/, i18n.t("settings.invalidPhoneNumber"))
+    .matches(/^\d*$/, i18n.t('settings.invalidPhoneNumber'))
     .nullable(),
   countryCode: Yup.string(),
   photo: Yup.string().nullable(),
@@ -64,8 +64,8 @@ const AccountInfoScreen = () => {
   } = useAccountForm();
   const [genderOpen, setGenderOpen] = useState(false);
   const genderItems = [
-    { label: i18n.t("settings.male"), value: "male" },
-    { label: i18n.t("settings.female"), value: "female" },
+    { label: i18n.t('settings.male'), value: 'male' },
+    { label: i18n.t('settings.female'), value: 'female' },
   ];
 
   useEffect(() => {
@@ -89,32 +89,32 @@ const AccountInfoScreen = () => {
   }) => (
     <View style={styles.row}>
       <View style={styles.halfInput}>
-        <Text style={styles.label}>{i18n.t("settings.firstName")}</Text>
+        <Text style={styles.label}>{i18n.t('settings.firstName')}</Text>
         <TextInput
           style={[
             styles.input,
             touched.firstName && errors.firstName && styles.inputError,
           ]}
           value={values.firstName}
-          onChangeText={handleChange("firstName")}
-          onBlur={() => handleBlur("firstName")}
-          placeholder={i18n.t("settings.enterFirstName")}
+          onChangeText={handleChange('firstName')}
+          onBlur={() => handleBlur('firstName')}
+          placeholder={i18n.t('settings.enterFirstName')}
         />
         {touched.firstName && errors.firstName && (
           <Text style={styles.errorText}>{errors.firstName}</Text>
         )}
       </View>
       <View style={styles.halfInput}>
-        <Text style={styles.label}>{i18n.t("settings.lastName")}</Text>
+        <Text style={styles.label}>{i18n.t('settings.lastName')}</Text>
         <TextInput
           style={[
             styles.input,
             touched.lastName && errors.lastName && styles.inputError,
           ]}
           value={values.lastName}
-          onChangeText={handleChange("lastName")}
-          onBlur={() => handleBlur("lastName")}
-          placeholder={i18n.t("settings.enterLastName")}
+          onChangeText={handleChange('lastName')}
+          onBlur={() => handleBlur('lastName')}
+          placeholder={i18n.t('settings.enterLastName')}
         />
         {touched.lastName && errors.lastName && (
           <Text style={styles.errorText}>{errors.lastName}</Text>
@@ -125,7 +125,7 @@ const AccountInfoScreen = () => {
 
   const renderGenderField = ({ values, setFieldValue }) => (
     <>
-      <Text style={styles.label}>{i18n.t("settings.gender")}</Text>
+      <Text style={styles.label}>{i18n.t('settings.gender')}</Text>
       <DropDownPicker
         open={genderOpen}
         value={values.gender}
@@ -133,7 +133,7 @@ const AccountInfoScreen = () => {
         setOpen={setGenderOpen}
         setValue={(callback) => {
           const value = callback(values.gender);
-          setFieldValue("gender", value);
+          setFieldValue('gender', value);
         }}
         style={styles.dropdownStyle}
         dropDownContainerStyle={styles.dropdownContainer}
@@ -153,14 +153,14 @@ const AccountInfoScreen = () => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showDatePickerModal, setShowDatePickerModal] = useState(false);
     const [selectedDate, setSelectedDate] = useState<any>(
-      new Date(convertDateToStandardFormat(values.dateOfBirth))
+      new Date(convertDateToStandardFormat(values.dateOfBirth)),
     );
 
     const handleDateChange = (event, selectedDate, setFieldValue) => {
       setShowDatePicker(false);
 
       if (selectedDate) {
-        setFieldValue("dateOfBirth", formatDateForDisplay(selectedDate));
+        setFieldValue('dateOfBirth', formatDateForDisplay(selectedDate));
       }
     };
     const handleDateChangeIos = (event: any, date?: Date) => {
@@ -170,15 +170,15 @@ const AccountInfoScreen = () => {
     };
 
     const handleDateConfirmIos = (setFieldValue: any) => {
-      setFieldValue("dateOfBirth", formatDateForDisplay(selectedDate));
+      setFieldValue('dateOfBirth', formatDateForDisplay(selectedDate));
       setShowDatePickerModal(false);
     };
     return (
       <View>
-        <Text style={styles.label}>{i18n.t("settings.dateOfBirth")}</Text>
+        <Text style={styles.label}>{i18n.t('settings.dateOfBirth')}</Text>
         <TouchableOpacity
           onPress={() =>
-            Platform.OS === "android"
+            Platform.OS === 'android'
               ? setShowDatePicker(true)
               : setShowDatePickerModal(true)
           }
@@ -187,11 +187,11 @@ const AccountInfoScreen = () => {
             style={[
               styles.input,
               touched.dateOfBirth && errors.dateOfBirth && styles.inputError,
-              { direction: i18n.language === "ar" ? "rtl" : "ltr" },
-              { textAlign: i18n.language === "ar" ? "right" : "left" },
+              { direction: i18n.language === 'ar' ? 'rtl' : 'ltr' },
+              { textAlign: i18n.language === 'ar' ? 'right' : 'left' },
             ]}
             onPress={() =>
-              Platform.OS === "android"
+              Platform.OS === 'android'
                 ? setShowDatePicker(true)
                 : setShowDatePickerModal(true)
             }
@@ -201,7 +201,7 @@ const AccountInfoScreen = () => {
             editable={false}
           />
         </TouchableOpacity>
-        {showDatePicker && Platform.OS === "android" && (
+        {showDatePicker && Platform.OS === 'android' && (
           <DateTimePicker
             value={
               values.dateOfBirth
@@ -210,7 +210,7 @@ const AccountInfoScreen = () => {
             }
             themeVariant="light"
             mode="date"
-            display={"default"}
+            display={'default'}
             onChange={(event, selectedDate) =>
               handleDateChange(event, selectedDate, setFieldValue)
             }
@@ -252,12 +252,12 @@ const AccountInfoScreen = () => {
     touched,
   }) => (
     <View>
-      <Text style={styles.label}>{i18n.t("settings.mobileNumber")}</Text>
+      <Text style={styles.label}>{i18n.t('settings.mobileNumber')}</Text>
       <View style={styles.phoneContainer}>
         <TextInput
           style={styles.countryCode}
           value={values.countryCode}
-          onChangeText={handleChange("countryCode")}
+          onChangeText={handleChange('countryCode')}
           editable={false}
         />
         <TextInput
@@ -266,9 +266,9 @@ const AccountInfoScreen = () => {
             touched.mobileNumber && errors.mobileNumber && styles.inputError,
           ]}
           value={values.mobileNumber}
-          onChangeText={handleChange("mobileNumber")}
-          onBlur={() => handleBlur("mobileNumber")}
-          placeholder={i18n.t("settings.enterMobileNumber")}
+          onChangeText={handleChange('mobileNumber')}
+          onBlur={() => handleBlur('mobileNumber')}
+          placeholder={i18n.t('settings.enterMobileNumber')}
           keyboardType="phone-pad"
         />
       </View>
@@ -280,7 +280,7 @@ const AccountInfoScreen = () => {
 
   return (
     <View style={styles.container}>
-      <CustomHeader title={i18n.t("settings.accountInfo")} />
+      <CustomHeader title={i18n.t('settings.accountInfo')} />
 
       <Formik
         initialValues={getInitialValues()}
@@ -289,9 +289,9 @@ const AccountInfoScreen = () => {
       >
         {(formikProps) => (
           <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={{ flex: 1 }}
-            keyboardVerticalOffset={Platform.OS === "ios" ? 88 : -20}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 88 : -20}
           >
             <ScrollView
               style={styles.content}
@@ -302,7 +302,7 @@ const AccountInfoScreen = () => {
             >
               <ProfileImagePicker
                 value={formikProps.values.photo}
-                onChange={(value) => formikProps.setFieldValue("photo", value)}
+                onChange={(value) => formikProps.setFieldValue('photo', value)}
               />
 
               <View style={styles.form}>
@@ -318,7 +318,7 @@ const AccountInfoScreen = () => {
                 disabled={isUpdating}
                 isLoading={isUpdating}
               >
-                {i18n.t("settings.update")}
+                {i18n.t('settings.update')}
               </Button>
             </ScrollView>
           </KeyboardAvoidingView>
@@ -333,12 +333,12 @@ export default AccountInfoScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "90%",
-    alignSelf: "center",
+    width: '90%',
+    alignSelf: 'center',
   },
   centered: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   content: {
     flex: 1,
@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   row: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 16,
   },
   halfInput: {
@@ -359,71 +359,71 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     marginBottom: 8,
-    fontFamily: "Inter_500Medium",
-    textAlign: i18n.language === "ar" ? "right" : "left"
+    fontFamily: 'Inter_500Medium',
+    textAlign: i18n.language === 'ar' ? 'right' : 'left',
   },
   input: {
     height: 48,
     borderWidth: 1,
-    borderColor: "#E5E5E5",
+    borderColor: '#E5E5E5',
     borderRadius: 8,
     paddingHorizontal: 16,
     fontSize: 16,
-    color: "#1A1A1A",
-    fontFamily: "Inter_400Regular",
+    color: '#1A1A1A',
+    fontFamily: 'Inter_400Regular',
   },
   dropdownStyle: {
     borderWidth: 1,
-    borderColor: "#E5E5E5",
+    borderColor: '#E5E5E5',
     borderRadius: 8,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   dropdownContainer: {
     borderWidth: 1,
-    borderColor: "#E5E5E5",
+    borderColor: '#E5E5E5',
     borderRadius: 8,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   dropdownText: {
     fontSize: 16,
-    color: "#1A1A1A",
-    fontFamily: "Inter_400Regular",
+    color: '#1A1A1A',
+    fontFamily: 'Inter_400Regular',
   },
   phoneContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 8,
   },
   countryCode: {
     width: 80,
     height: 48,
     borderWidth: 1,
-    borderColor: "#E5E5E5",
+    borderColor: '#E5E5E5',
     borderRadius: 8,
     paddingHorizontal: 16,
     fontSize: 16,
-    color: "#1A1A1A",
-    fontFamily: "Inter_400Regular",
+    color: '#1A1A1A',
+    fontFamily: 'Inter_400Regular',
   },
   phoneInput: {
     flex: 1,
     height: 48,
     borderWidth: 1,
-    borderColor: "#E5E5E5",
+    borderColor: '#E5E5E5',
     borderRadius: 8,
     paddingHorizontal: 16,
     fontSize: 16,
-    color: "#1A1A1A",
-    fontFamily: "Inter_400Regular",
+    color: '#1A1A1A',
+    fontFamily: 'Inter_400Regular',
   },
   inputError: {
-    borderColor: "#FF0000",
+    borderColor: '#FF0000',
   },
   errorText: {
-    color: "#FF0000",
+    color: '#FF0000',
     fontSize: 12,
     marginTop: 4,
-    fontFamily: "Inter_400Regular",
-    textAlign: i18n.language === "ar" ? "right" : "left",
+    fontFamily: 'Inter_400Regular',
+    textAlign: i18n.language === 'ar' ? 'right' : 'left',
   },
   updateButton: {
     marginVertical: 20,
@@ -433,12 +433,12 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 16,
     borderRadius: 8,
   },

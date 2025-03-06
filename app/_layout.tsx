@@ -1,18 +1,18 @@
-import React from "react";
-import { StyleSheet, ActivityIndicator } from "react-native";
-import { Stack } from "expo-router";
-import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
-import store, { Persistor } from "../src/store/index";
-import * as SplashScreen from "expo-splash-screen";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React from 'react';
+import { StyleSheet, ActivityIndicator } from 'react-native';
+import { Stack } from 'expo-router';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import store, { Persistor } from '../src/store/index';
+import * as SplashScreen from 'expo-splash-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   useFonts,
   Inter_400Regular,
   Inter_600SemiBold,
   Inter_700Bold,
-} from "@expo-google-fonts/inter";
-import Toast from "react-native-toast-message";
+} from '@expo-google-fonts/inter';
+import Toast from 'react-native-toast-message';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -54,14 +54,14 @@ const styles = StyleSheet.create({
   },
   splashScreen: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
   splashText: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 20,
-    fontFamily: "Inter_400Regular",
+    fontFamily: 'Inter_400Regular',
   },
 });

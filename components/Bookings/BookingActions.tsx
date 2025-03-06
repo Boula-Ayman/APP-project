@@ -14,44 +14,48 @@ interface BookingActionsProps {
   isCancelling?: boolean;
 }
 
-export const BookingActions: React.FC<BookingActionsProps> = ({ 
+export const BookingActions: React.FC<BookingActionsProps> = ({
   shouldShowDirections,
   handleDirections,
-  handleReschedule, 
-  handleCancel, 
-  isRescheduling, 
-  isCancelling 
+  handleReschedule,
+  handleCancel,
+  isRescheduling,
+  isCancelling,
 }) => {
   const { t } = useTranslation();
-  
-  const actions = shouldShowDirections ? [
-    {
-      icon: <FontAwesome6 name="location-dot" size={24} color="#333" />,
-      label: t('bookings.actions.directions'),
-      onPress: handleDirections,
-    }
-  ] : [
-    {
-      icon: <FontAwesome6 name="location-dot" size={24} color="#333" />,
-      label: t('bookings.actions.directions'),
-      onPress: handleDirections,
-    },
-    {
-      icon: <FontAwesome5 name="calendar-day" size={24} color="#333" />,
-      label: t('bookings.actions.reschedule'),
-      onPress: handleReschedule,
-      disabled: isRescheduling
-    },
-    {
-      icon: <AntDesign name="closecircle" size={24} color="#333" />,
-      label: t('bookings.actions.cancel'),
-      onPress: handleCancel,
-      disabled: isCancelling
-    }
-  ];
+
+  const actions = shouldShowDirections
+    ? [
+        {
+          icon: <FontAwesome6 name="location-dot" size={24} color="#333" />,
+          label: t('bookings.actions.directions'),
+          onPress: handleDirections,
+        },
+      ]
+    : [
+        {
+          icon: <FontAwesome6 name="location-dot" size={24} color="#333" />,
+          label: t('bookings.actions.directions'),
+          onPress: handleDirections,
+        },
+        {
+          icon: <FontAwesome5 name="calendar-day" size={24} color="#333" />,
+          label: t('bookings.actions.reschedule'),
+          onPress: handleReschedule,
+          disabled: isRescheduling,
+        },
+        {
+          icon: <AntDesign name="closecircle" size={24} color="#333" />,
+          label: t('bookings.actions.cancel'),
+          onPress: handleCancel,
+          disabled: isCancelling,
+        },
+      ];
 
   return (
-    <View style={[styles.actions, shouldShowDirections && styles.cancelledActions]}>
+    <View
+      style={[styles.actions, shouldShowDirections && styles.cancelledActions]}
+    >
       {actions.map((action, index) => (
         <ActionButton
           key={index}
@@ -77,7 +81,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     alignSelf: 'center',
-  }
+  },
 });
 
-export default BookingActions; 
+export default BookingActions;

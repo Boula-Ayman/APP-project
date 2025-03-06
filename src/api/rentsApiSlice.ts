@@ -1,4 +1,4 @@
-import apiSlice from "./apiSlice";
+import apiSlice from './apiSlice';
 
 export interface RentsResponse {
   data: {
@@ -19,6 +19,4 @@ const rentsApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const {
-  useGetMyRentsQuery,
-} = rentsApiSlice; 
+export const { useGetMyRentsQuery } = rentsApiSlice;

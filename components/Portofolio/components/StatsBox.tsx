@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
 interface StatsBoxProps {
   value: number | string;
@@ -18,28 +18,28 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 80,
     borderRadius: 30,
-    borderColor: "#8BC240",
+    borderColor: '#8BC240',
     borderWidth: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     marginHorizontal: 8,
-    justifyContent: "center",
-    alignItems: "flex-start",
+    justifyContent: 'center',
+    alignItems: 'flex-start',
     marginTop: 10,
     paddingInline: 16,
   },
   statsValue: {
     fontSize: 26,
-    color: "#333",
-    fontFamily: "Inter_600SemiBold",
+    color: '#333',
+    fontFamily: 'Inter_600SemiBold',
     lineHeight: 31.2,
     letterSpacing: -0.48,
   },
   statsLabel: {
     fontSize: 14,
-    color: "#777",
-    fontFamily: "Inter_500Medium",
-    textAlign: "left"
+    color: '#777',
+    fontFamily: 'Inter_500Medium',
+    textAlign: 'left',
   },
 });
 
-export default StatsBox; 
+export default StatsBox;

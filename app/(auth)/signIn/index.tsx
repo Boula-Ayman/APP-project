@@ -1,4 +1,4 @@
-import SigninPage from "../../../components/auth/Signin/index";
+import SigninPage from '../../../components/auth/Signin/index';
 
 const Verification = () => {
   return <SigninPage />;

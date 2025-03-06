@@ -1,5 +1,5 @@
-import apiSlice from "./apiSlice";
-import { User, ResponseData, Gender } from "../interfaces/common.interface";
+import apiSlice from './apiSlice';
+import { User, ResponseData, Gender } from '../interfaces/common.interface';
 
 export interface UpdateUserProfileData {
   name?: string;
@@ -31,10 +31,10 @@ const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getCurrentUserProfile: builder.query<ResponseData<User>, void>({
       query: () => ({
-        url: "/users/me",
-        method: "GET",
+        url: '/users/me',
+        method: 'GET',
       }),
-      providesTags: ["User"],
+      providesTags: ['User'],
       keepUnusedDataFor: 0,
     }),
     updateUserProfile: builder.mutation<
@@ -43,24 +43,24 @@ const userApiSlice = apiSlice.injectEndpoints({
     >({
       query: (data) => {
         return {
-          url: "/users/me",
-          method: "PATCH",
+          url: '/users/me',
+          method: 'PATCH',
           body: data,
         };
       },
-      invalidatesTags: ["User"],
+      invalidatesTags: ['User'],
     }),
     updatePassword: builder.mutation<ResponseData<void>, UpdatePasswordData>({
       query: (data) => ({
-        url: "/auth/password/update",
-        method: "POST",
+        url: '/auth/password/update',
+        method: 'POST',
         body: data,
       }),
     }),
     getSignedUrl: builder.mutation<GetSignedUrlResponse, GetSignedUrlRequest>({
       query: (body) => ({
-        url: "/users/signed-urls",
-        method: "POST",
+        url: '/users/signed-urls',
+        method: 'POST',
         body,
       }),
     }),

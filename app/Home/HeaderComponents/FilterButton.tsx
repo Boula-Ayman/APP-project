@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { Modal, TouchableOpacity, View, Text, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import i18n from "../../../i18n/i18n";
-import IMark from "../../../assets/icons/iMark.svg";
-import FilterIcon from "../../../assets/icons/Tuning2.svg";
-import DropDownPicker from "react-native-dropdown-picker";
-import styles from "../../FilterButton/FilterScreenStyle";
-import { PROPERTIES_STATUS, PropertiesStatusKeys } from "@/constants/Enums";
-import { t } from "i18next";
+import React, { useEffect, useState } from 'react';
+import { Modal, TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import i18n from '../../../i18n/i18n';
+import IMark from '../../../assets/icons/iMark.svg';
+import FilterIcon from '../../../assets/icons/Tuning2.svg';
+import DropDownPicker from 'react-native-dropdown-picker';
+import styles from '../../FilterButton/FilterScreenStyle';
+import { PROPERTIES_STATUS, PropertiesStatusKeys } from '@/constants/Enums';
+import { t } from 'i18next';
 
 const staticData = {
   types: [
-    { id: 1, label: t("project"), value: "project" },
-    { id: 2, label: t("property"), value: "property" },
+    { id: 1, label: t('project'), value: 'project' },
+    { id: 2, label: t('property'), value: 'property' },
   ],
   locations: [
-    { id: 1, label: t("UAE"), value: "UAE" },
-    { id: 2, label: t("Egypt"), value: "Egypt" },
+    { id: 1, label: t('UAE'), value: 'UAE' },
+    { id: 2, label: t('Egypt'), value: 'Egypt' },
   ],
 };
 
@@ -26,7 +26,7 @@ type FilterButtonProps = {
       type: string | null;
       country: string | null;
       status: (typeof PROPERTIES_STATUS)[PropertiesStatusKeys];
-    }>
+    }>,
   ) => void;
   filters: Partial<{
     type: string | null;
@@ -105,10 +105,10 @@ const FilterButton: React.FC<FilterButtonProps> = ({
           </View>
           <View style={styles.middleSection}>
             <View style={styles.contentSection}>
-              <Text style={styles.sectionTitle}>{i18n.t("filter")}</Text>
+              <Text style={styles.sectionTitle}>{i18n.t('filter')}</Text>
               <View style={styles.dropdownContainer}>
                 <View style={styles.dropdownTitle}>
-                  <Text style={styles.label}>{t("type")}</Text>
+                  <Text style={styles.label}>{t('type')}</Text>
                   <View style={styles.cirlce}>
                     <IMark />
                   </View>
@@ -125,16 +125,16 @@ const FilterButton: React.FC<FilterButtonProps> = ({
                     closeAfterSelecting={true}
                     setOpen={setIsTypeOpen}
                     setValue={setSelectedType}
-                    placeholder={t("all")}
+                    placeholder={t('all')}
                     style={{
-                      borderColor: "#ccc",
+                      borderColor: '#ccc',
                       borderWidth: 1,
                       borderRadius: 8,
                       padding: 12,
                       zIndex: 999,
                     }}
                     dropDownContainerStyle={{
-                      borderColor: "#ccc",
+                      borderColor: '#ccc',
                       borderWidth: 1,
                       borderRadius: 8,
                       zIndex: 1500,
@@ -145,7 +145,7 @@ const FilterButton: React.FC<FilterButtonProps> = ({
 
               <View style={styles.dropdownContainer}>
                 <View style={styles.dropdownTitle}>
-                  <Text style={styles.label}>{t("location")}</Text>
+                  <Text style={styles.label}>{t('location')}</Text>
                   <View style={styles.cirlce}>
                     <IMark />
                   </View>
@@ -162,16 +162,16 @@ const FilterButton: React.FC<FilterButtonProps> = ({
                     closeAfterSelecting={true}
                     setOpen={setIsLocationOpen}
                     setValue={setSelectedLocation}
-                    placeholder={t("all")}
+                    placeholder={t('all')}
                     dropDownDirection="BOTTOM"
                     style={{
-                      borderColor: "#ccc",
+                      borderColor: '#ccc',
                       borderWidth: 1,
                       borderRadius: 8,
                       padding: 12,
                     }}
                     dropDownContainerStyle={{
-                      borderColor: "#ccc",
+                      borderColor: '#ccc',
                       borderWidth: 1,
                       borderRadius: 8,
                     }}
@@ -184,18 +184,18 @@ const FilterButton: React.FC<FilterButtonProps> = ({
                 onPress={handleFilterResults}
               >
                 <Text style={styles.filterButtonLargeText}>
-                  {t("filterResult")}
+                  {t('filterResult')}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[
                   styles.filterButtonLarge,
-                  { marginTop: 10, backgroundColor: "#ccc" },
+                  { marginTop: 10, backgroundColor: '#ccc' },
                 ]}
                 onPress={handleClearFilters}
               >
-                <Text style={[styles.filterButtonLargeText, { color: "#000" }]}>
-                  {t("clearFilters")}
+                <Text style={[styles.filterButtonLargeText, { color: '#000' }]}>
+                  {t('clearFilters')}
                 </Text>
               </TouchableOpacity>
             </View>

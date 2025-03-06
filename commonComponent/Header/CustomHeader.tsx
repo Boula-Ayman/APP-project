@@ -1,13 +1,13 @@
-import React from "react";
+import React from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
   Platform,
   StyleProp,
   ViewStyle,
-} from "react-native";
-import { router, Stack } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
+} from 'react-native';
+import { router, Stack } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
 interface CustomHeaderProps {
   title: string;
@@ -27,11 +27,11 @@ export const CustomHeader = ({
         headerTitle: title,
         headerShadowVisible: false,
         headerTransparent: true,
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
         contentStyle: [
           {
-            paddingTop: Platform.OS === "ios" ? "30%" : "25%",
-            backgroundColor: "white",
+            paddingTop: Platform.OS === 'ios' ? '30%' : '25%',
+            backgroundColor: 'white',
           },
           contentStyle,
         ],
@@ -52,12 +52,12 @@ export const CustomHeader = ({
 
 const styles = StyleSheet.create({
   iconButton: {
-    backgroundColor: "#F6F6F6",
+    backgroundColor: '#F6F6F6',
     borderRadius: 50,
     height: 44,
     width: 44,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

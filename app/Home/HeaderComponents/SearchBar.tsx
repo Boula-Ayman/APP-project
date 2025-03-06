@@ -1,9 +1,9 @@
-import React from "react";
-import { View, TextInput, TouchableOpacity, Text } from "react-native";
-import MagnifyingGlass from "../../../assets/icons/magnifying-glass.svg";
-import styles from "../../../components/homeScreenContainer/HomeScreenStyle";
-import i18n from "../../../i18n/i18n";
-import { Ionicons } from "@expo/vector-icons";
+import React from 'react';
+import { View, TextInput, TouchableOpacity, Text } from 'react-native';
+import MagnifyingGlass from '../../../assets/icons/magnifying-glass.svg';
+import styles from '../../../components/homeScreenContainer/HomeScreenStyle';
+import i18n from '../../../i18n/i18n';
+import { Ionicons } from '@expo/vector-icons';
 
 interface SearchBarProps {
   searchTerm: string;
@@ -12,7 +12,7 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onChangeText }) => {
   const handleClearSearch = () => {
-    onChangeText("");
+    onChangeText('');
   };
 
   return (
@@ -20,29 +20,29 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onChangeText }) => {
       <View
         style={{
           ...styles.searchBar,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
         }}
       >
         <TextInput
           style={{
             ...styles.searchInput,
             flex: 1,
-            paddingRight: i18n.language === "ar" ? 45 : 10,
-            paddingLeft: i18n.language === "ar" ? 10 : 45,
-            textAlign: i18n.language === "ar" ? "right" : "left",
+            paddingRight: i18n.language === 'ar' ? 45 : 10,
+            paddingLeft: i18n.language === 'ar' ? 10 : 45,
+            textAlign: i18n.language === 'ar' ? 'right' : 'left',
           }}
-          placeholder={i18n.t("home.searchPlaceholder")}
+          placeholder={i18n.t('home.searchPlaceholder')}
           value={searchTerm}
           onChangeText={onChangeText}
-          placeholderTextColor={"#00000091"}
+          placeholderTextColor={'#00000091'}
         />
         <MagnifyingGlass
           style={{
             ...styles.searchIcon,
-            left: i18n.language === "ar" ? "auto" : 16,
-            right: i18n.language === "ar" ? 16 : "auto",
+            left: i18n.language === 'ar' ? 'auto' : 16,
+            right: i18n.language === 'ar' ? 16 : 'auto',
           }}
         />
         {searchTerm && (

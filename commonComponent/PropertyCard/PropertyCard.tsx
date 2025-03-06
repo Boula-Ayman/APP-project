@@ -1,22 +1,22 @@
-import React from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Bed from "@/assets/icons/bed.svg";
-import Bath from "@/assets/icons/bath.svg";
-import Area from "@/assets/icons/area.svg";
-import HeartOutlineIcon from "@/assets/icons/Heart.svg";
-import HeartFilledIcon from "@/assets/icons/filledHeart.svg";
-import i18n from "@/i18n/i18n";
-import Tag from "@/commonComponent/Tag/Tag";
-import { noImagePlaceHolder } from "@/utils/noImagePlaceHolder";
-import { t } from "i18next";
-import { localizeNumber } from "@/utils/numbers";
+import React from 'react';
+import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import Bed from '@/assets/icons/bed.svg';
+import Bath from '@/assets/icons/bath.svg';
+import Area from '@/assets/icons/area.svg';
+import HeartOutlineIcon from '@/assets/icons/Heart.svg';
+import HeartFilledIcon from '@/assets/icons/filledHeart.svg';
+import i18n from '@/i18n/i18n';
+import Tag from '@/commonComponent/Tag/Tag';
+import { noImagePlaceHolder } from '@/utils/noImagePlaceHolder';
+import { t } from 'i18next';
+import { localizeNumber } from '@/utils/numbers';
 
 export interface Opportunity {
   id: string;
   media: Array<{ url: string }>;
-  country?: "Egypt" | "UAE";
+  country?: 'Egypt' | 'UAE';
   opportunity_type?: string;
   share_price?: number;
   currency?: string;
@@ -63,7 +63,7 @@ const PropertyCard: React.FC<CardProps> = ({
       <View
         style={{
           ...styles.priceSection,
-          flexDirection: i18n.language === "ar" ? "row-reverse" : "row",
+          flexDirection: i18n.language === 'ar' ? 'row-reverse' : 'row',
         }}
       >
         <Text style={styles.cardPrice}>
@@ -71,8 +71,8 @@ const PropertyCard: React.FC<CardProps> = ({
         </Text>
         <Text style={styles.ownerShip}>
           {localizeNumber(item.owned_shares || 0, i18n.language)}/
-          {localizeNumber(item.number_of_shares || 0, i18n.language)}{" "}
-          {t("home.ownerShip")}
+          {localizeNumber(item.number_of_shares || 0, i18n.language)}{' '}
+          {t('home.ownerShip')}
         </Text>
         <TouchableOpacity style={styles.HeartOverlay} onPress={onLoveIconPress}>
           {isLiked ? (
@@ -80,14 +80,14 @@ const PropertyCard: React.FC<CardProps> = ({
               width={21}
               height={21}
               style={styles.icon}
-              fill={"white"}
+              fill={'white'}
             />
           ) : (
             <HeartOutlineIcon
               width={21}
               height={21}
               style={styles.icon}
-              fill={"white"}
+              fill={'white'}
             />
           )}
         </TouchableOpacity>
@@ -99,13 +99,13 @@ const PropertyCard: React.FC<CardProps> = ({
     return (
       <View
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: i18n.language === "ar" ? "flex-end" : "flex-start",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: i18n.language === 'ar' ? 'flex-end' : 'flex-start',
         }}
       >
         <Text style={styles.cardTitle}>
-          {i18n.language === "ar" ? item.title_ar : item.title_en}
+          {i18n.language === 'ar' ? item.title_ar : item.title_en}
         </Text>
         <View style={styles.locationSection}>
           <AntDesign
@@ -115,7 +115,7 @@ const PropertyCard: React.FC<CardProps> = ({
             style={styles.location}
           />
           <Text style={styles.cardLocation}>
-            {i18n.language === "ar" ? item.location_ar : item.location_en}
+            {i18n.language === 'ar' ? item.location_ar : item.location_en}
           </Text>
         </View>
       </View>
@@ -132,7 +132,7 @@ const PropertyCard: React.FC<CardProps> = ({
             <Area />
           </View>
           <Text style={styles.featureText}>
-            {i18n.t("home.area", {
+            {i18n.t('home.area', {
               area: `${localizeNumber(item.area, i18n.language)}`,
             })}
           </Text>
@@ -142,7 +142,7 @@ const PropertyCard: React.FC<CardProps> = ({
             <Bed />
           </View>
           <Text style={styles.featureText}>
-            {i18n.t("bedrooms", { count: item.number_of_bedrooms })}
+            {i18n.t('bedrooms', { count: item.number_of_bedrooms })}
           </Text>
         </View>
         <View style={styles.featureItem}>
@@ -150,7 +150,7 @@ const PropertyCard: React.FC<CardProps> = ({
             <Bath />
           </View>
           <Text style={styles.featureText}>
-            {i18n.t("bathroom", { count: item.number_of_bathrooms })}
+            {i18n.t('bathroom', { count: item.number_of_bathrooms })}
           </Text>
         </View>
       </View>
@@ -174,20 +174,20 @@ const PropertyCard: React.FC<CardProps> = ({
         <View
           style={{
             ...styles.overlay,
-            left: i18n.language === "ar" ? "auto" : 15,
-            right: i18n.language === "ar" ? 15 : "auto",
+            left: i18n.language === 'ar' ? 'auto' : 15,
+            right: i18n.language === 'ar' ? 15 : 'auto',
           }}
         >
           <Tag
             text={
               showStatus
-                ? t(`${item.status}`) || ""
-                : t(`${item.opportunity_type}`) || ""
+                ? t(`${item.status}`) || ''
+                : t(`${item.opportunity_type}`) || ''
             }
-            type={showStatus ? "status" : "property_type"}
+            type={showStatus ? 'status' : 'property_type'}
             status={
               showStatus
-                ? (item.status as "confirmed" | "pending" | "cancelled")
+                ? (item.status as 'confirmed' | 'pending' | 'cancelled')
                 : undefined
             }
           />
@@ -205,58 +205,58 @@ const PropertyCard: React.FC<CardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    width: "auto",
-    height: "auto",
+    width: 'auto',
+    height: 'auto',
     borderRadius: 33,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderWidth: 0.85,
-    borderColor: "#EBEBEB",
-    overflow: "hidden",
+    borderColor: '#EBEBEB',
+    overflow: 'hidden',
     marginBottom: 16,
   },
   imageWrapper: {
-    position: "relative",
+    position: 'relative',
     padding: 15,
     paddingBottom: 0,
   },
   cardImage: {
-    width: "100%",
+    width: '100%',
     height: 210,
     marginBottom: 10,
     borderRadius: 22,
   },
   overlay: {
-    position: "absolute",
+    position: 'absolute',
     top: 25,
     paddingHorizontal: 15,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   details: {
     padding: 16,
   },
   priceSection: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 4,
   },
   cardPrice: {
     fontSize: 16,
-    fontWeight: "bold",
-    color: "#8BC240",
+    fontWeight: 'bold',
+    color: '#8BC240',
   },
   ownerShip: {
     fontSize: 12,
-    color: "#808080",
+    color: '#808080',
   },
   HeartOverlay: {
     width: 36,
     height: 36,
     borderRadius: 50,
-    backgroundColor: "#FFFFFF",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
     elevation: 8,
     shadowOffset: {
       width: 0,
@@ -267,47 +267,47 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 14,
-    fontWeight: "500",
-    color: "#2B2B2B",
+    fontWeight: '500',
+    color: '#2B2B2B',
     marginBottom: 8,
   },
   locationSection: {
-    flexDirection: i18n.language === "ar" ? "row-reverse" : "row",
-    alignItems: "center",
+    flexDirection: i18n.language === 'ar' ? 'row-reverse' : 'row',
+    alignItems: 'center',
     marginBottom: 12,
   },
   location: {
     marginRight: 5,
-    color: "#808080",
+    color: '#808080',
   },
   cardLocation: {
     fontSize: 12,
-    color: "#666",
+    color: '#666',
   },
   features: {
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "flex-start",
-    alignItems: "center",
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
     marginTop: 4,
   },
   featureItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
-    justifyContent: "space-around",
+    justifyContent: 'space-around',
   },
   featureText: {
     fontSize: 12,
-    color: "#818181",
+    color: '#818181',
   },
   iconContainer: {
     width: 20,
     height: 20,
     borderRadius: 16,
-    backgroundColor: "#F3F3F3",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#F3F3F3',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   icon: {
     // width: 20,

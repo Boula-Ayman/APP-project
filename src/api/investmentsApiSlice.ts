@@ -1,4 +1,4 @@
-import apiSlice from "./apiSlice";
+import apiSlice from './apiSlice';
 
 interface Media {
   id: number;
@@ -56,7 +56,7 @@ export interface InvestmentStatsResponse {
     total_amount: number;
     total_available_nights: number;
     currency: string;
-  }
+  };
 }
 
 const investmentsApiSlice = apiSlice.injectEndpoints({
@@ -76,7 +76,5 @@ const investmentsApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const {
-  useGetMyInvestmentsQuery,
-  useGetMyInvestmentStatsQuery,
-} = investmentsApiSlice; 
+export const { useGetMyInvestmentsQuery, useGetMyInvestmentStatsQuery } =
+  investmentsApiSlice;

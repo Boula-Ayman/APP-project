@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
 import BookingList from '../../components/Bookings/BookingList';
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomHeader from '../../commonComponent/Header/CustomHeader';
@@ -12,33 +18,44 @@ const MyBookingsScreen = () => {
   const { t } = useTranslation();
 
   return (
-      <>
-      <CustomHeader title={t('bookings.title')}/>
+    <>
+      <CustomHeader title={t('bookings.title')} />
       <SafeAreaView style={styles.container}>
-      <View style={styles.tabContainer}>
-        <View style={styles.tabWrapper}>
-          <TouchableOpacity
-            style={[styles.tab, activeTab === 'upcoming' && styles.activeTab]}
-            onPress={() => setActiveTab('upcoming')}
-          >
-            <Text style={[styles.tabText, activeTab === 'upcoming' && styles.activeTabText]}>
-              {t('bookings.upcoming')}
-            </Text>
-          </TouchableOpacity>
+        <View style={styles.tabContainer}>
+          <View style={styles.tabWrapper}>
+            <TouchableOpacity
+              style={[styles.tab, activeTab === 'upcoming' && styles.activeTab]}
+              onPress={() => setActiveTab('upcoming')}
+            >
+              <Text
+                style={[
+                  styles.tabText,
+                  activeTab === 'upcoming' && styles.activeTabText,
+                ]}
+              >
+                {t('bookings.upcoming')}
+              </Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[styles.tab, activeTab === 'past' && styles.activeTab]}
-            onPress={() => setActiveTab('past')}
-          >
-            <Text style={[styles.tabText, activeTab === 'past' && styles.activeTabText]}>
-              {t('bookings.past')}
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.tab, activeTab === 'past' && styles.activeTab]}
+              onPress={() => setActiveTab('past')}
+            >
+              <Text
+                style={[
+                  styles.tabText,
+                  activeTab === 'past' && styles.activeTabText,
+                ]}
+              >
+                {t('bookings.past')}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
 
-      <BookingList activeTab={activeTab} />
-    </SafeAreaView></>
+        <BookingList activeTab={activeTab} />
+      </SafeAreaView>
+    </>
   );
 };
 
@@ -80,4 +97,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MyBookingsScreen; 
+export default MyBookingsScreen;
