@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   KeyboardAvoidingView,
   Pressable,
@@ -10,69 +10,32 @@ import BackArrow from '../../assets/icons/arrow.svg';
 import { router } from 'expo-router';
 import styles from './NotificationStyle';
 import { useTranslation } from 'react-i18next';
-import NotificationIcon from '../../assets/icons/notification-bing.svg';
 import NotificationsEmptyPage from './NotificationsEmptyPage';
-
-interface NotificationItem {
-  id: number;
-  title: string;
-  message: string;
-  date: string;
-  isNew: boolean;
-}
+import {
+  useGetNotificationsQuery,
+  useReadAllNotificationsMutation,
+} from '@/src/api/notificationsApiSlice';
 
 const Notification: React.FC = () => {
   const { t } = useTranslation();
-  const [notifications, setNotifications] = useState<NotificationItem[]>([
-    {
-      id: 1,
-      title: 'New Property Available',
-      message: 'A new property in Dubai is now available for investment.',
-      date: '2023-10-15',
-      isNew: true,
-    },
-    {
-      id: 2,
-      title: 'New Property Available',
-      message: ' Property in Dubai is now available for investment.',
-      date: '2024-10-15',
-      isNew: true,
-    },
-    {
-      id: 3,
-      title: 'New Property Available',
-      message: ' Property in Dubai is now available for investment.',
-      date: '2024-10-15',
-      isNew: true,
-    },
-    {
-      id: 4,
-      title: 'New Property Available',
-      message: ' Property in Dubai is now available for investment.',
-      date: '2024-10-15',
-      isNew: true,
-    },
-  ]);
+  const { data: notifications } = useGetNotificationsQuery();
+  const [readAllNotifications] = useReadAllNotificationsMutation();
 
-  const newNotificationsCount = notifications.filter((n) => n.isNew).length;
+  const newNotificationsCount = notifications?.data.filter(
+    (n) => !n.read,
+  ).length;
 
-  const handleNotificationPress = (id: string) => {
-    setNotifications((prevNotifications) =>
-      prevNotifications.map((notification) =>
-        notification.id.toString() === id.toString()
-          ? { ...notification, isNew: false }
-          : notification,
-      ),
-    );
+  const handleNotificationPress = async () => {
+    try {
+      await readAllNotifications();
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setNotifications((prevNotifications) =>
-        prevNotifications.map((notification) => ({
-          ...notification,
-          isNew: false,
-        })),
-      );
+    const timer = setTimeout(async () => {
+      await readAllNotifications();
     }, 30000);
     return () => clearTimeout(timer);
   }, []);
@@ -88,7 +51,7 @@ const Notification: React.FC = () => {
             <Text style={styles.headerTitle}>{t('notification.title')}</Text>
           </View>
           <View style={styles.mainBody}>
-            {notifications.length === 0 ? (
+            {notifications?.data.length === 0 ? (
               <NotificationsEmptyPage />
             ) : (
               <View style={styles.newNotificationContainer}>
@@ -102,17 +65,15 @@ const Notification: React.FC = () => {
                     </Text>{' '}
                   </Text>
                 </View>
-                {notifications.map((notification) => (
+                {notifications?.data.map((notification) => (
                   <Pressable
                     key={notification.id}
-                    onPress={() =>
-                      handleNotificationPress(notification.id.toString())
-                    }
+                    onPress={() => handleNotificationPress()}
                   >
                     <View
                       style={[
                         styles.newNotificationItem,
-                        !notification.isNew && { borderWidth: 0 },
+                        notification.read && { borderColor: '#EBEBEB' },
                       ]}
                     >
                       <Text style={styles.notificationTitle}>
@@ -122,7 +83,7 @@ const Notification: React.FC = () => {
                         {notification.message}
                       </Text>
                       <Text style={styles.notificationDate}>
-                        {notification.date}
+                        {notification.created_at}
                       </Text>
                     </View>
                   </Pressable>
