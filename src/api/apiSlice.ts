@@ -5,7 +5,7 @@ export const apiSlice = createApi({
   baseQuery: baseQuery,
   reducerPath: 'api',
   endpoints: () => ({}),
-  tagTypes: ['User', 'WishList'],
+  tagTypes: ['User', 'WishList', 'Notifications'],
 });
 
 export default apiSlice;

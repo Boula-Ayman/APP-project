@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import styles from './HomeScreenStyle';
@@ -18,9 +18,7 @@ import { StatusBar } from 'expo-status-bar';
 import { PROPERTIES_STATUS, PropertiesStatusKeys } from '@/constants/Enums';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const HomeScreen: React.FC = ({}) => {
-  const notifications = 0;
-
+const HomeScreen: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [opportunities, setOpportunities] = useState([]);
 
@@ -32,7 +30,7 @@ const HomeScreen: React.FC = ({}) => {
 
   const [getFilteredOpportunities] = useLazyGetOpportunitiesQuery();
 
-  const { data, error, isLoading } = useGetOpportunitiesQuery(
+  const { data, isLoading } = useGetOpportunitiesQuery(
     { ...filters },
     {
       refetchOnMountOrArgChange: true,
@@ -104,7 +102,7 @@ const HomeScreen: React.FC = ({}) => {
 
       setOpportunities(response.data.data);
     } catch (error) {
-      // TODO: show error messages
+      console.log(error);
     }
   };
 
@@ -126,7 +124,7 @@ const HomeScreen: React.FC = ({}) => {
             start={{ x: 0, y: 1 }}
             end={{ x: 0, y: 0 }}
           />
-          <Header notifications={notifications} />
+          <Header />
           <View
             style={{
               display: 'flex',
