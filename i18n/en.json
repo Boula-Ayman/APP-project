@@ -28,8 +28,8 @@
     "title": "All Properties",
     "noOpportunitiesFound": "No opportunities found"
   },
-  "myWishList": "My WishList",
-  "emptyList": "Empty list",
+  "myWishList": "My Wishlist",
+  "emptyList": "No items in your wishlist",
   "filter": "Filter By",
   "bedrooms": "{{count}} Bedroom",
   "bathroom": "{{count}} Bathroom",

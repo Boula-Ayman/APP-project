@@ -102,15 +102,16 @@ const TestWishListComponent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-
-    alignItems: 'center',
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
   scrollView: {
     flexGrow: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    minWidth: '100%',
+    paddingHorizontal: 25
   },
   cardContainer: {
     transform: [{ scale: 1.12 }],
@@ -135,11 +136,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   dangerText: {
-    color: 'red',
+    color: "black",
     fontSize: 14,
-
-    fontFamily: 'InterMedium',
-    fontWeight: '500',
+    fontFamily: "InterMedium",
+    fontWeight: "500",
   },
   gradient: {
     position: 'absolute',

@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     paddingHorizontal: 24,
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "#fff",
   },
   headContainer: {
     width: 335,

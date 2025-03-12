@@ -4,22 +4,23 @@
     "slug": "propcut-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "",
+    "icon": "./assets/Images/logo.jpg",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/Images/mainlogo.png",
       "resizeMode": "contain",
-      "backgroundColor": "white"
+      "backgroundColor": "#fff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.lightbyte.propcut"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "",
-        "backgroundColor": "white"
+        "backgroundColor": "#fff"
       },
       "package": "com.anonymous.propcutapp"
     },
@@ -28,9 +29,21 @@
       "output": "static",
       "favicon": ""
     },
-    "plugins": ["expo-router", "expo-localization", "expo-font"],
+    "plugins": [
+      "expo-router",
+      "expo-localization",
+      "expo-font"
+    ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "429149c6-a8e0-4889-b955-80125d4b62b0"
+      }
     }
   }
 }
